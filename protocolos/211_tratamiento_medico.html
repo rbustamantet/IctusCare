@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tratamiento médico — Unidad de Ictus</title>
+<style>
+:root{
+  --bg:#f9fafc;
+  --ink:#0e1a33;
+  --accent:#164a8a;
+  --accent-light:#d7e3f8;
+  --accent-dark:#0f3d83;
+  --border:#e5e9f2;
+  --alert:#b30000;
+  --alert-bg:#fef3f2;
+  --alert-border:#f5c2c0;
+}
+
+html,body{
+  margin:0; padding:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:Verdana, Geneva, Tahoma, sans-serif;
+  line-height:1.6;
+  -webkit-text-size-adjust:100%;
+}
+
+header{
+  background:var(--accent-dark);
+  color:#fff;
+  text-align:center;
+  padding:1rem;
+  font-weight:800;
+  font-size:1.2rem;
+  box-shadow:0 2px 6px rgba(0,0,0,0.08);
+  position:sticky;top:0;z-index:10;
+}
+
+main{
+  max-width:850px;
+  margin:0 auto;
+  padding:1rem 1.25rem 2.5rem;
+  background:#fff;
+  border-radius:12px;
+  box-shadow:0 2px 10px rgba(0,0,0,0.04);
+}
+
+p{margin:0.75rem 0;text-align:justify;}
+a{color:var(--accent-dark);text-decoration:none;}
+a:hover{text-decoration:underline;color:var(--accent);}
+strong,b{color:var(--accent-dark);}
+h3{color:var(--accent-dark);margin-top:1.2rem;font-size:1.05rem;}
+ul{margin:0.6rem 0 0.6rem 1.2rem;}
+li{margin:0.3rem 0;}
+hr{border:none;border-top:1px solid var(--border);margin:1.4rem 0;}
+.highlight-red{color:var(--alert);font-weight:700;}
+
+.related{
+  margin-top:1.6rem;
+  background:var(--accent-light);
+  padding:1rem;
+  border-radius:8px;
+}
+.related h3{margin:0 0 .5rem 0;color:var(--accent-dark);font-size:1rem;}
+.related ol{margin:0;padding-left:1.2rem;}
+.related li{margin:0.25rem 0;}
+
+.alert{
+  background:var(--alert-bg);
+  border:1px solid var(--alert-border);
+  border-radius:6px;
+  padding:0.8rem;
+  color:#800000;
+  font-weight:700;
+  margin-top:1rem;
+}
+
+.back-btn{
+  display:inline-block;
+  margin-top:1.5rem;
+  background:var(--accent-dark);
+  color:#fff;
+  text-decoration:none;
+  font-weight:700;
+  padding:0.6rem 1.2rem;
+  border-radius:8px;
+  transition:background .2s, transform .1s;
+  text-align:center;
+}
+.back-btn:hover{
+  background:#1c60c3;
+  color:#fff;
+  transform:translateY(-1px);
+}
+
+@media(max-width:768px){
+  header{font-size:1.05rem;}
+  main{padding:0.9rem 1rem;}
+  body{font-size:0.96rem;}
+}
+</style>
+<style>
+:root{
+  --bg:#f9fafc;
+  --ink:#0e1a33;
+  --accent:#164a8a;
+  --accent-light:#d7e3f8;
+  --accent-dark:#0f3d83;
+  --border:#e5e9f2;
+  --alert:#b30000;
+  --alert-bg:#fef3f2;
+  --alert-border:#f5c2c0;
+}
+
+
+  .wrap{max-width:850px; margin:0 auto; padding:24px}
+
+html,body{
+  margin:0; padding:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:Verdana, Geneva, Tahoma, sans-serif;
+  line-height:1.6;
+  -webkit-text-size-adjust:100%;
+}
+
+header{
+  background:var(--accent-dark);
+  color:#fff;
+  text-align:LEFT;
+  padding:1rem;
+  font-weight:800;
+  font-size:1.2rem;
+  box-shadow:0 2px 6px rgba(0,0,0,0.08);
+  position:sticky;top:0;z-index:10;
+}
+
+
+main{
+  max-width:850px;
+  margin:0 auto;
+  padding:1rem 1.25rem 2.5rem;
+  background:#fff;
+  border-radius:12px;
+  box-shadow:0 2px 10px rgba(0,0,0,0.04);
+}
+
+p{margin:0.75rem 0;text-align:justify;}
+a{color:var(--accent-dark);text-decoration:none;}
+a:hover{text-decoration:underline;color:var(--accent);}
+strong,b{color:var(--accent-dark);}
+h3{color:var(--accent-dark);margin-top:1.2rem;font-size:1.05rem;}
+ul{margin:0.6rem 0 0.6rem 1.2rem;}
+li{margin:0.3rem 0;}
+hr{border:none;border-top:1px solid var(--border);margin:1.4rem 0;}
+.highlight-red{color:var(--alert);font-weight:700;}
+
+.related{
+  margin-top:1.6rem;
+  background:var(--accent-light);
+  padding:1rem;
+  border-radius:8px;
+}
+.related h3{margin:0 0 .5rem 0;color:var(--accent-dark);font-size:1rem;}
+.related ol{margin:0;padding-left:1.2rem;}
+.related li{margin:0.25rem 0;}
+
+.alert{
+  text-align:left;
+  background:var(--alert-bg);
+  border:1px solid var(--alert-border);
+  border-radius:6px;
+  padding:0.8rem;
+  color:#800000;
+  font-weight:700;
+  margin-top:1rem;
+}
+.bar{display:flex; align-items:center; gap:12px; padding:1px 18px}
+ 
+  .title{font-weight:700; letter-spacing:.2px; font-size:1.2rem;}
+  .subtitle{font-size:.9rem; color:var(--muted)}
+  .headcol{display:flex; flex-direction:column}
+
+  .grid{
+    display:grid;
+    grid-template-columns: repeat(1, minmax(0,1fr));
+    gap:16px;
+    margin-top:22px;
+  }
+  @media (min-width:520px){ .grid{ grid-template-columns: repeat(2, minmax(0,1fr)); } }
+  @media (min-width:900px){ .grid{ grid-template-columns: repeat(3, minmax(0,1fr)); } }
+
+   
+  .actions{margin-left:auto}
+  .btn{
+    display:inline-flex; align-items:center; gap:2px;
+    padding:4px 8px; border-radius:12px; text-decoration:none;
+    border:1px solid rgba(255,255,255,.14);
+    background: rgba(255,255,255,.06); color:white;
+  }
+  .btn:hover{ border-color: rgba(127,179,255,.35); background: #1c60c3; color:white;}
+.back-btn{
+  display:inline-block;
+  margin-top:1.5rem;
+  background:var(--accent-dark);
+  color:#fff;
+  text-decoration:none;
+  font-weight:700;
+  padding:0.6rem 1.2rem;
+  border-radius:8px;
+  transition:background .2s, transform .1s;
+  text-align:center;
+}
+.back-btn:hover{
+  background:#1c60c3;
+  color:#fff;
+  transform:translateY(-1px);
+}
+
+@media(max-width:768px){
+  header{font-size:1.05rem;}
+  main{padding:0.9rem 1rem;}
+  body{font-size:0.96rem;}
+}
+</style>
+</head>
+
+<body>
+<header>
+    <div class="bar wrap">
+      
+      <div class="headcol">
+        <div class="title">TRATAMIENTO MÉDICO DEL EDEMA CEREBRAL</div>
+        </div>
+      <div class="actions">
+        <a class="btn" href="../index.html">Inicio</a>
+      </div>
+    </div>
+  </header>
+<main>
+
+<p>El objetivo principal es reducir la presión intracraneal (PIC) y mejorar la perfusión cerebral para limitar el daño secundario. El manejo se divide en <b>medidas generales</b> y <b>terapias farmacológicas específicas</b>.</p>
+
+<hr>
+
+<h3>Medidas generales</h3>
+<ul>
+  <li><b>Posición de la cabeza:</b> mantener la cabeza a <b>30º</b> y en la línea media para optimizar el retorno venoso y reducir la PIC.</li>
+  <li><b>Control de la temperatura:</b> tratar activamente la fiebre con antitérmicos para <b class="highlight-red">evitar la hipertermia</b>, que aumenta el metabolismo cerebral y el edema.</li>
+  <li><b>Ventilación:</b> evitar la <b class="highlight-red">hipoxia</b> (SatO<sub>2</sub> &gt;94%) y la <b class="highlight-red">hipocapnia</b>, ambas perjudiciales para el tejido cerebral.</li>
+  <li><b>Límites hídricos:</b> evitar soluciones hipoosmolares (glucosado o salino al 0.45%), que agravan el edema cerebral.</li>
+</ul>
+
+<hr>
+
+<h3>Terapia farmacológica</h3>
+<p>Se utilizan <b class="highlight-red">terapias hiperosmolares en bolos intermitentes</b> para la elevación aguda de la PIC. La elección depende de la experiencia del centro y del estado clínico del paciente.</p>
+
+<ul>
+  <li><b>Manitol:</b>
+    <ul>
+      <li><b>Dosis:</b> bolo IV de <b>0.25–1 g/kg</b> en 15–20 min. No debe usarse de forma prolongada por riesgo de nefrotoxicidad.</li>
+      <li><b>Monitorización:</b> control de función renal, electrolitos y osmolalidad sérica; requiere sonda vesical.</li>
+    </ul>
+  </li>
+  <li><b>Suero salino hipertónico:</b>
+    <ul>
+      <li><b>Dosis:</b> bolo IV de <b>30 ml al 23.4%</b> o volúmenes mayores de concentraciones menores (3–7.5%).</li>
+      <li><b>Ventajas:</b> alternativa o complemento al manitol; menor riesgo de insuficiencia renal y desequilibrios electrolíticos.</li>
+    </ul>
+  </li>
+  <li><b>Sedación:</b> el uso de propofol o midazolam puede reducir el metabolismo cerebral y controlar la PIC en pacientes agitados.</li>
+  <li><b class="highlight-red">Corticoides contraindicados:</b> no deben usarse en el edema cerebral asociado a ictus, por aumento de infecciones y complicaciones sin beneficio demostrado.</li>
+</ul>
+
+<hr>
+
+<h3>Manejo de manitol y suero salino hipertónico</h3>
+<p>Las guías definen ambos como <b>medidas de rescate temporales</b> y <b class="highlight-red">no como terapias continuas</b>.</p>
+
+<ul>
+  <li><b>Función:</b> control de la elevación aguda de la PIC mientras se prepara la cirugía o se estabiliza al paciente.</li>
+  <li><b>Dosis y administración:</b> administrar en <b>bolos intermitentes</b> (p. ej., 1 g/kg de manitol); <b class="highlight-red">evitar infusiones continuas</b> por riesgo de efecto rebote y daño renal.</li>
+  <li><b>Elección:</b> tanto el manitol como el suero salino hipertónico son <b>igualmente eficaces</b>, siendo este último preferido por su mejor perfil renal y electrolítico.</li>
+</ul>
+
+<hr>
+
+<div class="alert">Criterios de ingreso en UCI
+<p>Se debe contactar con <b>Neurocirugía</b> o trasladar a <b>UCI</b> si el paciente presenta:</p>
+<ul>
+  <li>Signos de herniación cerebral: anisocoria, asimetría motora, postura de decorticación o descerebración.</li>
+  <li>Deterioro neurológico grave: descenso rápido del nivel de conciencia.</li>
+  <li>Necesidad de monitorización invasiva: indicación de registro directo de la PIC.</li>
+</ul></div>
+
+<a href="index.html" class="back-btn">Volver al índice</a>
+
+<hr>
+
+<div class="related">
+  <h3>Relacionados</h3>
+  <ol>
+    <li>Manejo de complicaciones neurológicas
+      <ol>
+        <li><a href="21_edema_presion_ic.html">Edema cerebral y aumento de presión intracraneal</a></li>
+        <ol>
+          <li><span style="background-color:#0f3d83;color:#fff;padding:2px 6px;border-radius:4px;">Tratamiento médico</span></li>
+          <li><a href="212_craniectomia.html">Craniectomía descompresiva</a></li>
+        </ol>
+        <li><a href="22_crisis_comiciales.html">Crisis comiciales</a></li>
+      </ol>
+    </li>
+  </ol>
+</div>
+
+</main>
+<footer style="
+    position:relative;
+    left:50%;
+    transform:translateX(-50%);
+    width:100vw;
+    margin:2rem 0 0 0;
+    padding:1.5rem 0;
+    border-top:1px solid #e5e7eb;
+    background:#ffffff;
+    text-align:center;
+    box-shadow:0 -2px 6px rgba(0,0,0,0.04);
+">
+      <img src="uibanner.png"
+         alt="Unidad de Ictus Málaga" style="max-width:380px;height:auto;opacity:.96;">
+  </a>
+
+</footer>
+
+</body>
+</html>
