@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/png" href="https://rbustamantet.github.io/ictus.cardiopatia/favicon-96x96.png" sizes="96x96" />
+<link rel="icon" type="image/svg+xml" href="https://rbustamantet.github.io/ictus.cardiopatia/favicon.svg" />
+<link rel="shortcut icon" href="https://rbustamantet.github.io/ictus.cardiopatia/favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="https://rbustamantet.github.io/ictus.cardiopatia/apple-touch-icon.png" />
+<link rel="manifest" href="https://rbustamantet.github.io/ictus.cardiopatia/site.webmanifest" />
+<title>Clasificación TOAST - Ictus Isquémico</title>
+<style>
+/* =================================================
+  ESTILOS TOAST CLASSIFICATION (Versión actualizada)
+================================================= */
+:root{
+  --bg:#f8fafc; --ink:#0f172a;
+  --azul:#0b2c5f; --gris:#6b7280; --borde:#e5e7eb;
+  --ok:#0a7f3f; --error:#b91c1c;
+  --accent:#2563eb; 
+  --accent-light:#dbeafe;
+  --toast-orange:#f57c00;
+}
+
+/* Cabecera */
+.toast-appbar{
+  position:sticky; top:0; z-index:1000;
+  background:rgba(255,255,255,0.9);
+  border-bottom:1px solid var(--accent-light);
+  backdrop-filter:saturate(140%) blur(8px);
+  -webkit-backdrop-filter:saturate(140%) blur(8px);
+  transition:box-shadow .15s,border-color .15s,background .15s;
+}
+.toast-appbar-inner{max-width:980px;margin:0 auto;display:flex;align-items:center;gap:12px;padding:10px 16px}
+.toast-appbar h1{margin:0;font-size:22px;line-height:1.2;color:var(--accent);font-weight:800}
+.toast-spacer{flex:1}
+.toast-pill{
+  display:inline-block;max-width:60vw;
+  padding:6px 10px;border-radius:999px;
+  background:var(--accent-light);color:var(--azul);
+  border:1px solid #bfdbfe;
+  font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+
+/* Contenido */
+.toast-container{max-width:900px;margin:16px auto 48px;padding:0 16px}
+.toast-card{background:#fff;border:1px solid var(--borde);border-radius:16px;padding:18px;box-shadow:0 2px 10px rgba(15,23,42,.06);margin-top:12px}
+.toast-title{font-size:1.2rem;font-weight:800;color:var(--azul);margin:0 0 10px 0;border-bottom:2px solid var(--accent-light);padding-bottom:5px}
+
+/* Formulario */
+label{font-size:14px;font-weight:700;display:block;margin:12px 0 6px;color:var(--azul)}
+select{
+  width:100%;border:1px solid var(--borde);border-radius:10px;
+  padding:12px;font-size:15px;background:#fff;outline:none;
+}
+select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(37,99,235,.2);}
+.note{font-size:0.85rem;color:var(--gris);margin-top:5px}
+
+/* Resultado */
+.toast-result{display:none}
+.toast-result.show{display:block}
+.toast-score-box{
+  border:1px solid var(--toast-orange);
+  background:#fff8e1;
+  border-radius:16px;
+  padding:18px;margin-top:15px;
+}
+.toast-score-box h3{
+  margin:0 0 10px 0;font-size:1.1rem;color:var(--toast-orange);
+  border-bottom:1px dashed #ffd54f;padding-bottom:5px;
+}
+.toast-conclusion{font-size:1.15rem;font-weight:700;color:var(--azul);line-height:1.4;margin-bottom:5px}
+.toast-criterios{font-size:0.95rem;color:var(--ink);white-space:pre-wrap}
+.toast-note{margin-top:10px;font-size:0.9rem;color:#92400e;background:#fff7ed;border-left:4px solid #f57c00;padding:8px 10px;border-radius:8px}
+.err{display:none;background:#fef2f2;color:var(--error);border:1px solid #fecaca;border-radius:12px;padding:10px 12px;margin-top:10px}
+
+/* Botones */
+.toast-actions{margin-top:20px;display:flex;gap:10px;}
+.toast-actions button{flex:1;}
+.btn-clear{
+  border:1px solid var(--azul);border-radius:10px;padding:12px 16px;font-size:15px;
+  background:var(--bg);color:var(--azul);font-weight:700;cursor:pointer;transition:background-color 0.2s;
+}
+.btn-copy-summary{
+  background:var(--accent);color:#fff;border-color:var(--accent);font-weight:700;
+}
+.btn-copy-summary:hover{background:#1e69b8;}
+.btn-clear:hover{background:#eef6ff;}
+
+body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:Verdana, Geneva, Tahoma, sans-serif;overflow-x:hidden}
+</style>
+</head>
+<body>
+
+<div class="toast-wrapper">
+<header class="toast-appbar">
+  <div class="toast-appbar-inner">
+    <h1>Clasificación TOAST</h1>
+    <div class="toast-spacer"></div>
+    <output id="pill" class="toast-pill">TOAST: —</output>
+  </div>
+</header>
+
+<div class="toast-container">
+  <div class="toast-card">
+    <h2 class="toast-title">Etiología del Ictus Isquémico</h2>
+    <form id="toastForm" autocomplete="off">
+      <p class="note">Selecciona las condiciones diagnósticas más probables según estudios clínicos e imagenológicos.</p>
+
+      <label for="lvo">1. Lesión Arterial Aterosclerótica (LAA)</label>
+      <select id="lvo">
+        <option value="">Selecciona...</option>
+        <option value="none">Sin estenosis significativa ni placa de riesgo ipsilateral</option>
+        <option value="probable">Placa aterosclerótica ulcerada o irregular (&lt;50%)</option>
+        <option value="definite">Estenosis ≥50% de gran arteria intracraneal o extracraneal (de origen aterosclerótico)</option>
+      </select>
+      <p class="note">Incluye arteria carótida, cerebral media (M1), vertebral o basilar.</p>
+
+      <label for="cardiac">2. Fuente Cardioembólica</label>
+      <select id="cardiac">
+        <option value="">Selecciona...</option>
+        <option value="none">No se identificó fuente cardiaca</option>
+        <option value="definite">Fuente de alto riesgo (FA, trombo mural, prótesis mecánica, EM severa)</option>
+        <option value="minor">Fuente de riesgo menor/moderado (FOP, aneurisma septal, etc.)</option>
+      </select>
+
+      <label for="lacunar">3. Hallazgos Lacunares</label>
+      <select id="lacunar">
+        <option value="">Selecciona...</option>
+        <option value="none">No hay infarto lacunar</option>
+        <option value="definite">Infarto lacunar típico (&lt;1.5 cm en territorio perforante)</option>
+      </select>
+
+      <label for="other">4. Otras Etiologías Definidas</label>
+      <select id="other">
+        <option value="">Selecciona...</option>
+        <option value="none">No hay otra causa definida</option>
+        <option value="definite">Sí, otra causa definida (disección arterial, vasculitis, trombofilia, vasoespasmo, etc.)</option>
+      </select>
+
+      <div id="err" class="err"></div>
+    </form>
+  </div>
+
+  <div id="resultCard" class="toast-card toast-result">
+    <div class="toast-score-box">
+      <h3>Clasificación TOAST Final</h3>
+      <div id="toastConclusion" class="toast-conclusion">Clasificación pendiente.</div>
+      <div id="toastCriterios" class="toast-criterios">Seleccione las opciones para ver la clasificación.</div>
+      <div id="toastNote" class="toast-note" style="display:none"></div>
+    </div>
+    <div class="toast-actions">
+      <button id="btnCopy" type="button" class="btn-copy-summary" disabled>Copiar Resumen</button>
+      <button id="btnBorrar" type="button" class="btn-clear">Borrar Formulario</button>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+const resultCard=document.getElementById('resultCard');
+const errBox=document.getElementById('err');
+const conclusionDiv=document.getElementById('toastConclusion');
+const criteriosDiv=document.getElementById('toastCriterios');
+const noteDiv=document.getElementById('toastNote');
+const pill=document.getElementById('pill');
+const btnCopy=document.getElementById('btnCopy');
+
+function updatePill(classification){
+  let abbr='—';
+  if(classification.includes("Aterosclerosis")) abbr='LAA';
+  else if(classification.includes("Cardioembolismo")) abbr='CE';
+  else if(classification.includes("Pequeño Vaso")) abbr='SVO';
+  else if(classification.includes("Otra Etiología")) abbr='ODE';
+  else if(classification.includes("Indeterminada")) abbr='UE';
+  pill.textContent='TOAST: '+abbr;
+}
+
+function clasificarTOAST(){
+  errBox.style.display='none'; noteDiv.style.display='none';
+  const lvo=document.getElementById('lvo').value;
+  const cardiac=document.getElementById('cardiac').value;
+  const lacunar=document.getElementById('lacunar').value;
+  const other=document.getElementById('other').value;
+
+  if([lvo,cardiac,lacunar,other].includes('')){
+    errBox.textContent='Seleccione una opción para cada criterio.';
+    errBox.style.display='block';
+    resultCard.classList.remove('show');
+    conclusionDiv.textContent='Clasificación pendiente.';
+    criteriosDiv.textContent='Complete todos los campos.';
+    updatePill('—'); btnCopy.disabled=true; return;
+  }
+
+  let conclusion="", criterios=[], isDefinitive=false;
+
+  // 1️⃣ Otra Etiología Definida
+  if(other==='definite'){
+    conclusion="Ictus de Otra Etiología Determinada (ODE)";
+    criterios.push("Causa específica identificada (disección, vasculitis, trombofilia, vasoespasmo, etc.).");
+    noteDiv.innerHTML="Aunque puedan coexistir factores ateroscleróticos o cardiacos menores, la presencia de una causa específica determina la clasificación como <b>ODE</b>.";
+    noteDiv.style.display='block';
+    isDefinitive=true;
+  }
+  // 2️⃣ Aterosclerosis de Gran Arteria (LAA)
+  else if(lvo==='definite' && cardiac!=='definite'){
+    conclusion="Aterosclerosis de Gran Arteria (LAA)";
+    criterios.push("Estenosis ≥50% o placa aterosclerótica compleja ulcerada en arteria relevante, sin fuente cardioembólica de alto riesgo.");
+    isDefinitive=true;
+  }
+  // 3️⃣ Cardioembolismo (CE)
+  else if(cardiac==='definite' && lvo!=='definite'){
+    conclusion="Cardioembolismo (CE)";
+    criterios.push("Fuente cardíaca de alto riesgo (FA, trombo mural, prótesis mecánica, EM severa) sin estenosis aterosclerótica significativa.");
+    isDefinitive=true;
+  }
+  // 4️⃣ Pequeño Vaso (SVO)
+  else if(lacunar==='definite' && (lvo==='none' || lvo==='probable') && (cardiac==='none' || cardiac==='minor')){
+    conclusion="Oclusión de Pequeño Vaso (SVO)";
+    criterios.push("Infarto lacunar típico (<1.5 cm) con ausencia de causas mayores (LAA ≥50%, CE alto riesgo).");
+    if(lvo==='probable' || cardiac==='minor'){
+      noteDiv.innerHTML="Se identifica una causa menor coexistente (p. ej., FOP o placa <50%), pero se mantiene la clasificación como <b>lacunar (SVO)</b> por la compatibilidad clínico-radiológica. Confirmar patrón lacunar.";
+      noteDiv.style.display='block';
+    }
+    isDefinitive=true;
+  }
+  // 5️⃣ Indeterminada
+  else{
+    let numCausas=0;
+    if(['definite','probable'].includes(lvo)) numCausas++;
+    if(['definite','minor'].includes(cardiac)) numCausas++;
+    if(numCausas===0){
+      conclusion="Ictus de Etiología Indeterminada (UE) - Criptogénico Puro";
+      criterios.push("No se identificó ninguna causa mayor (LAA, CE, SVO u ODE).");
+    } else if(numCausas>=2){
+      conclusion="Ictus de Etiología Indeterminada (UE) - Dos o más causas posibles";
+      if(lvo!=='none') criterios.push("LAA: probable/definida.");
+      if(cardiac!=='none') criterios.push("CE: menor o definida.");
+    } else {
+      conclusion="Ictus de Etiología Indeterminada (UE) - Criptogénico / ESUS";
+      criterios.push("Ninguna causa mayor clara. Posible mecanismo embólico (ESUS).");
+    }
+  }
+
+  conclusionDiv.textContent=conclusion;
+  criteriosDiv.innerHTML="— "+criterios.join("<br>— ");
+  resultCard.classList.add('show');
+  updatePill(conclusion);
+  btnCopy.disabled=false;
+}
+
+function copiarResumen(){
+  const classification=conclusionDiv.textContent;
+  const criteria=criteriosDiv.innerText;
+  let note=(noteDiv.style.display==='block')?("\nNota: "+noteDiv.innerText):"";
+  const summary="Clasificación TOAST (Ictus Isquémico)\n=====================================\n"+
+    "Clasificación final: "+classification+"\n\nCriterios aplicados:\n"+criteria+note;
+  navigator.clipboard.writeText(summary);
+  btnCopy.textContent='Copiado ✓'; setTimeout(()=>btnCopy.textContent='Copiar Resumen',1200);
+}
+
+function borrarFormulario(){
+  document.getElementById('toastForm').reset();
+  resultCard.classList.remove('show');
+  conclusionDiv.textContent="Clasificación pendiente.";
+  criteriosDiv.textContent="Seleccione las opciones para ver la clasificación.";
+  noteDiv.style.display='none'; errBox.style.display='none';
+  updatePill('—'); btnCopy.disabled=true;
+}
+
+document.querySelectorAll('#toastForm select').forEach(sel=>sel.addEventListener('change',clasificarTOAST));
+btnCopy.addEventListener('click',copiarResumen);
+document.getElementById('btnBorrar').addEventListener('click',borrarFormulario);
+</script>
+
+<footer style="
+    position:relative;
+    left:50%;
+    transform:translateX(-50%);
+    width:100vw;
+    margin:2rem 0 0 0;
+    padding:1.5rem 0;
+    border-top:1px solid #e5e7eb;
+    background:#ffffff;
+    text-align:center;
+    box-shadow:0 -2px 6px rgba(0,0,0,0.04);
+">
+      <img src="uibanner.png"
+         alt="Unidad de Ictus Málaga" style="max-width:380px;height:auto;opacity:.96;">
+  </a>
+
+</footer>
+
+</body>
+</html>

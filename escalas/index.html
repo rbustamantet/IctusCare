@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Escalas clínicas · Unidad de Ictus</title>
+<meta name="color-scheme" content="light dark">
+<style>
+  :root{
+    --navy:#0b1e3a;
+    --ink:#e6ecf5;
+    --muted:#b6c3d6;
+    --card:#0f274d;
+    --card-hover:#11305f;
+    --accent:#7fb3ff;
+    --ring:#3a69b8;
+    --shadow:0 8px 18px rgba(0,0,0,.35);
+    --radius:18px;
+  }
+:root{
+  --bg:#f9fafc;
+  --ink:#e6ecf5;
+  --accent:#7fb3ff;
+  --accent-light:#d7e3f8;
+  --accent-dark:#0f3d83;
+  --border:#e5e9f2;
+  --ring:#93c5fd;
+}
+
+
+  *{box-sizing:border-box}
+  html,body{margin:0; height:100%}
+  body{
+    font-family: Verdana, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", sans-serif;
+    background: white;
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+  }
+
+  .wrap{max-width:1080px; margin:0 auto; padding:24px}
+
+ header{
+  background:#0b1e3a;
+  color:#fff;
+  text-align:center;
+  padding:1rem;
+  font-weight:800;
+  font-size:1.2rem;
+  box-shadow:0 2px 6px rgba(0,0,0,0.08);
+  position:sticky;top:0;z-index:10;
+}
+header{
+  background:var(--accent-dark);
+  color:#fff;
+  text-align:center;
+  padding:1rem;
+  font-weight:800;
+  font-size:1.2rem;
+  box-shadow:0 2px 6px rgba(0,0,0,0.08);
+  position:sticky;top:0;z-index:10;
+}
+
+  .bar{display:flex; align-items:center; gap:12px; padding:4px 18px}
+ 
+  .title{font-weight:700; letter-spacing:.2px; font-size:26px;}
+  .subtitle{font-size:.9rem; color:var(--muted)}
+  .headcol{display:flex; flex-direction:column}
+
+  .grid{
+    display:grid;
+    grid-template-columns: repeat(1, minmax(0,1fr));
+    gap:16px;
+    margin-top:22px;
+  }
+  @media (min-width:520px){ .grid{ grid-template-columns: repeat(2, minmax(0,1fr)); } }
+  @media (min-width:900px){ .grid{ grid-template-columns: repeat(3, minmax(0,1fr)); } }
+
+  a.card{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px 20px; border-radius: var(--radius);
+    background: linear-gradient(180deg, var(--card), rgba(15,39,77,.96));
+    color: var(--ink); text-decoration:none;
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(255,255,255,.06);
+    transition: transform .12s ease, background .2s ease, border-color .2s ease, box-shadow .2s ease;
+  }
+  a.card:hover{ background: var(--card-hover); transform: translateY(-2px); border-color: rgba(127,179,255,.25); }
+  a.card:focus-visible{ box-shadow: 0 0 0 3px var(--ring), var(--shadow); }
+  .card span.title{
+    font-size:1rem; font-weight:700;
+  }
+  .arrow{
+    font-size:1.4rem; color:var(--accent);
+    opacity:.8; transition:transform .2s ease;
+  }
+  a.card:hover .arrow{ transform: translateX(3px); }
+  
+  .actions{margin-left:auto}
+  .btn{
+    display:inline-flex; align-items:center; gap:10px;
+    padding:10px 14px; border-radius:12px; text-decoration:none;
+    border:1px solid rgba(255,255,255,.14);
+    background: rgba(255,255,255,.06); color:var(--ink);
+  }
+  .btn:hover{ border-color: rgba(127,179,255,.35); background: rgba(255,255,255,.10); }
+</style>
+<style>
+:root{
+  --bg:#f9fafc;
+  --accent-light:#d7e3f8;
+  --accent-dark:#0f3d83;
+  --border:#e5e9f2;
+  --alert:#b30000;
+  --alert-bg:#fef3f2;
+  --alert-border:#f5c2c0;
+}
+
+
+  .wrap{max-width:850px; margin:0 auto; padding:24px}
+
+html,body{
+  margin:0; padding:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:Verdana, Geneva, Tahoma, sans-serif;
+  line-height:1.6;
+  -webkit-text-size-adjust:100%;
+}
+
+header{
+  background:var(--accent-dark);
+  color:#fff;
+  text-align:LEFT;
+  padding:1rem;
+  font-weight:800;
+  font-size:1.2rem;
+  box-shadow:0 2px 6px rgba(0,0,0,0.08);
+  position:sticky;top:0;z-index:10;
+}
+
+
+main{
+  max-width:850px;
+  margin:0 auto;
+  padding:1rem 1.25rem 2.5rem;
+  background:#fff;
+  border-radius:12px;
+  box-shadow:0 2px 10px rgba(0,0,0,0.04);
+}
+
+p{margin:0.75rem 0;text-align:justify;}
+a{color:var(--accent-dark);text-decoration:none;}
+a:hover{text-decoration:underline;color:var(--accent);}
+strong,b{color:var(--accent-dark);}
+h3{color:var(--accent-dark);margin-top:1.2rem;font-size:1.05rem;}
+ul{margin:0.6rem 0 0.6rem 1.2rem;}
+li{margin:0.3rem 0;}
+hr{border:none;border-top:1px solid var(--border);margin:1.4rem 0;}
+.highlight-red{color:var(--alert);font-weight:700;}
+
+.related{
+  margin-top:1.6rem;
+  background:var(--accent-light);
+  padding:1rem;
+  border-radius:8px;
+}
+.related h3{margin:0 0 .5rem 0;color:var(--accent-dark);font-size:1rem;}
+.related ol{margin:0;padding-left:1.2rem;}
+.related li{margin:0.25rem 0;}
+
+.alert{
+  text-align:center;
+  background:var(--alert-bg);
+  border:1px solid var(--alert-border);
+  border-radius:6px;
+  padding:0.8rem;
+  color:#800000;
+  font-weight:700;
+  margin-top:1rem;
+}
+.bar{display:flex; align-items:center; gap:12px; padding:1px 18px}
+ 
+  .title{font-weight:700; letter-spacing:.2px; font-size:1.2rem;}
+  .subtitle{font-size:.9rem; color:var(--muted)}
+  .headcol{display:flex; flex-direction:column}
+
+  .grid{
+    display:grid;
+    grid-template-columns: repeat(1, minmax(0,1fr));
+    gap:16px;
+    margin-top:22px;
+  }
+  @media (min-width:520px){ .grid{ grid-template-columns: repeat(2, minmax(0,1fr)); } }
+  @media (min-width:900px){ .grid{ grid-template-columns: repeat(3, minmax(0,1fr)); } }
+
+   
+  .actions{margin-left:auto}
+  .btn{
+    display:inline-flex; align-items:center; gap:2px;
+    padding:4px 8px; border-radius:12px; text-decoration:none;
+    border:1px solid rgba(255,255,255,.14);
+    background: rgba(255,255,255,.06); color:white;
+  }
+  .btn:hover{ border-color: rgba(127,179,255,.35); background: #1c60c3; color:white;}
+.back-btn{
+  display:inline-block;
+  margin-top:1.5rem;
+  background:var(--accent-dark);
+  color:#fff;
+  text-decoration:none;
+  font-weight:700;
+  padding:0.6rem 1.2rem;
+  border-radius:8px;
+  transition:background .2s, transform .1s;
+  text-align:center;
+}
+.back-btn:hover{
+  background:#1c60c3;
+  color:#fff;
+  transform:translateY(-1px);
+}
+
+@media(max-width:768px){
+  header{font-size:1.05rem;}
+  main{padding:0.9rem 1rem;}
+  body{font-size:0.96rem;}
+}
+</style>
+</head>
+<body>
+  <header>
+    <div class="bar wrap">
+      
+      <div class="headcol">
+        <div class="title">ESCALAS</div>
+        </div>
+      <div class="actions">
+        <a class="btn" href="../index.html">Inicio</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="grid" role="list">
+
+      <a class="card" href="Rankin.html" role="listitem"><span class="title">Rankin</span><span aria-hidden="true" class="arrow">›</span></a>
+      <a class="card" href="Barthel.html" role="listitem"><span class="title">Barthel</span><span aria-hidden="true" class="arrow">›</span></a>
+      <a class="card" href="ASPECTS.html" role="listitem"><span class="title">ASPECTS</span><span aria-hidden="true" class="arrow">›</span></a>
+      <a class="card" href="NIHSS.html" role="listitem"><span class="title">NIHSS</span><span aria-hidden="true" class="arrow">›</span></a>
+      <a class="card" href="ABCD2.html" role="listitem"><span class="title">ABCD<sup>2</sup></span><span aria-hidden="true" class="arrow">›</span></a>
+      <a class="card" href="Canadiense.html" role="listitem"><span class="title">Canadiense</span><span aria-hidden="true" class="arrow">›</span></a>
+      <a class="card" href="Glasgow.html" role="listitem"><span class="title">Glasgow</span><span aria-hidden="true" class="arrow">›</span></a>
+      <a class="card" href="ICH.html" role="listitem"><span class="title">ICH Score</span><span aria-hidden="true" class="arrow">›</span></a>
+      <a class="card" href="HuntyHess.html" role="listitem"><span class="title">Hunt y Hess</span><span aria-hidden="true" class="arrow">›</span></a>
+      <a class="card" href="Fisher.html" role="listitem"><span class="title">Fisher</span><span aria-hidden="true" class="arrow">›</span></a>
+      <a class="card" href="CHA2DS2VA.html" role="listitem"><span class="title">CHA<sub>2</sub>DS<sub>2</sub>-VA</span><span aria-hidden="true" class="arrow">›</span></a>
+      <a class="card" href="HAS-BLED.html" role="listitem"><span class="title">HAS-BLED</span><span aria-hidden="true" class="arrow">›</span></a>
+      <a class="card" href="RoPE.html" role="listitem"><span class="title">RoPE</span><span aria-hidden="true" class="arrow">›</span></a>
+      <a class="card" href="TOAST.html" role="listitem"><span class="title">TOAST</span><span aria-hidden="true" class="arrow">›</span></a>
+
+    </div>
+      </main>
+<footer style="
+    position:relative;
+    left:50%;
+    transform:translateX(-50%);
+    width:100vw;
+    margin:2rem 0 0 0;
+    padding:1.5rem 0;
+    border-top:1px solid #e5e7eb;
+    background:#ffffff;
+    text-align:center;
+    box-shadow:0 -2px 6px rgba(0,0,0,0.04);
+">
+      <img src="uibanner.png"
+         alt="Unidad de Ictus Málaga" style="max-width:380px;height:auto;opacity:.96;">
+  </a>
+
+</footer>
+</body>
+</html>

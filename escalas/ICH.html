@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="icon" type="image/png" href="https://rbustamantet.github.io/ictus.cardiopatia/favicon-96x96.png" sizes="96x96" />
+<link rel="icon" type="image/svg+xml" href="https://rbustamantet.github.io/ictus.cardiopatia/favicon.svg" />
+<link rel="shortcut icon" href="https://rbustamantet.github.io/ictus.cardiopatia/favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="https://rbustamantet.github.io/ictus.cardiopatia/apple-touch-icon.png" />
+<link rel="manifest" href="https://rbustamantet.github.io/ictus.cardiopatia/site.webmanifest" />
+<title>ICH Score — Hemorragia Intracerebral</title>
+<style>
+  :root{
+    --bg:#f8fafc; --ink:#0f172a;
+    --azul:#0b2c5f; --gris:#6b7280; --borde:#e5e7eb;
+    --ok:#0a7f3f; --error:#b91c1c;
+    --accent:#2563eb; --accent-light:#dbeafe;
+  }
+  html, body{font-family: Verdana, Geneva, Tahoma, sans-serif; background:var(--bg); color:var(--ink); margin:0; padding:0}
+
+  /* === Cabecera pegajosa === */
+  .appbar{
+    position:sticky; top:0; z-index:1000;
+    background:rgba(255,255,255,0.9);
+    border-bottom:1px solid var(--accent-light);
+    backdrop-filter:saturate(140%) blur(8px);
+    -webkit-backdrop-filter:saturate(140%) blur(8px);
+    transition:box-shadow .15s, border-color .15s, background .15s;
+  }
+  .appbar.scrolled{box-shadow:0 8px 24px rgba(0,0,0,.08); border-color:#e2e8f0}
+  .appbar-inner{max-width:980px; margin:0 auto; display:flex; align-items:center; gap:12px; padding:10px 16px}
+  .appbar h1{margin:0; font-size:22px; line-height:1.2; color:var(--accent); font-weight:800}
+  .spacer{flex:1}
+
+  /* Píldora (neutro + estados de riesgo) */
+  .pill{
+    display:inline-block; max-width:60vw;
+    padding:6px 10px; border-radius:999px;
+    background:var(--accent-light); color:#1e3a8a; border:1px solid #bfdbfe;
+    font-size:12px; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    transition:background-color .15s, color .15s, border-color .15s;
+  }
+  @media (min-width:640px){ .pill{ max-width:420px } }
+
+  .pill.low{      background:#dcfce7; color:#065f46; border-color:#bbf7d0; }   /* verde claro */
+  .pill.mod{      background:#fef9c3; color:#854d0e; border-color:#fde68a; }   /* ámbar */
+  .pill.high{     background:#ffe4e6; color:#9f1239; border-color:#fecdd3; }   /* rosa/rojo claro */
+  .pill.extreme{  background:#fecaca; color:#7f1d1d; border-color:#fca5a5; }   /* rojo */
+
+  /* === Contenido === */
+  .container{max-width:880px; margin:16px auto 48px; padding:0 16px}
+  .sub{margin:0 0 20px 0; color:var(--gris); font-size:12px}
+
+  .card{background:#fff; border:1px solid var(--borde); border-radius:16px; padding:18px; box-shadow:0 2px 10px rgba(15,23,42,.06)}
+  .grid{display:grid; grid-template-columns:1fr; gap:16px}
+  @media (min-width:720px){ .grid{ grid-template-columns:1.1fr .9fr } }
+  label{font-size:14px; font-weight:700; display:block; margin:18px 0 8px; color:var(--azul)}
+  select{
+    width:100%; border:1px solid var(--borde); border-radius:10px;
+    padding:12px; font-size:16px; background:#fff; outline:none;
+  }
+  select:focus{border-color:var(--azul); box-shadow:0 0 0 3px rgba(11,44,95,.12)}
+
+  .row-actions{display:flex; gap:10px; flex-wrap:wrap}
+  .ghost{background:#fff; color:var(--azul); border:1px solid var(--borde); box-shadow:none; border-radius:12px; padding:12px 16px; font-weight:700; cursor:pointer}
+
+  .muted{color:var(--gris); font-size:12px; margin-top:8px}
+
+  .result{display:none}
+  .result.show{display:block}
+
+  .kpi{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:4px}
+  .kpi .box{border:1px dashed var(--borde); border-radius:12px; padding:12px; text-align:center}
+  .kpi .ttl{font-size:12px; color:var(--gris)}
+  .kpi .val{font-size:26px; font-weight:700; color:var(--azul)}
+
+  /* No cortar palabras en cuadros */
+  .no-break,
+  .kpi .val,
+  .kpi .val span{
+    word-break: normal !important;
+    overflow-wrap: normal !important;
+    hyphens: none !important;
+    -webkit-hyphens: none !important;
+    -ms-hyphens: none !important;
+  }
+
+  .error{border-radius:12px; padding:12px 14px; margin-top:10px; background:#fef2f2; color:var(--error); border:1px solid #fecaca; display:none}
+  .ref{margin-top:12px; font-size:11px; color:var(--gris)}
+.kpi .box.low    { background:#ecfdf5; border-color:#bbf7d0; }
+.kpi .box.mod    { background:#fefce8; border-color:#fde68a; }
+.kpi .box.high   { background:#fff1f2; border-color:#fecaca; }
+.kpi .box.extreme{ background:#fee2e2; border-color:#fecaca; }
+</style>
+</head>
+<body>
+
+<!-- Cabecera -->
+<header class="appbar" role="region" aria-label="Cabecera ICH">
+  <div class="appbar-inner">
+    <h1>ICH Score</h1>
+    <div class="spacer"></div>
+    <output id="pill" class="pill" aria-live="polite" aria-atomic="true">ICH: —</output>
+  </div>
+</header>
+
+<div class="container">
+  <p class="sub">Calculadora hospitalaria (orientativa). La decisión clínica final es del facultativo.</p>
+
+  <div class="grid">
+    <div class="card">
+      <form id="calcForm" autocomplete="off">
+        <label for="gcs">Escala de Glasgow</label>
+        <select id="gcs">
+          <option value="-1">Seleccione una opción</option>
+          <option value="2">3–4 puntos (2)</option>
+          <option value="1">5–12 puntos (1)</option>
+          <option value="0">13–15 puntos (0)</option>
+        </select>
+
+        <label for="vol">Volumen del hematoma (ml)</label>
+        <select id="vol">
+          <option value="-1">Seleccione una opción</option>
+          <option value="1">≥ 30 ml (1)</option>
+          <option value="0">&lt; 30 ml (0)</option>
+        </select>
+
+        <label for="ivh">Extensión intraventricular</label>
+        <select id="ivh">
+          <option value="-1">Seleccione una opción</option>
+          <option value="1">Sí (1)</option>
+          <option value="0">No (0)</option>
+        </select>
+
+        <label for="infra">Origen infratentorial</label>
+        <select id="infra">
+          <option value="-1">Seleccione una opción</option>
+          <option value="1">Sí (1)</option>
+          <option value="0">No (0)</option>
+        </select>
+
+        <label for="edad">Edad</label>
+        <select id="edad">
+          <option value="-1">Seleccione una opción</option>
+          <option value="1">≥ 80 años (1)</option>
+          <option value="0">&lt; 80 años (0)</option>
+        </select>
+
+        <div class="row-actions">
+          <button type="button" class="ghost" id="btnReset">Borrar</button>
+        </div>
+
+        <p class="muted">Puntuación total: 0–6. Componentes: GCS, volumen ≥30 ml, extensión IVH, localización infratentorial, edad ≥80.</p>
+        <div id="errBox" class="error"></div>
+      </form>
+    </div>
+
+    <div id="resultCard" class="card result">
+      <div class="kpi">
+        <div class="box">
+          <div class="ttl">Puntuación ICH</div>
+          <div class="val"><span id="scoreVal">—</span></div>
+        </div>
+        <div class="box">
+          <div class="ttl">Mortalidad a 30 días</div>
+          <div class="val"><span id="mortVal">—</span></div>
+        </div>
+      </div>
+
+      <div class="ref">
+        Referencia: Hemphill JC et al. <em>Stroke</em> 2001;32:891–897.
+        (Mortalidad reportada: 0→0%, 1→13%, 2→26%, 3→72%, 4→97%, 5→100%, 6→100%.)
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Cabecera pegajosa
+  var appbar = document.querySelector('.appbar');
+  function onScroll(){ if(!appbar) return; (window.scrollY>8)?appbar.classList.add('scrolled'):appbar.classList.remove('scrolled'); }
+  document.addEventListener('scroll', onScroll, {passive:true}); onScroll();
+
+  var SEP = ' \u2014 ';
+
+  // Mapa de mortalidad (incluye 6 → 100%)
+  var mortMap = {0:'0%', 1:'13%', 2:'26%', 3:'72%', 4:'97%', 5:'100%', 6:'100%'};
+
+  function riskClassForPct(p){
+    if (p <= 25) return 'low';
+    if (p <= 50) return 'mod';
+    if (p <= 80) return 'high';
+    return 'extreme';
+  }
+  function riskLabelForPct(p){
+    if (p <= 25) return 'bajo';
+    if (p <= 50) return 'moderado';
+    if (p <= 80) return 'alto';
+    return 'extremo';
+  }
+
+  // Actualiza la píldora
+  function updateHeaderPill(score){
+    var pill = document.getElementById('pill');
+    if(!pill) return;
+
+    // Reset a estado neutro
+    pill.className = 'pill';
+
+    if(typeof score !== 'number'){
+      pill.textContent = 'ICH: ' + '\u2014';
+      return;
+    }
+
+    var m = Object.prototype.hasOwnProperty.call(mortMap, score) ? mortMap[score] : '—';
+    var pct = parseInt(String(m).replace('%',''), 10);
+    if (isFinite(pct)){
+      var cls = riskClassForPct(pct);
+      var lbl = riskLabelForPct(pct);
+      pill.classList.add(cls);
+      pill.textContent = 'ICH: ' + score + SEP + '30 d: ' + m + ' (' + lbl + ')';
+    } else {
+      pill.textContent = 'ICH: ' + score + SEP + '30 d: ' + m;
+    }
+  }
+
+  function resetForm(){
+    document.getElementById('calcForm').reset();
+    document.getElementById('errBox').style.display = 'none';
+    document.getElementById('resultCard').classList.remove('show');
+    document.getElementById('scoreVal').textContent = '—';
+    document.getElementById('mortVal').textContent  = '—';
+    updateHeaderPill(); // —
+  }
+
+  function leer(id){
+    var v = parseInt(document.getElementById(id).value, 10);
+    return isNaN(v) ? -1 : v;
+  }
+
+  function calcular(){
+    var gcs   = leer('gcs');
+    var vol   = leer('vol');
+    var ivh   = leer('ivh');
+    var infra = leer('infra');
+    var edad  = leer('edad');
+
+    var errBox = document.getElementById('errBox');
+    var resultCard = document.getElementById('resultCard');
+
+    // Validación: si falta algo, ocultar resultado y no mostrar error
+    if(gcs<0 || vol<0 || ivh<0 || infra<0 || edad<0){
+      errBox.style.display = 'none';
+      resultCard.classList.remove('show');
+      updateHeaderPill(); // —
+      return;
+    }
+
+    errBox.style.display = 'none';
+
+    var score = gcs + vol + ivh + infra + edad;
+    var mortalidad = Object.prototype.hasOwnProperty.call(mortMap, score) ? mortMap[score] : '—';
+
+    document.getElementById('scoreVal').textContent = String(score);
+    document.getElementById('mortVal').textContent  = mortalidad;
+// === NUEVO: colorear los cuadros KPI según el riesgo ===
+var pct = parseInt(String(mortalidad).replace('%',''), 10);
+if (isFinite(pct)) {
+  var cls = riskClassForPct(pct);
+  var boxes = document.querySelectorAll('.kpi .box');
+  boxes.forEach(b => b.className = 'box ' + cls);
+}
+
+    resultCard.classList.add('show');
+
+    // Actualiza cabecera
+    updateHeaderPill(score);
+  }
+
+  function attach(){
+    var selects = document.querySelectorAll('select');
+    for(var i=0;i<selects.length;i++){
+      selects[i].addEventListener('change', calcular);
+      selects[i].addEventListener('input', calcular);
+    }
+    document.getElementById('btnReset').addEventListener('click', resetForm);
+  }
+
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded', function(){ attach(); updateHeaderPill(); });
+  }else{
+    attach(); updateHeaderPill();
+  }
+</script>
+<footer style="
+    position:relative;
+    left:50%;
+    transform:translateX(-50%);
+    width:100vw;
+    margin:2rem 0 0 0;
+    padding:1.5rem 0;
+    border-top:1px solid #e5e7eb;
+    background:#ffffff;
+    text-align:center;
+    box-shadow:0 -2px 6px rgba(0,0,0,0.04);
+">
+      <img src="uibanner.png"
+         alt="Unidad de Ictus Málaga" style="max-width:380px;height:auto;opacity:.96;">
+  </a>
+
+</footer>
+
+</body>
+</html>

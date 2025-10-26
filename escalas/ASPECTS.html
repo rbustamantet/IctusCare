@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="icon" type="image/png" href="https://rbustamantet.github.io/ictus.cardiopatia/favicon-96x96.png" sizes="96x96" />
+<link rel="icon" type="image/svg+xml" href="https://rbustamantet.github.io/ictus.cardiopatia/favicon.svg" />
+<link rel="shortcut icon" href="https://rbustamantet.github.io/ictus.cardiopatia/favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="https://rbustamantet.github.io/ictus.cardiopatia/apple-touch-icon.png" />
+<link rel="manifest" href="https://rbustamantet.github.io/ictus.cardiopatia/site.webmanifest" />
+<title>ASPECTS – TC temprano ACM</title>
+<style>
+  :root{
+    --bg:#f0f6fc; --card:#ffffff; --ink:#0f172a; --muted:#64748b;
+    --accent:#2563eb; --accent-light:#dbeafe;
+    --ok:#166534; --ok-bg:#e9fce7; --ok-bd:#bbf7d0;
+    --mid:#92400e; --mid-bg:#fff7ed; --mid-bd:#fed7aa;
+    --bad:#991b1b; --bad-bg:#fef2f2; --bad-bd:#fecaca;
+    --chip-bg:#eef6ff; --chip-ink:#1e3a8a;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:Verdana, Geneva, sans-serif}
+
+  .appbar{position:sticky; top:0; z-index:10; background:rgba(255,255,255,.92); border-bottom:1px solid var(--accent-light); backdrop-filter:saturate(140%) blur(8px)}
+  .appbar-inner{max-width:980px;margin:0 auto;padding:10px 14px;display:flex;gap:10px;align-items:center}
+  .appbar h1{margin:0;font-size:22px;font-weight:800;color:var(--accent)}
+  .spacer{flex:1}
+  .pill-top{display:inline-block;padding:6px 12px;border-radius:999px;background:#eaf2ff;border:1px solid #c7dbff;color:#1e3a8a;font-weight:800;white-space:nowrap}
+
+  .wrap{max-width:980px;margin:16px auto 40px;padding:0 14px}
+  .panel{background:#fff;border:1px solid var(--accent-light);border-radius:16px;box-shadow:0 4px 16px rgba(0,0,0,.06);padding:16px}
+  h2{margin:0 0 8px;color:#0b1f44}
+
+  .note{color:var(--muted);font-size:12px;margin:8px 0 12px}
+  .imgbox{background:#eef6ff;border:1px solid var(--accent-light);border-radius:14px;padding:10px;margin:10px 0 16px}
+  .imgbox img{width:100%;height:auto;display:block;border-radius:10px;border:1px solid #dbeafe}
+  .imgbox figcaption{margin-top:8px;font-size:12px;color:#233a66}
+
+  .grid{display:grid;gap:10px;grid-template-columns:repeat(2,1fr)}
+  label.chk{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:10px}
+  input[type="checkbox"]{transform:scale(1.15)}
+
+  .chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+  .chip{font-size:12px;border:1px solid var(--accent-light);background:var(--chip-bg);color:var(--chip-ink);border-radius:999px;padding:6px 10px;font-weight:700}
+
+  .kpi{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .box{border:1.5px dashed #c7dbff;border-radius:14px;padding:14px;background:#f8fbff;text-align:center}
+  .box h4{margin:0 0 4px;font-size:14px;color:#334155}
+  .big{font-size:26px;font-weight:900;color:#0b2c5f}
+
+  .tone-green{background:var(--ok-bg); border-color:var(--ok-bd); color:var(--ok)}
+  .tone-amber{background:var(--mid-bg); border-color:var(--mid-bd); color:var(--mid)}
+  .tone-red{background:var(--bad-bg); border-color:var(--bad-bd); color:var(--bad)}
+  .tone-green .big, .tone-amber .big, .tone-red .big{color:inherit}
+</style>
+</head>
+<body>
+
+<header class="appbar" aria-label="Cabecera ASPECTS">
+  <div class="appbar-inner">
+    <h1>ASPECTS</h1>
+    <div class="spacer"></div>
+    <output id="pillTop" class="pill-top" aria-live="polite">ASPECTS —</output>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="panel">
+    <h2>Evaluación</h2>
+    <p class="note">Marque las regiones con signos isquémicos tempranos. ASPECTS = 10 − (regiones marcadas).</p>
+
+    <figure class="imgbox">
+      <img src="aspects.png" alt="Esquema de regiones ASPECTS (I, C, L, CI y M1–M6)" />
+      <figcaption>Esquema de referencia de regiones ASPECTS: ínsula (I), caudado (C), lentiforme (L), cápsula interna (CI) y cortes corticales M1–M6.</figcaption>
+    </figure>
+
+    <div class="grid" id="checks">
+      <label class="chk"><input class="r" type="checkbox"> I – Ínsula</label>
+      <label class="chk"><input class="r" type="checkbox"> C – Caudado</label>
+      <label class="chk"><input class="r" type="checkbox"> L – Lentiforme</label>
+      <label class="chk"><input class="r" type="checkbox"> CI – Cápsula interna</label>
+      <label class="chk"><input class="r" type="checkbox"> M1 – Corteza insular anterior</label>
+      <label class="chk"><input class="r" type="checkbox"> M2 – Corteza ACM anterior</label>
+      <label class="chk"><input class="r" type="checkbox"> M3 – Corteza ACM posterior</label>
+      <label class="chk"><input class="r" type="checkbox"> M4 – Corteza ACM alta anterior</label>
+      <label class="chk"><input class="r" type="checkbox"> M5 – Corteza ACM alta lateral</label>
+      <label class="chk"><input class="r" type="checkbox"> M6 – Corteza ACM alta posterior</label>
+    </div>
+
+    <div class="chips" id="chips"></div>
+
+    <div class="kpi">
+      <div class="box">
+        <h4>ASPECTS</h4>
+        <div class="big" id="scoreVal">10</div>
+      </div>
+      <div class="box tone-green" id="catBox">
+        <h4>Categoría</h4>
+        <div class="big" id="catVal">—</div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+  // Símbolos generados por código para evitar que Blogger los re-codifique
+  const GE = String.fromCharCode(0x2265); // ≥
+  const LE = String.fromCharCode(0x2264); // ≤
+  const ND = String.fromCharCode(0x2013); // –
+
+  function actualizar(){
+    const marcadas = document.querySelectorAll('.r:checked').length;
+    const score = 10 - marcadas;
+
+    // KPI principal
+    document.getElementById('scoreVal').textContent = String(score);
+
+    // Categoría y color
+    const catBox = document.getElementById('catBox');
+    const catVal = document.getElementById('catVal');
+    catBox.classList.remove('tone-green','tone-amber','tone-red');
+
+    if(score >= 7){
+      catBox.classList.add('tone-green');
+      catVal.textContent = `Favorable (${GE}7)`;      // p.ej. "Favorable (≥7)"
+    }else if(score >= 5){
+      catBox.classList.add('tone-amber');
+      catVal.textContent = `Intermedio (5${ND}6)`;    // "Intermedio (5–6)"
+    }else{
+      catBox.classList.add('tone-red');
+      catVal.textContent = `Extenso (${LE}4)`;        // "Extenso (≤4)"
+    }
+
+    // Chips
+    const chips = document.getElementById('chips');
+    chips.innerHTML = '';
+    chips.insertAdjacentHTML('beforeend', `<span class="chip">Marcadas: ${marcadas}</span>`);
+    chips.insertAdjacentHTML('beforeend', `<span class="chip">Sin marcar: ${10 - marcadas}</span>`);
+
+    // Píldora
+    document.getElementById('pillTop').textContent = `ASPECTS ${score}`;
+  }
+
+  document.querySelectorAll('.r').forEach(ch => ch.addEventListener('change', actualizar));
+  document.addEventListener('DOMContentLoaded', actualizar);
+</script>
+<footer style="
+    position:relative;
+    left:50%;
+    transform:translateX(-50%);
+    width:100vw;
+    margin:2rem 0 0 0;
+    padding:1.5rem 0;
+    border-top:1px solid #e5e7eb;
+    background:#ffffff;
+    text-align:center;
+    box-shadow:0 -2px 6px rgba(0,0,0,0.04);
+">
+      <img src="uibanner.png"
+         alt="Unidad de Ictus Málaga" style="max-width:380px;height:auto;opacity:.96;">
+  </a>
+
+</footer>
+</body>
+</html>

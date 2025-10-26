@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="icon" type="image/png" href="https://rbustamantet.github.io/ictus.cardiopatia/favicon-96x96.png" sizes="96x96" />
+<link rel="icon" type="image/svg+xml" href="https://rbustamantet.github.io/ictus.cardiopatia/favicon.svg" />
+<link rel="shortcut icon" href="https://rbustamantet.github.io/ictus.cardiopatia/favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="https://rbustamantet.github.io/ictus.cardiopatia/apple-touch-icon.png" />
+<link rel="manifest" href="https://rbustamantet.github.io/ictus.cardiopatia/site.webmanifest" />
+<title>Hunt y Hess — Escala de Hemorragia Subaracnoidea</title>
+<style>
+  :root{
+    --bg:#f8fafc; --card:#ffffff; --ink:#0f172a; --muted:#64748b;
+    --accent:#2563eb; --accent-light:#dbeafe;
+    --border:#e5e7eb; --shadow:rgba(15,23,42,.06);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
+            font-family:Verdana, Geneva, Tahoma, sans-serif;}
+
+  /* === Cabecera === */
+  .appbar{
+    position:sticky;top:0;z-index:1000;
+    background:rgba(255,255,255,.9);
+    border-bottom:1px solid var(--accent-light);
+    backdrop-filter:saturate(140%) blur(8px);
+    transition:box-shadow .15s,border-color .15s;
+  }
+  .appbar.scrolled{box-shadow:0 8px 24px rgba(0,0,0,.08);border-color:#e2e8f0}
+  .appbar-inner{max-width:980px;margin:0 auto;display:flex;align-items:center;gap:12px;padding:10px 16px}
+  .appbar h1{margin:0;font-size:22px;line-height:1.2;color:var(--accent);font-weight:800}
+  .spacer{flex:1}
+  .pill{
+    display:inline-block;max-width:60vw;
+    padding:6px 10px;border-radius:999px;
+    background:var(--accent-light);color:#1e3a8a;border:1px solid #bfdbfe;
+    font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  }
+  @media (min-width:640px){.pill{max-width:420px}}
+
+  /* === Contenido === */
+  .container{max-width:880px;margin:16px auto 48px;padding:0 16px}
+  .sub{margin:0 0 16px;color:var(--muted);font-size:13px}
+  .card{
+    background:var(--card);border:1px solid var(--border);border-radius:16px;
+    padding:18px;box-shadow:0 2px 10px var(--shadow);transition:box-shadow .2s;
+  }
+  .card:hover{box-shadow:0 4px 16px rgba(15,23,42,.1)}
+  label{font-size:14px;font-weight:700;display:block;margin-bottom:6px;color:var(--ink)}
+  select{
+    width:100%;border:1px solid var(--border);border-radius:10px;
+    padding:12px;font-size:15px;background:#fff;cursor:pointer;
+  }
+  select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(37,99,235,.15)}
+
+  .row{display:flex;align-items:center;gap:10px;margin-top:10px}
+  .check{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink)}
+  .muted{color:var(--muted);font-size:12px;margin-top:8px}
+
+  .result{display:none}
+  .result.show{display:block}
+  .kpi{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:4px}
+  .kpi .box{border:1px dashed var(--border);border-radius:12px;padding:12px;text-align:center}
+  .kpi .ttl{font-size:12px;color:var(--muted)}
+  .kpi .val{font-size:26px;font-weight:700;color:var(--accent)}
+  .protocol{display:grid;grid-template-columns:72px 1fr;gap:14px;align-items:center;
+            border-top:1px solid var(--border);margin-top:16px;padding-top:16px}
+  .badge{width:72px;height:72px}
+  .desc{margin:0;font-size:14px}
+  .ref{margin-top:10px;font-size:11px;color:var(--muted)}
+  footer.smallprint{margin-top:18px;font-size:11px;color:var(--muted)}
+body {
+  overflow-x: hidden;
+}
+
+</style>
+</head>
+<body>
+
+<header class="appbar" role="region" aria-label="Cabecera Hunt y Hess">
+  <div class="appbar-inner">
+    <h1>Hunt y Hess</h1>
+    <div class="spacer"></div>
+    <output id="pill" class="pill" aria-live="polite" aria-atomic="true">Hunt-Hess: —</output>
+  </div>
+</header>
+
+<div class="container">
+  <p class="sub">Clasificación clínica inicial en hemorragia subaracnoidea aneurismática.</p>
+
+  <div class="card">
+    <label for="grado">Grado clínico</label>
+    <select id="grado">
+      <option value="" selected>— Seleccione —</option>
+      <option value="0">0 — Aneurisma no roto</option>
+      <option value="I">I — Asintomático o leve cefalea/rigidez de nuca</option>
+      <option value="Ia">Ia — Consciente, sin signos meníngeos, con déficit focal</option>
+      <option value="II">II — Cefalea o rigidez moderada/severa o paresia de par craneal</option>
+      <option value="III">III — Somnoliento o confuso, o focalidad leve</option>
+      <option value="IV">IV — Estuporoso o déficit moderado/severo</option>
+      <option value="V">V — Coma profundo, fallo vital o descerebración</option>
+    </select>
+
+    <div class="row">
+      <label class="check">
+        <input type="checkbox" id="plusOne" />
+        +1 si hay enfermedad sistémica severa o vasoespasmo grave
+      </label>
+    </div>
+  </div>
+
+  <div id="resultCard" class="card result" aria-live="polite">
+  <div class="protocol" style="border-top:0; padding-top:0;">
+    <div id="badge" class="badge" aria-hidden="true"></div>
+    <div>
+      <p class="desc" id="gradeDesc"></p>
+      <p id="mortalityTxt" style="margin-top:4px; font-size:13px; font-weight:600;"></p>
+      <p class="ref">
+        <strong>Referencia:</strong> Hunt WE, Hess RM. <em>J Neurosurg</em>. 1968; 28:14–20.
+      </p>
+    </div>
+  </div>
+
+  <footer class="smallprint">
+    Nota: orienta la gravedad inicial de la HSA; no sustituye al juicio clínico ni a otras escalas pronósticas.
+  </footer>
+</div>
+<script>
+  // === Cabecera con sombra ===
+  const appbar=document.querySelector('.appbar');
+  function onScroll(){
+    if(!appbar)return;
+    (window.scrollY>8)?appbar.classList.add('scrolled'):appbar.classList.remove('scrolled');
+  }
+  document.addEventListener('scroll',onScroll,{passive:true});
+  onScroll();
+
+  // === Datos principales ===
+  const SEP=' \u2014 ';
+  const order=['0','I','Ia','II','III','IV','V'];
+  const shortTxt={
+    '0':'Aneurisma no roto',
+    'I':'Leve cefalea/rigidez nuca o asintomático',
+    'Ia':'Déficit focal sin signos meníngeos',
+    'II':'Cefalea o rigidez moderada/severa o paresia PC',
+    'III':'Somnolencia/confusión o focalidad leve',
+    'IV':'Estupor o déficit moderado/severo',
+    'V':'Coma profundo, fallo vital o descerebración'
+  };
+  const fullTxt={
+    '0':'Aneurisma intracraneal no roto.',
+    'I':'Paciente asintomático o con cefalea y rigidez de nuca leves.',
+    'Ia':'Consciente, sin signos meníngeos, pero con déficit neurológico focal.',
+    'II':'Cefalea o rigidez de nuca moderada/severa o paresia de un par craneal.',
+    'III':'Somnolencia o confusión, o déficit neurológico leve.',
+    'IV':'Estuporoso o con déficit moderado o severo.',
+    'V':'Coma profundo, moribundo con fallo de centros vitales y rigidez extensora.'
+  };
+
+  // === Paleta de colores (armonizada) ===
+  const colors = {
+    green:  "#15803d",
+    amber:  "#b45309",
+    red:    "#b91c1c"
+  };
+
+  const mortality = {
+    '0': {txt:'— (aneurisma no roto)', color:colors.green},
+    'I': {txt:'< 5 %',  color:colors.green},
+    'Ia':{txt:'≈ 5 %',  color:colors.green},
+    'II':{txt:'5–10 %', color:colors.green},
+    'III':{txt:'15–20 %',color:colors.amber},
+    'IV':{txt:'40–50 %',color:colors.red},
+    'V': {txt:'> 70 %', color:colors.red}
+  };
+
+  function el(id){return document.getElementById(id);}
+
+  // === Píldora superior (cabecera) ===
+  function updateHeaderPill(grado, texto, color){
+    const pill=el('pill');
+    if(!pill)return;
+    if(!grado){
+      pill.textContent='Hunt-Hess: —';
+      pill.style.background='var(--accent-light)';
+      pill.style.color='#1e3a8a';
+      pill.style.border='1px solid #bfdbfe';
+    }else{
+      pill.textContent='Hunt-Hess: '+grado+SEP+texto;
+      pill.style.background=color+'20'; // tono claro translúcido
+      pill.style.color=color;
+      pill.style.border='1px solid '+color+'40';
+    }
+  }
+
+  // === Badge circular coloreado con difuminado del riesgo ===
+  function svgBadge(t, color){
+    // calculamos un color translúcido para el borde externo
+    const outer = color + "33"; // 20% de opacidad
+    return (
+      '<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Grado ' + t + '">' +
+      '  <defs>' +
+      '    <radialGradient id="g" cx="50%" cy="50%" r="60%">' +
+      '      <stop offset="0%" stop-color="#ffffff"/>' +
+      '      <stop offset="100%" stop-color="' + outer + '"/>' +
+      '    </radialGradient>' +
+      '  </defs>' +
+      '  <circle cx="60" cy="60" r="56" fill="url(#g)" stroke="' + color + '" stroke-width="6"/>' +
+      '  <text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle"' +
+      '        font-family="Verdana, Geneva, Tahoma, sans-serif" font-weight="700"' +
+      '        font-size="40" fill="' + color + '">' + t + '</text>' +
+      '</svg>'
+    );
+  }
+
+  // === Cálculo principal ===
+  function calcular(){
+    const val=el('grado').value;
+    const plus=el('plusOne').checked;
+    const res=el('resultCard');
+    if(!val){
+      res.classList.remove('show');
+      updateHeaderPill();
+      return;
+    }
+
+    let idx=order.indexOf(val);
+    if(idx<0)idx=0;
+    if(plus && idx<order.length-1)idx++;
+
+    const final=order[idx];
+    const mort=mortality[final];
+    el('gradeDesc').textContent=fullTxt[final];
+    const mortEl=el('mortalityTxt');
+    mortEl.innerHTML='Mortalidad estimada: <span style="color:'+mort.color+'">'+mort.txt+'</span>';
+
+    // Badge y cabecera con el mismo tono
+    el('badge').innerHTML=svgBadge(final, mort.color);
+    res.classList.add('show');
+    updateHeaderPill(final, shortTxt[final], mort.color);
+  }
+
+  document.addEventListener('DOMContentLoaded',()=>{
+    el('grado').addEventListener('change',calcular);
+    el('plusOne').addEventListener('change',calcular);
+    updateHeaderPill();
+  });
+</script>
+<footer style="
+    position:relative;
+    left:50%;
+    transform:translateX(-50%);
+    width:100vw;
+    margin:2rem 0 0 0;
+    padding:1.5rem 0;
+    border-top:1px solid #e5e7eb;
+    background:#ffffff;
+    text-align:center;
+    box-shadow:0 -2px 6px rgba(0,0,0,0.04);
+">
+      <img src="uibanner.png"
+         alt="Unidad de Ictus Málaga" style="max-width:380px;height:auto;opacity:.96;">
+  </a>
+</footer>
+</body>
+</html>

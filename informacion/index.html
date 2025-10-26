@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sección en construcción · Unidad de Ictus</title>
+<meta name="color-scheme" content="light">
+<style>
+  :root{
+    --ink:#0f172a;
+    --muted:#475569;
+    --bg:#f4f7fb;
+    --card:#ffffff;
+    --brand:#1e3a8a;          /* azul institucional oscuro */
+    --brand-soft:#dbeafe;     /* azul muy claro */
+    --ring:#93c5fd;
+    --shadow:0 8px 20px rgba(2,8,23,.08);
+    --radius:22px;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0; font-family:Verdana, Geneva, Tahoma, sans-serif;
+    color:var(--ink); background:linear-gradient(180deg,#eef5ff 0%,#f8fafc 100%);
+    display:flex; align-items:center; justify-content:center; padding:24px;
+  }
+  .wrap{
+    width:min(920px,100%);
+    background:var(--card); border:1px solid var(--brand-soft);
+    border-radius:var(--radius); box-shadow:var(--shadow);
+    overflow:hidden;
+  }
+  header{
+    display:flex; align-items:center; gap:16px;
+    padding:18px 22px; background:var(--brand-soft); border-bottom:1px solid #cfe0ff;
+  }
+  header img{width:54px; height:54px; object-fit:contain; border-radius:50%}
+  header h1{
+    font-size:26; margin:0; color:var(--brand);
+    letter-spacing:.2px
+  }
+  main{padding:28px; display:grid; gap:22px}
+  .card{
+    background:var(--bg); border:1px solid #e5edff; border-radius:16px;
+    padding:22px; display:grid; gap:14px
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    background:#fff; border:1px solid var(--ring); color:var(--brand);
+    padding:8px 12px; border-radius:999px; font-weight:bold; font-size:.9rem
+  }
+  .title{font-size:clamp(22px,3.4vw,28px); margin:2px 0 0}
+  .subtitle{color:var(--muted); line-height:1.5; margin:0}
+  .progress{
+    height:10px; background:#e8f1ff; border-radius:999px; overflow:hidden; position:relative
+  }
+  .bar{
+    position:absolute; inset:0 auto 0 0; width:40%;
+    background:linear-gradient(90deg,#60a5fa,#2563eb);
+    border-radius:inherit; box-shadow:0 0 0 1px rgba(255,255,255,.3) inset;
+    animation:pulse 2.6s ease-in-out infinite
+  }
+  @keyframes pulse{
+    0%{width:28%} 50%{width:64%} 100%{width:28%}
+  }
+  .actions{display:flex; flex-wrap:wrap; gap:12px; margin-top:6px}
+  .btn{
+    appearance:none; border:1px solid var(--brand); color:#fff;
+    background:linear-gradient(180deg,#2a4db2,#1e3a8a);
+    padding:12px 16px; border-radius:14px; font-weight:bold; cursor:pointer;
+    text-decoration:none; display:inline-flex; align-items:center; gap:10px;
+    box-shadow:0 4px 10px rgba(2,8,23,.12); transition:transform .08s ease, filter .15s ease
+  }
+  .btn:hover{filter:brightness(1.03)} .btn:active{transform:translateY(1px)}
+  .btn.ghost{
+    background:#fff; color:var(--brand); border-color:var(--ring)
+  }
+  .note{
+    font-size:.9rem; color:#334155; background:#fff; border:1px dashed #cfe0ff;
+    padding:12px 14px; border-radius:10px
+  }
+  footer{
+    padding:14px 22px; border-top:1px solid #e6eefc; color:#334155; font-size:.85rem;
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px
+  }
+  .dot{display:inline-block; width:7px; height:7px; border-radius:50%; background:#22c55e; margin-right:6px}
+  /* Responsive */
+  @media (max-width:520px){
+    header{padding:14px 16px}
+    main{padding:18px}
+  }
+</style>
+</head>
+<body>
+  <div class="wrap" role="region" aria-label="Aviso de sección en construcción">
+    <header>
+      <!-- Cambia la ruta del logo si es necesario -->
+      <img src="ictuscareico1.png" alt="Unidad de Ictus · HRUM" onerror="this.style.display='none'">
+      <h1>IctusCare</h1>
+    </header>
+
+    <main>
+      <div class="card">
+        <span class="badge" aria-live="polite">🛠️ Sección en construcción</span>
+        <h2 class="title">Estamos preparando esta sección</h2>
+        <p class="subtitle">
+          Este contenido aún no está disponible. Estamos ultimando el material para garantizar rigor científico, utilidad docente y una experiencia de uso coherente con el resto de la app.
+        </p>
+
+        <div class="progress" aria-label="Progreso aproximado"><div class="bar"></div></div>
+
+        <div class="actions">
+          <!-- Ajusta la ruta al índice según la profundidad de la carpeta -->
+          <a class="btn" href="../index.html">🏠 Volver al inicio</a>
+          <!-- Puedes cambiar el mailto por tu formulario o pantalla de contacto -->
+          <a class="btn ghost" href="mailto:correo@rafaelbustamante.com?subject=IctusCare%20HRUM%20-%20Sugerencias">✉️ Enviar sugerencias</a>
+        </div>
+
+        <div class="note">
+          <strong>Nota:</strong> si necesitas acceder a los <em>Protocolos</em>, <em>Escalas</em> u otras herramientas, utilice el botón “Volver al inicio” y seleccione la sección correspondiente.
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <div><span class="dot" aria-hidden="true"></span>Versión 1.0 · IctusCare</div>
+      <div>© Rafael Bustamante Toledo</div>
+    </footer>
+  </div>
+</body>
+</html>

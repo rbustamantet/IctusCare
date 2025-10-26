@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="icon" type="image/png" href="https://rbustamantet.github.io/ictus.cardiopatia/favicon-96x96.png" sizes="96x96" />
+<link rel="icon" type="image/svg+xml" href="https://rbustamantet.github.io/ictus.cardiopatia/favicon.svg" />
+<link rel="shortcut icon" href="https://rbustamantet.github.io/ictus.cardiopatia/favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="https://rbustamantet.github.io/ictus.cardiopatia/apple-touch-icon.png" />
+<link rel="manifest" href="https://rbustamantet.github.io/ictus.cardiopatia/site.webmanifest" />
+<title>HAS-BLED — Riesgo de sangrado</title>
+<style>
+  :root{
+    --bg:#f8fafc; --card:#ffffff; --ink:#0f172a; --muted:#64748b;
+    --accent:#2563eb; --accent-light:#dbeafe;
+    --ok:#15803d; --warn:#b45309; --bad:#b91c1c;
+    --border:#e5e7eb; --shadow:rgba(15,23,42,.06);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
+            font-family:Verdana, Geneva, sans-serif;}
+
+  /* === Cabecera pegajosa === */
+  .appbar{
+    position:sticky; top:0; z-index:1000;
+    background:rgba(255,255,255,0.9);
+    border-bottom:1px solid var(--accent-light);
+    backdrop-filter:saturate(140%) blur(8px);
+    -webkit-backdrop-filter:saturate(140%) blur(8px);
+    transition:box-shadow .15s, border-color .15s;
+  }
+  .appbar.scrolled{box-shadow:0 8px 24px rgba(0,0,0,.08); border-color:#e2e8f0}
+  .appbar-inner{max-width:980px;margin:0 auto;display:flex;align-items:center;gap:12px;padding:10px 16px}
+  .appbar h1{margin:0;font-size:22px;line-height:1.2;color:var(--accent);font-weight:800}
+  .spacer{flex:1}
+  .pill-top{
+    display:inline-block;max-width:60vw;
+    padding:6px 10px;border-radius:999px;
+    background:var(--accent-light);color:#1e3a8a;border:1px solid #bfdbfe;
+    font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  }
+  @media (min-width:640px){ .pill-top{max-width:420px} }
+
+  /* === Contenido === */
+  .wrap{max-width:880px;margin:16px auto 48px;padding:0 16px}
+  .subtitle{color:var(--muted);margin:0 0 18px;font-size:14px}
+
+  .card{
+    background:var(--card);border:1px solid var(--border);
+    border-radius:16px;box-shadow:0 2px 10px var(--shadow);
+    padding:18px;transition:box-shadow .2s;
+  }
+  .card:hover{box-shadow:0 4px 16px rgba(15,23,42,.1)}
+
+  .grid{display:grid;grid-template-columns:1fr;gap:12px}
+  @media (min-width:720px){.grid{grid-template-columns:1fr 1fr}}
+
+  label{display:block;font-weight:700;margin:2px 0 6px;color:var(--ink)}
+  select{
+    width:100%;padding:10px 12px;font-size:15px;border:1px solid var(--border);
+    border-radius:10px;background:#fff;cursor:pointer;
+  }
+  select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(37,99,235,.15)}
+
+  .row{padding:10px 12px;background:var(--accent-light);border-radius:12px;border:1px dashed var(--border)}
+  .controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:12px}
+  .btn{border:0;border-radius:12px;padding:10px 16px;cursor:pointer;font-weight:700;transition:.18s transform ease}
+  .btn:active{transform:translateY(1px)}
+  .btn-ghost{background:#fff;border:1px solid var(--border);color:var(--accent)}
+  .muted{color:var(--muted);font-size:13px}
+  .pill{display:inline-block;padding:6px 10px;border-radius:999px;font-weight:700;font-size:13px;color:#fff}
+  .pill.green{background:var(--ok)}
+  .pill.amber{background:var(--warn)}
+  .pill.red{background:var(--bad)}
+
+  footer.smallprint{text-align:center;margin-top:2rem;padding:1rem 0;border-top:1px solid #e5e7eb;background:#ffffff;font-size:12px;color:var(--muted)}
+  footer img{max-width:320px;height:auto;opacity:.95;transition:opacity .2s;}
+  footer img:hover{opacity:1}
+</style>
+</head>
+<body>
+
+<header class="appbar" role="region" aria-label="Cabecera HAS-BLED">
+  <div class="appbar-inner">
+    <h1>HAS-BLED</h1>
+    <div class="spacer"></div>
+    <output id="pillTop" class="pill-top" aria-live="polite" aria-atomic="true">HAS-BLED: —</output>
+  </div>
+</header>
+
+<main class="wrap">
+  <p class="subtitle">Complete cada ítem; el cálculo se realiza automáticamente.</p>
+
+  <section class="card">
+    <div class="grid">
+      <div class="row"><label for="edad">Edad</label>
+        <select id="edad"><option value="" selected>Selecciona…</option>
+          <option value="1">&gt; 65 años</option><option value="0">≤ 65 años</option></select></div>
+
+      <div class="row"><label for="hta">Hipertensión (PAS ≥ 160 mmHg)</label>
+        <select id="hta"><option value="" selected>Selecciona…</option>
+          <option value="1">Sí</option><option value="0">No</option></select></div>
+
+      <div class="row"><label for="aki">Función renal anormal</label>
+        <select id="aki"><option value="" selected>Selecciona…</option>
+          <option value="1">Diálisis / trasplante / Cr &gt; 2,26 mg/dL / ClCr ≤ 30 mL/min</option>
+          <option value="0">No</option></select></div>
+
+      <div class="row"><label for="fha">Función hepática anormal</label>
+        <select id="fha"><option value="" selected>Selecciona…</option>
+          <option value="1">Bilirrubina &gt; 2× límite o GOT/GPT &gt; 3× límite</option>
+          <option value="0">No</option></select></div>
+
+      <div class="row"><label for="acv">Ictus previo</label>
+        <select id="acv"><option value="" selected>Selecciona…</option>
+          <option value="1">Sí</option><option value="0">No</option></select></div>
+
+      <div class="row"><label for="sangrado">Sangrado previo o predisposición</label>
+        <select id="sangrado"><option value="" selected>Selecciona…</option>
+          <option value="1">Sí</option><option value="0">No</option></select></div>
+
+      <div class="row"><label for="inr">INR lábil (si en AVK)</label>
+        <select id="inr"><option value="" selected>Selecciona…</option>
+          <option value="1">Sí</option><option value="0">No / No en AVK</option></select></div>
+
+      <div class="row"><label for="drogas">Fármacos concomitantes</label>
+        <select id="drogas"><option value="" selected>Selecciona…</option>
+          <option value="1">Antiagregantes y/o AINEs</option>
+          <option value="0">No</option></select></div>
+
+      <div class="row"><label for="alcohol">Alcohol (abuso)</label>
+        <select id="alcohol"><option value="" selected>Selecciona…</option>
+          <option value="1">Sí</option><option value="0">No</option></select></div>
+    </div>
+
+    <div class="controls">
+      <button id="btnBorrar" class="btn btn-ghost" type="button">Borrar</button>
+      <span id="msg" class="muted"></span>
+    </div>
+
+    <div id="resultado" style="margin-top:16px;display:none" aria-live="polite">
+      <div class="card" style="padding:12px">
+        <strong>Puntuación:</strong> <span id="score">—</span>
+        <span id="chip" class="pill" style="margin-left:6px;display:none"></span>
+      </div>
+      <div class="card" style="padding:12px">
+        <strong>Recomendación:</strong>
+        <div id="textoReco" class="muted">Complete los campos.</div>
+      </div>
+      <p class="muted" style="margin-top:6px">
+        Nota: HAS-BLED identifica <em>factores de riesgo modificables</em>. Un valor alto <strong>no</strong> contraindica por sí solo la anticoagulación.
+      </p>
+    </div>
+  </section>
+
+  <footer style="margin-top:18px;font-size:12px;color:var(--muted)">
+    <p>HAS-BLED: Hypertension, Abnormal renal/liver, Stroke, Bleeding, Labile INR, Elderly (&gt; 65), Drugs/alcohol. Rango 0–9 puntos.</p>
+  </footer>
+</main>
+
+<script>
+  // Cabecera con sombra
+  var appbar=document.querySelector('.appbar');
+  function onScroll(){if(!appbar)return;(window.scrollY>8)?appbar.classList.add('scrolled'):appbar.classList.remove('scrolled');}
+  document.addEventListener('scroll',onScroll,{passive:true});onScroll();
+
+  const ids=['edad','hta','aki','fha','acv','sangrado','inr','drogas','alcohol'];
+  const el=id=>document.getElementById(id);
+  const scoreEl=el('score'),chip=el('chip'),textoReco=el('textoReco'),msg=el('msg');
+
+  function riesgoLabel(s){
+    if(s>=3)return{txt:'Alto',cls:'red'};
+    if(s===2)return{txt:'Intermedio',cls:'amber'};
+    return{txt:'Bajo',cls:'green'};
+  }
+
+  function recomendaciones(s,renal){
+    let t='';
+    if(s>=3)t='Riesgo hemorrágico alto. Optimizar factores modificables (TA, INR, fármacos, alcohol) y revaluar periódicamente.';
+    else if(s===2)t='Riesgo intermedio. Vigilar y corregir factores reversibles.';
+    else t='Riesgo bajo. Reevaluación periódica.';
+    if(renal===1)t+=' Precaución en insuficiencia renal grave; ajustar anticoagulante según ficha técnica.';
+    return t;
+  }
+
+  function updateHeaderPill(score,label){
+    const pill=el('pillTop');
+    if(!pill)return;
+    pill.textContent=(typeof score!=='number')?'HAS-BLED: —':'HAS-BLED: '+score+' — '+label;
+  }
+
+  function leerInt(id){const v=parseInt(el(id).value,10);return isNaN(v)?null:v;}
+
+  function calcular(){
+    const vals=ids.map(id=>leerInt(id));
+    if(vals.some(v=>v===null)){
+      msg.textContent='Complete todos los campos para ver el resultado.';
+      el('resultado').style.display='none';
+      scoreEl.textContent='—';chip.style.display='none';
+      textoReco.textContent='Complete los campos.';updateHeaderPill();return;
+    }
+    msg.textContent='';
+    const score=vals.reduce((a,b)=>a+b,0);
+    const rl=riesgoLabel(score);
+    scoreEl.textContent=score;
+    chip.textContent=rl.txt;chip.className='pill '+rl.cls;chip.style.display='inline-block';
+    const renal=leerInt('aki')||0;
+    textoReco.textContent=recomendaciones(score,renal);
+    el('resultado').style.display='block';
+    updateHeaderPill(score,rl.txt);
+  }
+
+  function borrar(){
+    ids.forEach(id=>el(id).value='');
+    scoreEl.textContent='—';chip.style.display='none';
+    textoReco.textContent='Complete los campos.';
+    el('resultado').style.display='none';msg.textContent='';updateHeaderPill();
+  }
+
+  function attach(){
+    ids.forEach(id=>{
+      el(id).addEventListener('change',calcular);
+      el(id).addEventListener('input',calcular);
+    });
+    el('btnBorrar').addEventListener('click',borrar);
+  }
+
+  document.readyState==='loading'
+    ?document.addEventListener('DOMContentLoaded',()=>{attach();updateHeaderPill();})
+    : (attach(),updateHeaderPill());
+</script>
+<footer style="
+    position:relative;
+    left:50%;
+    transform:translateX(-50%);
+    width:100vw;
+    margin:2rem 0 0 0;
+    padding:1.5rem 0;
+    border-top:1px solid #e5e7eb;
+    background:#ffffff;
+    text-align:center;
+    box-shadow:0 -2px 6px rgba(0,0,0,0.04);
+">
+      <img src="uibanner.png"
+         alt="Unidad de Ictus Málaga" style="max-width:380px;height:auto;opacity:.96;">
+  </a>
+
+</footer>
+</body>
+</html>

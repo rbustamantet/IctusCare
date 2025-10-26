@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Unidad de Ictus — Hospital Regional Universitario de Málaga</title>
+<style>
+:root{
+  --bg:#f9fafc;
+  --ink:#0e1a33;
+  --accent-dark:#0f3d83;
+  --accent-light:#2563eb;
+  --ring:#93c5fd;
+  --border:#e5e9f2;
+}
+
+html,body{
+  margin:0; padding:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:Verdana, Geneva, Tahoma, sans-serif;
+  line-height:1.65;
+}
+
+/* Cabecera */
+header{
+  background:var(--accent-dark);
+  color:#fff;
+  text-align:center;
+  padding:1rem;
+  font-weight:800;
+  font-size:1.2rem;
+  box-shadow:0 2px 6px rgba(0,0,0,0.08);
+  position:sticky; top:0; z-index:10;
+}
+
+/* Contenedor principal */
+main{
+  max-width:850px;
+  margin:0 auto;
+  padding:2rem 1.5rem 3rem;
+  background:#fff;
+  border-radius:12px;
+  box-shadow:0 2px 10px rgba(0,0,0,0.04);
+}
+
+p{
+  text-align:justify;
+  font-size:16px;
+  margin-bottom:1rem;
+}
+
+/* Botón final */
+.btn-link{
+  display:inline-block;
+  margin:2rem auto 0;
+  padding:12px 22px;
+  background:linear-gradient(to bottom,#2563eb,#1e40af);
+  color:#fff;
+  font-weight:700;
+  text-decoration:none;
+  border-radius:10px;
+  box-shadow:0 4px 10px rgba(37,99,235,.25);
+  transition:all .2s ease;
+  font-family:Verdana, Geneva, Tahoma, sans-serif;
+}
+.btn-link:hover{
+  background:linear-gradient(to bottom,#1e40af,#1e3a8a);
+  box-shadow:0 6px 14px rgba(37,99,235,.35);
+  transform:translateY(-2px);
+}
+.btn-link:active{
+  transform:translateY(1px);
+}
+
+.btn-container{
+  text-align:center;
+}
+
+@media(max-width:768px){
+  main{padding:1.25rem}
+  header{font-size:1.1rem}
+}
+</style>
+<style>
+:root{
+  --bg:#f9fafc;
+  --border:#e5e9f2;
+  --alert:#b30000;
+  --alert-bg:#fef3f2;
+  --alert-border:#f5c2c0;
+}
+
+
+  .wrap{max-width:850px; margin:0 auto; padding:24px}
+
+html,body{
+  margin:0; padding:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:Verdana, Geneva, Tahoma, sans-serif;
+  line-height:1.6;
+  -webkit-text-size-adjust:100%;
+}
+
+header{
+  background:var(--accent-dark);
+  color:#fff;
+  text-align:LEFT;
+  padding:1rem;
+  font-weight:800;
+  font-size:1.2rem;
+  box-shadow:0 2px 6px rgba(0,0,0,0.08);
+  position:sticky;top:0;z-index:10;
+}
+
+
+main{
+  max-width:850px;
+  margin:0 auto;
+  padding:1rem 1.25rem 2.5rem;
+  background:#fff;
+  border-radius:12px;
+  box-shadow:0 2px 10px rgba(0,0,0,0.04);
+}
+
+p{margin:0.75rem 0;text-align:justify;}
+a{color:var(--accent-dark);text-decoration:none;}
+strong,b{color:var(--accent-dark);}
+h3{color:var(--accent-dark);margin-top:1.2rem;font-size:1.05rem;}
+ul{margin:0.6rem 0 0.6rem 1.2rem;}
+li{margin:0.3rem 0;}
+hr{border:none;border-top:1px solid var(--border);margin:1.4rem 0;}
+.highlight-red{color:var(--alert);font-weight:700;}
+
+.related{
+  margin-top:1.6rem;
+  background:var(--accent-light);
+  padding:1rem;
+  border-radius:8px;
+}
+.related h3{margin:0 0 .5rem 0;color:var(--accent-dark);font-size:1rem;}
+.related ol{margin:0;padding-left:1.2rem;}
+.related li{margin:0.25rem 0;}
+
+.alert{
+  text-align:center;
+  background:var(--alert-bg);
+  border:1px solid var(--alert-border);
+  border-radius:6px;
+  padding:0.8rem;
+  color:#800000;
+  font-weight:700;
+  margin-top:1rem;
+}
+.bar{display:flex; align-items:center; gap:12px; padding:1px 18px}
+ 
+  .title{font-weight:700; letter-spacing:.2px; font-size:1.2rem;}
+  .subtitle{font-size:.9rem; color:var(--muted)}
+  .headcol{display:flex; flex-direction:column}
+
+  .grid{
+    display:grid;
+    grid-template-columns: repeat(1, minmax(0,1fr));
+    gap:16px;
+    margin-top:22px;
+  }
+  @media (min-width:520px){ .grid{ grid-template-columns: repeat(2, minmax(0,1fr)); } }
+  @media (min-width:900px){ .grid{ grid-template-columns: repeat(3, minmax(0,1fr)); } }
+
+   
+  .actions{margin-left:auto}
+  .btn{
+    display:inline-flex; align-items:center; gap:2px;
+    padding:4px 8px; border-radius:12px; text-decoration:none;
+    border:1px solid rgba(255,255,255,.14);
+    background: rgba(255,255,255,.06); color:white;
+  }
+  .btn:hover{ border-color: rgba(127,179,255,.35); background: #1c60c3; color:white;}
+.back-btn{
+  display:inline-block;
+  margin-top:1.5rem;
+  background:var(--accent-dark);
+  color:#fff;
+  text-decoration:none;
+  font-weight:700;
+  padding:0.6rem 1.2rem;
+  border-radius:8px;
+  transition:background .2s, transform .1s;
+  text-align:center;
+}
+.back-btn:hover{
+  background:#1c60c3;
+  color:#fff;
+  transform:translateY(-1px);
+}
+
+@media(max-width:768px){
+  header{font-size:1.05rem;}
+  main{padding:0.9rem 1rem;}
+  body{font-size:0.96rem;}
+}
+</style>
+</head>
+
+<body>
+<header>
+    <div class="bar wrap">
+      
+      <div class="headcol">
+        <div class="title">NUESTRA UNIDAD DE ICTUS</div>
+        </div>
+      <div class="actions">
+        <a class="btn" href="../index.html">Inicio</a>
+      </div>
+    </div>
+  </header>
+<main>
+  <p>
+    Situada al fondo de la sala de hospitalización, en la cuarta planta del pabellón B del Hospital Regional Universitario de Málaga, dentro del Servicio de Neurología. 
+    Cuenta con 7 camas y un puesto con sillón, vigilados desde la Mesa de Control de Enfermería a través de visión directa y de un monitor con la imagen continua de cada uno de los pacientes. 
+    Dotada de la más moderna tecnología de monitorización de constantes vitales por cada paciente, sistemas de telemetría y de monitorización también de canal EEG. 
+    Además dispone de ecógrafo-doppler para realizar estudios vasculares de troncos supraaórticos y polígono de Willis.
+  </p>
+
+  <p>
+    Para su atención se alternan principalmente neurólogos dedicados a Patología Neurovascular, contando además con dos enfermeras y dos auxiliares de enfermería por turno para el adecuado cuidado de los pacientes. 
+    Contamos con la colaboración también del Servicio de Medicina Física y Rehabilitación, con el indispensable trabajo de sus médicos especialistas y de sus fisioterapeutas, así como el apoyo del Servicio de Endocrinología y Nutrición, 
+    a través de la Unidad de Disfagia (multidisciplinar, comprendiendo a especialistas de Rehabilitación, Endocrinología, ORL y la propia Neurología) y también de la ayuda prestada en el terreno de los desórdenes metabólicos que amenazan a nuestros pacientes, principalmente la diabetes.
+  </p>
+
+  <p>
+    Nuestra Unidad de Ictus fue la primera en nacer en Andalucía para la mejora del tratamiento de los pacientes con ictus agudo, en 2006. 
+    Posteriormente, en 2018, se renovó con mayor capacidad y tecnología para atender a 7 pacientes de forma integral.
+  </p>
+
+  <div style="text-align:center;">
+  <img src="nosotros.png" alt="Nuestra Unidad de Ictus" width="400" height="303"
+       style="transition: all 0.4s ease; border-radius:12px;"
+       onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 8px 20px rgba(37,99,235,0.25)'"
+       onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none'">
+</div>
+
+  <div class="btn-container">
+    <a href="unidad_ictus.html" class="btn-link">¿Qué es una Unidad de Ictus?</a>
+  </div>
+</main>
+<footer style="
+    position:relative;
+    left:50%;
+    transform:translateX(-50%);
+    width:100vw;
+    margin:2rem 0 0 0;
+    padding:1.5rem 0;
+    border-top:1px solid #e5e7eb;
+    background:#ffffff;
+    text-align:center;
+    box-shadow:0 -2px 6px rgba(0,0,0,0.04);
+">
+      <img src="uibanner.png"
+         alt="Unidad de Ictus Málaga" style="max-width:380px;height:auto;opacity:.96;">
+  </a>
+
+</footer>
+
+</body>
+</html>
+

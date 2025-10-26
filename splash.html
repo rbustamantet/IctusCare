@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IctusCare – Inicio</title>
+<style>
+  :root {
+    --azul1:#0f3d83;
+    --azul2:#2563eb;
+  }
+
+  body {
+    margin:0;
+    height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    background: linear-gradient(135deg, var(--azul1), var(--azul2));
+    background-size:200% 200%;
+    animation:fondo 6s ease-in-out infinite alternate;
+    font-family: Verdana, sans-serif;
+  }
+
+  .contenedor {
+    text-align:center;
+    color:white;
+    position:relative;
+    animation:fadeIn 1.5s ease-out;
+  }
+
+  .halo {
+    position:absolute;
+    top:50%;
+    left:50%;
+    width:250px;
+    height:250px;
+    border-radius:50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0) 70%);
+    transform:translate(-50%, -50%) scale(0);
+    opacity:0;
+    animation:encendido 2.5s ease-out forwards;
+  }
+
+  .logo {
+    width:160px;
+    height:160px;
+    z-index:2;
+    position:relative;
+    animation:breathing 3.5s ease-in-out infinite;
+    filter:drop-shadow(0 0 8px rgba(255,255,255,0.25));
+  }
+
+  h1 {
+    margin-top:1.2rem;
+    font-size:1.3rem;
+    letter-spacing:1px;
+    font-weight:normal;
+    text-shadow:0 1px 3px rgba(0,0,0,0.3);
+  }
+
+  /* Animaciones principales */
+  @keyframes fondo {
+    0%{background-position:0% 50%;}
+    100%{background-position:100% 50%;}
+  }
+
+  @keyframes fadeIn {
+    from{opacity:0;transform:translateY(15px);}
+    to{opacity:1;transform:translateY(0);}
+  }
+
+  @keyframes breathing {
+    0%{transform:scale(1);opacity:0.9;}
+    50%{transform:scale(1.06);opacity:1;}
+    100%{transform:scale(1);opacity:0.9;}
+  }
+
+  @keyframes encendido {
+    0%{opacity:0;transform:translate(-50%, -50%) scale(0.3);}
+    40%{opacity:1;transform:translate(-50%, -50%) scale(1);}
+    100%{opacity:0;transform:translate(-50%, -50%) scale(1.6);}
+  }
+
+  /* “Apagado de TV”: se aplana y se desvanece */
+  @keyframes tvOff {
+    0%   {transform:scaleY(1) scaleX(1); opacity:1; filter:brightness(1);}
+    60%  {transform:scaleY(0.05) scaleX(1.2); opacity:1; filter:brightness(1.8);}
+    80%  {transform:scaleY(0.02) scaleX(1.6); opacity:0.9;}
+    100% {transform:scaleY(0) scaleX(2); opacity:0;}
+  }
+
+  @keyframes fadeBody {
+    from {opacity:1;}
+    to {opacity:0; background:black;}
+  }
+</style>
+
+<script>
+  const DURACION_SPLASH = 3500;
+
+  document.addEventListener("DOMContentLoaded", () => {
+    setTimeout(() => {
+      const logo = document.querySelector(".logo");
+      const texto = document.querySelector("h1");
+      const halo = document.querySelector(".halo");
+
+      halo.style.opacity = "0";
+      texto.style.opacity = "0";
+      logo.style.animation = "tvOff 1s ease-in forwards";
+
+      setTimeout(() => {
+        document.body.style.animation = "fadeBody 0.8s forwards";
+        setTimeout(() => {
+          window.location.href = "advertencia.html";
+        }, 800);
+      }, 1000);
+    }, DURACION_SPLASH);
+  });
+</script>
+</head>
+<body>
+  <div class="contenedor">
+    <div class="halo"></div>
+    <img src="iconos/ictuscareico1.png" alt="IctusCare" class="logo">
+    <h1>IctusCare</h1>
+  </div>
+</body>
+</html>

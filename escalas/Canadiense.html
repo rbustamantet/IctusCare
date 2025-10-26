@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="icon" type="image/png" href="https://rbustamantet.github.io/ictus.cardiopatia/favicon-96x96.png" sizes="96x96" />
+<link rel="icon" type="image/svg+xml" href="https://rbustamantet.github.io/ictus.cardiopatia/favicon.svg" />
+<link rel="shortcut icon" href="https://rbustamantet.github.io/ictus.cardiopatia/favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="https://rbustamantet.github.io/ictus.cardiopatia/apple-touch-icon.png" />
+<link rel="manifest" href="https://rbustamantet.github.io/ictus.cardiopatia/site.webmanifest" />
+<title>Escala Canadiense</title>
+<style>
+  :root{
+    --bg:#f8fafc; --ink:#0f172a;
+    --azul:#0b2c5f; --gris:#6b7280; --borde:#e5e7eb;
+    --ok:#0a7f3f; --error:#b91c1c;
+
+    /* Cabecera (igual que en mRS/Barthel) */
+    --accent:#2563eb; 
+    --accent-light:#dbeafe;
+  }
+  html, body{font-family: Verdana, Geneva, Tahoma, sans-serif; background:var(--bg); color:#0f172a; margin:0; padding:0}
+
+  /* Cabecera pegajosa */
+  .appbar{
+    position:sticky; top:0; z-index:1000;
+    background:rgba(255,255,255,0.9);
+    border-bottom:1px solid var(--accent-light);
+    backdrop-filter:saturate(140%) blur(8px);
+    -webkit-backdrop-filter:saturate(140%) blur(8px);
+    transition:box-shadow .15s, border-color .15s, background .15s;
+  }
+  .appbar.scrolled{box-shadow:0 8px 24px rgba(0,0,0,.08); border-color:#e2e8f0}
+  .appbar-inner{max-width:980px; margin:0 auto; display:flex; align-items:center; gap:12px; padding:10px 16px}
+  .appbar h1{margin:0; font-size:22px; line-height:1.2; color:var(--accent); font-weight:800}
+  .spacer{flex:1}
+  .pill{
+    display:inline-block; max-width:60vw;
+    padding:6px 10px; border-radius:999px;
+    background:var(--accent-light); color:#1e3a8a; border:1px solid #bfdbfe;
+    font-size:12px; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+  @media (min-width:640px){ .pill{ max-width:420px } }
+
+  /* Contenido */
+  .container{max-width:900px; margin:16px auto 48px; padding:0 16px}
+  .card{background:#fff; border:1px solid var(--borde); border-radius:16px; padding:18px; box-shadow:0 2px 10px rgba(15,23,42,.06); margin-top:12px}
+  .grid{display:grid; grid-template-columns:1fr; gap:16px}
+  @media (min-width:760px){ .grid{ grid-template-columns:1.1fr .9fr } }
+  label{font-size:14px; font-weight:700; display:block; margin:12px 0 6px; color:var(--azul)}
+  .row{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+  select{
+    width:100%; border:1px solid var(--borde); border-radius:10px;
+    padding:12px; font-size:15px; background:#fff; outline:none;
+  }
+  select:focus{border-color:var(--azul); box-shadow:0 0 0 3px rgba(11,44,95,.12)}
+  .hint{color:var(--gris); font-size:12px; margin-top:6px}
+  .actions{display:flex; gap:10px; flex-wrap:wrap}
+  .btn-secondary{
+    width:100%; border:1px solid var(--azul); border-radius:10px; padding:12px; font-size:15px;
+    background:#fff; color:var(--azul); font-weight:700; cursor:pointer;
+  }
+
+  .result{display:none}
+  .result.show{display:block}
+  .score{display:flex; align-items:center; justify-content:space-between; border:1px dashed var(--borde); border-radius:12px; padding:12px 16px; margin-top:6px}
+  .score .ttl{font-size:13px; color:var(--gris)}
+  .score .val{font-size:28px; font-weight:700; color:var(--azul)}
+  .err{display:none; background:#fef2f2; color:var(--error); border:1px solid #fecaca; border-radius:12px; padding:10px 12px; margin-top:10px}
+  .ok{color:var(--ok); font-weight:700}
+  .muted{color:var(--gris); font-size:12px}
+  fieldset{border:none; padding:0; margin:0}
+  .two-col{display:grid; grid-template-columns:1fr; gap:12px}
+  @media (min-width:520px){ .two-col{ grid-template-columns:1fr 1fr } }
+  footer.smallprint{margin-top:16px; font-size:11px; color:var(--gris)}
+</style>
+</head>
+<body>
+
+<!-- Cabecera -->
+<header class="appbar" role="region" aria-label="Cabecera Escala Canadiense">
+  <div class="appbar-inner">
+    <h1>Escala Canadiense</h1>
+    <div class="spacer"></div>
+    <output id="pill" class="pill" aria-live="polite" aria-atomic="true">Canadiense: —</output>
+  </div>
+</header>
+
+<div class="container">
+  <div class="grid">
+    <div class="card">
+      <form id="form" autocomplete="off">
+        <fieldset class="two-col">
+          <div>
+            <label for="conciencia">Nivel de conciencia</label>
+            <select id="conciencia">
+              <option value="">Selecciona…</option>
+              <option value="3">Alerta</option>
+              <option value="1.5">Obnubilado / somnoliento</option>
+            </select>
+          </div>
+          <div>
+            <label for="orientacion">Orientación</label>
+            <select id="orientacion">
+              <option value="">Selecciona…</option>
+              <option value="1">Orientado</option>
+              <option value="0">Desorientado</option>
+            </select>
+          </div>
+        </fieldset>
+
+        <label for="lenguaje">Lenguaje</label>
+        <select id="lenguaje">
+          <option value="">Selecciona…</option>
+          <option value="1">Normal</option>
+          <option value="0.5">Déficit expresivo (incluye disartria severa)</option>
+          <option value="0">Déficit receptivo (no comprende)</option>
+        </select>
+        <p class="hint" id="modoHint">Si se selecciona “déficit receptivo”, se evaluará la función motora con el modo “no comprende”.</p>
+
+        <!-- Motor: paciente comprende -->
+        <div id="motor1" class="card" style="padding:12px; margin-top:14px;">
+          <strong>Función motora — el paciente comprende</strong>
+          <div class="two-col">
+            <div>
+              <label for="m1c">Cara</label>
+              <select id="m1c">
+                <option value="">Selecciona…</option>
+                <option value="0.5">Sin asimetría facial</option>
+                <option value="0">Asimetría facial</option>
+              </select>
+            </div>
+            <div>
+              <label for="m1b">Brazo proximal</label>
+              <select id="m1b">
+                <option value="">Selecciona…</option>
+                <option value="1.5">Sin debilidad</option>
+                <option value="1">Paresia leve</option>
+                <option value="0.5">Paresia significativa</option>
+                <option value="0">Afectación completa</option>
+              </select>
+            </div>
+            <div>
+              <label for="m1bd">Brazo distal</label>
+              <select id="m1bd">
+                <option value="">Selecciona…</option>
+                <option value="1.5">Sin debilidad</option>
+                <option value="1">Paresia leve</option>
+                <option value="0.5">Paresia significativa</option>
+                <option value="0">Afectación completa</option>
+              </select>
+            </div>
+            <div>
+              <label for="m1p">Pierna</label>
+              <select id="m1p">
+                <option value="">Selecciona…</option>
+                <option value="1.5">Sin debilidad</option>
+                <option value="1">Paresia leve</option>
+                <option value="0.5">Paresia significativa</option>
+                <option value="0">Afectación completa</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Motor: paciente NO comprende -->
+        <div id="motor2" class="card" style="padding:12px; margin-top:14px; display:none;">
+          <strong>Función motora — el paciente <span class="ok">no</span> comprende</strong>
+          <div class="two-col">
+            <div>
+              <label for="m2c">Cara</label>
+              <select id="m2c">
+                <option value="">Selecciona…</option>
+                <option value="0.5">Sin asimetrías</option>
+                <option value="0">Asimétrica</option>
+              </select>
+            </div>
+            <div>
+              <label for="m2b">Brazos</label>
+              <select id="m2b">
+                <option value="">Selecciona…</option>
+                <option value="1.5">Iguales / respuesta simétrica</option>
+                <option value="0">Desiguales / respuesta asimétrica</option>
+              </select>
+            </div>
+            <div>
+              <label for="m2p">Piernas</label>
+              <select id="m2p">
+                <option value="">Selecciona…</option>
+                <option value="1.5">Iguales / respuesta simétrica</option>
+                <option value="0">Desiguales / respuesta asimétrica</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="actions">
+          <!-- Eliminado botón Calcular -->
+          <button id="btnBorrar" type="button" class="btn-secondary">Borrar</button>
+        </div>
+        <p class="muted">Puntuación total 0–10 (mayor es mejor). Herramienta orientativa: la decisión final corresponde al facultativo.</p>
+        <div id="err" class="err"></div>
+      </form>
+    </div>
+
+    <div id="resultCard" class="card result">
+      <div class="score">
+        <div class="ttl">Puntuación (Escala Canadiense)</div>
+        <div class="val"><span id="scoreVal">—</span></div>
+      </div>
+      <footer class="smallprint">Si elegiste “déficit receptivo”, la valoración motora se realizó con el modo “no comprende”.</footer>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ===== Cabecera
+  var appbar = document.querySelector('.appbar');
+  function onScroll(){ if(!appbar) return; (window.scrollY>8)?appbar.classList.add('scrolled'):appbar.classList.remove('scrolled'); }
+  document.addEventListener('scroll', onScroll, {passive:true}); onScroll();
+
+  var SEP = ' \u2014 ';
+  function updateHeaderPill(score){
+    var pill = document.getElementById('pill');
+    if(!pill) return;
+    if (typeof score !== 'number') pill.textContent = 'Canadiense: ' + '\u2014';
+    else pill.textContent = 'Canadiense: ' + score.toFixed(1).replace('.', ',');
+  }
+
+  // ===== Lógica
+  function el(id){ return document.getElementById(id); }
+  var resultCard = el('resultCard');
+  var scoreVal   = el('scoreVal');
+  var errBox     = el('err');
+
+  function toggleMotor(){
+    var lang = el('lenguaje').value;
+    var noComprende = (lang === '0');
+    el('motor1').style.display = noComprende ? 'none' : 'block';
+    el('motor2').style.display = noComprende ? 'block' : 'none';
+  }
+
+  function calcular(){
+    errBox.style.display='none'; errBox.textContent='';
+
+    var c  = parseFloat(el('conciencia').value);
+    var o  = parseFloat(el('orientacion').value);
+    var r  = parseFloat(el('lenguaje').value);
+
+    if (isNaN(c) || isNaN(o) || isNaN(r)){
+      errBox.textContent = 'Completa nivel de conciencia, orientación y lenguaje.';
+      errBox.style.display = 'block';
+      resultCard.classList.add('show');
+      scoreVal.textContent = '—';
+      updateHeaderPill(); // —
+      return;
+    }
+
+    var total = c + o + r;
+
+    if (r === 0){
+      var m2c = parseFloat(el('m2c').value);
+      var m2b = parseFloat(el('m2b').value);
+      var m2p = parseFloat(el('m2p').value);
+      if (isNaN(m2c) || isNaN(m2b) || isNaN(m2p)){
+        errBox.textContent = 'Completa la valoración motora (cara, brazos y piernas) para el modo “no comprende”.';
+        errBox.style.display = 'block';
+        resultCard.classList.add('show');
+        scoreVal.textContent = '—';
+        updateHeaderPill(); // —
+        return;
+      }
+      total += (m2c + m2b + m2p);
+    } else {
+      var m1c  = parseFloat(el('m1c').value);
+      var m1b  = parseFloat(el('m1b').value);
+      var m1bd = parseFloat(el('m1bd').value);
+      var m1p  = parseFloat(el('m1p').value);
+      if (isNaN(m1c) || isNaN(m1b) || isNaN(m1bd) || isNaN(m1p)){
+        errBox.textContent = 'Completa la valoración motora (cara, brazo proximal, brazo distal y pierna).';
+        errBox.style.display = 'block';
+        resultCard.classList.add('show');
+        scoreVal.textContent = '—';
+        updateHeaderPill(); // —
+        return;
+      }
+      total += (m1c + m1b + m1bd + m1p);
+    }
+
+    resultCard.classList.add('show');
+    var shown = total.toFixed(1).replace('.', ',');
+    scoreVal.textContent = shown;
+    updateHeaderPill(total); // actualiza pill
+  }
+
+  function borrar(){
+    document.getElementById('form').reset();
+    toggleMotor();
+    resultCard.classList.remove('show');
+    scoreVal.textContent = '—';
+    errBox.style.display = 'none'; errBox.textContent = '';
+    updateHeaderPill(); // —
+  }
+
+  function attachAuto(){
+    var selects = document.querySelectorAll('select');
+    for (var i=0;i<selects.length;i++){
+      selects[i].addEventListener('change', function(){ toggleMotor(); calcular(); });
+      selects[i].addEventListener('input',  function(){ toggleMotor(); calcular(); });
+    }
+    document.getElementById('btnBorrar').addEventListener('click', borrar);
+  }
+
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded', function(){ attachAuto(); toggleMotor(); updateHeaderPill(); });
+  }else{
+    attachAuto(); toggleMotor(); updateHeaderPill();
+  }
+</script>
+<footer style="
+    position:relative;
+    left:50%;
+    transform:translateX(-50%);
+    width:100vw;
+    margin:2rem 0 0 0;
+    padding:1.5rem 0;
+    border-top:1px solid #e5e7eb;
+    background:#ffffff;
+    text-align:center;
+    box-shadow:0 -2px 6px rgba(0,0,0,0.04);
+">
+      <img src="uibanner.png"
+         alt="Unidad de Ictus Málaga" style="max-width:380px;height:auto;opacity:.96;">
+  </a>
+
+</footer>
+
+</body>
+</html>

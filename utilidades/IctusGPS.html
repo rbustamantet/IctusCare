@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="icon" type="image/png" href="https://rbustamantet.github.io/ictus.cardiopatia/favicon-96x96.png" sizes="96x96" />
+<link rel="icon" type="image/svg+xml" href="https://rbustamantet.github.io/ictus.cardiopatia/favicon.svg" />
+<link rel="shortcut icon" href="https://rbustamantet.github.io/ictus.cardiopatia/favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="https://rbustamantet.github.io/ictus.cardiopatia/apple-touch-icon.png" />
+<link rel="manifest" href="https://rbustamantet.github.io/ictus.cardiopatia/site.webmanifest" />
+  <title>Ictus GPS</title>
+  <style>
+    :root{ --borde:#e5e7eb; --ink:#0f172a; --bg:#ffffff; --muted:#6b7280; --accent:#2563eb; --accent-light:#dbeafe; --base-scale:0.60; }
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:Verdana, Geneva, Tahoma, sans-serif;}
+    .appbar{position:sticky;top:0;z-index:1000;background:rgba(248,250,252,.9);border-bottom:1px solid var(--accent-light);backdrop-filter:saturate(180%) blur(6px);padding:.85rem 1.25rem;box-shadow:0 2px 4px rgba(0,0,0,.05);}
+    .appbar h1{margin:0;font-size:2rem;color:var(--accent);font-weight:700}
+    main{padding:1.2rem 1.5rem 1.5rem}
+    .content{display:flex;gap:20px;align-items:flex-start;justify-content:space-between;}
+    .panel{width:48%;text-align:left}
+    h2{margin:.3rem 0 1rem 0; font-size:1.5rem;color:var(--accent)}
+    .toolbar{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;margin-bottom:.75rem}
+    .toolbar button{border:1px solid var(--borde);background:#f8fafc;padding:.45rem .7rem;border-radius:.5rem;cursor:pointer;}
+    .toolbar button:hover{background:#eef2ff;border-color:#c7d2fe}
+
+    .overlay-container{position:relative;display:block;overflow:hidden;width:100%;min-height:260px;border:1px dashed var(--borde);border-radius:.5rem;background:#fff;touch-action:none;}
+    @media (min-width:1101px){ .overlay-container{width:calc(100% * var(--base-scale));} }
+    #imagenCargada{position:relative;z-index:0;display:block;width:100%;height:auto;user-select:none;-webkit-user-drag:none}
+    #mapaReferencia{position:absolute;top:0;left:0;opacity:.5;cursor:grab;user-select:none;-webkit-user-drag:none;transform-origin:0 0;z-index:1;width:auto;height:auto;max-width:none;max-height:none;}
+    #mapaReferencia.grabbing{cursor:grabbing}
+    .scale-badge{position:absolute;top:6px;left:6px;padding:.15rem .4rem;font-size:.8rem;background:#ffffffcc;border:1px solid var(--borde);border-radius:.35rem;color:#111;pointer-events:none;z-index:3;display:none;}
+
+    .dropzone{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.4rem;text-align:center;padding:1rem;color:var(--muted);background:repeating-linear-gradient(45deg,#fafafa,#fafafa 10px,#ffffff 10px,#ffffff 20px);border-radius:.5rem;cursor:pointer;z-index:4;}
+    .dropzone strong{color:var(--ink)} .dropzone .hint{font-size:.9rem}
+    .dropzone.dragover{outline:2px dashed var(--accent);outline-offset:-6px;background:#f8fbff;}
+
+    .field{margin:.6rem 0}
+    label{font-size:.9rem;color:var(--muted);margin-right:.5rem}
+    input[type="range"]{vertical-align:middle}
+    .hint{color:var(--muted); font-size:.92rem}
+    .hint.small{font-size:.88rem}
+
+    /* Panel de ayuda colapsable */
+    details.help{
+      margin-top:.6rem; max-width:calc(100% * var(--base-scale));
+      border:1px solid var(--borde); border-radius:.5rem; background:#fafafa;
+    }
+    details.help > summary{
+      list-style:none; cursor:pointer; user-select:none;
+      padding:.6rem .8rem; font-weight:600; color:#0f172a;
+      display:flex; align-items:center; gap:.5rem;
+    }
+    details.help > summary::-webkit-details-marker{display:none}
+    details.help > summary::before{
+      content:"▸"; display:inline-block; transform:rotate(0deg);
+      transition:transform .2s ease; color:var(--accent);
+    }
+    details.help[open] > summary::before{ transform:rotate(90deg); }
+    details.help .help-body{
+      padding:.6rem .9rem .85rem .9rem;
+      border-top:1px solid var(--borde);
+      color:#111;
+      font-size:.92rem;
+      line-height:1.3;
+      display:block;
+    }
+    .help h3{margin:.2rem 0 .4rem 0; font-size:1rem}
+    .help ul{margin:.25rem 0 .5rem 1.1rem; padding:0}
+    .help li{margin:.2rem 0}
+    .kbd{display:inline-block;padding:.05rem .35rem;border:1px solid #cbd5e1;border-bottom-width:2px;border-radius:.35rem;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.88em;background:#fff;}
+
+    #leyenda{margin-top:20px} #leyenda h3{margin:.2rem 0 .4rem 0}
+    #leyenda ul{list-style:none;padding:0;margin:.25rem 0} #leyenda li{margin:.15rem 0}
+
+    @media (max-width:1100px){ .content{flex-direction:column;align-items:stretch} .panel{width:100%} .overlay-container{width:100%} details.help{max-width:100%} }
+
+    /* Mejora móvil */
+    @media (max-width: 600px){
+      html{ font-size: 17px; }
+      .appbar h1{ font-size: 1.35rem; }
+      h2{ font-size: 1.2rem; }
+      .toolbar{ gap:.6rem; }
+      .toolbar button{ padding:.65rem 1rem; font-size:1rem; min-height:44px; border-radius:.6rem; }
+      #fileInput{ font-size:1rem; }
+      label{ font-size:1rem; }
+      #opacidadBlock{ display:flex; align-items:center; gap:.6rem; }
+      input[type="range"]{ height: 34px; }
+      input[type="range"]::-webkit-slider-runnable-track{ height:12px; border-radius:999px; }
+      input[type="range"]::-webkit-slider-thumb{ width:30px; height:30px; margin-top:-9px; border-radius:50%; }
+      input[type="range"]::-moz-range-track{ height:12px; border-radius:999px; }
+      input[type="range"]::-moz-range-thumb{ width:30px; height:30px; border-radius:50%; }
+      select, button, input[type=file]{ font-size:1rem; }
+      #opacidadVal{ font-size:1.1rem; }}
+    /* Swatches de color para la leyenda */
+.swatch{
+  display:inline-block; width:0.95em; height:0.95em;
+  border:1px solid #cbd5e1; border-radius:3px;
+  margin-right:.35rem; vertical-align:-0.12em;
+}
+
+/* Colores lisos */
+.sw-blue{background:#1d4ed8;}
+.sw-lightblue{background:#60a5fa;}
+.sw-green{background:#2e7d32;}
+.sw-salmon{background:#f97373;}
+.sw-red{background:#ef4444;}
+
+/* Azul “tramado” (base celeste + líneas en azul) */
+.sw-blue-hatch{
+  background:
+    repeating-linear-gradient(45deg,
+      rgba(29,78,216,.0) 0 2px,
+      rgba(29,78,216,.18) 2px 3px),
+    #93c5fd; /* base celeste */
+}
+
+  </style>
+</head>
+<body>
+  <header class="appbar"><h1>Ictus GPS</h1></header>
+
+  <main>
+    <div class="content">
+      <div class="panel">
+        <h2>Imagen médica (TC/RM)</h2>
+        <div class="toolbar">
+          <input type="file" accept="image/*" id="fileInput" style="max-width:220px" />
+          <button type="button" id="btnFlip">Voltear horizontal</button>
+          <button type="button" id="btnReset">Reiniciar</button>
+        </div>
+
+        <div class="overlay-container" id="contenedor">
+          <div id="dropzone" class="dropzone" title="Haz clic para elegir archivo">
+            <strong>Arrastra aquí una imagen</strong>
+            <div class="hint">o haz clic para seleccionar</div>
+            <div class="hint">también puedes <strong>pegar</strong> (Ctrl/Cmd+V)</div>
+          </div>
+          <div id="scaleBadge" class="scale-badge">100%</div>
+          <img id="imagenCargada" alt="" aria-hidden="true" />
+          <img id="mapaReferencia" src="" alt="Mapa superpuesto" hidden />
+        </div>
+
+        <!-- Opacidad bajo la imagen -->
+        <div class="field" id="opacidadBlock">
+          <label for="opacidad">Opacidad del mapa:</label>
+          <input type="range" id="opacidad" min="0" max="1" step="0.01" value="0.5" />
+          <span id="opacidadVal" aria-live="polite" style="color:#475569;margin-left:.35rem;">50%</span>
+        </div>
+
+        <!-- AYUDA: oculto por defecto, desplegable -->
+        <details class="help" id="helpPanel">
+          <summary>Ayuda y atajos</summary>
+          <div class="help-body" aria-live="polite">
+            <h3>Uso rápido</h3>
+            <ul>
+              <li><strong>Cargar imagen:</strong> clic en el panel, arrastrar y soltar o <span class="kbd">Ctrl</span>/<span class="kbd">⌘</span>+<span class="kbd">V</span>.</li>
+              <li><strong>Arrastrar:</strong> clic/tocar y arrastra sobre el mapa.</li>
+              <li><strong>Zoom:</strong> rueda (PC) o pellizco (móvil) centrado en el puntero.</li>
+              <li><strong>Reajustar:</strong> botón “Reiniciar” o tecla <span class="kbd">R</span>/<span class="kbd">0</span>.</li>
+            </ul>
+            <h3>Atajos de teclado</h3>
+            <ul>
+              <li><span class="kbd">←</span> <span class="kbd">→</span> <span class="kbd">↑</span> <span class="kbd">↓</span> &nbsp;mover el mapa.</li>
+              <li><span class="kbd">+</span>/<span class="kbd">=</span> y <span class="kbd">-</span> &nbsp;zoom in/out.</li>
+              <li><span class="kbd">R</span> / <span class="kbd">0</span> &nbsp;fit a la imagen base.</li>
+              <li><span class="kbd">F</span> &nbsp;voltear imagen médica.</li>
+            </ul>
+          </div>
+        </details>
+      </div>
+
+      <div class="panel">
+        <h2>Mapa de referencia</h2>
+
+        <!-- Nuevo: selector de juego de mapas -->
+        <div class="field">
+          <label for="selectorSet">Juego de mapas:</label>
+          <select id="selectorSet"></select>
+        </div>
+
+        <div class="field">
+          <label for="selectorMapa">Selecciona mapa:</label>
+          <select id="selectorMapa"></select>
+        </div>
+        <div class="hint small" id="mapHint"></div>
+
+        <div id="leyenda"></div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // ===== Utilidad única =====
+    const clamp = (v,a,b)=> Math.max(a, Math.min(b, v));
+    const IS_TOUCH = ('ontouchstart' in window) || (navigator.maxTouchPoints && navigator.maxTouchPoints > 0);
+
+    // --- Referencias
+    const contenedor   = document.getElementById('contenedor');
+    const dropzone     = document.getElementById('dropzone');
+    const imagenMedica = document.getElementById('imagenCargada');
+    const mapaImg      = document.getElementById('mapaReferencia');
+    const scaleBadge   = document.getElementById('scaleBadge');
+    const fileInput    = document.getElementById('fileInput');
+
+    const selectorSet  = document.getElementById('selectorSet');
+    const selectorMapa = document.getElementById('selectorMapa');
+    const mapHint      = document.getElementById('mapHint');
+
+    const opacidad     = document.getElementById('opacidad');
+    const opacidadVal  = document.getElementById('opacidadVal');
+    const btnFlip      = document.getElementById('btnFlip');
+    const btnReset     = document.getElementById('btnReset');
+    const leyendaBox   = document.getElementById('leyenda');
+
+    // --- Estado
+    let escala = 1, mapaX = 0, mapaY = 0;
+    let arrastrando = false, inicioX = 0, inicioY = 0;
+    let pinchActiva = false, pinchDist0 = 0, escala0 = 1;
+    let centroPinch = {x:0, y:0};
+    const SCALE_MIN = 0.1, SCALE_MAX = 12;
+    let mapNatW = 0, mapNatH = 0;
+
+    // === Conjuntos de mapas ===
+    const mapSets = {
+infra_supra: {
+    label: 'Territorios infra y supratentoriales',
+    maps: [
+      {id:'is1', name:'Agujero magno', src:'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjMG0m1mcm72rnrmfTh6rAA8xsQntXzxiMWS3hXsY_M7h6u8yFypJUbXd4kS456I9ySKpktYnc7yXyeuEqlk41nVn_AwDRdFuTv9zqqgrs9QU5MWIRr8cG8Hi5l_E1cvBPjJlJgHUgmR7HdLXZz4zMQZumzzyf5CjJmIbQ1v7MDmoP3Em0QU22y2V0PF4Y/s520/Radioedia01_recorte_real.JPG'},
+      {id:'is2', name:'Bulbo', src:'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhHItoAHB1X_nCppdHu7WBOr3QhaQ43Lny8whbA_KpUCUTI0gpPz6-MZ2W5jysVMn90J2x_N8tR6yUshNsZ2-oTSYDsZizJ0YFrZIY3Rfz3XNAPzfVY3Sd-UdkXOIq-x41nvQjvK8o9E_m3pjFSa5Z02aja_-yZqFt5f1lXlhJVNpSmiPs06VMlYCq9Id4/s520/Radioedia02_recorte_real.JPG'},
+      {id:'is3', name:'Ángulo pontocerebeloso', src:'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi6yS-6jsK5KASYKZMkKjqdC-JYGkbm3Oct4WJzhZjzX9vFU_pj2l2e-zz6xk4Iut1XbN0IKsiEhOTdmtSIUJQV-rNqBnN1M1ZFg8s0sFmznVXeAkJ4vaVY0Q-2W8bNbYL4oi2WwcucQEgW8A4Co4P4F7uuHrh-ZLnajATdgD_3EvFJHrTfsOP31Kp31_s/s520/Radioedia03_recorte_real.JPG'},
+      {id:'is4', name:'Protuberancia alta', src:'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEijltQXlqdAgiBl5DoMGtXnmWgWS4jxE7YlPjYKLOdMbXUXKqVk0Gckk1wliwNzT0SzCLXsKUE2frInsSPvMonxv2wyWbcejimIy4lKYNBotpBaEH-AIgdHZhEbzWGTbtPLbH_fGX23gQf0NYZvVQ_FX5YaEu2Lj9CggaagKBoHDIdC_Rd1cim4jd1LWpQ/s520/Radioedia04_recorte_real.JPG'},
+      {id:'is5', name:'Mesencéfalo', src:'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgK1WZf2cXvceyzevs5lzrg956N10qY4BNI8o6uniYvS-qFu5LJawSPWiejgJybP6ojFTBH-E3X8iJnCbqXPCvPdW3sql_qNsO8HwJxNhFUMaVkUsDciFKFf3vvlCY8PQcrc_FzycCad3j3aEJ-m6JqR6xBxb4q8xDIV70TOatkY57gB86skkFmv1liRlY/s520/Radioedia05_recorte_real.JPG'},
+      {id:'is6', name:'III ventrículo y tálamo', src:'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjpFlVlEemvS7BW_s0Mlreu_oK3D9QA4TXWqTX05U7p-_hE7W3TRjgXtNf3iUGVeAQjT10RN0CXSTjNYkOXWun5rL3zd2ol8974V69Gglphyqya3vTbLWVFAHXftUOcgQlRrCxQ1K66kN5Yyn4-Tdl6eslQwU9Mc-R7epkvos-G4_O6AkQB5SPkGs0eDYI/s520/Radioedia06_recorte_real.JPG'},
+      {id:'is7', name:'Ganglios de la base', src:'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgx7sz8OTk-36vr3gf6_tMfAPeTOkw-vDnVW4bsJcTAvEzNEXdEDddKF3CBD1pZtD8asNNI_JXzmKB_ic7cB1bUPx6xqYtVrLEuIU6k6mUuu97K0jJWBMekxWxB_kLCvdkStPvH6NFxXP9XFkAQk0M-74oeriA6JUtgOkbdJrKG6FeNyeAiN2nEE4DlDM4/s520/Radioedia07_recorte_real.JPG'},
+      {id:'is8', name:'Cuerpos ventriculares', src:'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjSoZrIXCdjWixqzG2uP9GlBWsSxXK6DVlyGJ4awfpLCX5qb0Im0mSz7ho5SReMCs2QBy2bwpfrp1CSYj0Ox055ekR6CD7O1W_hSaIpJUkWPfBNq-VMCg38gYDo92-dDijDXBnUKe-kQE7Sf_U1HH9i5-qrEXEYfwXGhY5VhM1uvH8dnkf3qOaAIr7jGhw/s520/Radioedia08_recorte_real.JPG'},
+      {id:'is9', name:'Centros semiovales', src:'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjxdVtpPym7PvbTGpfJHELDMBqL427Cf8a9mWGhOJYdfAJ6THnm5XiddTzs_hu2sqwTz5iMvXvmOp7sA_VcI-aZvR9Lj-w4EJNVbpv79ooFycjJSDdQ_UvXJT2xodZYwhuKO2AuhhXSgU_9m_yRYsvYgOqf4rLQ7W3ADQFAWCdLEcUjZdW-HnwFy9QEws4/s520/Radioedia09_recorte_real.JPG'},
+      {id:'is10', name:'Vértex', src:'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh2_7CuZHaqVZ8qsw5SMH-5ktjcq3CnSPLIhRw1lSfoxlsAx9xksQc-A7OMQt8YA80Jn6JIeHi7IlJFSe-5RH2Nt-Cpt392X-BITX7Qc1J1Of-BB__MU3Ko16i0xEgjbEIOYV9NIFD5Zdj5K6QbBEi1Qr6yPHioLDQor2z6xvt8dBd1VHAtuVgGJbjoz1U/s520/Radioedia010_recorte_real.JPG'}
+    ],
+    legendHTML: `
+      <h3>Territorios infra y supratentoriales</h3>
+      <ul>
+  <li><span class="swatch" style="background:#7e22ce;"></span><strong style="color:#7e22ce;">PICA</strong> – Arteria cerebelosa posteroinferior.</li>
+  <li><span class="swatch" style="background:#0284c7;"></span><strong style="color:#0284c7;">AICA</strong> – Arteria cerebelosa anteroinferior.</li>
+  <li><span class="swatch" style="background:#06b6d4;"></span><strong style="color:#06b6d4;">SCA</strong> – Arteria cerebelosa superior.</li>
+  <li><span class="swatch" style="background:#16a34a;"></span><strong style="color:#16a34a;">BA</strong> – Arteria basilar y sus ramas perforantes.</li>
+  <li><span class="swatch" style="background:#1e40af;"></span><strong style="color:#1e40af;">PCA</strong> – Arteria cerebral posterior.</li>
+  <li><span class="swatch" style="background:#7c3aed;"></span><strong style="color:#7c3aed;">Lenticuloestriadas</strong> – Ramas perforantes.</li>
+  <li><span class="swatch" style="background:#ec4899;"></span><strong style="color:#ec4899;">A. coroidea anterior</strong> – Origen en carótida intracraneal.</li>
+  <li><span class="swatch" style="background:#dc2626;"></span><strong style="color:#dc2626;">MCA</strong> – Arteria cerebral media.</li>
+  <li><span class="swatch" style="background:#ca8a04;"></span><strong style="color:#ca8a04;">ACA</strong> – Arteria cerebral anterior.</li>
+  <li><span class="swatch" style="background:#78350f;"></span><strong style="color:#78350f;">Espinales</strong> – Ramas espinales anterior y posterior.</li>
+</ul>
+    `
+  },
+      corticales: {
+        label: 'Arterias y ramas corticales',
+        maps: [
+          {id:'mapa1', name:'Protuberancia', src:'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiW58A9dXEABzK2eUKgWb3h5rPn3AejGklWcfVLslEZ1LpwGz4OHmrusZZGk9LW-96Ot0BC5b-pZZOmsXlXwCzqFIEcl7FhjfQmLP3bxWYtee7FNe9OWe7_XscBO1IbEM5758eClPFGaEC0d5Yy-Jot4S5PNZkMIFNWA5HTe0Eg1YPdcRaYBD-ATmKlxIU/s320-rw/Captura%20de%20pantalla%202025-10-07%20185542.png'},
+          {id:'mapa2', name:'Mesencéfalo', src:'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhl6MOhtoPR4up3X84pNLKRqBpkNXBhVj5i1JfH9eDgq3B7JIX2xObaTuePSqbSLg3T_ZZ4L3XNNEmrT4EGgxYJ2HnTnGKbENtNzCOxcZ_WcikxU66WF4Vdogcd9napjunukCVT_umXSQg1v507dKC2rucbyIELKfnoCIMqsahR8s0PHzntw_8njjXdZ2k/s320-rw/Captura%20de%20pantalla%202025-10-07%20185608.png'},
+          {id:'mapa3', name:'III ventrículo', src:'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgClYVMCr8eBOyYEpTXlVkoGnbbuc90JllCht7nJc2q_HNTiVEa0pfR2O-vSKdXKvbR4PdzilumaXBkdLtx5Z7WsKwDmmFPGPsiYmHmosh5pwoiSxtzlsYEcqpfwdWAZjyoEFQzCQCSs78Rn9ieK0Po9ZqLjScvnF5Rgl6GcayYrvUL4qHR9X-kDmLebLQ/s320-rw/Captura%20de%20pantalla%202025-10-07%20185456.png'},
+          {id:'mapa4', name:'Cuerpos ventriculares', src:'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgrvmv2YbKzsEUNKUfGRt_6U82mxaqMGBhRGMz3PLs8aoG9sYdD2bZsGxvNYzdiw4hI0HjWx5BmmVqyZDwCBhnfM3tWk1H_sSvgnsZgJIC6x9QWOryZAnJwgGambDslAiLTn4OeHb2hunPcVwXVJ8VTcnPz2eE_8SAn8OnNRUdMYRUBU9ZOzXGgBBONbO8/s320-rw/Captura%20de%20pantalla%202025-10-07%20185523.png'},
+          {id:'mapa5', name:'Frontoparietal', src:'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgAoZgprIlAs4NJ2BwV3mraQrQdIWmlNYaA6k-SqrIV_rQTCQxqIqlza9Xy0vHWNdPGfxZkrSMkk9Qg566Iwt2x1meGkgxbsnMxgMRYfMxyABzwIn9He-2QxAayaVMnxhMZtq02EkLQQZNxKVJdpkgnjrY7r2xH0CJHcKWG8BRAGRJu7OHQM5rWUh3DVSw/s320-rw/Captura%20de%20pantalla%202025-10-07%20185430.png'}
+        ],
+        legendHTML: `
+          <h3>Arterias y ramas corticales</h3>
+          <p style="color: blue;"><strong>Arteria cerebral anterior</strong></p>
+          <ul>
+            <li>1. A. frontal interna anterior</li><li>2. A. recurrente de Heubner</li><li>3. A. frontal interna posterior</li>
+            <li>4. A. parietales internas superior e inferior</li><li>5. A. frontal interna media</li><li>6. A. paracentrales</li><li>21a. A. del cuerpo calloso</li>
+          </ul>
+          <p style="color: red;"><strong>Arteria cerebral media</strong></p>
+          <ul>
+            <li>7. A. prefrontal</li><li>8. A. parietales anteriores y posteriores</li><li>9. A. de la circunvolución angular</li>
+            <li>10. A. temporal anterior</li><li>11. A. temporal media</li><li>12. A. temporal posterior</li>
+            <li>13. A. temporooccipital</li><li>14. A. rolándica</li><li>15. A. prerolándica</li><li>16. A. insular</li><li>17. A. lenticuloestriadas</li>
+          </ul>
+          <p style="color: green;"><strong>Arteria cerebral posterior</strong></p>
+          <ul>
+            <li>18. A. occipitotemporal</li><li>19. A. parietooccipital y calcárea</li><li>20. A. tálamo perforantes y coroidea posterior</li><li>21b. A. del cuerpo calloso</li>
+          </ul>
+          <p style="color: purple;"><strong>Arteria coroidea anterior</strong></p>
+          <ul><li>22. A. coroidea anterior</li></ul>
+        `
+      },
+      grandes: {
+        label: 'Grandes vasos intracraneales',
+        maps: [
+          {id:'gv1', name:'Protuberancia media', src:'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgQTIO5nhvFuZUI7W3Bta6dlgNjVyUCE_tDMbqVPgOKQhJeNWD7K2oYCmg3V1KdeiDHW44aSBKYTOZOJSrnge4V-BddCMUX2GO6hYz_QWpQbZaZ7P_W8GwDis5yyxY78qgubzVTEyIl1pG79e068mFA79k3jUlSoADiM5bVzzbaiL6_ZpqiZtDe_XdGjnc/s1600-rw/piece_0_01.png'},{id:'gv2', name:'Protuberancia alta', src:'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjQXNaneT_e6ZrlIZGHEHjYK8cBdTLt4BAEqApN_n-CwbXJxQQzdKpbIvYJTSUZA-jT3xjFgBDbG_k01coHKiVJ-BxeUkAc1GdHofMuX21UVTDSJXUr_XXi9G0YuyikZo5rceTPJjVHwT_IvgHow440Xt9l1-RM5mZnj44mlc1eaE3khqt4Z9Us6zSRmu8/s1600-rw/piece_0_02.png'},{id:'gv3', name:'Mesencéfalo bajo', src:'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhw7kq7je5-7HB0OpYA_y7XCIhG8TjbnxCz1uzytiF7MZqlBbIsl_ijdbBq2p6tEMQ4hAC9e0XIbtFxnWW2oZ2Aw1uT8W41JokVgT6dGOEZhhqj3D2N7HVvMPAESGge4OQjQwSl7jSH4rBWXzQuLLNy3uHgE21GIw7a_wYzPxzkNb9MGkt0zzfUsf-KixE/s1600-rw/piece_0_03.png'},
+          {id:'gv4', name:'Nivel talámico posterior', src:'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgkzlbnyRcwmMmfs2k-oeJDQs6gcX5wZ8r0kCkIsmhq3HfBRxA3qHd5ABtnKpj-JuD8_oMbVci7yze9bDVoZihtlLClkspoabnyejwYMdePuuzA7LyiliH12BYCJMSpO4Y1twHD1OB7Dz15ukn8NJBAVU8hymlfeBnN5fC6T088tyyKsoVqtKIm9rSfTzY/s302/piece_0_04.png'},{id:'gv5', name:'Tálamo y Núcleos basales', src:'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiHT921qwQx68sRLtJzmDEOgjaMNSzZo7DevQSfEP4IMKAOJMIS-estlXFb_GkiMWRPBda6qU4a5MFA3y1fl6LP6SuS9DjLx3a2KddmM64RdaU3EezB5l1Ti-fDy16aBCJKZDAmHQgV1_0rS0k8_vJC6hPaPtv8jP3bfSDnsW5FbZNKBgXmyWy0sVQBMIs/s320-rw/piece_0_05.png'},{id:'gv6', name:'Núcleos basales', src:'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi3agE3fNPdz_aGaNxGEhl3gmVBcJAOuhaeWvNserAMdcIlnqSSGsgSPvVQvqPxz7QDtgYp9jF1MWU0kS5FnWolTde_9zPc1uXl8TOhdi0fUFbMadIa7x-WUPquqF2r4ZDtpb_t6BwPP7GYHOJRln9jGDo5Lkb-itF6RVJM4C3fF5zI10XQvS8ir5rN7JM/s320-rw/piece_0_06.png'},
+          {id:'gv7', name:'Cuerpos ventriculares', src:'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg8yATIafrr4fHgSHwe45L1PGuElqUcF7EQXT6n3UWazYhbVgXdotmjHDjQJuEOMCVyTO3R561XPdgecjYi-PW34Y9c4-6j5x_oBBW5Xj__U_z9qNjHn9MshyphenhyphenvI_uRQLOIRlr5y6cf12A_Snt3o2ug-RrdcWHm-cSBUkFdnY4ttWHX_xfZggfhiFCR_9sg/s320-rw/piece_0_07.png'},{id:'gv8', name:'Corona radiada inferior', src:'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjyqFSG8gSZpE3zqXaAPsdVrBMzJsBxV86sE1LXdDN-S3Kx5zCSdQZkMDqF18O84NzFOjiRRjplkut1F1Qbkey9dZr0i0FjjfjEhIuuIc4bvv8UZxuU3tx689-Wq7WtdumEiWxJHp96kCntzb3yw4rKMC1GDiVM74U5tp3uYLNDfOMhDEH4sAAGA9vatr4/s320-rw/piece_0_08.png'},{id:'gv9', name:'Corona radiada media', src:'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEitlYZjZJL5UBoJmTkU4ASQUShIWtX_FQ0xIzE7B7k_KMvZJwI1MV11sMcAy4WZNDbsRisxaB9lhlL4LY1W1fevK-kwsa-wPV79Lage1OZMHy6cVG7ysWt23ACDcBWZ4uRn-sDk7wHrJRWjjrswWb-oMvVZHf3FnhCiJviaUGBRdp3k9SVd1FRQvqsmBns/s1600-rw/piece_0_09.png'},
+          {id:'gv10', name:'Corona radiata superior', src:'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg7isTXLBB2F0BvSaKVJBJgI7Slp-BRm4tolUEoqSNzWkj_nSP-uMBbj5IxAA2A2evZNFrm8uE5XZv3ETAvesz03tK_aLiRazLmsC9gMUDZj3cB2T98KIDUYclwkIy79OjGaT9_qMVAvX-uSvQ6aAVbrRkVmdW53YIouEz61M9LzlkhLzrF55oE_WuA3rQ/s1600-rw/piece_0_10.png'},{id:'gv11', name:'Convexidad fronto-parietal', src:'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhzsB54BSbGjEgdccGAKksQwkWkX54cdJHxlS8cPhSXV1n_NCLcSyoFiSIxVxj7wNcRmTIVrAiESz7pZrF8i_S7cTnzxhNmuCfUoa0f0gOPf68eKHbMeYKdCDPH_zqX4GFskPGZIV71fMKM7mg13VSqIjMAMqun9tYMtL6jsmkKZaD55LmgXvNCWPazaLI/s1600-rw/piece_0_11.png'},{id:'gv12', name:'Convexidad alta', src:'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgUeKAGh_3j5WcwCeHW1mF9KUg-e6xPFi6TYSnfPVYDy3heSg4I0ewUoiQFk6w_5u4yAYI2Y1Jf01GGZxr_15ukpixqnCwaykW6IOfcik0Vo9XrxiAJDaBxB3l_fG2-o_iNb39ofjI-vV6J_1p_QEBAvndt9dTonyBx2lAx02rT8A2kWy04aB1KIGuf9vQ/s1600-rw/piece_0_12.png'}
+        ],
+        legendHTML: `
+          <h3>Grandes vasos intracraneales</h3>
+  <ul>
+    <li><span class="swatch sw-blue"></span><strong style="color:#1d4ed8">Azul:</strong> Arteria cerebral media, tronco superior.</li>
+    <li><span class="swatch sw-lightblue"></span><strong style="color:#60a5fa">Celeste:</strong> Arteria cerebral media, tronco inferior.</li>
+    <li><span class="swatch sw-blue-hatch"></span><strong style="color:#487485">Azul (tramado):</strong> Arterias lenticuloestriadas.</li>
+    <li><span class="swatch sw-green"></span><strong style="color:#2e7d32">Verde:</strong> Arteria cerebral posterior.</li>
+    <li><span class="swatch sw-salmon"></span><strong style="color:#f97373">Salmón:</strong> Arteria cerebral anterior.</li>
+    <li><span class="swatch sw-red"></span><strong style="color:#ef4444">Rojo:</strong> Arteria coroidea anterior.</li>
+  </ul>        `
+      }
+    };
+
+    // --- Relleno de selects y leyenda
+    function populateSetSelect(){
+      selectorSet.innerHTML = '';
+      for (const key of Object.keys(mapSets)){
+        const opt = document.createElement('option');
+        opt.value = key; opt.textContent = mapSets[key].label;
+        selectorSet.appendChild(opt);
+      }
+    }
+
+    function populateMapOptions(setKey){
+      const set = mapSets[setKey];
+      selectorMapa.innerHTML = '';
+      set.maps.forEach((m, idx)=>{
+        const opt = document.createElement('option');
+        opt.value = m.id; opt.textContent = m.name + (m.src ? '' : ' (no configurado)');
+        if (!m.src) opt.disabled = false; // lo permitimos para ver el aviso
+        if (idx===0) opt.selected = true;
+        selectorMapa.appendChild(opt);
+      });
+      leyendaBox.innerHTML = set.legendHTML;
+      mapHint.textContent = '';
+    }
+
+    function getCurrentMapSrc(){
+      const set = mapSets[selectorSet.value];
+      const chosenId = selectorMapa.value;
+      const entry = set.maps.find(m=>m.id===chosenId);
+      return entry ? entry.src : null;
+    }
+
+    // --- UI mapa
+    function actualizarUI(){
+      mapaImg.style.transform = `translate(${mapaX}px, ${mapaY}px) scale(${escala})`;
+      scaleBadge.style.display = mapaImg.hidden ? 'none' : 'block';
+      if (!mapaImg.hidden) scaleBadge.textContent = Math.round(escala*100)+'%';
+    }
+    function contenedorDesdeImagen(){
+      const rect = imagenMedica.getBoundingClientRect();
+      if (rect.width>0 && rect.height>0){
+        contenedor.style.width  = rect.width + 'px';
+        contenedor.style.height = rect.height + 'px';
+      }
+    }
+    function ajustarMapaAFit(){
+      if (!mapNatW || !mapNatH) return;
+      const w = contenedor.clientWidth, h = contenedor.clientHeight;
+      const s = Math.min(w/mapNatW, h/mapNatH);
+      escala = clamp(s, SCALE_MIN, SCALE_MAX);
+      const mapW = mapNatW * escala, mapH = mapNatH * escala;
+      mapaX = (w - mapW)/2; mapaY = (h - mapH)/2;
+      actualizarUI();
+    }
+
+    // --- Carga imagen y mapa
+    function cargarImagenDesdeArchivo(file){
+      if(!file || !file.type?.startsWith('image/')) return;
+      const lector = new FileReader();
+      lector.onload = (ev)=>{
+        imagenMedica.onload = ()=>{
+          dropzone.style.display = 'none';
+          imagenMedica.removeAttribute('aria-hidden');
+          contenedorDesdeImagen();
+          const src = getCurrentMapSrc();
+          if (src){ cargarMapa(src); } else { mapaImg.hidden = true; mapHint.textContent = 'El mapa seleccionado no tiene imagen configurada.'; }
+          actualizarUI();
+        };
+        imagenMedica.src = ev.target.result;
+      };
+      lector.readAsDataURL(file);
+    }
+    function cargarMapa(src){
+      if (!src){ mapHint.textContent = 'El mapa seleccionado no tiene imagen configurada.'; return; }
+      mapHint.textContent = '';
+      mapaImg.hidden = false;
+      mapaImg.onload = ()=>{
+        mapNatW = mapaImg.naturalWidth; mapNatH = mapaImg.naturalHeight;
+        ajustarMapaAFit();
+      };
+      mapaImg.src = src;
+    }
+
+    // --- Eventos de archivo/entrada
+    fileInput.addEventListener('change', e=> cargarImagenDesdeArchivo(e.target.files?.[0]));
+    dropzone.addEventListener('click', ()=> fileInput.click());
+    ['dragenter','dragover','dragleave','drop'].forEach(evt=> document.addEventListener(evt, e=> e.preventDefault()));
+    ['dragenter','dragover'].forEach(evt=>{
+      contenedor.addEventListener(evt, e=>{e.preventDefault();dropzone.classList.add('dragover');});
+      dropzone  .addEventListener(evt, e=>{e.preventDefault();dropzone.classList.add('dragover');});
+    });
+    ['dragleave','drop'].forEach(evt=>{
+      contenedor.addEventListener(evt, e=>{e.preventDefault();dropzone.classList.remove('dragover');});
+      dropzone  .addEventListener(evt, e=>{e.preventDefault();dropzone.classList.remove('dragover');});
+    });
+    contenedor.addEventListener('drop', e=> cargarImagenDesdeArchivo(e.dataTransfer?.files?.[0]));
+    dropzone  .addEventListener('drop', e=> cargarImagenDesdeArchivo(e.dataTransfer?.files?.[0]));
+    window.addEventListener('paste', e=>{
+      const items = e.clipboardData?.items || [];
+      for (const it of items){ if (it.type?.startsWith('image/')){ cargarImagenDesdeArchivo(it.getAsFile()); break; } }
+    });
+
+    // --- Redimensionado
+    window.addEventListener('resize', ()=>{ contenedorDesdeImagen(); actualizarUI(); });
+
+    // --- Selector de juego y de mapa
+    selectorSet.addEventListener('change', ()=>{
+      populateMapOptions(selectorSet.value);
+      if (imagenMedica.src){
+        const src = getCurrentMapSrc();
+        if (src){ cargarMapa(src); } else { mapaImg.hidden = true; mapHint.textContent = 'El mapa seleccionado no tiene imagen configurada.'; }
+      }
+    });
+
+    selectorMapa.addEventListener('change', ()=>{
+      if (!imagenMedica.src) return; // sin base, no hacemos nada
+      const src = getCurrentMapSrc();
+      if (src){ cargarMapa(src); } else { mapaImg.hidden = true; mapHint.textContent = 'El mapa seleccionado no tiene imagen configurada.'; }
+    });
+
+    // --- Opacidad
+    function actualizarOpacidad(val){ mapaImg.style.opacity = val; opacidadVal.textContent = Math.round(val*100)+'%'; }
+    opacidad.addEventListener('input', e=> actualizarOpacidad(parseFloat(e.target.value)));
+    actualizarOpacidad(parseFloat(opacidad.value));
+
+    // --- Botones
+    btnFlip.addEventListener('click', ()=>{
+      const t = imagenMedica.style.transform;
+      imagenMedica.style.transform = (t === 'scaleX(-1)') ? 'scaleX(1)' : 'scaleX(-1)';
+    });
+    btnReset.addEventListener('click', ajustarMapaAFit);
+
+    // --- Paneo
+    contenedor.addEventListener('mousedown', e=>{
+      if (mapaImg.hidden) return;
+      arrastrando = true; mapaImg.classList.add('grabbing');
+      inicioX = e.clientX - mapaX; inicioY = e.clientY - mapaY; e.preventDefault();
+    });
+    window.addEventListener('mouseup', ()=>{ arrastrando=false; mapaImg.classList.remove('grabbing'); });
+    window.addEventListener('mousemove', e=>{
+      if(!arrastrando) return;
+      mapaX = e.clientX - inicioX; mapaY = e.clientY - inicioY; actualizarUI();
+    });
+
+    // --- Doble clic para fit SOLO en escritorio
+    if (!IS_TOUCH){ contenedor.addEventListener('dblclick', ()=>{ if(!mapaImg.hidden) ajustarMapaAFit(); }); }
+
+    // --- Zoom rueda / gestos
+    function zoomHaciaPuntero(deltaY, clientX, clientY){
+      if (!mapNatW || !mapNatH) return;
+      const rect = contenedor.getBoundingClientRect();
+      const mouseX = clientX - rect.left, mouseY = clientY - rect.top;
+      const preX = (mouseX - mapaX) / escala, preY = (mouseY - mapaY) / escala;
+      const factor = (deltaY < 0) ? 1.1 : 0.9;
+      const nuevaEscala = clamp(escala * factor, SCALE_MIN, SCALE_MAX);
+      mapaX = mouseX - preX * nuevaEscala; mapaY = mouseY - preY * nuevaEscala;
+      escala = nuevaEscala; actualizarUI();
+    }
+    contenedor.addEventListener('wheel', e=>{ if(!mapaImg.hidden){ e.preventDefault(); zoomHaciaPuntero(e.deltaY, e.clientX, e.clientY); }},{passive:false});
+
+    contenedor.addEventListener('touchstart', e=>{
+      if (mapaImg.hidden) return;
+      if(e.touches.length === 1){
+        arrastrando = true; const t = e.touches[0]; inicioX = t.clientX - mapaX; inicioY = t.clientY - mapaY;
+      } else if(e.touches.length === 2){
+        arrastrando = false; pinchActiva = true;
+        const [t1,t2] = e.touches; pinchDist0 = Math.hypot(t2.clientX-t1.clientX, t2.clientY-t1.clientY);
+        escala0 = escala; const r = contenedor.getBoundingClientRect();
+        centroPinch = {x:((t1.clientX+t2.clientX)/2)-r.left, y:((t1.clientY+t2.clientY)/2)-r.top};
+      }
+    }, {passive:false});
+    contenedor.addEventListener('touchmove', e=>{
+      if (mapaImg.hidden) return; e.preventDefault();
+      if(pinchActiva && e.touches.length===2){
+        const [t1,t2]=e.touches; const dist=Math.hypot(t2.clientX-t1.clientX, t2.clientY-t1.clientY);
+        const ratio = dist/(pinchDist0||dist); const nueva = clamp(escala0*ratio, SCALE_MIN, SCALE_MAX);
+        const preX=(centroPinch.x - mapaX)/escala, preY=(centroPinch.y - mapaY)/escala;
+        mapaX = centroPinch.x - preX*nueva; mapaY = centroPinch.y - preY*nueva; escala = nueva; actualizarUI();
+      } else if(arrastrando && e.touches.length===1){
+        const t=e.touches[0]; mapaX = t.clientX - inicioX; mapaY = t.clientY - inicioY; actualizarUI();
+      }
+    }, {passive:false});
+    contenedor.addEventListener('touchend', e=>{
+      if(pinchActiva && e.touches && e.touches.length<2) pinchActiva=false;
+      if(arrastrando && (!e.touches || e.touches.length===0)) arrastrando=false;
+    });
+
+    // --- Atajos teclado
+    document.addEventListener('keydown', e=>{
+      if (mapaImg.hidden) return;
+      const tag=(e.target.tagName||'').toLowerCase();
+      if (e.target.isContentEditable || tag==='textarea' || (tag==='input' && (e.target.type??'text')==='text')) return;
+
+      const r=contenedor.getBoundingClientRect(), cx=r.left+contenedor.clientWidth/2, cy=r.top+contenedor.clientHeight/2, step=20;
+      const k=(e.key||'').toLowerCase();
+      if (['arrowleft','arrowright','arrowup','arrowdown','+','-','=','r','f','0'].includes(k)) e.preventDefault();
+      if (k==='arrowleft'){ mapaX += step; actualizarUI(); }
+      else if (k==='arrowright'){ mapaX -= step; actualizarUI(); }
+      else if (k==='arrowup'){ mapaY += step; actualizarUI(); }
+      else if (k==='arrowdown'){ mapaY -= step; actualizarUI(); }
+      else if (k==='+' || k==='='){ zoomHaciaPuntero(-1, cx, cy); }
+      else if (k==='-'){ zoomHaciaPuntero( 1, cx, cy); }
+      else if (k==='r' || k==='0'){ ajustarMapaAFit(); }
+      else if (k==='f'){ btnFlip.click(); }
+    });
+
+    // --- Inicio
+    // --- Inicio
+window.addEventListener('DOMContentLoaded', ()=>{
+  populateSetSelect();
+  selectorSet.value = 'infra_supra';           // por defecto: Territorios infra y supratentoriales
+  populateMapOptions('infra_supra');           // llena el selector de mapas y la leyenda
+  actualizarOpacidad(parseFloat(opacidad.value));
+});
+
+  </script>
+  <footer style="
+    position:relative;
+    left:50%;
+    transform:translateX(-50%);
+    width:100vw;
+    margin:2rem 0 0 0;
+    padding:1.5rem 0;
+    border-top:1px solid #e5e7eb;
+    background:#ffffff;
+    text-align:center;
+    box-shadow:0 -2px 6px rgba(0,0,0,0.04);
+">
+      <img src="uibanner.png"
+         alt="Unidad de Ictus Málaga" style="max-width:380px;height:auto;opacity:.96;">
+  </a>
+
+</footer>
+</body>
+</html>

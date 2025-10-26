@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<link rel="icon" type="image/png" href="https://rbustamantet.github.io/ictus.cardiopatia/favicon-96x96.png" sizes="96x96" />
+<link rel="icon" type="image/svg+xml" href="https://rbustamantet.github.io/ictus.cardiopatia/favicon.svg" />
+<link rel="shortcut icon" href="https://rbustamantet.github.io/ictus.cardiopatia/favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="https://rbustamantet.github.io/ictus.cardiopatia/apple-touch-icon.png" />
+<link rel="manifest" href="https://rbustamantet.github.io/ictus.cardiopatia/site.webmanifest" />
+<title>Tratamiento hipolipemiante</title>
+<style>
+  :root{--c1:#e9f4ff;--c2:#d2ebff;--c3:#a7d4ff;--ok:#1b5e20;--bad:#b71c1c;
+    --bg:#f8fafc; --card:#ffffff; --ink:#0f172a; --muted:#64748b;
+    --accent:#2563eb; --border:#e5e7eb; --shadow:rgba(2,6,23,.06);
+  }
+/* CAMBIO DE TIPOGRAFÍA: Verdana forzada */
+    html,body, .wrap, .card, label, input, select, button, table, p, h1, h2, h3, li {
+        font-family: Verdana, Geneva, sans-serif !important;
+        /* Asegura que Verdana se use en todos los elementos */
+    }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family: Verdana, Geneva, Tahoma, sans-serif}
+  .wrap{max-width:1100px;margin:0 auto;padding:1rem}
+
+  /* Cabecera unificada (altura moderada, visual limpia) */
+.appbar {
+  position: sticky;
+  top: 0;
+  z-index: 9;
+  background: linear-gradient(180deg, var(--c3), var(--c2));
+  box-shadow: 0 2px 6px rgba(0,0,0,.1);
+}
+
+/* Contenedor interno centrado */
+.appbar .inner {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 8px 16px;          /* controla altura total (~50px) */
+  display: flex;
+  align-items: center;
+}
+
+/* Título de la cabecera */
+.appbar h1 {
+  margin: 0;
+  font-size: 22px;
+  line-height: 1.3;
+  color: #083b66;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-family: system-ui, Verdana, Geneva, Tahoma, sans-serif;
+}
+
+
+  .howto{background:#fff; border:1px solid var(--border); border-radius:14px; box-shadow:0 2px 12px var(--shadow); padding:1rem; margin:.8rem 0 1rem; font-size:14px}
+
+  .grid{display:grid; gap:1rem}
+  @media (min-width:900px){ .grid{grid-template-columns:1.15fr .85fr} }
+
+  .card{background:var(--card); border:1px solid var(--border); border-radius:16px; padding:1rem; box-shadow:0 2px 10px var(--shadow)}
+  .card h2{font-size:16px;margin:.25rem 0 .75rem}
+  fieldset{border:1px solid var(--border); border-radius:12px; padding:.75rem; margin:.75rem 0}
+  legend{font-weight:700; font-size:13px; padding:0 .35rem; color:#1e3a8a}
+  label{display:block; font-size:13px; margin:.4rem 0}
+  .row{display:grid; gap:.5rem}
+  @media (min-width:700px){ .row{grid-template-columns:repeat(2,1fr)} }
+  input[type="number"], select{width:100%; padding:.55rem .6rem; border:1px solid var(--border); border-radius:10px; background:#fff; font-size:14px}
+  .hint{color:var(--muted); font-size:12px}
+  .btns{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.5rem}
+  button{appearance:none; border:1px solid #c7d2fe; background:#2563eb; color:#fff; border-radius:12px; padding:.6rem .9rem; font-weight:700; font-size:14px; cursor:pointer}
+  button.secondary{background:#dbeafe; color:#1e3a8a; border-color:#bfdbfe}
+  button.ghost{background:#fff; color:#0f172a; border-color:var(--border)}
+  .results{border-left:4px solid #2563eb; padding-left:.9rem}
+  .pill{display:inline-block; padding:.15rem .5rem; border-radius:999px; font-size:12px; font-weight:700; border:1px solid var(--border); background:#f1f5f9}
+  .ok{color:#0a7f3f} .warn{color:#b45309} .err{color:#b91c1c}
+  .result-block{margin:.75rem 0; padding:.75rem; border:1px dashed var(--border); border-radius:12px; background:#fafafa}
+  .kbd{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace; font-size:12px; background:#eef2ff; border:1px solid #c7d2fe; padding:.05rem .35rem; border-radius:6px}
+  .hr{height:1px;background:var(--border);margin:1rem 0}
+  .footnote,.disclaimer{font-size:12px; color:#64748b}
+  .hide{display:none !important}
+.tag{background:#3366ff;border:1px solid #cfe3f6;color:#ffffff;padding:2px 8px;border-radius:999px;font-size:.78rem;font-weight:700}
+
+  .toast{position:fixed; bottom:16px; right:16px; background:#0f172a; color:#fff; padding:.6rem .8rem; border-radius:10px; font-size:13px; opacity:0; transform:translateY(8px); transition:opacity .2s ease, transform .2s ease; z-index:50}
+  .toast.show{opacity:1; transform:translateY(0)}
+  details.ref{margin-top:1rem}
+  details.ref summary{cursor:pointer; font-weight:700; color:#1e3a8a}
+  details.ref .refbox{border:1px solid var(--border); border-radius:12px; padding:.75rem; margin-top:.5rem; background:#fff}
+
+  @media print{ .appbar,.btns,.howto{display:none !important} .wrap{padding:.25rem} .result-block{border:1px solid #999} }
+/* =======================================================
+   DISCLAIMER FINAL — fondo rojo tenue
+======================================================= */
+.disclaimer-red{
+  background:#fef2f2;             /* rojo muy claro */
+  border:1px solid #fecaca;       /* borde rosado suave */
+  border-radius:12px;
+  padding:14px 16px;
+  margin:36px auto 0;
+  max-width:960px;
+  box-shadow:0 2px 8px rgba(185,28,28,0.05);
+}
+.disclaimer-red p{
+  margin:0;
+  color:#7f1d1d;                  /* texto rojo oscuro */
+  font-size:14px;
+  line-height:1.5;
+  text-align:left;
+}
+.disclaimer-red b{
+  color:#991b1b;
+}
+
+</style>
+</head>
+<body>
+
+  <div class="appbar">
+  <div class="inner wrap">
+    <h1>Tratamiento hipolipemiante</h1>
+  </div>
+</div>
+
+  <div class="wrap"><div class="howto">
+    <b>Cómo usar:</b> seleccione el escenario clínico, describa el tratamiento actual (incluyendo dosis de estatina si procede) e introduzca el C-LDL.
+    Pulse <span class="tag">Calcular</span> para obtener el objetivo y la actitud clínica. El motor aplica la <i>“regla del 6%”</i> al doblar dosis de estatina y calcula la <i>distancia al objetivo</i>.
+  </div></div>
+
+  <div class="wrap grid">
+    <section class="card">
+      <h2>Seleccionar supuestos (en orden)</h2>
+
+      <form id="formLipidos" autocomplete="off">
+        <fieldset>
+          <legend>1) Escenario clínico</legend>
+          <label><input type="radio" name="escenario" value="aterotrombotico" required> Ictus/AIT <b>aterotrombótico</b> <span class="kbd">&lt;55 mg/dl</span></label>
+          <label><input type="radio" name="escenario" value="no_aterotrombotico"> Ictus/AIT <b>no aterotrombótico</b> <span class="kbd">&lt;70 mg/dl</span></label>
+          <label><input type="radio" name="escenario" value="hemorragico"> Ictus <b>hemorrágico</b> (individualizar) <span class="kbd">&lt;70 mg/dl</span></label>
+        </fieldset>
+
+        <fieldset>
+          <legend>2) Tratamiento hipolipemiante <b>actual</b></legend>
+          <label><input type="radio" name="tratamiento" value="ninguno" required> Sin hipolipemiante</label>
+          <label><input type="radio" name="tratamiento" value="mono_estatina"> Estatina en monoterapia</label>
+          <div id="bloqueEstatina" class="row hide" style="margin:.25rem 0 .5rem">
+            <label> Tipo de estatina
+              <select id="tipoEstatina">
+                <option value="" disabled selected>— seleccione —</option>
+                <option value="atorvastatina">Atorvastatina</option>
+                <option value="rosuvastatina">Rosuvastatina</option>
+                <option value="otra">Otra (simva/prava/pitava…)</option>
+              </select>
+            </label>
+            <label id="wrapDosis"> Dosis actual (mg)
+              <select id="dosisEstatina">
+                <option value="" disabled selected>— seleccione —</option>
+              </select>
+            </label>
+            <div id="notaOtra" class="hint" style="grid-column:1/-1; display:none">Se considerará <strong>intensidad moderada</strong>.</div>
+          </div>
+          <label><input type="radio" name="tratamiento" value="ezetimiba_mono"> Ezetimiba en monoterapia</label>
+          <label><input type="radio" name="tratamiento" value="estatina_ezetimiba"> Estatina + ezetimiba</label>
+
+          <label style="margin-top:.35rem"><input type="checkbox" id="intoleranciaStatinas"> Intolerancia/contraindicación a estatinas</label>
+          <label><input type="checkbox" id="ezetimibaContra"> Ezetimiba contraindicada / no tolerada</label>
+          <label style="margin-top:.35rem"><input type="checkbox" id="ingreso"> Paciente actualmente ingresado (fase hospitalaria)</label>
+        </fieldset>
+
+        <fieldset>
+          <legend>3) Analítica</legend>
+          <div class="row">
+            <label> C-LDL actual (mg/dl)
+              <input type="number" id="ldl" min="0" step="1" placeholder="p. ej., 118" required>
+            </label>
+            <label> C-LDL basal (mg/dl) <span class="hint">(opcional)</span>
+              <input type="number" id="ldlBasal" min="0" step="1" placeholder="si se conoce">
+            </label>
+          </div>
+          <label><input type="checkbox" id="lpaAlta"> Lp(a) elevada / relevante (si se conoce)</label>
+        </fieldset>
+
+        <div class="btns">
+          <button type="submit" id="btnCalcular">Calcular</button>
+          <button type="button" class="secondary" id="btnLimpiar">Borrar</button>
+          <button type="button" class="ghost no-print" id="btnImprimir">Imprimir</button>
+          <button type="button" class="secondary no-print" id="btnCopiar">Copiar</button>
+        </div>
+      </form>
+
+    </section>
+
+    <aside class="card">
+      <h2>Resultados y recomendación</h2>
+      <div id="resultado" class="results">
+        <p class="hint">Complete los supuestos y pulse <strong>Calcular</strong>.</p>
+      </div>
+      <div class="hr"></div>
+      
+<!-- Disclaimer final con fondo rojo tenue (inicialmente oculto) -->
+<div class="disclaimer-red hide" id="disclaimerFinal">
+  <p><small>
+    Esta herramienta tiene finalidad exclusivamente orientativa y no sustituye el juicio clínico del facultativo.
+    Las recomendaciones se basan en guías ESC/EAS y AHA/ASA vigentes, pero deben individualizarse según el perfil
+    de riesgo, comorbilidades y disponibilidad terapéutica. El tratamiento hipolipemiante debe ajustarse siempre
+    bajo supervisión médica.
+  </small></p>
+</div>
+
+
+      <details class="ref">
+        <summary>Referencias bibliográficas</summary>
+        <div class="refbox">
+          <small><ol style="margin:0;padding-left:1.1rem">
+            <li>Mach F, et&nbsp;al. 2019 ESC/EAS Guidelines for the management of dyslipidaemias. <em>Eur Heart J</em>.</li>
+            <li>Visseren FLJ, et&nbsp;al. 2021 ESC Guidelines on cardiovascular disease prevention. <em>Eur Heart J</em>.</li>
+            <li>Kleindorfer DO, et&nbsp;al. 2021 AHA/ASA Guideline for the Prevention of Stroke in Patients With Stroke and TIA. <em>Stroke</em>.</li>
+            <li>Cannon CP, et&nbsp;al. IMPROVE-IT. <em>N Engl J Med</em> 2015.</li>
+            <li>Sabatine MS, et&nbsp;al. FOURIER; Giugliano RP, et&nbsp;al. FOURIER-OLE. <em>N Engl J Med</em>.</li>
+            <li>Schwartz GG, et&nbsp;al. ODYSSEY OUTCOMES. <em>N Engl J Med</em> 2018.</li>
+            <li>Ray KK, et&nbsp;al. ORION-10/11 (inclisirán). <em>N Engl J Med</em> 2020.</li>
+            <li>Nissen SE, et&nbsp;al. CLEAR Outcomes (ácido bempedoico). <em>N Engl J Med</em> 2023.</li>
+          </ol></small>
+        </div>
+      </details>
+    </aside>
+  </div>
+
+  <div id="toast" class="toast">Copiado al portapapeles</div>
+
+<script>
+(function(){
+  const $ = sel => document.querySelector(sel);
+  const $$ = sel => Array.from(document.querySelectorAll(sel));
+
+  function toggleBloqueEstatina(){
+    const tto = ($$('input[name="tratamiento"]:checked')[0]||{}).value;
+    const show = (tto==='mono_estatina' || tto==='estatina_ezetimiba');
+    $('#bloqueEstatina').classList.toggle('hide', !show);
+  }
+  function loadDoseOptions(){
+    const tipo = $('#tipoEstatina').value, dose = $('#dosisEstatina');
+    const wrap = $('#wrapDosis'), nota = $('#notaOtra');
+    dose.innerHTML = '<option value="" disabled selected>— seleccione —</option>';
+    wrap.style.display = 'block'; nota.style.display = 'none';
+    if(tipo==='atorvastatina'){ [10,20,40,80].forEach(m=>{let o=document.createElement('option');o.value=m;o.textContent=m+' mg';dose.appendChild(o);}); }
+    else if(tipo==='rosuvastatina'){ [5,10,20,40].forEach(m=>{let o=document.createElement('option');o.value=m;o.textContent=m+' mg';dose.appendChild(o);}); }
+    else if(tipo==='otra'){ wrap.style.display='none'; nota.style.display='block'; }
+  }
+  $$('input[name="tratamiento"]').forEach(r=>r.addEventListener('change', toggleBloqueEstatina));
+  $('#tipoEstatina').addEventListener('change', loadDoseOptions);
+
+  function objetivoLDL(escenario){ return (escenario==='aterotrombotico')?55:70; }
+  function pctReduccion(ldlActual, ldlBasal){ if(!ldlBasal||ldlBasal<=0) return null; return Math.round((ldlBasal-ldlActual)/ldlBasal*100); }
+  function textoEscenario(v){ return {'aterotrombotico':'Ictus/AIT aterotrombótico','no_aterotrombotico':'Ictus/AIT no aterotrombótico','hemorragico':'Ictus hemorrágico'}[v]||'—'; }
+  function statinIntensity(tipo,dosis){
+    if(!tipo) return 'none';
+    if(tipo==='atorvastatina'){ if(dosis>=40) return 'high'; if(dosis===10||dosis===20) return 'moderate'; return 'moderate'; }
+    if(tipo==='rosuvastatina'){ if(dosis>=20) return 'high'; if(dosis===5||dosis===10) return 'moderate'; return 'moderate'; }
+    if(tipo==='otra') return 'moderate'; return 'none';
+  }
+
+  function textoTratamiento(p){
+    const t=p.tratamiento;
+    if(t==='ninguno') return 'Sin hipolipemiante';
+    if(t==='ezetimiba_mono') return 'Ezetimiba en monoterapia';
+    if(t==='mono_estatina' || t==='estatina_ezetimiba'){
+      const base=(p.tipoEstatina? p.tipoEstatina.charAt(0).toUpperCase()+p.tipoEstatina.slice(1):'Estatina');
+      const doseTxt=(p.tipoEstatina==='otra')?' (intensidad moderada)':(p.dosisEstatina?` ${p.dosisEstatina} mg`: '');
+      return (t==='mono_estatina'?'Monoterapia: ':'Combinación: ')+base+doseTxt+(t==='estatina_ezetimiba'?' + ezetimiba':'');
+    }
+    return '—';
+  }
+
+  function construirRecomendacion(data){
+  const recs=[], avisos=[], notas=[];
+  const obj=objetivoLDL(data.escenario);
+  const delta=Math.max(0, data.ldl-obj);
+  const ezContra=$('#ezetimibaContra').checked;
+  const intolerancia=$('#intoleranciaStatinas').checked;
+  const inpatient=data.ingreso;
+
+  const intensidad=statinIntensity(data.tipoEstatina, data.dosisEstatina);
+  const isA40=(data.tipoEstatina==='atorvastatina' && data.dosisEstatina===40);
+  const isR20=(data.tipoEstatina==='rosuvastatina' && data.dosisEstatina===20);
+  const isA80=(data.tipoEstatina==='atorvastatina' && data.dosisEstatina===80);
+  const isR40=(data.tipoEstatina==='rosuvastatina' && data.dosisEstatina===40);
+  const NEAR_MG = 5;
+
+  if(data.escenario==='aterotrombotico')
+    recs.push(`<div class="result-block"><strong>Objetivo C-LDL:</strong> <span class="kbd">&lt;${obj} mg/dl</span> <span class="hint">(y reducción ≥50% si hay basal)</span>.</div>`);
+  else if(data.escenario==='no_aterotrombotico')
+    recs.push(`<div class="result-block"><strong>Objetivo C-LDL:</strong> <span class="kbd">&lt;${obj} mg/dl</span>.</div>`);
+  else
+    recs.push(`<div class="result-block"><strong>Objetivo orientativo C-LDL:</strong> <span class="kbd">&lt;${obj} mg/dl</span>. Individualizar.</div>`);
+
+  if(delta===0){
+    recs.push(`<div class="result-block ok"><strong>Objetivo alcanzado.</strong> Mantener y reforzar adherencia.</div>`);
+  } else {
+
+    // ===============================================
+    // SIN HIPOLIPEMIANTE PREVIO
+    // ===============================================
+    if(data.tratamiento==='ninguno'){
+      if(!intolerancia){
+        recs.push(`<div class="result-block">
+          <strong>Iniciar</strong> estatina de <u>alta intensidad</u>${inpatient?' (durante ingreso)':''}: 
+          atorvastatina 40–80 mg o rosuvastatina 20–40 mg. Control 4–12 semanas.${inpatient && data.escenario==='aterotrombotico' && data.ldl>=100 
+          ? ' <strong>Valorar iPCSK9 precoz / inclisirán.</strong>' : ''}
+        </div>`);
+      } else {
+        if(ezContra){
+          recs.push(`<div class="result-block"><u>Intolerancia a estatinas</u> y ezetimiba no viable: 
+          <strong>iPCSK9</strong> o <strong>inclisirán</strong>. Considerar <strong>ácido bempedoico</strong>.</div>`);
+        } else {
+          recs.push(`<div class="result-block"><u>Intolerancia a estatinas</u>: 
+          <strong>ezetimiba</strong> ± <strong>ácido bempedoico</strong>; si no objetivo, 
+          <strong>iPCSK9</strong> / <strong>inclisirán</strong>.</div>`);
+        }
+      }
+    }
+
+    // ===============================================
+    // ESTATINA EN MONOTERAPIA
+    // ===============================================
+    if(data.tratamiento==='mono_estatina'){
+      if(intolerancia){
+        if(ezContra){
+          recs.push(`<div class="result-block"><u>Intolerancia a estatinas</u> (monoterapia actual) y ezetimiba no viable: 
+          <strong>iPCSK9</strong> o <strong>inclisirán</strong>. Valorar <strong>ácido bempedoico</strong>.</div>`);
+        } else {
+          recs.push(`<div class="result-block"><u>Intolerancia a estatinas</u>: 
+          <strong>suspender/evitar la escalada</strong> y usar <strong>ezetimiba</strong> ± <strong>ácido bempedoico</strong>; 
+          si no objetivo, <strong>iPCSK9</strong>/ <strong>inclisirán</strong>.</div>`);
+        }
+      } else {
+        if(intensidad==='moderate'){
+          const esc=(data.tipoEstatina==='atorvastatina')?'Subir a atorvastatina 40–80 mg.':
+                    (data.tipoEstatina==='rosuvastatina')?'Subir a rosuvastatina 20–40 mg.':
+                    'Optimizar a alta intensidad.';
+          recs.push(`<div class="result-block">
+            <strong>No objetivo con dosis moderada:</strong> ${esc} Revisión 4–12 semanas. 
+            ${ezContra?'(ezetimiba no viable).':'Si persiste, <strong>añadir ezetimiba</strong>.'}
+            ${inpatient && data.escenario==='aterotrombotico' && data.ldl>=100 
+              ? ' <strong>Valorar iPCSK9 precoz / inclisirán.</strong>' : ''}
+          </div>`);
+        } else if(intensidad==='high'){
+          if((isA40 || isR20) && delta <= NEAR_MG){
+            const textoMax = isA40 ? 'atorvastatina 80 mg' : 'rosuvastatina 40 mg';
+            const extra = Math.round(data.ldl*0.06);
+            recs.push(`<div class="result-block"><strong>Muy cerca del objetivo</strong> con <u>estatina alta (monoterapia)</u>: 
+            <strong>subir a ${textoMax}</strong> y reevaluar en 4–12 semanas (doblar dosis ≈6% ≈ ${extra} mg/dl). 
+            Si persiste fuera de objetivo, <strong>añadir ezetimiba</strong>.
+            ${inpatient && data.escenario==='aterotrombotico' && data.ldl>=100 
+              ? ' <strong>Valorar iPCSK9 precoz / inclisirán.</strong>' : ''}</div>`);
+          } else if(ezContra){
+            recs.push(`<div class="result-block">En <u>estatina alta</u> y ezetimiba no viable: 
+            <strong>iPCSK9</strong> o <strong>inclisirán</strong>. 
+            Valorar <strong>ácido bempedoico</strong> como coadyuvante.</div>`);
+          } else if(isA80 || isR40){
+            recs.push(`<div class="result-block">En <u>dosis máximas</u>: 
+            <strong>añadir ezetimiba</strong>; si persiste, 
+            <strong>iPCSK9</strong>/ <strong>inclisirán</strong>. 
+            Considerar <strong>ácido bempedoico</strong>.
+            ${inpatient && data.escenario==='aterotrombotico' && data.ldl>=100 
+              ? ' <strong>Valorar iPCSK9 precoz / inclisirán.</strong>' : ''}</div>`);
+          } else {
+            const extra=Math.round(data.ldl*0.06);
+            recs.push(`<div class="result-block">En <u>estatina alta</u> sin objetivo: 
+            <strong>añadir ezetimiba</strong> (doblar dosis ≈6% ≈ ${extra} mg/dl).
+            ${inpatient && data.escenario==='aterotrombotico' && data.ldl>=100 
+              ? ' <strong>Valorar iPCSK9 precoz / inclisirán.</strong>' : ''}</div>`);
+          }
+        } else {
+          avisos.push('Indique tipo y dosis de estatina para ajustar la recomendación.');
+        }
+      }
+    }
+
+    // ===============================================
+    // EZETIMIBA EN MONOTERAPIA
+    // ===============================================
+    if(data.tratamiento==='ezetimiba_mono'){
+      if(ezContra){
+        avisos.push('Seleccionó “Ezetimiba en monoterapia” pero marcó “Ezetimiba contraindicada/no tolerada”. Se interpreta como sin tratamiento activo.');
+        if(intolerancia){
+          recs.push(`<div class="result-block"><u>Intolerancia a estatinas</u> y ezetimiba no viable: 
+          <strong>iPCSK9</strong> o <strong>inclisirán</strong>. Valorar <strong>ácido bempedoico</strong>.</div>`);
+        } else {
+          recs.push(`<div class="result-block"><strong>Iniciar</strong> estatina de alta intensidad; 
+          si no viable/no se acepta, <strong>iPCSK9</strong> / <strong>inclisirán</strong> y considerar 
+          <strong>ácido bempedoico</strong>.
+          ${inpatient && data.escenario==='aterotrombotico' && data.ldl>=100 
+            ? ' <strong>Valorar iPCSK9 precoz / inclisirán.</strong>' : ''}</div>`);
+        }
+      } else {
+        if(intolerancia){
+          recs.push(`<div class="result-block"><strong>Ezetimiba en monoterapia</strong> con <u>intolerancia a estatinas</u>: 
+          si no objetivo, <strong>iPCSK9</strong> o <strong>inclisirán</strong>. 
+          El <strong>ácido bempedoico</strong> es opción oral adicional.</div>`);
+        } else {
+          recs.push(`<div class="result-block"><strong>Ezetimiba en monoterapia</strong> y fuera de objetivo: 
+          <strong>iniciar/optimizar estatina de alta intensidad</strong> manteniendo ezetimiba; 
+          si persiste, <strong>iPCSK9</strong> / <strong>inclisirán</strong>. 
+          Considerar <strong>ácido bempedoico</strong>.
+          ${inpatient && data.escenario==='aterotrombotico' && data.ldl>=100 
+            ? ' <strong>Valorar iPCSK9 precoz / inclisirán.</strong>' : ''}</div>`);
+        }
+      }
+    }
+
+    // ===============================================
+    // ESTATINA + EZETIMIBA
+    // ===============================================
+    if(data.tratamiento==='estatina_ezetimiba'){
+      if(ezContra){
+        avisos.push('Marcó “Ezetimiba contraindicada/no tolerada” pero seleccionó “Estatina + ezetimiba”. Se tratará como estatina en monoterapia.');
+      } else {
+        const intens=statinIntensity(data.tipoEstatina, data.dosisEstatina);
+        if(intens==='moderate'){
+          const esc=(data.tipoEstatina==='atorvastatina')?'Optimizar a atorvastatina 40–80 mg.':
+                    (data.tipoEstatina==='rosuvastatina')?'Optimizar a rosuvastatina 20–40 mg.':
+                    'Optimizar a alta intensidad.';
+          recs.push(`<div class="result-block">Con <u>estatina moderada + ezetimiba</u>: 
+          ${esc} Si persiste fuera de objetivo, <strong>iPCSK9</strong> o <strong>inclisirán</strong>. 
+          Valorar <strong>ácido bempedoico</strong>.
+          ${inpatient && data.escenario==='aterotrombotico' && data.ldl>=100 
+            ? ' <strong>Valorar iPCSK9 precoz / inclisirán.</strong>' : ''}</div>`);
+        } else {
+          if((isA40 || isR20) && delta <= NEAR_MG){
+            const textoMax = isA40 ? 'atorvastatina 80 mg' : 'rosuvastatina 40 mg';
+            const extra = Math.round(data.ldl*0.06);
+            recs.push(`<div class="result-block"><strong>Muy cerca del objetivo</strong> con <u>estatina alta + ezetimiba</u>: 
+            <strong>subir a ${textoMax}</strong> y reevaluar en 4–12 semanas (doblar dosis ≈6% ≈ ${extra} mg/dl). 
+            Reservar <strong>iPCSK9</strong>/<strong>inclisirán</strong> si persiste fuera de objetivo.
+            ${inpatient && data.escenario==='aterotrombotico' && data.ldl>=100 
+              ? ' <strong>Valorar iPCSK9 precoz / inclisirán.</strong>' : ''}</div>`);
+          } else {
+            recs.push(`<div class="result-block">Con <u>estatina alta + ezetimiba</u> y fuera de objetivo: 
+            <strong>iPCSK9</strong> (evolocumab/alirocumab) o <strong>inclisirán</strong>. 
+            El <strong>ácido bempedoico</strong> puede considerarse como opción oral adicional.
+            ${inpatient && data.escenario==='aterotrombotico' && data.ldl>=100 
+              ? ' <strong>Valorar iPCSK9 precoz / inclisirán.</strong>' : ''}</div>`);
+          }
+        }
+      }
+    }
+
+    // ===============================================
+    // ESCENARIO HEMORRÁGICO — AVISO
+    // ===============================================
+    if(data.escenario==='hemorragico'){
+      avisos.push('En ictus hemorrágico, individualizar la intensificación hipolipemiante según balance riesgo/beneficio.');
+    }
+  }
+
+  if(data.pctRed !== null){
+    recs.push(`<div class="result-block"><strong>Reducción vs. basal:</strong> ${Math.abs(data.pctRed)}% 
+    ${data.pctRed>=50?'<span class="ok">(≥50% alcanzado)</span>':'<span class="warn">(&lt;50% — intensificar)</span>'}</div>`);
+  }
+
+  const transv=[]; 
+  transv.push(`Planificar <strong>revisión clínica y analítica a los 3 meses</strong>.`);
+  if(data.lpaAlta) transv.push(`<strong>Lp(a) elevada</strong>: intensificar el control de C-LDL (iPCSK9 reduce modestamente Lp(a)).`);
+  notas.push(`<div class="result-block">${transv.join(' ')}</div>`);
+
+  return {recs, avisos, notas, obj, delta};
+}
+
+
+  function ensamblarResumenTXT(payload, htmlPlano){
+    const nl='\r\n';
+    let t=[];
+    t.push('SELECCIÓN DE TRATAMIENTO HIPOLIPEMIANTE');
+    t.push('======================================'+nl);
+    t.push(`Escenario: ${textoEscenario(payload.escenario)}`);
+    t.push(`Tratamiento actual: ${textoTratamiento(payload)}`);
+    t.push(`C-LDL actual: ${payload.ldl} mg/dl`);
+    if(payload.ldlBasal) t.push(`C-LDL basal: ${payload.ldlBasal} mg/dl`);
+    t.push(`Objetivo: < ${payload.obj} mg/dl`);
+    t.push(`Distancia a objetivo: ${payload.delta} mg/dl`);
+    if(payload.pctRed!==null) t.push(`Reducción vs. basal: ${payload.pctRed}%`);
+    t.push('');
+    t.push('Conclusiones y actitud:');
+    t.push('-----------------------');
+    const tmp=document.createElement('div'); tmp.innerHTML=htmlPlano;
+    t.push(tmp.textContent.replace(/\s+\n/g,'\n').replace(/\n{3,}/g,'\n\n'));
+    return t.join(nl);
+  }
+
+  async function copiarResumen(){
+    const $$r = n => ($$('input[name="'+n+'"]:checked')[0]||{}).value;
+    const escenario=$$r('escenario');
+    const tratamiento=$$r('tratamiento');
+    const ingreso=$('#ingreso').checked;
+    const ldl=parseFloat($('#ldl').value);
+    const ldlBasal=$('#ldlBasal').value ? parseFloat($('#ldlBasal').value) : null;
+    const lpaAlta=$('#lpaAlta').checked;
+
+    let tipoEstatina=null, dosisEstatina=null;
+    if(tratamiento==='mono_estatina' || tratamiento==='estatina_ezetimiba'){
+      tipoEstatina=$('#tipoEstatina').value || null;
+      if(tipoEstatina==='atorvastatina' || tipoEstatina==='rosuvastatina'){
+        const v=$('#dosisEstatina').value; if(v) dosisEstatina=parseInt(v,10);
+      }
+    }
+    if(!escenario || !tratamiento || isNaN(ldl)){ alert('Complete los campos obligatorios antes de copiar el resumen.'); return; }
+    const obj=objetivoLDL(escenario), delta=Math.max(0, ldl-obj);
+    const pctRed=pctReduccion(ldl, ldlBasal);
+    const payload={escenario,tratamiento,ingreso,ldl,ldlBasal,lpaAlta,pctRed,tipoEstatina,dosisEstatina,obj,delta};
+    const tmp=construirRecomendacion(payload);
+    const html=tmp.recs.join('') + (tmp.avisos.length? `<p>${tmp.avisos.join(' ')}</p>`:'') + tmp.notas.join('');
+    const texto=ensamblarResumenTXT(payload, html);
+
+    try{
+      await navigator.clipboard.writeText(texto);
+      mostrarToast('Copiado al portapapeles');
+    }catch(e){
+      const ta=document.createElement('textarea'); ta.value=texto; document.body.appendChild(ta); ta.select();
+      try{ document.execCommand('copy'); mostrarToast('Copiado al portapapeles'); }
+      catch(err){ alert('No se pudo copiar automáticamente. Seleccione y copie manualmente.'); }
+      finally{ ta.remove(); }
+    }
+  }
+
+  function mostrarToast(msg){
+    const t=$('#toast'); t.textContent=msg; t.classList.add('show');
+    setTimeout(()=>t.classList.remove('show'), 1800);
+  }
+
+  $('#formLipidos').addEventListener('submit', function(e){
+    e.preventDefault();
+    const $$r = n => ($$('input[name="'+n+'"]:checked')[0]||{}).value;
+    const escenario=$$r('escenario');
+    const tratamiento=$$r('tratamiento');
+    const ingreso=$('#ingreso').checked;
+    const ldl=parseFloat($('#ldl').value);
+    const ldlBasal=$('#ldlBasal').value ? parseFloat($('#ldlBasal').value) : null;
+    const lpaAlta=$('#lpaAlta').checked;
+
+    let tipoEstatina=null, dosisEstatina=null;
+    if(tratamiento==='mono_estatina' || tratamiento==='estatina_ezetimiba'){
+      tipoEstatina=$('#tipoEstatina').value || null;
+      if(tipoEstatina==='atorvastatina' || tipoEstatina==='rosuvastatina'){
+        const v=$('#dosisEstatina').value; if(v) dosisEstatina=parseInt(v,10);
+      }
+      if(!tipoEstatina){ $('#resultado').innerHTML=`<p class="err">Indique el <strong>tipo de estatina</strong>.</p>`; return; }
+      if((tipoEstatina==='atorvastatina'||tipoEstatina==='rosuvastatina') && !dosisEstatina){
+        $('#resultado').innerHTML=`<p class="err">Indique la <strong>dosis actual</strong> de la estatina.</p>`; return;
+      }
+    }
+
+    if(!escenario || !tratamiento || isNaN(ldl)){
+      $('#resultado').innerHTML = `<p class="err">Complete todos los campos obligatorios.</p>`; return;
+    }
+
+    const pctRed=pctReduccion(ldl, ldlBasal);
+    const payload={escenario,tratamiento,ingreso,ldl,ldlBasal,lpaAlta,pctRed,tipoEstatina,dosisEstatina};
+    const {recs,avisos,notas,obj,delta}=construirRecomendacion(payload);
+
+    let html='';
+    html+=`<div class="pill">Escenario</div> ${textoEscenario(escenario)}<br>`;
+    html+=`<div class="pill">C-LDL</div> ${ldl} mg/dl · <div class="pill">Objetivo</div> &lt;${obj} mg/dl · <div class="pill">Distancia</div> ${delta} mg/dl`;
+    if(pctRed!==null) html+=` · <div class="pill">Reducción vs basal</div> ${pctRed}%`;
+    html+=`<br><div class="pill">Tratamiento</div> ${textoTratamiento(payload)}`;
+    html+=`<div class="hr"></div>`;
+    html+=recs.join('');
+    if(avisos.length) html+=`<div class="result-block warn"><strong>Notas:</strong> ${avisos.join(' ')}</div>`;
+    if(notas.length) html+=notas.join('');
+    $('#resultado').innerHTML=html;
+// Mostrar el disclaimer solo tras obtener resultado válido
+$('#disclaimerFinal').classList.remove('hide');
+
+  });
+
+  $('#btnLimpiar').addEventListener('click', ()=>{
+  $('#formLipidos').reset();
+  $('#bloqueEstatina').classList.add('hide');
+  $('#wrapDosis').style.display='block';
+  $('#notaOtra').style.display='none';
+  $('#resultado').innerHTML = `<p class="hint">Complete los supuestos y pulse <strong>Calcular</strong>.</p>`;
+  $('#disclaimerFinal').classList.add('hide'); // ocultar el disclaimer
+});
+
+  $('#btnImprimir').addEventListener('click', ()=>{
+  const resultado = $('#resultado').innerHTML.trim();
+  if(!resultado || resultado.includes('Complete')){ alert('Primero calcule una recomendación.'); return; }
+
+  const fecha = new Date().toLocaleString('es-ES', { dateStyle:'short', timeStyle:'short' });
+  const informe = `
+  <!doctype html>
+  <html lang="es">
+  <head>
+  <meta charset="utf-8">
+  <title>Informe – Tratamiento hipolipemiante</title>
+  <style>
+    :root{
+      --bg:#f8fafc; --card:#ffffff; --ink:#0f172a; --muted:#475569;
+      --accent:#2563eb; --accent-light:#dbeafe;
+      --ok:#0a7f3f; --warn:#b45309; --bad:#b91c1c;
+    }
+    body{
+      font-family:Verdana, Geneva, Tahoma, sans-serif;
+      color:var(--ink);
+      background:var(--bg);
+      margin:32px auto;
+      max-width:800px;
+      line-height:1.5;
+    }
+    h1{color:var(--accent);font-size:1.4rem;margin-bottom:4px;}
+    h2{font-size:1.1rem;margin:18px 0 6px;}
+    p{margin:4px 0 8px;}
+    .muted{color:var(--muted);}
+    .card{
+      background:var(--card);
+      border:1px solid var(--accent-light);
+      border-radius:14px;
+      padding:18px 20px;
+      margin-top:14px;
+      box-shadow:0 4px 14px rgba(0,0,0,.06);
+    }
+    .pill{
+      display:inline-block;
+      background:var(--accent-light);
+      color:var(--accent);
+      border-radius:999px;
+      padding:2px 8px;
+      font-size:.78rem;
+      font-weight:700;
+      margin-right:4px;
+    }
+    .result-block{margin:.7rem 0;padding:.7rem;border:1px dashed #cbd5e1;border-radius:12px;background:#f9fafb;}
+    .ok{color:var(--ok);} .warn{color:var(--warn);} .err{color:var(--bad);}
+    ul{margin:0 0 0 20px;padding:0;}
+    .foot{
+      margin-top:16px;
+      font-size:.85rem;
+      color:var(--muted);
+      border-top:1px solid var(--accent-light);
+      padding-top:8px;
+      text-align:right;
+    }
+    button{display:inline-block;margin-top:14px;background:var(--accent);color:white;border:0;border-radius:999px;padding:8px 14px;font-weight:600;cursor:pointer;}
+    @media print {.no-print{display:none}}
+  </style>
+  </head>
+  <body>
+    <h1>Informe – Selección de tratamiento hipolipemiante</h1>
+    <div class="muted">Generado: ${fecha}</div>
+
+    <div class="card">
+      ${resultado}
+      <div class="foot">Herramienta de apoyo clínico. Interpretación facultativa obligatoria.</div>
+    </div>
+
+    <button class="no-print" onclick="window.print()">Imprimir / Guardar PDF</button>
+    <script>window.addEventListener('load',()=>setTimeout(()=>window.print(),300));<\/script>
+  </body>
+  </html>`;
+
+  const w = window.open('', '_blank');
+  w.document.open();
+  w.document.write(informe);
+  w.document.close();
+});
+
+  $('#btnCopiar').addEventListener('click', copiarResumen);
+
+  toggleBloqueEstatina();
+})();
+</script>
+<footer style="
+    position:relative;
+    left:50%;
+    transform:translateX(-50%);
+    width:100vw;
+    margin:2rem 0 0 0;
+    padding:1.5rem 0;
+    border-top:1px solid #e5e7eb;
+    background:#ffffff;
+    text-align:center;
+    box-shadow:0 -2px 6px rgba(0,0,0,0.04);
+">
+      <img src="uibanner.png"
+         alt="Unidad de Ictus Málaga" style="max-width:380px;height:auto;opacity:.96;">
+  </a>
+
+</footer>
+</body>
+</html>
