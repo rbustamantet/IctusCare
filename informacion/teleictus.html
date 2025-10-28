@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Centros de Trombectomía · SAS</title>
+<style>
+:root{
+  --bg:#f9fafc;
+  --ink:#0e1a33;
+  --accent-dark:#0f3d83;
+  --accent-light:#2563eb;
+  --border:#e5e9f2;
+  --muted:#64748b;
+}
+html,body{
+  margin:0; padding:0; background:var(--bg); color:var(--ink);
+  font-family:Verdana, Geneva, Tahoma, sans-serif; line-height:1.6;
+}
+/* Cabecera */
+header{
+  background:var(--accent-dark); color:#fff; padding:.75rem 0;
+  position:sticky; top:0; z-index:10; box-shadow:0 2px 6px rgba(0,0,0,.08);
+}
+.bar{
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+  max-width:850px; margin:0 auto; padding:0 .9rem;
+}
+.title{font-weight:800; letter-spacing:.2px; font-size:1.15rem;}
+.actions a{
+  display:inline-flex; align-items:center; gap:6px;
+  padding:6px 10px; border-radius:10px; text-decoration:none;
+  border:1px solid rgba(255,255,255,.16); background:rgba(255,255,255,.08);
+  color:#fff; font-weight:700; font-size:.92rem;
+}
+.actions a:hover{background:#1c60c3; border-color:rgba(127,179,255,.35);}
+
+/* Contenido */
+main{
+  max-width:850px; margin:0 auto; padding:1.25rem 1rem 2rem;
+  background:#fff; border-radius:12px; box-shadow:0 2px 10px rgba(0,0,0,.04);
+}
+h1{margin:.25rem 0 0.5rem; font-size:1.25rem; color:var(--accent-dark);}
+.lead{color:var(--muted); margin:.25rem 0 1rem; font-size:.98rem;}
+.grid{
+  display:grid; gap:16px; margin-top:.5rem;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+}
+.card{
+  border:1px solid var(--border); border-radius:12px; padding:1rem;
+  background:#f8fafc; transition:all .2s ease;
+  box-shadow:0 1px 4px rgba(0,0,0,.03);
+}
+.card:hover{transform:translateY(-2px); box-shadow:0 6px 14px rgba(37,99,235,.12); border-color:#cfe2ff;}
+.card .prov{font-weight:800; color:var(--accent-dark); margin:0 0 .35rem;}
+.card .hos{margin:.15rem 0 .25rem; font-weight:700;}
+.card .city{color:var(--muted); font-size:.95rem; margin:0 0 .5rem;}
+.badge{
+  display:inline-block; font-size:.75rem; padding:.2rem .5rem; border-radius:999px;
+  background:#dbeafe; color:#0f3d83; font-weight:700; border:1px solid #c7ddfe;
+}
+.note{
+  margin-top:1.25rem; padding:.9rem; border:1px dashed #cfe2ff; border-radius:10px;
+  background:#f5f8ff; color:#0b2a5a; font-size:.9rem;
+}
+
+/* Botón inferior volver */
+.back-wrap{ text-align:center; margin-top:1.25rem; }
+.back-btn{
+  display:inline-block; background:var(--accent-dark); color:#fff; text-decoration:none;
+  font-weight:700; padding:.65rem 1.2rem; border-radius:10px;
+  box-shadow:0 4px 10px rgba(15,61,131,.22); transition:background .2s, transform .1s, box-shadow .2s;
+}
+.back-btn:hover{ background:#1c60c3; transform:translateY(-1px); box-shadow:0 6px 12px rgba(15,61,131,.32);}
+
+/* Footer */
+footer{
+  position:relative; left:50%; transform:translateX(-50%); width:100vw;
+  margin:1.5rem 0 0; padding:1.25rem 0; border-top:1px solid #e5e7eb;
+  background:#ffffff; text-align:center; box-shadow:0 -2px 6px rgba(0,0,0,0.04);
+}
+footer img{max-width:380px; height:auto; opacity:.96;}
+
+@media (max-width:768px){
+  .title{font-size:1.05rem;}
+  main{padding:1rem;}
+}
+/* === TOOLTIP con animación y resalte del hospital activo === */
+.tooltip {
+  position: relative;
+  cursor: pointer;
+  transition: box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+/* Al pasar o activar: resalte del hospital */
+.tooltip:hover,
+.tooltip.active {
+  border-color: #93c5fd;
+  box-shadow: 0 0 0 3px #dbeafe;
+}
+
+/* Cuadro emergente */
+.tooltiptext {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  z-index: 99999;
+  top: 105%; /* aparece justo debajo */
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  background: #fff;
+  color: var(--ink);
+  font-size: 0.9rem;
+  line-height: 1.4;
+  border: 1px solid var(--border);
+  box-shadow: 0 8px 20px rgba(15,61,131,0.25);
+  border-radius: 10px;
+  padding: 0.9rem 1rem;
+  width: 260px;
+  max-width: 90vw;
+  pointer-events: none;
+  transition:
+    opacity 0.35s cubic-bezier(.25,.1,.25,1),
+    transform 0.35s cubic-bezier(.25,.1,.25,1),
+    visibility 0.35s;
+}
+
+/* Flecha superior */
+.tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: -7px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 7px;
+  border-style: solid;
+  border-color: transparent transparent #ffffff transparent;
+}
+
+/* Estado visible con animación */
+.tooltip:hover .tooltiptext,
+.tooltip.active .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+  pointer-events: auto;
+}
+
+/* Evitar que los contenedores creen stacking context que tape tooltips */
+.grid, main, .card {
+  position: static !important;
+  overflow: visible !important;
+  z-index: auto !important;
+}
+/* Icono ℹ️ visible siempre en cada tarjeta */
+.info-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 20px;
+  height: 20px;
+  stroke: #0f3d83 !important;   /* color fijo azul institucional */
+  fill: none;
+  cursor: pointer;
+  opacity: 1 !important;        /* totalmente visible siempre */
+  z-index: 20;                  /* sobre el contenido de la tarjeta */
+  pointer-events: none;         /* no bloquea el clic en la tarjeta */
+}
+/* Asegurar que los tooltips estén por encima del footer */
+footer {
+  position: relative;
+  z-index: 1; /* el footer queda por debajo de tooltips */
+}
+
+.tooltiptext {
+  z-index: 999999 !important; /* fuerza prioridad máxima sobre todo */
+}
+
+body {
+  overflow: visible !important;
+}
+
+</style>
+</head>
+<body>
+
+<header>
+  <div class="bar">
+    <div class="title">Centros de Trombectomía · Servicio Andaluz de Salud</div>
+    <div class="actions"><a href="../index.html">Inicio</a></div>
+  </div>
+</header>
+
+<main>
+  <h1>Hospitales con trombectomía mecánica 24/7</h1>
+  <p class="lead">Red de referencia del SAS para el ictus isquémico agudo con oclusión de gran vaso (OGV). Coordinación con el Centro Andaluz de Teleictus (CATI).</p>
+
+  <div class="grid">
+
+<!-- MALAGA -->
+    <div class="card tooltip">
+      <svg class="info-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="#0f3d83" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><circle cx="12" cy="8" r="1"/>
+      </svg>
+      <div class="prov">MÁLAGA</div>
+      <div class="hos">H.U. Regional de Málaga</div>
+      <div class="city">Málaga</div>
+      <span class="badge">Nodo de trombectomía</span>
+      <div class="tooltiptext">
+        <strong>Hospitales derivadores:</strong><br>
+        H.U. Clínico Virgen de la Victoria<br>
+        H.U. Costa del Sol (Marbella)<br>
+        H. de Antequera<br>
+        H. de Ronda<br>
+        H. de la Axarquía (Vélez-Málaga)<br>
+        H. de Melilla
+      </div>
+    </div>
+
+    <!-- GRANADA -->
+    <div class="card tooltip">
+      <svg class="info-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="#0f3d83" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><circle cx="12" cy="8" r="1"/>
+      </svg>
+      <div class="prov">GRANADA</div>
+      <div class="hos">H.U. Virgen de las Nieves</div>
+      <div class="city">Granada</div>
+      <span class="badge">Nodo de trombectomía</span>
+      <div class="tooltiptext">
+        <strong>Hospitales derivadores:</strong><br>
+        H.U. San Cecilio (PTS)<br>
+        H. de Baza<br>
+        H. de Motril<br>
+        HARE Guadix<br>
+        HARE Loja<br>
+        HARE Alcalá la Real
+      </div>
+    </div>
+
+    <!-- ALMERIA -->
+    <div class="card tooltip">
+      <svg class="info-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="#0f3d83" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><circle cx="12" cy="8" r="1"/>
+      </svg>
+      <div class="prov">ALMERÍA</div>
+      <div class="hos">H.U. Torrecárdenas</div>
+      <div class="city">Almería</div>
+      <span class="badge">Nodo de trombectomía</span>
+      <div class="tooltiptext">
+        <strong>Hospitales derivadores:</strong><br>
+        H. de Poniente (El Ejido)<br>
+        H. La Inmaculada (Huércal-Overa)<br>
+        HARE Guadix (interprovincial)
+      </div>
+    </div>
+
+    <!-- SEVILLA - HUELVA -->
+    <div class="card tooltip">
+      <svg class="info-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="#0f3d83" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><circle cx="12" cy="8" r="1"/>
+      </svg>
+      <div class="prov">SEVILLA–HUELVA</div>
+      <div class="hos">H.U. Virgen del Rocío</div>
+      <div class="city">Sevilla</div>
+      <span class="badge">Nodo de trombectomía</span>
+      <div class="tooltiptext">
+        <strong>Hospitales derivadores:</strong><br>
+        H.U. de Valme (Sevilla)<br>
+        H. San Juan de Dios (Bormujos)<br>
+        H. de Osuna<br>
+        H. de Écija<br>
+        HARE Morón<br>
+        HARE Lebrija<br>
+        HARE Utrera<br>
+        HARE Constantina<br>
+        H. Infanta Elena (Huelva)<br>
+        H. de Riotinto
+      </div>
+    </div>
+
+    <!-- CORDOBA - JAEN -->
+    <div class="card tooltip">
+      <svg class="info-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="#0f3d83" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><circle cx="12" cy="8" r="1"/>
+      </svg>
+      <div class="prov">CÓRDOBA–JAÉN</div>
+      <div class="hos">H.U. Reina Sofía</div>
+      <div class="city">Córdoba</div>
+      <span class="badge">Nodo de trombectomía</span>
+      <div class="tooltiptext">
+        <strong>Hospitales derivadores:</strong><br>
+        H.U. de Jaén<br>
+        H. de Andújar<br>
+        H. de Linares<br>
+        H. de Úbeda<br>
+        HARE Cazorla (pendiente)<br>
+        HARE Alcalá la Real<br>
+        HARE Sierra Segura<br>
+        H. de Montilla<br>
+        H. Infanta Margarita (Cabra)<br>
+        H. Valle de los Pedroches (Pozoblanco)<br>
+        HARE Puente Genil<br>
+        HARE Valle del Guadiato
+      </div>
+    </div>
+
+    <!-- CADIZ -->
+    <div class="card tooltip">
+      <svg class="info-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="#0f3d83" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><circle cx="12" cy="8" r="1"/>
+      </svg>
+      <div class="prov">CÁDIZ</div>
+      <div class="hos">H.U. Puerta del Mar</div>
+      <div class="city">Cádiz</div>
+      <span class="badge">Nodo de trombectomía</span>
+      <div class="tooltiptext">
+        <strong>Hospitales derivadores:</strong><br>
+        H.U. de Jerez<br>
+        H. de Puerto Real<br>
+        H. Punta Europa (Algeciras)<br>
+        H. La Línea de la Concepción<br>
+        H. de Ceuta
+      </div>
+    </div>
+
+    
+
+  </div>
+<!-- Información práctica -->
+<section style="margin-top:2rem; background:#f8fafc; border:1px solid #e5e9f2; border-radius:10px; padding:1rem 1.2rem;">
+  <h3 style="color:#0f3d83; margin-top:0;">Información práctica</h3>
+  <ul style="margin:0.5rem 0 0.5rem 1.2rem;">
+    <li>Los pacientes con sospecha de <strong>oclusión de gran vaso (OGV)</strong> deben ser trasladados al nodo de trombectomía más próximo, siguiendo los tiempos de derivación establecidos.</li>
+    <li>El <strong>Centro Andaluz de Teleictus (CATI)</strong> coordina en tiempo real la activación de los equipos neurointervencionistas y la selección de pacientes.</li>
+    <li>Los hospitales derivadores disponen de protocolo CATI y conexión de imagen para transmisión inmediata (PACS o visor remoto).</li>
+  </ul>
+</section>
+
+<!-- Indicadores de calidad -->
+<section style="margin-top:1.5rem;">
+  <h3 style="color:#0f3d83; margin-bottom:0.5rem;">Indicadores asistenciales de referencia</h3>
+  <table style="width:100%; border-collapse:collapse; font-size:0.9rem;">
+    <thead>
+      <tr style="background:#dbeafe; color:#0f3d83;">
+        <th style="padding:0.5rem; border:1px solid #cfe2ff; text-align:left;">Indicador</th>
+        <th style="padding:0.5rem; border:1px solid #cfe2ff; text-align:left;">Objetivo</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="border:1px solid #e5e9f2; padding:0.45rem;">Tiempo puerta-TC</td>
+        <td style="border:1px solid #e5e9f2; padding:0.45rem;">≤ 20 min</td>
+      </tr>
+      <tr>
+        <td style="border:1px solid #e5e9f2; padding:0.45rem;">Tiempo puerta-aguja (tPA)</td>
+        <td style="border:1px solid #e5e9f2; padding:0.45rem;">≤ 45 min</td>
+      </tr>
+      <tr>
+        <td style="border:1px solid #e5e9f2; padding:0.45rem;">Tiempo puerta-punción (trombectomía)</td>
+        <td style="border:1px solid #e5e9f2; padding:0.45rem;">≤ 90 min</td>
+      </tr>
+      <tr>
+        <td style="border:1px solid #e5e9f2; padding:0.45rem;">Tasa de reperfusión exitosa (mTICI ≥ 2b)</td>
+        <td style="border:1px solid #e5e9f2; padding:0.45rem;">≥ 85 %</td>
+      </tr>
+      <tr>
+        <td style="border:1px solid #e5e9f2; padding:0.45rem;">Tasa de independencia funcional (mRS 0-2 al alta)</td>
+        <td style="border:1px solid #e5e9f2; padding:0.45rem;">≥ 40 %</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<div class="note">
+    <strong>Nota:</strong> Red con 6 nodos de trombectomía del SAS, coordinada con el Centro Andaluz de Teleictus (CATI). Última revisión: 28-10-2025.
+  </div>
+
+  <div class="back-wrap">
+    <a href="index.html" class="back-btn">Volver</a>
+    <!-- o bien: <a href="javascript:history.back()" class="back-btn">Volver</a> -->
+  </div>
+</main>
+
+
+</main>
+
+<footer><img src="uibanner.png" alt="Unidad de Ictus Málaga"></footer>
+
+<script>
+document.querySelectorAll('.tooltip').forEach(el=>{
+  el.addEventListener('click', e=>{
+    e.stopPropagation();
+    const tip = el.querySelector('.tooltiptext');
+    document.querySelectorAll('.tooltiptext').forEach(t=>t!==tip && t.classList.remove('visible'));
+    tip.classList.toggle('visible');
+  });
+});
+document.addEventListener('click', ()=>document.querySelectorAll('.tooltiptext').forEach(t=>t.classList.remove('visible')));
+</script>
+</body>
+</html>
