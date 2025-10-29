@@ -70,15 +70,18 @@
   }
 
   /* CONTENEDOR DEL MENÚ DE ICONOS */
-  .menu{
-    display:grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    gap:28px;
-    width:90%;
-    max-width:600px;
-    margin-bottom:40px;
-    animation: fadeUp 1s ease-out .6s both;
-  }
+  .menu {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;   /* centra las filas incompletas */
+  align-items: center;
+  gap: 28px;
+  width: 90%;
+  max-width: 700px;
+  margin: 0 auto 40px;
+  animation: fadeUp 1s ease-out .6s both;
+}
+
 
   .icon-btn{
     display:flex;
@@ -139,6 +142,7 @@
     padding:20px 0 10px;
     animation: fadeUp 1s ease-out 1.5s both;
   }
+
 </style>
 </head>
 <body>
@@ -155,7 +159,7 @@
   <div class="icon-circle">
     <img src="iconos/unidadesico.png" alt="Nuestra Unidad">
   </div>
-  <span class="label">Nuestra<br>Unidad</span>
+<span class="label">Nuestra&nbsp;Unidad</span>
 </a>
 
 
