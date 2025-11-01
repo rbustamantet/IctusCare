@@ -2,462 +2,301 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<link rel="icon" type="image/png" href="https://rbustamantet.github.io/ictus.cardiopatia/favicon-96x96.png" sizes="96x96" />
-<link rel="icon" type="image/svg+xml" href="https://rbustamantet.github.io/ictus.cardiopatia/favicon.svg" />
-<link rel="shortcut icon" href="https://rbustamantet.github.io/ictus.cardiopatia/favicon.ico" />
-<link rel="apple-touch-icon" sizes="180x180" href="https://rbustamantet.github.io/ictus.cardiopatia/apple-touch-icon.png" />
-<link rel="manifest" href="https://rbustamantet.github.io/ictus.cardiopatia/site.webmanifest" />
-<title>Escala RoPE</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="manifest" href="../site.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="../iconos/ictusgps.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../iconos/ictusgps.png">
+<link rel="shortcut icon" href="../iconos/ictusgps.png">
+<meta name="theme-color" content="#0f3d83">
+<title>Escala RoPE — Risk of Paradoxical Embolism</title>
+
 <style>
-/* =================================================
-  ESTILOS ESCALA RoPE (Azules y Ancho Completo)
-=================================================
-*/
 :root{
-  --bg:#f8fafc; 
-  --ink:#0f172a;
-  --azul:#0b2c5f; 
-  --gris:#6b7280; 
-  --borde:#e5e7eb;
-  --ok:#0a7f3f; 
-  --error:#b91c1c;
-  --accent:#2563eb; 
-  --accent-light:#dbeafe; 
-  /* Nuevos colores para riesgo dinámico */
-  --color-bajo: #dcfce7; /* Azul claro */
-  --color-intermedio: #fef9c3; /* Amarillo suave */
-  --color-alto: #fee2e2; /* Rojo muy suave */
+  --bg:#f8fafc; --ink:#0f172a; --borde:#e5e7eb;
+  --ok:#166534; --ok-bg:#e9fce7; --ok-ring:#bbf7d0;
+  --mid:#92400e; --mid-bg:#fff7ed; --mid-ring:#fed7aa;
+  --bad:#991b1b; --bad-bg:#fef2f2; --bad-ring:#fecaca;
+  --accent:#2563eb; --accent-light:#dbeafe;
 }
 
-/* Cabecera pegajosa (Estilo común) */
-.rope-appbar{
-  position:sticky; top:0; z-index:1000;
-  background:rgba(255,255,255,0.9);
-  border-bottom:1px solid var(--accent-light);
-  backdrop-filter:saturate(140%) blur(8px);
-  -webkit-backdrop-filter:saturate(140%) blur(8px);
-  transition:box-shadow .15s,border-color .15s,background .15s;
+/* ===== CABECERA ===== */
+.appbar {
+  position: sticky; top: 0; z-index: 1000;
+  background: #0f3d83; color: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
-.rope-appbar.scrolled{box-shadow:0 8px 24px rgba(0,0,0,.08);border-color:#e2e8f0}
-
-.rope-appbar-inner{max-width:980px; margin:0 auto; display:flex; align-items:center; gap:12px; padding:10px 16px}
-.rope-appbar h1{margin:0; font-size:22px; line-height:1.2; color:var(--accent); font-weight:800}
-.rope-spacer{flex:1}
-.rope-pill{
-  display:inline-block; max-width:60vw;
-  padding:6px 10px; border-radius:999px;
-  background:var(--accent-light); color:var(--azul); border:1px solid #bfdbfe;
-  font-size:12px; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+.appbar-inner {
+  max-width: 980px; margin: 0 auto;
+  padding: 4px 16px;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px;
 }
-
-/* Estilos de Contenido */
-.rope-card{background:#fff; border:1px solid var(--borde); border-radius:16px; padding:18px; box-shadow:0 2px 10px rgba(15,23,42,.06); margin-top:12px}
-.rope-title {
-    font-size: 1.2rem;
-    font-weight: 800;
-    color: var(--azul);
-    margin: 0 0 10px 0;
-    border-bottom: 2px solid var(--accent-light);
-    padding-bottom: 5px;
+.left-group { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+.appbar h1 { margin:0; font-size:22px; font-weight:800; color:#fff; }
+.pill {
+  display:inline-flex; align-items:center; justify-content:center;
+  min-width:38px; height:32px; padding:6px 10px;
+  border-radius:999px; font-size:13px; font-weight:700;
+  border:1px solid transparent; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
 }
-
-/* Controles de Formulario */
-label{font-size:14px; font-weight:700; display:block; margin:12px 0 6px; color:var(--azul)}
-.rope-item {margin-bottom: 12px;}
-.rope-item label {font-weight: 400; display: inline-flex; align-items: center; margin: 0;}
-.rope-item input[type="checkbox"] {margin-right: 8px;}
-
-/* Resultado y Puntuación */
-.rope-result{display:none}
-.rope-result.show{display:block}
-.rope-score-box{
-  border:1px dashed var(--borde);
-  border-radius:16px;
-  padding:16px;
-  text-align:center;
-  background:#fff;
-  box-shadow:0 2px 10px rgba(15,23,42,.06);
+.pill-init {background:#dbeafe; color:#1e3a8a; border-color:#bfdbfe;}
+.pill-ok   {background:#dcfce7; color:#065f46; border-color:#86efac;}
+.pill-warn {background:#fef3c7; color:#92400e; border-color:#fde68a;}
+.pill-bad  {background:#fee2e2; color:#991b1b; border-color:#fecaca;}
+.btn {
+  display:inline-flex;align-items:center;justify-content:center;
+  height:32px;padding:0 14px;border-radius:10px;
+  text-decoration:none;border:1px solid rgba(127,179,255,.35);
+  background:#1c60c3;color:white;font-size:0.9rem;font-weight:700;
+  transition:background .2s,border-color .2s;
+  overflow:hidden;text-overflow:ellipsis;
+  transform: translateY(-8px);
 }
+.btn:hover{background:#0C00FF;}
 
-.rope-score-box h3 {
-    margin: 0 0 10px 0;
-    font-size: 1.1rem;
-    color: var(--azul);
-    border-bottom: 1px dashed #bfdbfe;
-    padding-bottom: 5px;
+/* ===== CUERPO ===== */
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Verdana, Geneva, sans-serif;}
+.wrap{max-width:980px;margin:16px auto 48px;padding:0 16px;}
+.panel{background:#fff;border:1px solid var(--borde);border-radius:16px;padding:16px;box-shadow:0 2px 10px rgba(15,23,42,.06);}
+label{font-weight:900;color:#0b1f44;margin-top:8px;display:block;}
+select{width:100%;padding:10px 12px;border:1px solid #cbd5e1;border-radius:10px;background:#fff;font-size:14px;}
+select:focus{outline:none;box-shadow:0 0 0 3px #dbeafe;}
+.note{color:#64748b;font-size:12px;margin-top:8px;}
+.grid{display:grid;gap:10px;}
+@media(min-width:720px){.grid{grid-template-columns:1fr 1fr;}}
+
+/* ===== CHECKS ===== */
+.check{display:flex;align-items:center;gap:8px;margin:6px 0;color:#0b1f44;font-weight:700;}
+.check input{transform:scale(1.1);}
+
+/* ===== RESULTADOS ===== */
+.kpi{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px;}
+.box{border:1.5px dashed #c7dbff;border-radius:14px;padding:14px;background:#f8fbff;text-align:center;}
+.ttl{font-size:14px;color:#334155;font-weight:800;margin-bottom:2px;}
+.val{font-size:24px;font-weight:900;color:#0b2c5f;}
+.mini{font-size:12px;color:#64748b;margin-top:4px;}
+.ok{background:var(--ok-bg);border-color:var(--ok-ring);} 
+.warn{background:var(--mid-bg);border-color:var(--mid-ring);} 
+.bad{background:var(--bad-bg);border-color:var(--bad-ring);} 
+.ok .val{color:var(--ok);} .warn .val{color:var(--mid);} .bad .val{color:var(--bad);}
+
+/* ===== BOTONES ===== */
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;}
+.btn-action{
+  flex:1 1 48%;
+  border:none;border-radius:10px;padding:12px;
+  font-size:15px;font-weight:700;cursor:pointer;
+  transition:background .2s;
 }
-.rope-val {font-size: 32px; font-weight: 900; color: var(--azul);}
-.rope-prob {font-size: 1.1rem; font-weight: 700; color: var(--azul);}
-.rope-class {font-size: 0.95rem; color: var(--ink); margin-top: 8px;}
-.rope-err{display:none; background:#fef2f2; color:var(--error); border:1px solid #fecaca; border-radius:12px; padding:10px 12px; margin-top:10px}
+.btn-clear {background:#fff; color:#0b2c5f; border:1px solid #2563eb;}
+.btn-clear:hover {background:#eff6ff;}
+.btn-copy {background:#fff; color:#0f3d83; border:1px solid #2563eb;}
+.btn-copy:hover {background:#eff6ff;}
+.btn-copy.copiado{background:#0f3d83!important;color:#fff!important;}
 
-/* Explicación del riesgo */
-#riskExplanation {
-    margin-top: 15px;
-    padding: 12px;
-    border-left: 4px solid var(--accent);
-    background: #f0f8ff; /* Tono de azul muy suave */
-    text-align: left;
-    font-size: 0.95rem;
-}
-#riskExplanation p {margin: 0 0 5px 0;}
-#riskExplanation b {color: var(--azul);}
-
-
-/* Botones */
-.rope-actions{margin-top: 20px; display: flex; gap: 10px;}
-.rope-actions button {flex: 1;}
-.btn-calc{
-  background: var(--accent);
-  color: #fff;
-  border:1px solid var(--accent); border-radius:10px; padding:12px 16px; font-size:15px;
-  font-weight:700; cursor:pointer;
-  transition: background-color 0.2s;
-}
-.btn-calc:hover {background: #1e69b8;}
-.btn-clear{
-  border:1px solid var(--azul); border-radius:10px; padding:12px 16px; font-size:15px;
-  background:var(--bg); color:var(--azul); font-weight:700; cursor:pointer;
-  transition: background-color 0.2s;
-}
-.btn-clear:hover {background: #eef6ff;}
-
-/* Desplegable de Abreviaturas */
-.rope-abbr-card {margin-top: 20px;}
-.rope-abbr-card details summary {font-weight: 700; color: var(--azul); cursor: pointer; padding: 5px 0;}
-.rope-abbr-card ul {list-style: none; padding: 0; margin: 10px 0 0 0; font-size: 0.9rem; border-left: 3px solid var(--borde); padding-left: 10px;}
- 
-/* ... (Mantén tu código CSS anterior) ... */
-
-
-/* ... (Mantén las reglas rope-appbar, rope-pill, etc.) ... */
-
-/* Resultado y Puntuación */
-.rope-result.show .rope-score-box {
-    /* Base style */
-    border: 1px solid var(--accent);
-    background: var(--accent-light);
-    border-radius: 16px;
-    padding: 16px 20px;
-    margin-top: 15px;
-    text-align: center;
+/* ===== RESUMEN ===== */
+#resumenText{
+  white-space:pre-wrap;font-size:13px;color:#0f172a;margin-top:12px;
+  border:1px dashed var(--borde);border-radius:10px;padding:10px 12px;
+  background:#f8fafc;line-height:1.45;
 }
 
-/* Colores Dinámicos para la Caja de Puntuación */
-.risk-low {
-    border-color: #bbf7d0;
-    background: var(--accent-light);
+/* ===== DETALLES ===== */
+details summary{
+  cursor:pointer;font-weight:700;color:#0b2c5f;
+  margin-top:14px;
 }
-.risk-intermediate {
-    border-color: #fde68a; /* Naranja */
-    background: #fffbe6;
-}
-.risk-high {
-    border-color: #fecaca; /* Rojo */
-    background: #fef2f2;
-}
+details[open] summary{color:#2563eb;}
+details ul{margin-top:6px;font-size:13px;color:#334155;line-height:1.4;}
 
-/* ... (Mantén el resto de tu código CSS) ... */
-
-body {
-  overflow-x: hidden;
-}
-body{
-  margin:0;
-  padding:0;
-  background:var(--bg);
-  color:var(--ink);
-  font-family:Verdana, Geneva, Tahoma, sans-serif;
-  overflow-x:hidden;
-}
-.rope-title{font-size:18px;font-weight:800;color:var(--accent);margin:0 0 10px;border-bottom:2px solid var(--accent-light);padding-bottom:5px;}
-label{font-size:14px;font-weight:700;color:var(--azul);}
-.rope-pill.risk-low{background:#dcfce7;color:#166534;border-color:#bbf7d0;}
-.rope-pill.risk-intermediate{background:#fef9c3;color:#92400e;border-color:#fde68a;}
-.rope-pill.risk-high{background:#fee2e2;color:#991b1b;border-color:#fecaca;}
-.rope-container{max-width:880px;margin:16px auto 48px;padding:0 16px;}
+/* ===== PIE ===== */
+footer{position:relative;left:50%;transform:translateX(-50%);
+  width:100vw;margin:2rem 0 0 0;padding:1.5rem 0;
+  border-top:1px solid #e5e7eb;background:#ffffff;
+  text-align:center;box-shadow:0 -2px 6px rgba(0,0,0,0.04);}
 </style>
+</head>
+<body>
 
-<div class="rope-wrapper">
-<header class="rope-appbar" role="region" aria-label="Cabecera Escala RoPE">
-    <div class="rope-appbar-inner">
-        <h1>Escala RoPE</h1>
-        <div class="rope-spacer"></div>
-        <output id="pill" class="rope-pill" aria-live="polite" aria-atomic="true">RoPE: —</output>
+<header class="appbar" role="region" aria-label="Cabecera RoPE">
+  <div class="appbar-inner">
+    <div class="left-group">
+      <h1>Escala RoPE</h1>
+      <output id="pill" class="pill pill-init" aria-live="polite" aria-atomic="true">—</output>
     </div>
+    <div class="actions">
+      <a class="btn" href="../index.html">Inicio</a>
+    </div>
+  </div>
 </header>
-    
-<div class="rope-container">
-  <div class="rope-card">
-    <h2 class="rope-title">Cálculo de la Puntuación RoPE</h2>
-    
-    <form id="ropeForm" autocomplete="off">
-        
-        <label for="age">1. Edad</label>
+
+<main class="wrap">
+  <section class="panel">
+    <p class="note">RoPE clásica (0–10 puntos). Estima la probabilidad de que el FOP sea causal del ictus.</p>
+
+    <!-- Entradas -->
+    <div class="grid">
+      <div>
+        <label for="age">Edad</label>
         <select id="age">
-            <option value="">Selecciona...</option>
-            <option value="5">Menos de 30 años (+5 ptos)</option>
-            <option value="4">30 a 39 años (+4 ptos)</option>
-            <option value="3">40 a 49 años (+3 ptos)</option>
-            <option value="2">50 a 59 años (+2 ptos)</option>
-            <option value="1">60 a 69 años (+1 pto)</option>
-            <option value="0">Más de 70 años (+0 ptos)</option>
+          <option value="">Selecciona…</option>
+          <option value="5">≤ 30 años (+5)</option>
+          <option value="4">31–40 años (+4)</option>
+          <option value="3">41–50 años (+3)</option>
+          <option value="2">51–60 años (+2)</option>
+          <option value="1">61–70 años (+1)</option>
+          <option value="0">&gt; 70 años (+0)</option>
         </select>
-        
-        <label>2. Factores de Riesgo Clínicos</label>
-        
-        <div class="rope-item">
-            <label><input type="checkbox" id="noDM" value="1"> Ausencia de diabetes (+1 pto)</label>
-        </div>
-        <div class="rope-item">
-            <label><input type="checkbox" id="noHTN" value="1"> Ausencia de hipertensión (+1 pto)</label>
-        </div>
-        <div class="rope-item">
-            <label><input type="checkbox" id="noPriorStroke" value="1"> Ausencia de ictus o AIT previo (+1 pto)</label>
-        </div>
-<div class="rope-item">
-  <label><input type="checkbox" id="noSmoke" value="1"> Ausencia de tabaquismo activo (+1 pto)</label>
-</div>
-        <div class="rope-item">
-            <label><input type="checkbox" id="cortex" value="1"> Infarto cortical en neuroimagen (+1 pto)</label>
-        </div>            
-        <div id="err" class="rope-err"></div>
-    </form>
-  </div>
-
-  <div id="resultCard" class="rope-card rope-result">
-      <div class="rope-score-box">
-          <h3>Puntuación RoPE</h3>
-          <div class="rope-val" id="ropeScore">—</div>
-          <div class="rope-prob" id="probability">Probabilidad de ictus por FOP: —</div>
-          <div class="rope-class" id="fopClass">Clasificación: —</div>
       </div>
 
-      <div id="riskExplanation">
-          <p><b>Explicación del Riesgo:</b> <span id="riskText">Seleccione las opciones y calcule para ver la explicación.</span></p>
+      <div>
+        <label>Factores clínicos (marcar si están AUSENTES)</label>
+        <label class="check"><input type="checkbox" id="noHTN" value="1"> No hipertensión (+1)</label>
+        <label class="check"><input type="checkbox" id="noDM" value="1"> No diabetes (+1)</label>
+        <label class="check"><input type="checkbox" id="noSmoke" value="1"> No tabaquismo activo (+1)</label>
+        <label class="check"><input type="checkbox" id="noPrior" value="1"> No ictus/AIT previo (+1)</label>
+        <label class="check"><input type="checkbox" id="cortical" value="1"> Infarto cortical en neuroimagen (+1)</label>
+      </div>
+    </div>
+
+    <!-- Resultados -->
+    <div class="panel" id="resultCard" style="margin-top:16px; display:none;">
+      <div class="kpi">
+        <div class="box"><div class="ttl">RoPE</div><div class="val" id="scoreVal">-</div></div>
+        <div class="box" id="probBox"><div class="ttl">Probabilidad FOP causal</div><div class="val" id="probVal">-</div></div>
       </div>
 
-      <div class="rope-actions">
-          <button id="btnCopy" type="button" class="btn-calc">Copiar Resumen</button>
-          <button id="btnBorrar" type="button" class="btn-clear">Borrar Formulario</button>
+      <div class="kpi">
+        <div class="box" id="classBox"><div class="ttl">Clasificación</div><div class="val" id="classVal">-</div></div>
+        <div class="box"><div class="ttl">Interpretación</div><div class="val" id="interpVal" style="font-size:16px">-</div></div>
       </div>
-  </div>
 
-  <div class="rope-card rope-abbr-card">
+      <div class="actions">
+        <button id="btnClear" class="btn-action btn-clear">Borrar</button>
+        <button id="btnCopy" class="btn-action btn-copy">Copiar resumen</button>
+      </div>
+      <div id="resumenText"></div>
+    </div>
+
     <details>
-        <summary>Abreviaturas y Referencia</summary>
-        <ul>
-            <li><small><b>RoPE:</b> Risk of Paradoxical Embolism. <b>FOP:</b> Foramen Oval Permeable. <b>AIT:</b> Ataque Isquémico Transitorio.</li>
-            <li><b>Referencia:</b> P. Saric et al. (2018). Saric P, Dujmović I, Vukasović I, Lovrenčić-Huzjan A, Vuković V, Demarin V. Validation of the RoPE score in a large cohort of cryptogenic stroke patients. Eur J Neurol. 2018;25(2):330–335.</small></li>
-        </ul>
+      <summary>Abreviaturas y referencia</summary>
+      <ul>
+        <li><b>RoPE:</b> Risk of Paradoxical Embolism.</li>
+        <li><b>FOP:</b> Foramen Oval Permeable.</li>
+        <li><b>AIT:</b> Ataque Isquémico Transitorio.</li>
+        <li><b>Referencia:</b> Kent DM et al. <em>Neurology</em>. 2013;81(7):619–625.</li>
+      </ul>
     </details>
-  </div>
-</div>
-</div>
+  </section>
+</main>
 
 <script>
-// =================================================
-// LÓGICA JAVASCRIPT DE LA ESCALA RoPE (APLICACIÓN DIRECTA DE ESTILOS)
-// =================================================
+const PROB={0:'28%',1:'30%',2:'35%',3:'44%',4:'55%',5:'61%',6:'67%',7:'78%',8:'84%',9:'88%',10:'90%'};
 
-const PROBABILITIES = {
-    0: { prob: '28%', desc: 'Baja', exp: 'La probabilidad de que el FOP sea la causa del ictus es <b>baja</b>. La estrategia clínica habitual es el manejo médico (antiagregación) a largo plazo.', risk_level: 'low' },
-    1: { prob: '30%', desc: 'Baja', exp: 'La probabilidad de que el FOP sea la causa del ictus es <b>baja</b>. La estrategia clínica habitual es el manejo médico (antiagregación) a largo plazo.', risk_level: 'low' },
-    2: { prob: '35%', desc: 'Baja', exp: 'La probabilidad de que el FOP sea la causa del ictus es <b>baja</b>. La estrategia clínica habitual es el manejo médico (antiagregación) a largo plazo.', risk_level: 'low' },
-    3: { prob: '44%', desc: 'Baja', exp: 'La probabilidad de que el FOP sea la causa del ictus es <b>baja</b>. La estrategia clínica habitual es el manejo médico (antiagregación) a largo plazo.', risk_level: 'low' },
-    4: { prob: '55%', desc: 'Intermedia', exp: 'La probabilidad de que el FOP sea la causa del ictus es <b>intermedia</b>. Se recomienda una discusión multidisciplinar para evaluar el beneficio-riesgo del cierre percutáneo del FOP.', risk_level: 'intermediate' },
-    5: { prob: '61%', desc: 'Intermedia', exp: 'La probabilidad de que el FOP sea la causa del ictus es <b>intermedia</b>. Se recomienda una discusión multidisciplinar para evaluar el beneficio-riesgo del cierre percutáneo del FOP.', risk_level: 'intermediate' },
-    6: { prob: '67%', desc: 'Intermedia', exp: 'La probabilidad de que el FOP sea la causa del ictus es <b>intermedia</b>. Se recomienda una discusión multidisciplinar para evaluar el beneficio-riesgo del cierre percutáneo del FOP.', risk_level: 'intermediate' },
-    7: { prob: '78%', desc: 'Alta', exp: 'La probabilidad de que el FOP sea la causa del ictus es <b>alta</b>. El cierre percutáneo del FOP suele ser la opción preferida, especialmente en pacientes jóvenes sin otras causas de ictus.', risk_level: 'high' },
-    8: { prob: '84%', desc: 'Alta', exp: 'La probabilidad de que el FOP sea la causa del ictus es <b>alta</b>. El cierre percutáneo del FOP suele ser la opción preferida, especialmente en pacientes jóvenes sin otras causas de ictus.', risk_level: 'high' },
-    9: { prob: '88%', desc: 'Muy Alta', exp: 'La probabilidad de que el FOP sea la causa del ictus es <b>muy alta</b>. El cierre percutáneo del FOP es la opción terapéutica de primera línea.', risk_level: 'high' },
-    10: { prob: '90%', desc: 'Muy Alta', exp: 'La probabilidad de que el FOP sea la causa del ictus es <b>muy alta</b>. El cierre percutáneo del FOP es la opción terapéutica de primera línea.', risk_level: 'high' } 
-};
-const DASH = '-'; 
+function toneFor(score){
+  if(score>=7) return 'bad';
+  if(score>=4) return 'warn';
+  return 'ok';
+}
+function labelFor(score){
+  if(score>=7) return 'Alta';
+  if(score>=4) return 'Intermedia';
+  return 'Baja';
+}
+function interpFor(score){
+  if(score>=7)  return 'Probabilidad alta: valorar cierre percutáneo del FOP (perfil típico: joven, sin FR y cortical).';
+  if(score>=4)  return 'Probabilidad intermedia: discutir en sesión multidisciplinar beneficio-riesgo.';
+  return 'Probabilidad baja: suele preferirse manejo médico (antiagregación) salvo otros hallazgos.';
+}
+const ids = ['age','noHTN','noDM','noSmoke','noPrior','cortical'];
+const $ = id => document.getElementById(id);
 
-// Definiciones de colores para aplicación directa (asegúrate que estas coincidan con tu :root)
-const COLOR_MAP = {
-    'low': { bg: 'var(--color-bajo)', border: 'var(--accent)' }, // Azul claro
-    'intermediate': { bg: 'var(--color-intermedio)', border: '#f57c00' }, // Naranja suave
-    'high': { bg: 'var(--color-alto)', border: 'var(--error)' } // Rojo muy suave
-};
-
-
-function el(id) { return document.getElementById(id); }
-
-function updatePill(score){
-  const pill = el('pill');
-  if(!pill){return;}
-  pill.className = 'rope-pill';
-  if(typeof score !== 'number' || isNaN(score)){
-    pill.textContent = 'RoPE: —';
+function calc(){
+  const age = $('age').value;
+  if(age===''){
+    $('resultCard').style.display='none';
+    const pill=$('pill');
+    pill.className='pill pill-init';
+    pill.textContent='RoPE: —';
     return;
   }
-  const info = PROBABILITIES[score];
-  pill.textContent = 'RoPE: ' + score + ' — ' + info.prob + ' (' + info.desc + ')';
-  pill.classList.add('risk-' + info.risk_level);
+  let s = parseInt(age,10);
+  ['noHTN','noDM','noSmoke','noPrior','cortical'].forEach(id=>{
+    if($(id).checked) s += parseInt($(id).value,10);
+  });
+  s = Math.max(0, Math.min(10, s));
+
+  const prob = PROB[s] || '—';
+  const cat  = labelFor(s);
+  const tone = toneFor(s);
+
+  $('scoreVal').textContent = s;
+  $('probVal').textContent  = prob;
+  $('classVal').textContent = cat;
+  $('interpVal').textContent= interpFor(s);
+
+  ['probBox','classBox'].forEach(id=>{
+    const el=$(id); el.classList.remove('ok','warn','bad'); el.classList.add(tone);
+  });
+
+  $('resultCard').style.display='block';
+
+  const pill=$('pill');
+  pill.className='pill pill-'+tone;
+  pill.textContent = `RoPE: ${s} — ${prob} (${cat})`;
+
+  mostrarResumen(s, prob, cat);
 }
 
+function mostrarResumen(s, prob, cat){
+  let t = 'Escala RoPE (Risk of Paradoxical Embolism)\n';
+  t += '========================================\n';
+  t += `Puntuación: ${s}/10\nProbabilidad FOP causal: ${prob} (${cat})\n\nDetalle de variables:\n`;
 
-function calcularRoPE() {
-    el('err').style.display = 'none';
-    let totalScore = 0;
+  const ageText = $('age').options[$('age').selectedIndex].textContent;
+  t += `- Edad: ${ageText}\n`;
+  [
+    ['noHTN','No hipertensión (+1)'],
+    ['noDM','No diabetes (+1)'],
+    ['noSmoke','No tabaquismo activo (+1)'],
+    ['noPrior','No ictus/AIT previo (+1)'],
+    ['cortical','Infarto cortical (+1)']
+  ].forEach(([id,label])=>{
+    t += `- ${label}: ${$(id).checked ? 'Sí' : 'No'}\n`;
+  });
 
-    const ageSelect = el('age');
-    const ageValue = ageSelect.value;
-    
-    const ropeScoreBox = el('resultCard').querySelector('.rope-score-box');
-    
-    // Limpiar estilos directos previos
-    ropeScoreBox.style.borderColor = 'var(--accent)';
-    ropeScoreBox.style.backgroundColor = 'var(--accent-light)';
-    
-    // 1. Puntuación de Edad (Select)
-    if (ageValue === "") {
-        el('ropeScore').textContent = DASH;
-        el('probability').textContent = 'Probabilidad de Ictus por FOP: ' + DASH;
-        el('fopClass').textContent = 'Clasificación: ' + DASH;
-        el('riskText').innerHTML = 'Seleccione la edad y los factores de riesgo.';
-        el('resultCard').classList.remove('show');
-        updatePill(NaN);
-        el('btnCopy').disabled = true;
-        
-        el('err').textContent = 'Seleccione la edad para comenzar.';
-        el('err').style.display = 'block';
-        return;
-    }
-    
-    totalScore += parseInt(ageValue);
+  t += `\nInterpretación: ${interpFor(s)}`;
+  $('resumenText').textContent = t;
+}
 
-    // 2. Factores de Riesgo (Checkboxes)
-const checks = Array.from(document.querySelectorAll('#ropeForm input[type="checkbox"]'));
-checks.forEach(checkbox => {
-  if (checkbox.checked) totalScore += parseInt(checkbox.value, 10);
+function borrar(){
+  $('age').value='';
+  ['noHTN','noDM','noSmoke','noPrior','cortical'].forEach(id=>$(id).checked=false);
+  $('resultCard').style.display='none';
+  const pill=$('pill'); pill.className='pill pill-init'; pill.textContent='RoPE: —';
+  $('resumenText').textContent='';
+}
+
+function copiar(){
+  const t = $('resumenText').textContent.trim();
+  if(!t) return;
+  navigator.clipboard.writeText(t).then(()=>{
+    const b=$('btnCopy');
+    b.classList.add('copiado'); b.textContent='Copiado';
+    setTimeout(()=>{b.classList.remove('copiado'); b.textContent='Copiar resumen';}, 1500);
+  });
+}
+
+ids.forEach(id=>{
+  const el=$(id);
+  if(el) el.addEventListener(el.type==='select-one'?'change':'input', calc);
 });
-
-
-    // 3. Mostrar Resultado
-    const finalScore = Math.min(10, totalScore);
-    const scoreData = PROBABILITIES[finalScore];
-    
-    el('ropeScore').textContent = finalScore;
-    el('probability').textContent = 'Probabilidad de Ictus por FOP: ' + scoreData.prob; 
-    el('fopClass').textContent = 'Clasificación: ' + scoreData.desc;
-    el('riskText').innerHTML = scoreData.exp;
-    
-    // 4. Aplicar color dinámico FORZADO por estilo directo
-    const colors = COLOR_MAP[scoreData.risk_level];
-    if (colors) {
-        ropeScoreBox.style.backgroundColor = colors.bg;
-        ropeScoreBox.style.borderColor = colors.border;
-    }
-    
-    el('resultCard').classList.add('show');
-    updatePill(finalScore);
-    el('btnCopy').disabled = false;
-    
-    return { score: finalScore, data: scoreData };
-}
-
-function borrarFormulario() {
-    el('ropeForm').reset();
-    el('ropeScore').textContent = DASH;
-    el('probability').textContent = 'Probabilidad de Ictus por FOP: ' + DASH;
-    el('fopClass').textContent = 'Clasificación: ' + DASH;
-    el('riskText').innerHTML = 'Seleccione las opciones y calcule para ver la explicación.';
-    el('err').style.display = 'none';
-    el('resultCard').classList.remove('show');
-    
-    // Limpiar estilos directos tras el borrado
-    const ropeScoreBox = el('resultCard').querySelector('.rope-score-box');
-    ropeScoreBox.style.backgroundColor = 'var(--accent-light)'; // Vuelve al color por defecto/claro
-    ropeScoreBox.style.borderColor = 'var(--accent)';
-    
-    updatePill(NaN);
-    el('btnCopy').disabled = true;
-}
-
-// Lógica de Copia de Resumen (sin cambios funcionales)
-function copiarResumen() {
-    const result = calcularRoPE(); 
-    if (!result || result.score === undefined || result.score === null) {
-        el('err').textContent = 'Complete todos los campos antes de copiar.';
-        el('err').style.display = 'block';
-        return;
-    }
-    
-    const finalScore = result.score;
-    const finalProb = result.data.prob;
-    const finalDesc = result.data.desc;
-    const finalExp = result.data.exp;
-    
-    let summary = "Escala RoPE (Risk of Paradoxical Embolism)\n";
-    summary += "========================================\n";
-    summary += "Puntuación RoPE: " + finalScore + "/10\n";
-    summary += "Probabilidad de Ictus por FOP: " + finalProb + " (" + finalDesc + ")\n";
-    summary += "Explicación Clínica: " + finalExp.replace(/<[^>]*>?/gm, "") + "\n\n";
-    summary += "Factores marcados:\n";
-
-    const ageText = el('age').options[el('age').selectedIndex].text;
-    summary += "- Edad: " + ageText + "\n";
-
-    const checks = Array.from(document.querySelectorAll('#ropeForm input[type="checkbox"]'));
-checks.forEach(checkbox => {
-  if (checkbox.checked) {
-    summary += "- " + checkbox.parentNode.textContent.trim() + "\n";
-  }
-});
-
-    
-    const btn = el('btnCopy');
-    
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(summary).then(function() {
-            btn.textContent = 'Copiado ✓';
-            setTimeout(function() { btn.textContent = 'Copiar Resumen'; }, 1200);
-        });
-    }
-}
-
-// Inicialización
-window.addEventListener('DOMContentLoaded', function() {
-    const inputs = document.querySelectorAll('#ropeForm select, #ropeForm input[type="checkbox"]');
-    inputs.forEach(input => {
-        input.addEventListener('change', calcularRoPE);
-    });
-
-    el('btnBorrar').addEventListener('click', borrarFormulario);
-    el('btnCopy').addEventListener('click', copiarResumen);
-    
-    calcularRoPE(); 
-});
-// Sombra de cabecera al hacer scroll
-const ropeAppbar = document.querySelector('.rope-appbar');
-function onScrollRope(){
-  if(!ropeAppbar) return;
-  (window.scrollY>8)?ropeAppbar.classList.add('scrolled'):ropeAppbar.classList.remove('scrolled');
-}
-document.addEventListener('scroll',onScrollRope,{passive:true}); onScrollRope();
-
+document.getElementById('btnClear')?.addEventListener('click', borrar);
+document.getElementById('btnCopy')?.addEventListener('click', copiar);
 </script>
-<footer style="
-    position:relative;
-    left:50%;
-    transform:translateX(-50%);
-    width:100vw;
-    margin:2rem 0 0 0;
-    padding:1.5rem 0;
-    border-top:1px solid #e5e7eb;
-    background:#ffffff;
-    text-align:center;
-    box-shadow:0 -2px 6px rgba(0,0,0,0.04);
-">
-      <img src="uibanner.png"
-         alt="Unidad de Ictus Málaga" style="max-width:380px;height:auto;opacity:.96;">
-  </a>
 
+<footer>
+  <img src="uibanner.png" alt="Unidad de Ictus Málaga" style="max-width:380px;height:auto;opacity:.96;">
 </footer>
-
 </body>
 </html>

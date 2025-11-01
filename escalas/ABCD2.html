@@ -3,136 +3,203 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="icon" type="image/png" href="https://rbustamantet.github.io/ictus.cardiopatia/favicon-96x96.png" sizes="96x96" />
-<link rel="icon" type="image/svg+xml" href="https://rbustamantet.github.io/ictus.cardiopatia/favicon.svg" />
-<link rel="shortcut icon" href="https://rbustamantet.github.io/ictus.cardiopatia/favicon.ico" />
-<link rel="apple-touch-icon" sizes="180x180" href="https://rbustamantet.github.io/ictus.cardiopatia/apple-touch-icon.png" />
-<link rel="manifest" href="https://rbustamantet.github.io/ictus.cardiopatia/site.webmanifest" />
+<link rel="manifest" href="../site.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="../iconos/ictusgps.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../iconos/ictusgps.png">
+<link rel="shortcut icon" href="../iconos/ictusgps.png">
+<meta name="theme-color" content="#0f3d83">
 <title>ABCD² — Riesgo AIT</title>
 <style>
-  :root{
-    --bg:#f8fafc; --ink:#0f172a; --muted:#64748b;
-    --card:#ffffff; --ring:#c7dbff; --borde:#dbeafe;
-    --ok:#166534; --ok-bg:#e9fce7; --ok-ring:#bbf7d0;
-    --mid:#92400e; --mid-bg:#fff7ed; --mid-ring:#fed7aa;
-    --bad:#991b1b; --bad-bg:#fef2f2; --bad-ring:#fecaca;
-    --accent:#1e3a8a; --accent-soft:#e6f0ff;
-  }
-  *{box-sizing:border-box}
-  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
-            font-family:Verdana, Geneva, Tahoma, sans-serif;font-size:15px}
+:root{
+  --bg:#f8fafc; --ink:#0f172a; --muted:#64748b;
+  --card:#ffffff; --ring:#c7dbff; --borde:#dbeafe;
+  --ok:#166534; --ok-bg:#e9fce7; --ok-ring:#bbf7d0;
+  --mid:#92400e; --mid-bg:#fff7ed; --mid-ring:#fed7aa;
+  --bad:#991b1b; --bad-bg:#fef2f2; --bad-ring:#fecaca;
+  --accent:#1e3a8a; --accent-soft:#e6f0ff;
+}
+/* ==== CABECERA AJUSTADA Y FUNCIONAL ==== */
+.appbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: #0f3d83; /* azul institucional */
+  color: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+  .appbar.scrolled{box-shadow:0 8px 24px rgba(0,0,0,.08); border-color:#e2e8f0}
 
-  /* App bar */
-  .appbar{position:sticky;top:0;z-index:1000;background:rgba(255,255,255,.9);
-    border-bottom:1px solid var(--borde);
-    backdrop-filter:saturate(140%) blur(8px); -webkit-backdrop-filter:saturate(140%) blur(8px)}
-  .appbar-inner{max-width:980px;margin:0 auto;display:flex;gap:10px;align-items:center;padding:10px 14px}
-  .appbar h1{margin:0;font-size:22px;font-weight:800;color:#2563eb}
-  .spacer{flex:1}
-  .pill-top{display:inline-block;border-radius:999px;padding:6px 12px;font-weight:800;
-    border:2px solid transparent;white-space:nowrap;max-width:80vw;overflow:hidden;text-overflow:ellipsis}
-  .pill-ok   {background:var(--ok-bg);  color:var(--ok);  border-color:var(--ok-ring)}
-  .pill-warn {background:var(--mid-bg); color:var(--mid); border-color:var(--mid-ring)}
-  .pill-bad  {background:var(--bad-bg); color:var(--bad); border-color:var(--bad-ring)}
+.appbar-inner {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 4px 16px;
+  display: flex;
+  align-items: center;     /* eje vertical perfecto */
+  justify-content: space-between;
+  gap: 12px;
+}
 
-  /* Layout */
-  .wrap{max-width:980px;margin:14px auto 40px;padding:0 14px}
-  .sub{color:var(--muted);margin:2px 0 12px}
-  .panel{background:#f3f7ff;border:1px solid var(--borde);border-radius:16px;padding:14px;
-         box-shadow:0 8px 22px rgba(31,86,179,.06)}
-  .grid{display:grid;grid-template-columns:1fr;gap:12px}
-  @media(min-width:760px){ .grid{grid-template-columns:1fr 1fr} }
+.left-group {
+  display: flex;
+  align-items: center;     /* título + pill centrados entre sí */
+  gap: 10px;
+  flex-wrap: wrap;
+}
 
-  label{display:block;font-weight:900;color:#0b1f44;margin:6px 0 6px}
-  select{width:100%;padding:12px;border-radius:12px;border:2px solid #cfd8ea;background:#fff;font-size:14px}
-  select:focus{outline:none;box-shadow:0 0 0 4px var(--accent-soft)}
+.appbar h1 {
+  margin: 0;
+  font-size: 22px;
+  line-height: 1;          /* evita empuje por el ² */
+  color: white;
+  font-weight: 800;
+}
 
-  /* Result card */
-  .card{margin-top:14px;background:#fff;border:1px solid var(--borde);
-        border-radius:16px;padding:14px;box-shadow:0 8px 22px rgba(31,86,179,.07)}
-  .kpi{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-  @media(min-width:760px){ .kpi{grid-template-columns:1fr 1fr} }
-  .kpi3{display:grid;grid-template-columns:1fr;gap:12px;margin-top:12px}
-  @media(min-width:760px){ .kpi3{grid-template-columns:repeat(3,1fr)} }
+/* === Pill visible y alineada === */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 38px;
+  height: 32px;
+  padding: 6 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
-  .box{border:1.5px dashed var(--ring);border-radius:14px;background:#f8fbff;padding:14px;text-align:center}
-  .ttl{color:#334155;font-weight:800;margin:0 0 6px}
-  .val{font-size:28px;font-weight:900;color:#0b2c5f}
-  .mini{font-size:12px;color:var(--muted)}
+/* Colores activos según el riesgo (contraste sobre fondo azul) */
+.pill-ok   {background:#dcfce7; color:#065f46; border-color:#86efac;}   /* verde */
+.pill-warn {background:#fef3c7; color:#92400e; border-color:#fde68a;}   /* ámbar */
+.pill-bad  {background:#fee2e2; color:#991b1b; border-color:#fecaca;}   /* rojo */
 
-  /* Risk color helpers on boxes */
-  .ok   {background:var(--ok-bg);  border-color:var(--ok-ring)}
-  .warn {background:var(--mid-bg); border-color:var(--mid-ring)}
-  .bad  {background:var(--bad-bg); border-color:var(--bad-ring)}
-  .ok .val{color:var(--ok)} .warn .val{color:var(--mid)} .bad .val{color:var(--bad)}
+/* Botón Inicio */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  padding: 0 14px;
+  border-radius: 10px;
+  text-decoration: none;
+  border: 1px solid rgba(127, 179, 255, .35);
+  background: #1c60c3;
+  color: white;
+  font-size: 0.9rem;
+  font-weight: 700;
+  transition: background 0.2s, border-color 0.2s;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transform: translateY(-8px);
 
-  /* No cortar palabras en cajas */
-  .box, .box *{word-break:normal;overflow-wrap:normal;hyphens:none}
+}
+
+.btn:hover {
+  background: #0C00FF;
+  border-color: rgba(127, 179, 255, .35);
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
+  font-family:Verdana, Geneva, Tahoma, sans-serif;font-size:15px}
+
+/* Layout */
+.wrap{max-width:980px;margin:14px auto 40px;padding:0 14px}
+.sub{color:var(--muted);margin:2px 0 12px}
+.panel{background:#f3f7ff;border:1px solid var(--borde);border-radius:16px;padding:14px;
+       box-shadow:0 8px 22px rgba(31,86,179,.06)}
+.grid{display:grid;grid-template-columns:1fr;gap:12px}
+@media(min-width:760px){ .grid{grid-template-columns:1fr 1fr} }
+
+label{display:block;font-weight:900;color:#0b1f44;margin:6px 0 6px}
+select{width:100%;padding:12px;border-radius:12px;border:2px solid #cfd8ea;background:#fff;font-size:14px}
+select:focus{outline:none;box-shadow:0 0 0 4px var(--accent-soft)}
+
+/* Resultados */
+.card{margin-top:14px;background:#fff;border:1px solid var(--borde);
+      border-radius:16px;padding:14px;box-shadow:0 8px 22px rgba(31,86,179,.07)}
+.kpi{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.kpi3{display:grid;grid-template-columns:1fr;gap:12px;margin-top:12px}
+@media(min-width:760px){ .kpi3{grid-template-columns:repeat(3,1fr)} }
+
+.box{border:1.5px dashed var(--ring);border-radius:14px;background:#f8fbff;padding:14px;text-align:center}
+.ttl{color:#334155;font-weight:800;margin:0 0 6px}
+.val{font-size:28px;font-weight:900;color:#0b2c5f}
+.mini{font-size:12px;color:var(--muted)}
+
+.ok   {background:var(--ok-bg);  border-color:var(--ok-ring)}
+.warn {background:var(--mid-bg); border-color:var(--mid-ring)}
+.bad  {background:var(--bad-bg); border-color:var(--bad-ring)}
+.ok .val{color:var(--ok)} .warn .val{color:var(--mid)} .bad .val{color:var(--bad)}
+
+.actions {
+  display:flex; gap:10px; flex-wrap:wrap;
+  margin-top:16px;
+}
+.btn-action {
+  flex:1 1 150px;
+  border:none;
+  border-radius:10px;
+  padding:12px;
+  font-size:15px;
+  font-weight:700;
+  cursor:pointer;
+  transition:background .2s, transform .1s;
+}
+.btn-clear {background:#fff; color:#0b2c5f; border:1px solid #2563eb;}
+.btn-clear:hover {background:#eff6ff;}
+.btn-copy {background:#fff; color:#0f3d83; border:1px solid #2563eb; }
+.btn-copy:hover {background:#eff6ff;}
 </style>
 </head>
 <body>
 
-<header class="appbar">
+<header class="appbar" role="region" aria-label="Cabecera Escala ABCD²">
   <div class="appbar-inner">
-    <h1>ABCD² — Riesgo de ictus tras AIT</h1>
-    <div class="spacer"></div>
-    <output id="pillTop" class="pill-top" aria-live="polite" aria-atomic="true"></output>
+    <div class="left-group">
+      <h1>Escala ABCD<sup>2</sup></h1>
+      <output id="pill" class="pill" aria-live="polite" aria-atomic="true" aria-label="Puntuación ABCD²">—</output>
+    </div>
+    <div class="actions">
+      <a class="btn" href="../index.html">Inicio</a>
+    </div>
   </div>
 </header>
 
 <main class="wrap">
-  <p class="sub">Complete los campos; el resultado y el riesgo se actualizan automáticamente.</p>
+  <p class="sub">Riesgo de ictus tras un AIT. Complete los campos; el resultado y el riesgo se actualizan automáticamente.</p>
 
-  <section class="panel" aria-labelledby="param-title">
-    <h2 id="param-title" style="margin:0 0 8px;color:#0b1f44">Parámetros</h2>
-
+  <section class="panel">
     <div class="grid">
-      <div>
-        <label for="a">Edad ≥ 60 años</label>
-        <select id="a">
-          <option value="0">No (0)</option>
-          <option value="1">Sí (1)</option>
-        </select>
+      <div><label for="a">Edad ≥ 60 años</label>
+        <select id="a"><option value="0">No (0)</option><option value="1">Sí (1)</option></select>
       </div>
-
-      <div>
-        <label for="b">Tensión arterial inicial ≥ 140/90</label>
-        <select id="b">
-          <option value="0">No (0)</option>
-          <option value="1">Sí (1)</option>
-        </select>
+      <div><label for="b">Tensión arterial inicial ≥ 140/90</label>
+        <select id="b"><option value="0">No (0)</option><option value="1">Sí (1)</option></select>
       </div>
-
-      <div>
-        <label for="c">Clínica</label>
+      <div><label for="c">Clínica</label>
         <select id="c">
           <option value="0">Otro (0)</option>
-          <option value="1">Debilidad unilateral ausente, habla alterada (1)</option>
+          <option value="1">Déficit del habla sin paresia (1)</option>
           <option value="2">Debilidad unilateral (2)</option>
         </select>
       </div>
-
-      <div>
-        <label for="d">Duración</label>
+      <div><label for="d">Duración</label>
         <select id="d">
           <option value="0">&lt; 10 min (0)</option>
           <option value="1">10–59 min (1)</option>
           <option value="2">≥ 60 min (2)</option>
         </select>
       </div>
-
-      <div>
-        <label for="di">Diabetes</label>
-        <select id="di">
-          <option value="0">No (0)</option>
-          <option value="1">Sí (1)</option>
-        </select>
+      <div><label for="di">Diabetes</label>
+        <select id="di"><option value="0">No (0)</option><option value="1">Sí (1)</option></select>
       </div>
     </div>
 
-    <!-- Resultados -->
     <div id="resultCard" class="card" role="region" aria-live="polite" aria-atomic="true">
-      <!-- FILA 1: score + categoría -->
       <div class="kpi">
         <div class="box">
           <div class="ttl">Puntuación ABCD²</div>
@@ -145,108 +212,114 @@
           <div class="mini">Bajo 0–3 · Moderado 4–5 · Alto 6–7</div>
         </div>
       </div>
-
-      <!-- FILA 2: riesgos a horizontes -->
       <div class="kpi3">
-        <div class="box" id="risk2">
-          <div class="ttl">Riesgo a 2 días</div>
-          <div class="val" id="p2">—</div>
-        </div>
-        <div class="box" id="risk7">
-          <div class="ttl">Riesgo a 7 días</div>
-          <div class="val" id="p7">—</div>
-        </div>
-        <div class="box" id="risk90">
-          <div class="ttl">Riesgo a 90 días</div>
-          <div class="val" id="p90">—</div>
-        </div>
+        <div class="box" id="risk2"><div class="ttl">Riesgo a 2 días</div><div class="val" id="p2">—</div></div>
+        <div class="box" id="risk7"><div class="ttl">Riesgo a 7 días</div><div class="val" id="p7">—</div></div>
+        <div class="box" id="risk90"><div class="ttl">Riesgo a 90 días</div><div class="val" id="p90">—</div></div>
+      </div>
+
+      <div class="actions">
+        <button id="btnClear" class="btn-action btn-clear">Borrar</button>
+        <button id="btnCopy" class="btn-action btn-copy">Copiar resumen</button>
       </div>
     </div>
   </section>
 </main>
 
 <script>
-  // Constantes para que Blogger no convierta en entidades
-  const SUP2 = '\u00B2';   // ²
-  const EM   = '\u2014';   // —
+const RISK_MAP = {
+  bajo:     {p2:'1,0 %', p7:'1,2 %', p90:'3,1 %'},
+  moderado: {p2:'4,1 %', p7:'5,9 %', p90:'9,8 %'},
+  alto:     {p2:'8,1 %', p7:'11,7 %', p90:'17,8 %'}
+};
 
-  // Mapas de riesgo por categoría
-  const RISK_MAP = {
-    bajo:     {p2:'1,0 %', p7:'1,2 %', p90:'3,1 %'},
-    moderado: {p2:'4,1 %', p7:'5,9 %', p90:'9,8 %'},
-    alto:     {p2:'8,1 %', p7:'11,7 %', p90:'17,8 %'}
-  };
+function clasePorCat(cat){ return cat==='Bajo'?'ok':cat==='Moderado'?'warn':'bad'; }
+function clasePill(cat){ return cat==='Bajo'?'pill-ok':cat==='Moderado'?'pill-warn':'pill-bad'; }
 
-  function clasePorCat(cat){
-    if(cat==='Bajo') return 'ok';
-    if(cat==='Moderado') return 'warn';
-    return 'bad';
-  }
-  function clasePill(cat){
-    if(cat==='Bajo') return 'pill-ok';
-    if(cat==='Moderado') return 'pill-warn';
-    return 'pill-bad';
-  }
+function calc(){
+  const v=id=>Number(document.getElementById(id).value||0);
+  const t=v('a')+v('b')+v('c')+v('d')+v('di');
+  let cat='Bajo'; if(t>=4&&t<=5)cat='Moderado'; if(t>=6)cat='Alto';
 
-  function calc(){
-    const v = id => Number(document.getElementById(id).value||0);
-    const t = v('a') + v('b') + v('c') + v('d') + v('di');
+  document.getElementById('scoreVal').textContent=t;
+  document.getElementById('riskLabel').textContent=cat;
 
-    // Categoría
-    let cat = 'Bajo';
-    if(t>=4 && t<=5) cat='Moderado';
-    if(t>=6) cat='Alto';
+  const boxCat=document.getElementById('boxCat');
+  boxCat.classList.remove('ok','warn','bad');
+  boxCat.classList.add(clasePorCat(cat));
 
-    // Pintar score y etiqueta
-    document.getElementById('scoreVal').textContent = t;
-    document.getElementById('riskLabel').textContent = cat;
-
-    // Colorear recuadros
-    const boxCat = document.getElementById('boxCat');
-    boxCat.classList.remove('ok','warn','bad');
-    boxCat.classList.add(clasePorCat(cat));
-
-    // Riesgos por horizontes (colores iguales)
-    const m = (cat==='Bajo')?RISK_MAP.bajo : (cat==='Moderado'?RISK_MAP.moderado:RISK_MAP.alto);
-    document.getElementById('p2').textContent  = m.p2;
-    document.getElementById('p7').textContent  = m.p7;
-    document.getElementById('p90').textContent = m.p90;
-
-    ['risk2','risk7','risk90'].forEach(id=>{
-      const el=document.getElementById(id);
-      el.classList.remove('ok','warn','bad');
-      el.classList.add(clasePorCat(cat));
-    });
-
-    // Píldora superior (sin entidades)
-    const pill = document.getElementById('pillTop');
-    pill.className = 'pill-top ' + clasePill(cat);
-    pill.textContent = `ABCD${SUP2} ${t} ${EM} ${cat}`;
-  }
-
-  // Auto-cálculo
-  ['a','b','c','d','di'].forEach(id=>{
-    document.getElementById(id).addEventListener('change', calc);
+  const m=(cat==='Bajo')?RISK_MAP.bajo:(cat==='Moderado'?RISK_MAP.moderado:RISK_MAP.alto);
+  document.getElementById('p2').textContent=m.p2;
+  document.getElementById('p7').textContent=m.p7;
+  document.getElementById('p90').textContent=m.p90;
+  ['risk2','risk7','risk90'].forEach(id=>{
+    const el=document.getElementById(id);
+    el.classList.remove('ok','warn','bad');
+    el.classList.add(clasePorCat(cat));
   });
-  document.addEventListener('DOMContentLoaded', calc);
+
+  const pill=document.getElementById('pill');
+  if(pill){ pill.className='pill '+clasePill(cat); pill.textContent=String(t); }
+
+  return {t,cat,m};
+}
+
+function borrar(){
+  ['a','b','c','d','di'].forEach(id=>document.getElementById(id).value='0');
+  calc();
+}
+
+function copiar(){
+  const {t,cat,m}=calc();
+  let texto=`Puntuación ABCD²: ${t} (${cat}). `;
+
+  if(cat==='Bajo'){
+    texto+=`El riesgo de ictus tras un AIT es bajo, con una probabilidad estimada de ${m.p2} a 2 días, ${m.p7} a 7 días y ${m.p90} a 90 días. ` +
+            `El paciente puede valorarse de forma ambulatoria, siempre que no existan otros factores de alto riesgo clínico o imagenológicos.`;
+  }else if(cat==='Moderado'){
+    texto+=`El riesgo es moderado: ${m.p2} a 2 días, ${m.p7} a 7 días y ${m.p90} a 90 días. ` +
+            `Debe considerarse observación hospitalaria o estudio urgente, especialmente si recurren síntomas o hay lesiones isquémicas recientes en neuroimagen.`;
+  }else{
+    texto+=`El riesgo es alto: ${m.p2} a 2 días, ${m.p7} a 7 días y ${m.p90} a 90 días. ` +
+            `Se recomienda ingreso hospitalario y estudio etiológico inmediato por el elevado riesgo de recurrencia a corto plazo.`;
+  }
+
+  // Copiar al portapapeles
+  navigator.clipboard.writeText(texto).then(() => {
+    const btn = document.getElementById('btnCopy');
+    const original = btn.textContent;
+    const originalBg = btn.style.background;
+    const originalColor = btn.style.color;
+
+    // Estilo temporal de "copiado"
+    btn.textContent = 'Copiado';
+    btn.style.background = '#0f3d83';
+    btn.style.color = '#fff';
+
+    // Revertir tras 3 segundos
+    setTimeout(() => {
+      btn.textContent = original;
+      btn.style.background = originalBg;
+      btn.style.color = originalColor;
+    }, 3000);
+  });
+}
+
+
+['a','b','c','d','di'].forEach(id=>{
+  const el=document.getElementById(id);
+  el.addEventListener('change',calc);
+  el.addEventListener('input',calc);
+});
+document.getElementById('btnClear').addEventListener('click',borrar);
+document.getElementById('btnCopy').addEventListener('click',copiar);
+document.addEventListener('DOMContentLoaded',calc);
 </script>
-<footer style="
-    position:relative;
-    left:50%;
-    transform:translateX(-50%);
-    width:100vw;
-    margin:2rem 0 0 0;
-    padding:1.5rem 0;
-    border-top:1px solid #e5e7eb;
-    background:#ffffff;
-    text-align:center;
-    box-shadow:0 -2px 6px rgba(0,0,0,0.04);
-">
-      <img src="uibanner.png"
-         alt="Unidad de Ictus Málaga" style="max-width:380px;height:auto;opacity:.96;">
-  </a>
 
+<footer style="position:relative;left:50%;transform:translateX(-50%);width:100vw;
+  margin:2rem 0 0 0;padding:1.5rem 0;border-top:1px solid #e5e7eb;
+  background:#ffffff;text-align:center;box-shadow:0 -2px 6px rgba(0,0,0,0.04);">
+  <img src="uibanner.png" alt="Unidad de Ictus Málaga" style="max-width:380px;height:auto;opacity:.96;">
 </footer>
-
 </body>
 </html>

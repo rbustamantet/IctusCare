@@ -1,0 +1,68 @@
+{
+  "name": "Ictus GPS · Unidad de Ictus Málaga",
+  "short_name": "Ictus GPS",
+  "description": "Aplicación de apoyo clínico y recursos docentes de la Unidad de Neurología Vascular del Hospital Regional Universitario de Málaga.",
+  "lang": "es-ES",
+  "start_url": "splash.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0f3d83",
+  "theme_color": "#0f3d83",
+  "categories": ["medical", "neurology", "education", "ictus"],
+  "icons": [
+    {
+      "src": "iconos/ictusgps.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "iconos/ictusgps-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "iconos/ictusgps-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Nuestra Unidad",
+      "short_name": "Unidad",
+      "description": "Acceso directo a la sección de la Unidad de Ictus.",
+      "url": "unidad/index.html",
+      "icons": [{ "src": "iconos/unidadesico.png", "sizes": "96x96", "type": "image/png" }]
+    },
+    {
+      "name": "Protocolos de ictus",
+      "short_name": "Protocolos",
+      "description": "Acceso directo a los protocolos clínicos.",
+      "url": "protocolos/index.html",
+      "icons": [{ "src": "iconos/protocolosico.png", "sizes": "96x96", "type": "image/png" }]
+    },
+    {
+      "name": "Escalas clínicas",
+      "short_name": "Escalas",
+      "description": "Acceso directo a las escalas de valoración clínica.",
+      "url": "escalas/index.html",
+      "icons": [{ "src": "iconos/escalasico.png", "sizes": "96x96", "type": "image/png" }]
+    },
+    {
+      "name": "Utilidades clínicas",
+      "short_name": "Utilidades",
+      "description": "Acceso directo a herramientas de apoyo y cálculo clínico.",
+      "url": "utilidades/index.html",
+      "icons": [{ "src": "iconos/utilidadesico.png", "sizes": "96x96", "type": "image/png" }]
+    },
+    {
+      "name": "Información sobre ictus",
+      "short_name": "Información",
+      "description": "Material educativo y divulgativo sobre el ictus.",
+      "url": "informacion/index.html",
+      "icons": [{ "src": "iconos/informacionico.png", "sizes": "96x96", "type": "image/png" }]
+    }
+  ]
+}

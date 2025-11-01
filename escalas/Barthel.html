@@ -3,568 +3,285 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<link rel="icon" type="image/png" href="https://rbustamantet.github.io/ictus.cardiopatia/favicon-96x96.png" sizes="96x96" />
-<link rel="icon" type="image/svg+xml" href="https://rbustamantet.github.io/ictus.cardiopatia/favicon.svg" />
-<link rel="shortcut icon" href="https://rbustamantet.github.io/ictus.cardiopatia/favicon.ico" />
-<link rel="apple-touch-icon" sizes="180x180" href="https://rbustamantet.github.io/ictus.cardiopatia/apple-touch-icon.png" />
-<link rel="manifest" href="https://rbustamantet.github.io/ictus.cardiopatia/site.webmanifest" />
+<link rel="manifest" href="../site.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="../iconos/ictusgps.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../iconos/ictusgps.png">
+<link rel="shortcut icon" href="../iconos/ictusgps.png">
+<meta name="theme-color" content="#0f3d83">
 <title>Escala de Barthel</title>
 
 <style>
-/* =====================================================
-   ESCALA DE BARTHEL — versión responsive para GitHub Pages
-===================================================== */
 :root{
   --bg:#f8fafc; --ink:#0f172a;
-  --azul:#0b2c5f; --gris:#6b7280; --borde:#e5e7eb;
+  --azul:#0f3d83; --gris:#6b7280; --borde:#e5e7eb;
   --ok:#0a7f3f; --error:#b91c1c;
   --accent:#2563eb; --accent-light:#dbeafe;
 }
 
-/* ---------- BASE ---------- */
-html{
-  margin:0; padding:0;
-  background:var(--bg);
-  color:var(--ink);
-  font-family:Verdana, Geneva, Tahoma, sans-serif;
-  line-height:1.5;
-  -webkit-text-size-adjust:100%;
-  text-size-adjust:100%;
+/* ===== CABECERA ESTILO ICTUS GPS ===== */
+.appbar {
+  position: sticky; top: 0; z-index: 1000;
+  background: #0f3d83;
+  color: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
+.appbar-inner {
+  max-width: 980px; margin: 0 auto;
+  padding: 4px 16px;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px;
+}
+.left-group {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+}
+.appbar h1 {
+  margin: 0; font-size: 22px; font-weight: 800; color: #fff;
+}
+.pill {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 38px; height: 32px; padding: 6px 10px;
+  border-radius: 999px; font-size: 12px; font-weight: 700;
+  border: 1px solid transparent;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.pill-ok   {background:#dcfce7; color:#065f46; border-color:#86efac;}
+.pill-warn {background:#fef3c7; color:#92400e; border-color:#fde68a;}
+.pill-bad  {background:#fee2e2; color:#991b1b; border-color:#fecaca;}
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  height: 32px; padding: 0 14px; border-radius: 10px;
+  text-decoration: none; border: 1px solid rgba(127,179,255,.35);
+  background: #1c60c3; color: white;
+  font-size: 0.9rem; font-weight: 700;
+  transition: background 0.2s, border-color 0.2s;
+ overflow: hidden;
+  text-overflow: ellipsis;
+  transform: translateY(-8px);}
+.btn:hover { background: #0C00FF; }
 
-body{
-  margin:0;
-  overflow-x:hidden; /* solo horizontal, evita interferencia con sticky */
-  overflow-y:auto;
-}
+/* ===== CUERPO ===== */
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Verdana, Geneva, sans-serif;}
+.container{max-width:980px;margin:16px auto 48px;padding:0 16px;}
+.card{background:#fff;border:1px solid var(--borde);border-radius:16px;padding:18px;box-shadow:0 2px 10px rgba(15,23,42,.06);}
+label{font-size:15px;font-weight:700;display:block;margin-bottom:6px;color:var(--azul);}
+select{width:100%;border:1px solid var(--borde);border-radius:10px;padding:12px;font-size:15px;background:#fff;outline:none;}
+select:focus{border-color:var(--azul);box-shadow:0 0 0 3px rgba(11,44,95,.12);}
+.item{margin-bottom:14px;}
+.result{display:none;}
+.result.show{display:block;}
+.kpi{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:4px;}
+.box{border:1px dashed var(--borde);border-radius:12px;padding:12px;text-align:center;}
+.ttl{font-size:13px;color:var(--gris);}
+.val{font-size:22px;font-weight:700;color:var(--azul);}
+.classBox{margin-top:12px;border-radius:12px;padding:12px 14px;font-weight:700;text-align:center;}
+.err{display:none;border-radius:12px;padding:12px 14px;margin-top:10px;background:#fef2f2;color:var(--error);border:1px solid #fecaca;}
 
-/* ---------- CABECERA ---------- */
-.barthel-appbar{
-  position:sticky; top:0; z-index:1000;
-  background:rgba(255,255,255,0.95);
-  border-bottom:1px solid var(--accent-light);
-  backdrop-filter:saturate(140%) blur(8px);
-  -webkit-backdrop-filter:saturate(140%) blur(8px);
-  transition:box-shadow .15s, border-color .15s;
+/* ===== BOTONES ===== */
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;}
+.btn-secondary{
+  flex:1 1 48%;border:1px solid #0f3d83;border-radius:10px;padding:12px;
+  font-size:15px;font-weight:700;background:#fff;color:#0f3d83;cursor:pointer;
+  transition:all 0.25s ease;
 }
-.barthel-appbar.scrolled{
-  box-shadow:0 8px 24px rgba(0,0,0,.08);
-  border-color:#e2e8f0;
-}
-.barthel-appbar-inner{
-  max-width:880px; margin:0 auto;
-  display:flex; align-items:center; gap:12px;
-  padding:10px 16px;
-}
-.barthel-appbar h1{
-  margin:0; font-size:22px; line-height:1.2;
-  color:var(--accent); font-weight:800;
-}
-.barthel-spacer{flex:1}
-.barthel-pill{
-  display:inline-block;
-  max-width:65vw;
-  padding:6px 10px;
-  border-radius:999px;
-  background:var(--accent-light);
-  color:#1e3a8a;
-  border:1px solid #bfdbfe;
-  font-size:13px; font-weight:700;
-  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-}
+.btn-secondary:hover{background:#e6ecff;}
+.btn-secondary.copiado{background:#0f3d83!important;color:#fff!important;border-color:#0f3d83!important;}
+.hint{font-size:12px;color:var(--gris);margin-top:4px;}
 
-/* ---------- CONTENIDO ---------- */
-.barthel-container{
-  width:100%;
-  max-width:680px;
-  margin:16px auto 48px;
-  padding:0 10px;
-}
-
-.barthel-card{
-  background:#fff;
-  border:1px solid var(--borde);
-  border-radius:16px;
-  padding:18px;
-  box-shadow:0 2px 10px rgba(15,23,42,.06);
-}
-.barthel-grid{
-  display:grid; grid-template-columns:1fr;
-  gap:16px;
-}
-@media (min-width:720px){
-  .barthel-grid{grid-template-columns:1.1fr .9fr;}
-}
-
-/* ---------- ELEMENTOS ---------- */
-.barthel-label{
-  font-size:15px; font-weight:700;
-  display:block; margin-bottom:6px;
-  color:var(--azul);
-}
-.barthel-select{
-  width:100%;
-  border:1px solid var(--borde);
-  border-radius:10px;
-  padding:12px;
-  font-size:15px;
-  background:#fff;
-  outline:none;
-}
-.barthel-select:focus{
-  border-color:var(--azul);
-  box-shadow:0 0 0 3px rgba(11,44,95,.12);
-}
-.barthel-item{margin-bottom:14px;}
-.barthel-result{display:none;}
-.barthel-result.show{display:block;}
-
-.barthel-kpi{
-  display:grid;
-  grid-template-columns:1fr;
-  gap:12px; margin-top:4px;
-}
-@media (min-width:560px){
-  .barthel-kpi{grid-template-columns:1fr 1fr;}
-}
-.barthel-kpi .box{
-  border:1px dashed var(--borde);
-  border-radius:12px;
-  padding:12px; text-align:center;
-}
-.barthel-kpi .ttl{font-size:13px; color:var(--gris);}
-.barthel-kpi .val{font-size:22px; font-weight:700; color:var(--azul);}
-.barthel-classBox{
-  margin-top:12px;
-  border-radius:12px;
-  padding:12px 14px;
-  background:#f0fdf4;
-  color:var(--ok);
-  border:1px solid #bbf7d0;
-  font-weight:700;
-}
-.barthel-error{
-  display:none;
-  border-radius:12px;
-  padding:12px 14px;
-  margin-top:10px;
-  background:#fef2f2;
-  color:var(--error);
-  border:1px solid #fecaca;
-}
-
-/* ---------- BOTONES ---------- */
-.barthel-actions{
-  display:flex; gap:10px; flex-wrap:wrap; margin-top:12px;
-}
-.barthel-btn{
-  appearance:none;
-  border:1px solid var(--accent);
-  background:var(--accent-light);
-  color:#1e3a8a;
-  font-weight:700; font-size:14px;
-  padding:10px 14px; border-radius:10px;
-  cursor:pointer;
-  transition:transform .05s ease, box-shadow .15s ease, background .15s ease;
-}
-.barthel-btn:hover{box-shadow:0 6px 16px rgba(37,99,235,.18);}
-.barthel-btn:active{transform:translateY(1px);}
-.barthel-btn.secondary{
-  border-color:#94a3b8; background:#f1f5f9; color:#0f172a;
-}
-.barthel-hint{font-size:12px; color:var(--gris); margin-top:4px;}
-
-/* ---------- RESUMEN ---------- */
-#resumenText{
-  white-space:pre-wrap;
-  font-size:13px;
-  color:#0f172a;
-  margin-top:8px;
-  border:1px dashed var(--borde);
-  border-radius:10px;
-  padding:10px;
-  background:#f8fafc;
-}
-
-/* ---------- PIE ---------- */
-footer.barthel-smallprint{
-  margin-top:20px; font-size:11px; color:var(--gris);
-}
-
-/* ---------- RESPONSIVE ESPECÍFICO ---------- */
-@media (max-width:600px){
-  .barthel-appbar-inner{padding:8px 12px;}
-  .barthel-appbar h1{font-size:18px;}
-  .barthel-select{font-size:14px; padding:10px;}
-  .barthel-label{font-size:14px;}
-  .barthel-card{padding:14px;}
-  .barthel-btn{font-size:13px; padding:9px 12px;}
-  .barthel-kpi .val{font-size:18px;}
-  .barthel-container{padding:0 10px;}
+/* ===== PIE ===== */
+footer{position:relative;left:50%;transform:translateX(-50%);width:100vw;
+  margin:2rem 0 0 0;padding:1.5rem 0;border-top:1px solid #e5e7eb;
+  background:#ffffff;text-align:center;box-shadow:0 -2px 6px rgba(0,0,0,0.04);}
+#resumenText {
+  white-space: pre-wrap;
+  font-size: 13px;
+  color: #0f172a;
+  margin-top: 10px;
+  border: 1px dashed var(--borde);
+  border-radius: 10px;
+  padding: 10px 12px;
+  background: #f8fafc;
+  line-height: 1.45;
 }
 </style>
 </head>
-<div class="barthel-body">
-<header class="barthel-appbar" role="region" aria-label="Cabecera Barthel">
-  <div class="barthel-appbar-inner">
-    <h1>Escala de Barthel</h1>
-    <div class="barthel-spacer"></div>
-    <output id="pill" class="barthel-pill" aria-live="polite" aria-atomic="true">Barthel: —</output>
+<body>
+
+<header class="appbar" role="region" aria-label="Cabecera Barthel">
+  <div class="appbar-inner">
+    <div class="left-group">
+      <h1>Escala de Barthel</h1>
+      <output id="pill" class="pill" aria-live="polite" aria-atomic="true">—</output>
+    </div>
+    <div class="actions">
+      <a class="btn" href="../index.html">Inicio</a>
+    </div>
   </div>
 </header>
 
-<div class="barthel-container">
-  <div class="barthel-grid">
-    <div class="barthel-card">
-      <form id="calcForm">
-        <div class="barthel-item">
-          <label class="barthel-label" for="comer">Comer</label>
-          <select class="barthel-select" id="comer">
-            <option value="10">Independiente (la comida está al alcance)</option>
-            <option value="5">Necesita ayuda</option>
-            <option value="0">Incapaz de alimentarse</option>
-          </select>
-        </div>
-
-        <div class="barthel-item">
-          <label class="barthel-label" for="traslado">Traslado (silla/cama)</label>
-          <select class="barthel-select" id="traslado">
-            <option value="15">Independiente</option>
-            <option value="10">Necesita alguna ayuda</option>
-            <option value="5">Necesita ayuda importante; puede estar sentado</option>
-            <option value="0">Incapaz; no se mantiene sentado</option>
-          </select>
-        </div>
-
-        <div class="barthel-item">
-          <label class="barthel-label" for="aseo">Aseo personal</label>
-          <select class="barthel-select" id="aseo">
-            <option value="5">Independiente (cara, manos, dientes, peinarse/afeitarse)</option>
-            <option value="0">Dependiente</option>
-          </select>
-        </div>
-
-        <div class="barthel-item">
-          <label class="barthel-label" for="retrete">Uso del retrete</label>
-          <select class="barthel-select" id="retrete">
-            <option value="10">Independiente (entrar/salir, limpieza y vestido)</option>
-            <option value="5">Necesita alguna ayuda</option>
-            <option value="0">Dependiente</option>
-          </select>
-        </div>
-
-        <div class="barthel-item">
-          <label class="barthel-label" for="bano">Baño/ducha</label>
-          <select class="barthel-select" id="bano">
-            <option value="5">Independiente</option>
-            <option value="0">Dependiente</option>
-          </select>
-        </div>
-
-        <div class="barthel-item">
-          <label class="barthel-label" for="deambular">Deambular</label>
-          <select class="barthel-select" id="deambular">
-            <option value="15">Independiente ≥50 m (puede usar muletas; no andador)</option>
-            <option value="10">Anda con pequeña ayuda</option>
-            <option value="5">Independiente en silla de ruedas (50 m)</option>
-            <option value="0">Inmóvil</option>
-          </select>
-        </div>
-
-        <div class="barthel-item">
-          <label class="barthel-label" for="escaleras">Escaleras</label>
-          <select class="barthel-select" id="escaleras">
-            <option value="10">Independiente (sube y baja)</option>
-            <option value="5">Necesita ayuda (puede usar muletas)</option>
-            <option value="0">Incapaz</option>
-          </select>
-        </div>
-
-        <div class="barthel-item">
-          <label class="barthel-label" for="vestirse">Vestirse</label>
-          <select class="barthel-select" id="vestirse">
-            <option value="10">Independiente (botones, cremalleras, cordones)</option>
-            <option value="5">Necesita ayuda (realiza ~50%)</option>
-            <option value="0">Dependiente</option>
-          </select>
-        </div>
-
-        <div class="barthel-item">
-          <label class="barthel-label" for="heces">Control heces</label>
-          <select class="barthel-select" id="heces">
-            <option value="10">Continente</option>
-            <option value="5">Accidente excepcional (1/semana)</option>
-            <option value="0">Incontinente (o precisa enema)</option>
-          </select>
-        </div>
-
-        <div class="barthel-item">
-          <label class="barthel-label" for="orina">Control orina</label>
-          <select class="barthel-select" id="orina">
-            <option value="10">Continente (≥7 días)</option>
-            <option value="5">Accidente excepcional (≤1/24 h)</option>
-            <option value="0">Incontinente / sondado sin autocuidados</option>
-          </select>
-        </div>
-      </form>
-    </div>
-
-    <div id="resultCard" class="barthel-card barthel-result">
-      <div id="errBox" class="barthel-error" role="alert"></div>
-
-      <div class="barthel-kpi">
-        <div class="box">
-          <div class="ttl">Puntuación total (0–100)</div>
-          <div class="val"><span id="totalVal">—</span></div>
-        </div>
-        <div class="box">
-          <div class="ttl">Ítems completados</div>
-          <div class="val"><span id="filledVal">0</span> / 10</div>
-        </div>
-      </div>
-
-      <div id="classBox" class="barthel-classBox" aria-live="polite">—</div>
-
-      <div class="barthel-actions">
-        <button id="btnCopy" class="barthel-btn" type="button" aria-label="Copiar resumen">Copiar resumen</button>
-        <button id="btnPrint" class="barthel-btn secondary" type="button" aria-label="Imprimir resultados">Imprimir</button>
-      </div>
-      <div class="barthel-hint">El resumen incluye puntuación, clasificación e ítems seleccionados con su puntuación.</div>
-
-      <div id="resumenText" aria-label="Resumen generado para copiar"></div>
-
-      <footer class="barthel-smallprint">
-        Nota: esta escala es una ayuda a la valoración funcional y no sustituye el juicio clínico.
-      </footer>
-    </div>
+<main class="container">
+  <div class="card">
+    <form id="calcForm">
+      <!-- Campos principales -->
+      <div id="campos"></div>
+    </form>
   </div>
-</div>
-</div>
+
+  <div id="resultCard" class="card result">
+    <div id="errBox" class="err" role="alert"></div>
+
+    <div class="kpi">
+      <div class="box">
+        <div class="ttl">Puntuación total (0–100)</div>
+        <div class="val" id="totalVal">—</div>
+      </div>
+      <div class="box">
+        <div class="ttl">Ítems completados</div>
+        <div class="val"><span id="filledVal">0</span> / 10</div>
+      </div>
+    </div>
+
+    <div id="classBox" class="classBox" aria-live="polite">—</div>
+
+    <div class="actions">
+      <button id="btnBorrar" type="button" class="btn-secondary">Borrar</button>
+      <button id="btnCopiar" type="button" class="btn-secondary">Copiar resumen</button>
+    </div>
+<div id="resumenText" aria-label="Resumen generado para copiar"></div>
+<p class="hint">El resumen incluye puntuación, clasificación e ítems seleccionados.</p>
+  </div>
+</main>
+
 <script>
-// JavaScript para la Escala de Barthel
-var SEP = ' - '; // Guion simple para la cabecera
-var appbar = document.querySelector('.barthel-appbar'); 
-function onScroll(){ if(!appbar) return; (window.scrollY>8)?appbar.classList.add('scrolled'):appbar.classList.remove('scrolled'); }
-document.addEventListener('scroll', onScroll, {passive:true}); onScroll();
+// ====== CAMPOS ======
+const items = [
+  ["comer","Comer",["Independiente (la comida está al alcance)",10],["Necesita ayuda",5],["Incapaz de alimentarse",0]],
+  ["traslado","Traslado (silla/cama)",["Independiente",15],["Necesita alguna ayuda",10],["Ayuda importante",5],["Incapaz",0]],
+  ["aseo","Aseo personal",["Independiente",5],["Dependiente",0]],
+  ["retrete","Uso del retrete",["Independiente",10],["Necesita ayuda",5],["Dependiente",0]],
+  ["bano","Baño/ducha",["Independiente",5],["Dependiente",0]],
+  ["deambular","Deambular",["Independiente ≥50 m",15],["Ayuda mínima",10],["Silla ruedas (50 m)",5],["Inmóvil",0]],
+  ["escaleras","Escaleras",["Independiente",10],["Necesita ayuda",5],["Incapaz",0]],
+  ["vestirse","Vestirse",["Independiente",10],["Ayuda parcial",5],["Dependiente",0]],
+  ["heces","Control de heces",["Continente",10],["Accidente ocasional",5],["Incontinente",0]],
+  ["orina","Control de orina",["Continente",10],["Accidente ocasional",5],["Incontinente",0]]
+];
 
-function updateHeaderPill(total, clase){
-  var pill = document.getElementById('pill');
-  if(!pill) return;
-  var guion = '-';
-  if (typeof total !== 'number' || isNaN(total)) pill.textContent = 'Barthel: ' + guion;
-  else pill.textContent = 'Barthel: ' + total + SEP + clase;
-}
+// Insertar selects dinámicamente
+const camposDiv = document.getElementById("campos");
+items.forEach(([id,label,...opts])=>{
+  const div=document.createElement("div");
+  div.className="item";
+  div.innerHTML=`<label for="${id}">${label}</label><select id="${id}">${opts.map(([txt,val])=>`<option value="${val}">${txt}</option>`).join('')}</select>`;
+  camposDiv.appendChild(div);
+});
 
-const BULLET = '*'; // CAMBIO CLAVE: Usar asterisco simple para el resumen.
-
+// ====== LÓGICA ======
 function clasificarBarthel(T){
-  if (T <= 20) return 'Dependencia total';
-  if (T <= 60) return 'Dependencia severa';
-  if (T <= 90) return 'Dependencia moderada';
-  if (T <= 99) return 'Dependencia leve';
+  if(T<=20) return 'Dependencia total';
+  if(T<=60) return 'Dependencia severa';
+  if(T<=90) return 'Dependencia moderada';
+  if(T<=99) return 'Dependencia leve';
   return 'Independiente';
 }
 
-function leerValor(id){
-  var el = document.getElementById(id);
-  return Number(el && el.value);
-}
-
-function leerTextoOpcion(id){
-  var el = document.getElementById(id);
-  if(!el) return '';
-  var opt = el.options[el.selectedIndex];
-  return opt ? opt.textContent : '';
-}
-
-function etiquetaDe(id){
-  var label = document.querySelector('label[for="'+id+'"]');
-  return label ? label.textContent : id;
-}
-
-function buildResumen(total, clase){
-  var campos = ['comer','traslado','aseo','retrete','bano','deambular','escaleras','vestirse','heces','orina'];
-  var lineas = [];
-  lineas.push('Escala de Barthel');
-  lineas.push('Puntuación: ' + total);
-  lineas.push('Clasificación: ' + clase);
-  lineas.push('');
-  lineas.push('Detalle por ítems:');
-  for (var i=0;i<campos.length;i++){
-    var id = campos[i];
-    var nom = etiquetaDe(id);
-    var val = leerValor(id);
-    var txt = leerTextoOpcion(id);
-    // Usamos BULLET (*) para asegurar la compatibilidad con el copy-paste
-    lineas.push(BULLET + ' ' + nom + ': ' + txt + ' (' + val + ')');
-  }
-  return lineas.join('\n');
+function clasePill(clase){
+  if(/Independiente|leve/i.test(clase)) return 'pill-ok';
+  if(/moderada|severa/i.test(clase)) return 'pill-warn';
+  return 'pill-bad';
 }
 
 function calcular(){
-  var campos = ['comer','traslado','aseo','retrete','bano','deambular','escaleras','vestirse','heces','orina'];
-  var total = 0, filled = 0;
-  var guion = '-'; 
-  
-  for (var i=0;i<campos.length;i++){
-    var el = document.getElementById(campos[i]);
-    if(!el) continue;
-    
-    if(el.selectedIndex > 0){
-        var v = Number(el.value); 
-        total += v;
-        filled += 1;
-    }
-  }
+  const ids = items.map(i=>i[0]);
+  let total=0, filled=0;
+  ids.forEach(id=>{
+    const el=document.getElementById(id);
+    const v=Number(el.value||0);
+    if(el.selectedIndex>=0){ total+=v; filled++; }
+  });
 
-  var resultCard = document.getElementById('resultCard');
-  var errBox = document.getElementById('errBox');
-  var totalVal = document.getElementById('totalVal');
-  var filledVal = document.getElementById('filledVal');
-  var classBox  = document.getElementById('classBox');
-  var resumenDiv = document.getElementById('resumenText');
-
-  errBox.style.display = 'none'; errBox.textContent='';
+  const resultCard=document.getElementById('resultCard');
+  const errBox=document.getElementById('errBox');
+  const totalVal=document.getElementById('totalVal');
+  const filledVal=document.getElementById('filledVal');
+  const classBox=document.getElementById('classBox');
   resultCard.classList.add('show');
+  errBox.style.display='none';
 
-  var clase = (filled === 10) ? clasificarBarthel(total) : guion; 
-  
-  // Usar guion simple
-  totalVal.textContent = (filled === 0) ? guion : total; 
-  filledVal.textContent = filled;
-  classBox.textContent = (filled === 10) ? clase : guion; 
-
-  if (filled < 10){ 
-      errBox.style.display='block'; 
-      errBox.textContent='Complete los 10 ítems antes de obtener el resultado final.';
-      updateHeaderPill(undefined, guion);
-      resumenDiv.textContent = '';
-      return { filled: filled, resumen: '' };
-  }
-  
-  updateHeaderPill(total, clase);
-
-  var resumen = buildResumen(total, clase);
-  resumenDiv.textContent = resumen;
-  
-  return { filled: filled, resumen: resumen };
+  const clase=clasificarBarthel(total);
+  totalVal.textContent=total;
+  filledVal.textContent=filled;
+  classBox.textContent=clase;
+  classBox.style.background= filled<10?'#fff':(
+    /Independiente|leve/i.test(clase)?'#dcfce7':
+    /moderada|severa/i.test(clase)?'#fef3c7':'#fee2e2');
+  classBox.style.color= filled<10?'#000':(
+    /Independiente|leve/i.test(clase)?'#065f46':
+    /moderada|severa/i.test(clase)?'#92400e':'#991b1b');
+  const pill=document.getElementById('pill');
+  pill.className='pill '+clasePill(clase);
+  pill.textContent=filled<10?'—':total;
 }
 
-function attachAutoCalc(){
-  var selects = document.querySelectorAll('.barthel-select'); 
-  for (var i=0; i<selects.length; i++){
-    var defaultOption = selects[i].options[0];
-    
-    // 1. Crear y añadir la nueva opción "Seleccione" (índice 0)
-    var firstOption = document.createElement('option');
-    firstOption.value = '0';
-    firstOption.textContent = 'Seleccione';
-    firstOption.selected = true; 
-    selects[i].prepend(firstOption);
-
-    // 2. Quitar el 'selected' a la opción original que venía por defecto
-    if (defaultOption) defaultOption.selected = false;
-    
-    selects[i].addEventListener('change', calcular);
-    selects[i].addEventListener('input', calcular);
-  }
+function borrar(){
+  items.forEach(([id])=>document.getElementById(id).selectedIndex=0);
+  calcular();
 }
 
-function copiarResumen(){
-  var resumen = document.getElementById('resumenText').textContent || '';
-  var btn = document.getElementById('btnCopy');
-  if(!resumen.trim()){
-    btn.textContent = 'Complete los 10 ítems';
-    setTimeout(function(){ btn.textContent='Copiar resumen'; }, 1200);
-    return;
-  }
-  if (navigator.clipboard && navigator.clipboard.writeText){
-    navigator.clipboard.writeText(resumen).then(function(){
-      btn.textContent = 'Copiado';
-      setTimeout(function(){ btn.textContent='Copiar resumen'; }, 1200);
-    }).catch(function(){
-      fallbackCopy(resumen, btn);
-    });
-  } else {
-    fallbackCopy(resumen, btn);
-  }
+function copiar(){
+  const total = document.getElementById('totalVal').textContent;
+  const clase = document.getElementById('classBox').textContent;
+  const resumenDiv = document.getElementById('resumenText');
+  if (total === '—' || !total.trim()) return;
+
+  // Encabezado del resumen
+  let texto = `Escala de Barthel: ${total} puntos (${clase}).\n\n`;
+  texto += `Detalle por ítems:\n`;
+
+  // Ítems con descripción y valor
+  items.forEach(([id, nombre, ...opciones]) => {
+    const sel = document.getElementById(id);
+    if (!sel) return;
+    const opt = sel.options[sel.selectedIndex];
+    const valor = opt ? opt.value : '';
+    const desc = opt ? opt.textContent : '';
+    texto += `- ${nombre}: ${desc} (${valor})\n`;
+  });
+
+  // Interpretación general
+  texto += `\nInterpretación: `;
+  if (/Independiente/i.test(clase)) texto += 'Independencia funcional casi completa.';
+  else if (/leve/i.test(clase)) texto += 'Leve dependencia para algunas ABVD.';
+  else if (/moderada/i.test(clase)) texto += 'Dependencia moderada, precisa ayuda parcial frecuente.';
+  else if (/severa/i.test(clase)) texto += 'Dependencia severa, ayuda continua en la mayoría de las actividades.';
+  else texto += 'Dependencia total para las actividades básicas.';
+
+  // Mostrar resumen en pantalla
+  resumenDiv.textContent = texto;
+
+  // Copiar al portapapeles
+  navigator.clipboard.writeText(texto).then(() => {
+    const btn = document.getElementById('btnCopiar');
+    btn.classList.add('copiado');
+    btn.textContent = 'Copiado';
+    setTimeout(() => {
+      btn.classList.remove('copiado');
+      btn.textContent = 'Copiar resumen';
+    }, 3000);
+  });
 }
 
-function fallbackCopy(text, btn){
-  var ta = document.createElement('textarea');
-  ta.value = text;
-  ta.style.position='fixed';
-  ta.style.top='-1000px';
-  document.body.appendChild(ta);
-  ta.select();
-  try{ document.execCommand('copy'); }catch(e){}
-  document.body.removeChild(ta);
-  btn.textContent = 'Copiado';
-  setTimeout(function(){ btn.textContent='Copiar resumen'; }, 1200);
-}
-
-function imprimirResultados(){
-  var resultado = calcular();
-  
-  if (resultado.filled < 10){
-    return;
-  }
-  
-  var printContent = resultado.resumen;
-  
-  // Para la impresión, vamos a usar el guion largo y el punto de lista ya que es un entorno controlado.
-  // Reemplazamos el asterisco para la impresión con el punto de lista (•)
-  printContent = printContent.replace(/\*/g, '•');
-
-  var printHTML = `
-    <html>
-    <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-      <title>Escala de Barthel - Resultado</title>
-      <style>
-        body { font-family: Verdana, Geneva, Tahoma, sans-serif; margin: 30px; line-height: 1.6; }
-        pre { font-size: 14px; white-space: pre-wrap; word-wrap: break-word; }
-        h1 { font-size: 20px; border-bottom: 2px solid #ccc; padding-bottom: 5px; }
-      </style>
-    </head>
-    <body>
-      <h1>Resultado de la Escala de Barthel</h1>
-      <pre>${printContent}</pre>
-    </body>
-    </html>
-  `;
-  
-  var printWindow = window.open('', '_blank', 'height=600,width=800');
-  printWindow.document.write(printHTML);
-  printWindow.document.close();
-  
-  setTimeout(function() {
-    printWindow.print();
-    printWindow.close();
-  }, 250);
-}
-
-attachAutoCalc(); calcular();
-document.getElementById('btnCopy').addEventListener('click', copiarResumen);
-document.getElementById('btnPrint').addEventListener('click', imprimirResultados);
+items.forEach(([id])=>{
+  const el=document.getElementById(id);
+  el.addEventListener('change',calcular);
+  el.addEventListener('input',calcular);
+});
+document.getElementById('btnBorrar').addEventListener('click',borrar);
+document.getElementById('btnCopiar').addEventListener('click',copiar);
+document.addEventListener('DOMContentLoaded',calcular);
 </script>
-<footer style="
-    position:relative;
-    left:50%;
-    transform:translateX(-50%);
-    width:100vw;
-    margin:2rem 0 0 0;
-    padding:1.5rem 0;
-    border-top:1px solid #e5e7eb;
-    background:#ffffff;
-    text-align:center;
-    box-shadow:0 -2px 6px rgba(0,0,0,0.04);
-">
-      <img src="uibanner.png"
-         alt="Unidad de Ictus Málaga" style="max-width:380px;height:auto;opacity:.96;">
-  </a>
 
+<footer>
+  <img src="uibanner.png" alt="Unidad de Ictus Málaga" style="max-width:380px;height:auto;opacity:.96;">
 </footer>
-
 </body>
 </html>

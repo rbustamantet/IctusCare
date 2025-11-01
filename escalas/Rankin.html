@@ -3,81 +3,123 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="icon" type="image/png" href="https://rbustamantet.github.io/ictus.cardiopatia/favicon-96x96.png" sizes="96x96" />
-<link rel="icon" type="image/svg+xml" href="https://rbustamantet.github.io/ictus.cardiopatia/favicon.svg" />
-<link rel="shortcut icon" href="https://rbustamantet.github.io/ictus.cardiopatia/favicon.ico" />
-<link rel="apple-touch-icon" sizes="180x180" href="https://rbustamantet.github.io/ictus.cardiopatia/apple-touch-icon.png" />
-<link rel="manifest" href="https://rbustamantet.github.io/ictus.cardiopatia/site.webmanifest" />
-<title>Escala de Rankin modificada</title>
+<link rel="manifest" href="../site.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="../iconos/ictusgps.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../iconos/ictusgps.png">
+<link rel="shortcut icon" href="../iconos/ictusgps.png">
+<meta name="theme-color" content="#0f3d83">
+<title>Escala de Rankin modificada (mRS)</title>
 
 <style>
-  :root{
-    --bg:#f0f6fc; --card:#ffffff; --ink:#0f172a; --muted:#64748b;
-    --accent:#2563eb; --accent-light:#dbeafe;
-  }
-  *{box-sizing:border-box}
-  body{margin:0;padding:0;font-family:Verdana, Geneva, sans-serif;background:var(--bg);color:var(--ink)}
+:root{
+  --bg:#f8fafc; --ink:#0f172a; --borde:#e5e7eb;
+  --ok:#166534; --ok-bg:#e9fce7; --ok-ring:#bbf7d0;
+  --mid:#92400e; --mid-bg:#fff7ed; --mid-ring:#fed7aa;
+  --bad:#991b1b; --bad-bg:#fef2f2; --bad-ring:#fecaca;
+}
 
-  /* CABECERA pegajosa */
-  .appbar{
-    position:sticky; top:0; z-index:1000;
-    background:rgba(255,255,255,.9);
-    border-bottom:1px solid var(--accent-light);
-    backdrop-filter:saturate(140%) blur(8px); -webkit-backdrop-filter:saturate(140%) blur(8px);
-    transition:box-shadow .15s,border-color .15s
-  }
-  .appbar.scrolled{ box-shadow:0 8px 24px rgba(0,0,0,.08); border-color:#e2e8f0 }
-  .appbar-inner{max-width:980px;margin:0 auto;display:flex;align-items:center;gap:12px;padding:10px 16px}
-  .appbar h1{margin:0;font-size:22px;line-height:1.2;color:var(--accent);font-weight:800}
-  .spacer{flex:1}
+/* ===== CABECERA (azul institucional) ===== */
+.appbar{
+  position:sticky; top:0; z-index:1000;
+  background:#0f3d83; color:#fff;
+  box-shadow:0 2px 6px rgba(0,0,0,0.1);
+}
+.appbar-inner{
+  max-width:980px; margin:0 auto; padding:4px 16px;
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+}
+.left-group{display:flex; align-items:center; gap:10px; flex-wrap:wrap;}
+.appbar h1{margin:0; font-size:22px; font-weight:800; color:#fff;}
+.pill{
+  display:inline-flex; align-items:center; justify-content:center;
+  min-width:38px; height:32px; padding:6px 10px;
+  border-radius:999px; font-size:13px; font-weight:700;
+  border:1px solid transparent; background:#dbeafe; color:#1e3a8a;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.pill.tone-green{background:#dcfce7; color:#065f46; border-color:#86efac;}
+.pill.tone-amber{background:#fef3c7; color:#92400e; border-color:#fde68a;}
+.pill.tone-red{background:#fee2e2; color:#991b1b; border-color:#fecaca;}
+.btn{
+  display:inline-flex; align-items:center; justify-content:center;
+  height:32px; padding:0 14px; border-radius:10px; text-decoration:none;
+  border:1px solid rgba(127,179,255,.35);
+  background:#1c60c3; color:#fff; font-size:.9rem; font-weight:700;
+  transition:background .2s, border-color .2s;
+}
+.btn:hover{ background:#0C00FF; }
 
-  .pill{
-    display:inline-block; max-width:60vw;
-    padding:6px 10px; border-radius:999px;
-    background:var(--accent-light); color:#1e3a8a; border:1px solid #bfdbfe;
-    font-size:12px; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-  }
-  @media (min-width:640px){ .pill{ max-width:420px } }
+/* ===== CUERPO ===== */
+body{margin:0; background:var(--bg); color:var(--ink); font-family:Verdana, Geneva, sans-serif;}
+.wrap{max-width:980px; margin:16px auto 48px; padding:0 16px;}
+.panel{background:#fff; border:1px solid var(--borde); border-radius:16px; padding:16px; box-shadow:0 2px 10px rgba(15,23,42,.06);}
 
-  /* === Contenido === */
-  .wrap{max-width:980px;margin:16px auto;padding:0 16px}
-  .card{background:var(--card);border:1px solid var(--accent-light);border-radius:16px;box-shadow:0 4px 16px rgba(0,0,0,.08);padding:16px;margin:12px 0}
-  .hr{height:1px;background:#e2e8f0;margin:12px 0}
-  .score{font-weight:800;color:var(--accent)}
-  .note{color:var(--muted);font-size:12px}
+.note{color:#64748b; font-size:12px;}
 
-  .options{display:grid;gap:10px}
-  .option{display:flex;gap:12px;align-items:flex-start;border:1px solid #dbeafe;background:#fff;border-radius:12px;padding:12px;transition:box-shadow .15s, border-color .15s, background .15s; cursor:pointer}
-  .option:hover{box-shadow:0 4px 14px rgba(37,99,235,.08)}
-  .badge{min-width:36px;min-height:36px;border-radius:10px;background:#eef6ff;border:1px solid #dbeafe;color:#1e40af;font-weight:700;display:flex;align-items:center;justify-content:center}
-  .opt-title{font-weight:700;margin:0 0 4px}
-  .opt-desc{margin:0;color:#334155;font-size:14px;line-height:1.45}
-  .opt-hints{margin:6px 0 0 0;color:#475569;font-size:12px}
-  .opt-hints li{margin:2px 0}
+/* Opciones mRS */
+.options{display:grid; gap:10px; margin-top:8px;}
+.option{
+  display:flex; gap:12px; align-items:flex-start;
+  border:1px solid #dbeafe; background:#fff; border-radius:12px; padding:12px;
+  transition:box-shadow .15s, border-color .15s, background .15s; cursor:pointer;
+}
+.option:hover{box-shadow:0 4px 14px rgba(37,99,235,.08)}
+.badge{
+  min-width:36px; min-height:36px; border-radius:10px;
+  background:#eef6ff; border:1px solid #dbeafe; color:#1e40af;
+  font-weight:700; display:flex; align-items:center; justify-content:center;
+}
+.opt-title{font-weight:700; margin:0 0 4px;}
+.opt-desc{margin:0; color:#334155; font-size:14px; line-height:1.45;}
+.opt-hints{margin:6px 0 0; color:#475569; font-size:12px;}
+.opt-hints li{margin:2px 0;}
 
-  /* Radios visualmente ocultos (accesibles) */
-  .radio{
-    position:absolute !important;
-    width:1px; height:1px; padding:0; margin:-1px;
-    overflow:hidden; clip:rect(0,0,0,0); clip-path: inset(50%);
-    white-space:nowrap; border:0;
-  }
-  /* Estado seleccionado */
-  .radio:checked + label.option{
-    border-color:#60a5fa; background:#f8fbff;
-    box-shadow:0 0 0 3px rgba(37,99,235,.15) inset;
-  }
-  /* Foco accesible */
-  .radio:focus-visible + label.option{
-    outline:3px solid #93c5fd;
-    outline-offset:2px;
-  }
-.pill.tone-green{background:#dcfce7;color:#166534;border-color:#bbf7d0;}
-.pill.tone-amber{background:#fef9c3;color:#92400e;border-color:#fde68a;}
-.pill.tone-red{background:#fee2e2;color:#991b1b;border-color:#fecaca;}
-html{ scroll-behavior:auto; }
-body {
-  overflow-x: hidden;
+/* Radios accesibles invisibles */
+.radio{
+  position:absolute !important; width:1px; height:1px; padding:0; margin:-1px;
+  overflow:hidden; clip:rect(0,0,0,0); clip-path: inset(50%); white-space:nowrap; border:0;
+}
+.radio:checked + label.option{
+  border-color:#60a5fa; background:#f8fbff;
+  box-shadow:0 0 0 3px rgba(37,99,235,.15) inset;
+}
+.radio:focus-visible + label.option{ outline:3px solid #93c5fd; outline-offset:2px; }
+
+/* ===== RESULTADOS ===== */
+.kpi{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:12px;}
+.box{border:1.5px dashed #c7dbff; border-radius:14px; padding:14px; background:#f8fbff; text-align:center;}
+.ttl{font-size:14px; color:#334155; font-weight:800; margin-bottom:2px;}
+.val{font-size:24px; font-weight:900; color:#0b2c5f;}
+.ok{background:var(--ok-bg); border-color:var(--ok-ring);} 
+.warn{background:var(--mid-bg); border-color:var(--mid-ring);} 
+.bad{background:var(--bad-bg); border-color:var(--bad-ring);} 
+.ok .val{color:var(--ok);} .warn .val{color:var(--mid);} .bad .val{color:var(--bad);}
+
+/* ===== BOTONES ===== */
+.actions{display:flex; gap:10px; flex-wrap:wrap; margin-top:18px;}
+.btn-action{
+  flex:1 1 48%;
+  border:none; border-radius:10px; padding:12px;
+  font-size:15px; font-weight:700; cursor:pointer;
+  background:#fff; color:#0f3d83; border:1px solid #2563eb;
+  transition:background .2s;
+}
+.btn-action:hover{ background:#eff6ff; }
+.btn-copy.copiado{ background:#0f3d83!important; color:#fff!important; }
+
+/* ===== RESUMEN ===== */
+#resumenText{
+  white-space:pre-wrap; font-size:13px; color:#0f172a; margin-top:12px;
+  border:1px dashed var(--borde); border-radius:10px; padding:10px 12px;
+  background:#f8fafc; line-height:1.45;
+}
+
+/* ===== PIE ===== */
+footer{
+  position:relative; left:50%; transform:translateX(-50%);
+  width:100vw; margin:2rem 0 0 0; padding:1.5rem 0;
+  border-top:1px solid #e5e7eb; background:#ffffff;
+  text-align:center; box-shadow:0 -2px 6px rgba(0,0,0,0.04);
 }
 </style>
 </head>
@@ -86,20 +128,22 @@ body {
 <!-- CABECERA -->
 <header class="appbar" role="region" aria-label="Cabecera mRS">
   <div class="appbar-inner">
-    <h1>Escala de Rankin modificada</h1>
-    <div class="spacer"></div>
-    <output id="pill" class="pill" aria-live="polite" aria-atomic="true">mRS: —</output>
+    <div class="left-group">
+      <h1>Escala de Rankin modificada</h1>
+      <output id="pill" class="pill" aria-live="polite" aria-atomic="true">—</output>
+    </div>
+    <a class="btn" href="../index.html">Inicio</a>
   </div>
 </header>
 
-<div class="wrap">
-  <div class="card">
-    <p id="ayuda" class="note">Seleccione el grado que describa el estado <em>habitual</em> del paciente. Priorice la capacidad real en la vida diaria.</p>
+<main class="wrap">
+  <section class="panel">
+    <p class="note">Seleccione el grado que describa el estado <em>habitual</em> del paciente. Priorice la capacidad real en la vida diaria.</p>
 
     <fieldset aria-describedby="ayuda" style="border:0; padding:0; margin:0">
-      <legend class="note" style="font-weight:700; margin-bottom:8px">Escala mRS (0–6)</legend>
 
       <div class="options" role="radiogroup" aria-label="Escala de Rankin modificada">
+        <!-- 0 -->
         <input class="radio" type="radio" id="mrs0" name="mrs" value="0">
         <label class="option" for="mrs0">
           <div class="badge">0</div>
@@ -110,6 +154,7 @@ body {
           </div>
         </label>
 
+        <!-- 1 -->
         <input class="radio" type="radio" id="mrs1" name="mrs" value="1">
         <label class="option" for="mrs1">
           <div class="badge">1</div>
@@ -120,6 +165,7 @@ body {
           </div>
         </label>
 
+        <!-- 2 -->
         <input class="radio" type="radio" id="mrs2" name="mrs" value="2">
         <label class="option" for="mrs2">
           <div class="badge">2</div>
@@ -133,6 +179,7 @@ body {
           </div>
         </label>
 
+        <!-- 3 -->
         <input class="radio" type="radio" id="mrs3" name="mrs" value="3">
         <label class="option" for="mrs3">
           <div class="badge">3</div>
@@ -146,6 +193,7 @@ body {
           </div>
         </label>
 
+        <!-- 4 -->
         <input class="radio" type="radio" id="mrs4" name="mrs" value="4">
         <label class="option" for="mrs4">
           <div class="badge">4</div>
@@ -156,6 +204,7 @@ body {
           </div>
         </label>
 
+        <!-- 5 -->
         <input class="radio" type="radio" id="mrs5" name="mrs" value="5">
         <label class="option" for="mrs5">
           <div class="badge">5</div>
@@ -166,6 +215,7 @@ body {
           </div>
         </label>
 
+        <!-- 6 -->
         <input class="radio" type="radio" id="mrs6" name="mrs" value="6">
         <label class="option" for="mrs6">
           <div class="badge">6</div>
@@ -177,138 +227,159 @@ body {
       </div>
     </fieldset>
 
-    
-  </div>
-</div>
+    <!-- RESULTADOS -->
+    <div class="panel" id="resultCard" style="margin-top:16px;">
+      <div class="kpi">
+        <div class="box"><div class="ttl">Rankin modificado</div><div class="val" id="scoreVal">—</div></div>
+        <div class="box" id="riskBox"><div class="ttl">Interpretación</div><div class="val" id="riskVal">—</div></div>
+      </div>
+
+      <div class="actions">
+        <button id="btnClear" class="btn-action">Borrar</button>
+        <button id="btnCopy"  class="btn-action btn-copy">Copiar resumen</button>
+      </div>
+
+      <div id="resumenText"></div>
+
+      <p class="note" style="margin-top:12px">
+        Referencia: van Swieten JC, Koudstaal PJ, Visser MC, Schouten HJ, van Gijn J. 
+        Interobserver agreement for the assessment of handicap in stroke patients. <em>Stroke</em>. 1988;19:604–607.
+      </p>
+    </div>
+  </section>
+</main>
 
 <script>
-  // Separador seguro (em dash)
-  var SEP = ' \u2014 ';
+const SEP = ' \u2014 ';
 
-  // Respeta preferencias de movimiento (con guardas)
-  var prefersReducedMotion = false;
-  try{
-    prefersReducedMotion = (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) || false;
-  }catch(e){}
-
-  // Sombrado de cabecera al hacer scroll
-  var appbar = document.querySelector('.appbar');
-  function onScroll(){
-    if(!appbar) return;
-    if (window.scrollY > 8) { appbar.classList.add('scrolled'); }
-    else { appbar.classList.remove('scrolled'); }
-  }
-  document.addEventListener('scroll', onScroll, {passive:true});
-  onScroll();
-
-  function normalizeEntities(s){
-    s = (s == null) ? '' : String(s);
-    return s.replace(/&mdash;|&#8212;|&ndash;|&#8211;/g, '\u2014');
-  }
-function toneForMRS(val){
-  val = Number(val);
-  if (val <= 1) return 'tone-green';
-  if (val <= 3) return 'tone-amber';
-  return 'tone-red';
+// Tonos para pill y kpi
+function toneForMRS(v){
+  v = Number(v);
+  if (v <= 1) return {kpi:'ok', pill:'tone-green', label:'sin discapacidad significativa'};
+  if (v <= 3) return {kpi:'warn', pill:'tone-amber', label:'discapacidad leve–moderada'};
+  if (v <= 5) return {kpi:'bad', pill:'tone-red', label:'discapacidad moderada–severa'};
+  return {kpi:'bad', pill:'tone-red', label:'fallecido'};
 }
 
-  function updateHeaderPill(payload){
-  var pill = document.getElementById('pill');
-  if(!pill) return;
+// Texto interpretativo corto
+function shortTitle(val){
+  switch(String(val)){
+    case '0': return 'Sin síntomas';
+    case '1': return 'Síntomas sin discapacidad significativa';
+    case '2': return 'Discapacidad leve';
+    case '3': return 'Discapacidad moderada';
+    case '4': return 'Discapacidad moderada–severa';
+    case '5': return 'Discapacidad severa';
+    case '6': return 'Fallecido';
+    default:  return '—';
+  }
+}
 
-  pill.className = 'pill'; // limpia clases previas
-  if(!payload){
-    pill.textContent = 'mRS: —';
+// Actualiza pill cabecera
+function updateHeaderPill(val){
+  const pill = document.getElementById('pill');
+  pill.className = 'pill'; // limpia
+  if(val == null){
+    pill.textContent = 'mRS';
+    return;
+  }
+  const tone = toneForMRS(val);
+  pill.classList.add(tone.pill);
+  pill.textContent = '' + val + SEP + shortTitle(val);
+}
+
+// Construye resumen copiable
+function buildResumen(val){
+  const titulo = 'Escala de Rankin modificada (mRS)';
+  const linea  = 'mRS: ' + val + ' ' + SEP + ' ' + shortTitle(val);
+  let interpretacion = '';
+  const v = Number(val);
+  if (v <= 1) interpretacion = 'Independiente o sin limitación funcional relevante.';
+  else if (v === 2) interpretacion = 'Independiente para autocuidado, pero no realiza todas las actividades previas.';
+  else if (v === 3) interpretacion = 'Requiere alguna ayuda; camina sin asistencia humana.';
+  else if (v === 4) interpretacion = 'No camina sin ayuda y no atiende necesidades corporales sin asistencia.';
+  else if (v === 5) interpretacion = 'Encamado/incontinente; cuidados continuos.';
+  else interpretacion = 'Fallecido.';
+
+  return `${titulo}\n${linea}\nInterpretación: ${interpretacion}`;
+}
+
+// Aplica resultado a la tarjeta
+function renderResultado(val){
+  const sEl = document.getElementById('scoreVal');
+  const rEl = document.getElementById('riskVal');
+  const riskBox = document.getElementById('riskBox');
+  const resCard = document.getElementById('resultCard');
+
+  if(val == null){
+    sEl.textContent = '—';
+    rEl.textContent = '—';
+    updateHeaderPill(null);
+    document.getElementById('resumenText').textContent = '';
     return;
   }
 
-  pill.textContent = 'mRS: ' + payload.val + SEP + payload.title;
-  pill.classList.add(toneForMRS(payload.val));
+  const tone = toneForMRS(val);
+  sEl.textContent = String(val);
+  rEl.textContent = shortTitle(val);
+
+  // Colorear la caja de interpretación
+  riskBox.classList.remove('ok','warn','bad');
+  riskBox.classList.add(tone.kpi);
+
+  // Píldora
+  updateHeaderPill(val);
+
+  // Resumen
+  document.getElementById('resumenText').textContent = buildResumen(val);
+  resCard.scrollIntoView({behavior:'smooth', block:'nearest'});
 }
 
-
-  function calc(){
-    var sel = document.querySelector('input[name="mrs"]:checked');
-    var out = document.getElementById('out');
-    var outText = document.getElementById('outText');
-
-    if(!sel){
-      if(out) out.textContent = '—';
-      if(outText) outText.textContent = ' Seleccione un grado.';
-      updateHeaderPill(null);
-      return;
-    }
-
-    var val = sel.value;
-    var next = sel.nextElementSibling;
-    var titleEl = next ? next.querySelector('.opt-title') : null;
-    var titleRaw = titleEl ? titleEl.textContent : '';
-    var title = normalizeEntities(titleRaw);
-
-    if(out) out.textContent = val;
-    if(outText) outText.textContent = SEP + title;
-    updateHeaderPill({ val: val, title: title });
-  }
-
-  function goResultado(){
-  calc(); // sin desplazamiento
+// Lee selección actual
+function getSelectedValue(){
+  const sel = document.querySelector('input[name="mrs"]:checked');
+  return sel ? sel.value : null;
 }
 
+// Handlers
+function onChange(){
+  const v = getSelectedValue();
+  renderResultado(v);
+}
+function borrar(){
+  const radios = document.querySelectorAll('input[name="mrs"]');
+  radios.forEach(r => r.checked = false);
+  renderResultado(null);
+}
+function copiar(){
+  const t = document.getElementById('resumenText').textContent.trim();
+  if(!t) return;
+  navigator.clipboard.writeText(t).then(()=>{
+    const b = document.getElementById('btnCopy');
+    b.classList.add('copiado'); b.textContent = 'Copiado';
+    setTimeout(()=>{ b.classList.remove('copiado'); b.textContent = 'Copiar resumen'; }, 2000);
+  });
+}
 
-  // Listeners robustos (sin forEach, añade también 'click' por compatibilidad)
-  function attachHandlers(){
-    var radios = document.querySelectorAll('input[name="mrs"]');
-    for (var i=0; i<radios.length; i++){
-      radios[i].addEventListener('change', goResultado);
-      radios[i].addEventListener('click', goResultado);
-    }
-    // Delegación extra por si algún WebView no propaga bien 'change'
-    var container = document.querySelector('.options');
-    if(container){
-container.addEventListener('click', function(e){
-  e.preventDefault(); // evita salto o reenfoque
-        var label = e.target && e.target.closest ? e.target.closest('label.option') : null;
-        if(label){
-          var id = label.getAttribute('for');
-          if(id){
-            var inp = document.getElementById(id);
-            if(inp && !inp.checked){ inp.checked = true; goResultado(); }
-          }
-        }
-      });
-    }
-  }
+// Listeners
+function attach(){
+  const radios = document.querySelectorAll('input[name="mrs"]');
+  radios.forEach(r=>{
+    r.addEventListener('change', onChange);
+    r.addEventListener('click', onChange);
+  });
+  document.getElementById('btnClear').addEventListener('click', borrar);
+  document.getElementById('btnCopy').addEventListener('click', copiar);
+  renderResultado(null);
+}
 
-  // Inicia
-  if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', function(){
-      attachHandlers();
-      updateHeaderPill(null); // mRS: —
-    });
-  }else{
-    attachHandlers();
-    updateHeaderPill(null);
-  }
+document.readyState === 'loading'
+  ? document.addEventListener('DOMContentLoaded', attach)
+  : attach();
 </script>
-<footer style="
-    position:relative;
-    left:50%;
-    transform:translateX(-50%);
-    width:100vw;
-    margin:2rem 0 0 0;
-    padding:1.5rem 0;
-    border-top:1px solid #e5e7eb;
-    background:#ffffff;
-    text-align:center;
-    box-shadow:0 -2px 6px rgba(0,0,0,0.04);
-">
-      <img src="uibanner.png"
-         alt="Unidad de Ictus Málaga" style="max-width:380px;height:auto;opacity:.96;">
-  </a>
 
-</footer>
-
-
+<footer>
+  <img src="uibanner.png" alt="Unidad de Ictus Málaga" style="max-width:380px;height:auto;opacity:.96;">
 </footer>
 </body>
 </html>

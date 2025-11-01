@@ -3,269 +3,261 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="icon" type="image/png" href="https://rbustamantet.github.io/ictus.cardiopatia/favicon-96x96.png" sizes="96x96" />
-<link rel="icon" type="image/svg+xml" href="https://rbustamantet.github.io/ictus.cardiopatia/favicon.svg" />
-<link rel="shortcut icon" href="https://rbustamantet.github.io/ictus.cardiopatia/favicon.ico" />
-<link rel="apple-touch-icon" sizes="180x180" href="https://rbustamantet.github.io/ictus.cardiopatia/apple-touch-icon.png" />
-<link rel="manifest" href="https://rbustamantet.github.io/ictus.cardiopatia/site.webmanifest" />
+<link rel="manifest" href="../site.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="../iconos/ictusgps.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../iconos/ictusgps.png">
+<link rel="shortcut icon" href="../iconos/ictusgps.png">
+<meta name="theme-color" content="#0f3d83">
 <title>CHA₂DS₂-VA — Riesgo de ictus en fibrilación auricular</title>
+
 <style>
-  :root{
-    --bg:#f8fafc; --ink:#0f172a; --card:#ffffff;
-    --ring:#c7dbff; --borde:#dbeafe; --borde2:#e2e8f0;
-    --accent:#2563eb; --accent-ink:#1e3a8a; --accent-light:#dbeafe;
-    --azul:#0b2c5f; --gris:#6b7280;
+:root{
+  --bg:#f8fafc; --ink:#0f172a; --borde:#e5e7eb;
+  --ok:#166534; --ok-bg:#e9fce7; --ok-ring:#bbf7d0;
+  --mid:#92400e; --mid-bg:#fff7ed; --mid-ring:#fed7aa;
+  --bad:#991b1b; --bad-bg:#fef2f2; --bad-ring:#fecaca;
+}
 
-    --fs-toplabel:16px; --fs-chip:13px; --fs-kpi-ttl:15px; --fs-kpi-val:18px;
-  }
-  *{box-sizing:border-box}
-  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
-    font-family:Verdana, Geneva, Tahoma, sans-serif;font-size:15px}
+/* ===== CABECERA ===== */
+.appbar {
+  position: sticky; top: 0; z-index: 1000;
+  background: #0f3d83; color: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+.appbar-inner {
+  max-width: 980px; margin: 0 auto;
+  padding: 4px 16px;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px;
+}
+.left-group {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+}
+.appbar h1 {
+  margin: 0; font-size: 22px; font-weight: 800; color: #fff;
+}
+.pill {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 38px; height: 32px; padding: 6px 10px;
+  border-radius: 999px; font-size: 13px; font-weight: 700;
+  border: 1px solid transparent;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.pill-ok   {background:#dcfce7; color:#065f46; border-color:#86efac;}
+.pill-warn {background:#fef3c7; color:#92400e; border-color:#fde68a;}
+.pill-bad  {background:#fee2e2; color:#991b1b; border-color:#fecaca;}
+.btn {
+  display:inline-flex;align-items:center;justify-content:center;
+  height:32px;padding:0 14px;border-radius:10px;
+  text-decoration:none;border:1px solid rgba(127,179,255,.35);
+  background:#1c60c3;color:white;font-size:0.9rem;font-weight:700;
+  transition:background .2s,border-color .2s;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transform: translateY(-8px);
+}
+.btn:hover{background:#0C00FF;}
 
-  /* CABECERA pegajosa */
-  .appbar{
-    position:sticky; top:0; z-index:1000;
-    background:rgba(255,255,255,.9);
-    border-bottom:1px solid var(--accent-light);
-    backdrop-filter:saturate(140%) blur(8px); -webkit-backdrop-filter:saturate(140%) blur(8px);
-    transition:box-shadow .15s,border-color .15s
-  }
-  .appbar.scrolled{ box-shadow:0 6px 20px rgba(0,0,0,.08); border-color:#e2e8f0 }
-  .appbar-inner{max-width:980px;margin:0 auto;display:flex;align-items:center;gap:10px;padding:8px 14px}
-  .appbar h1{margin:0;font-size:22px;line-height:1.2;color:var(--accent);font-weight:800}
-  .spacer{flex:1}
-  .pill-top{
-    display:inline-block; max-width:60vw; padding:4px 8px; border-radius:999px;
-    background:var(--accent-light); color:var(--accent-ink);
-    border:1px solid #bfdbfe; font-size:12px; font-weight:700;
-    white-space:nowrap; overflow:hidden; text-overflow:ellipsis
-  }
-  @media (min-width:640px){ .pill-top{ max-width:420px } }
+/* ===== CUERPO ===== */
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Verdana, Geneva, sans-serif;}
+.wrap{max-width:980px;margin:16px auto 48px;padding:0 16px;}
+.panel{background:#fff;border:1px solid var(--borde);border-radius:16px;padding:16px;box-shadow:0 2px 10px rgba(15,23,42,.06);}
+label{font-weight:900;color:#0b1f44;margin-top:8px;display:block;}
+select{width:100%;padding:10px 12px;border:1px solid #cbd5e1;border-radius:10px;background:#fff;font-size:14px;}
+select:focus{outline:none;box-shadow:0 0 0 3px #dbeafe;}
+.note{color:#64748b;font-size:12px;margin-top:8px;}
+.grid{display:grid;gap:10px;}
+@media(min-width:720px){.grid{grid-template-columns:1fr 1fr;}}
 
-  /* CONTENEDORES */
-  .wrap{max-width:980px;margin:14px auto 40px;padding:0 14px}
-  .panel{
-    background:#f3f7ff;border:1px solid var(--borde);border-radius:16px;
-    padding:14px;box-shadow:0 8px 22px rgba(31,86,179,.06)
-  }
-  .section-title{font-weight:900;color:#0b1f44;font-size:var(--fs-toplabel);margin:0 0 8px}
+/* ===== RESULTADOS ===== */
+.kpi{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px;}
+.box{border:1.5px dashed #c7dbff;border-radius:14px;padding:14px;background:#f8fbff;text-align:center;}
+.ttl{font-size:14px;color:#334155;font-weight:800;margin-bottom:2px;}
+.val{font-size:24px;font-weight:900;color:#0b2c5f;}
+.mini{font-size:12px;color:#64748b;margin-top:4px;}
+.ok{background:var(--ok-bg);border-color:var(--ok-ring);} 
+.warn{background:var(--mid-bg);border-color:var(--mid-ring);} 
+.bad{background:var(--bad-bg);border-color:var(--bad-ring);} 
+.ok .val{color:var(--ok);} .warn .val{color:var(--mid);} .bad .val{color:var(--bad);}
 
-  /* Tarjetas / chips / inputs */
-  .card{margin-top:12px;background:#fff;border:1px solid var(--borde);
-    border-radius:16px;padding:14px;box-shadow:0 8px 22px rgba(31,86,179,.07)}
-  .chips{display:flex;gap:8px;flex-wrap:wrap;margin:2px 0 10px}
-  .chip{font-size:var(--fs-chip);border:1px solid var(--borde);
-    background:#eef6ff;color:#1e3a8a;border-radius:999px;padding:6px 10px;font-weight:700}
+/* ===== BOTONES ===== */
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;}
+.btn-action{
+  flex:1 1 48%;
+  border:none;border-radius:10px;padding:12px;
+  font-size:15px;font-weight:700;cursor:pointer;
+  transition:background .2s;
+}
+.btn-clear {background:#fff; color:#0b2c5f; border:1px solid #2563eb;}
+.btn-clear:hover {background:#eff6ff;}
+.btn-copy {background:#fff; color:#0f3d83; border:1px solid #2563eb; }
+.btn-copy:hover {background:#eff6ff;}
 
-  .grid{display:grid;gap:10px}
-  @media(min-width:720px){ .grid{grid-template-columns:1fr 1fr} }
-  label{display:block;margin:10px 0 6px;font-weight:900;color:#0b1f44}
-  select{width:100%;padding:10px 12px;border:1px solid #cbd5e1;border-radius:10px;background:#fff;font-size:14px}
-  select:focus{outline:2px solid var(--accent-light)}
-  .note{color:#64748b;font-size:12px;margin-top:8px}
+.btn-copy.copiado{background:#0f3d83!important;color:#fff!important;}
 
-  /* KPIs */
-  .kpi{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-  .box{border:1.5px dashed var(--ring);border-radius:14px;padding:12px;background:#f8fbff;text-align:center}
-  .ttl{font-size:var(--fs-kpi-ttl);color:#334155;font-weight:800;margin-bottom:2px}
-  .val{font-size:var(--fs-kpi-val);font-weight:900;color:#0b2c5f}
-  .mini{font-size:12px;color:#64748b;margin-top:4px}
+/* ===== RESUMEN ===== */
+#resumenText{
+  white-space:pre-wrap;font-size:13px;color:#0f172a;margin-top:12px;
+  border:1px dashed var(--borde);border-radius:10px;padding:10px 12px;
+  background:#f8fafc;line-height:1.45;
+}
 
-  /* Tonos por riesgo */
-  .tone-green{background:#e9fce7;border-color:#bbf7d0;color:#166534}
-  .tone-amber{background:#fff7ed;border-color:#fed7aa;color:#92400e}
-  .tone-red{background:#fef2f2;border-color:#fecaca;color:#991b1b}
-  .kpi .box.tone-green .val, .kpi .box.tone-amber .val, .kpi .box.tone-red .val{color:inherit}
-
-  /* Píldora coloreable */
-  .pill-top.tone-green{ background:#dcfce7; border-color:#bbf7d0; color:#166534 }
-  .pill-top.tone-amber{ background:#ffedd5; border-color:#fed7aa; color:#92400e }
-  .pill-top.tone-red{ background:#fee2e2; border-color:#fecaca; color:#991b1b }
+/* ===== PIE ===== */
+footer{position:relative;left:50%;transform:translateX(-50%);
+  width:100vw;margin:2rem 0 0 0;padding:1.5rem 0;
+  border-top:1px solid #e5e7eb;background:#ffffff;
+  text-align:center;box-shadow:0 -2px 6px rgba(0,0,0,0.04);}
 </style>
 </head>
 <body>
 
-<!-- Cabecera pegajosa -->
 <header class="appbar" role="region" aria-label="Cabecera CHA2DS2-VA">
   <div class="appbar-inner">
-    <h1>CHA₂DS₂-VA</h1>
-    <div class="spacer"></div>
-    <output id="pillTop" class="pill-top" aria-live="polite" aria-atomic="true">CHA₂DS₂-VA — —</output>
+    <div class="left-group">
+      <h1>CHA₂DS₂-VA</h1>
+      <output id="pill" class="pill" aria-live="polite" aria-atomic="true">-</output>
+    </div>
+    <div class="actions">
+      <a class="btn" href="../index.html">Inicio</a>
+    </div>
   </div>
 </header>
 
-<div class="wrap">
-  <p class="note">Versión <b>Escala CHA₂DS₂-VA</b> (sin sexo) de riesgo de ictus en pacientes con fibrilación auricular. Seleccione las variables; el resultado y la recomendación se actualizan automáticamente.</p>
-</div>
-
 <main class="wrap">
   <section class="panel">
-    <h2 class="section-title">Parámetros</h2>
+    <p class="note">Versión sin componente sexo. Calcula el riesgo de ictus en fibrilación auricular según CHA₂DS₂-VA.</p>
 
-    <div class="card">
-      <div class="grid">
-        <div>
-          <label for="age">Edad</label>
-          <select id="age">
-            <option value="0">&lt;65 años (0)</option>
-            <option value="1">65–74 años (1)</option>
-            <option value="2">≥75 años (2)</option>
-          </select>
-        </div>
-
-        <div>
-          <label for="htn">Hipertensión</label>
-          <select id="htn">
-            <option value="0">No (0)</option>
-            <option value="1">Sí (1)</option>
-          </select>
-        </div>
-
-        <div>
-          <label for="dm">Diabetes mellitus</label>
-          <select id="dm">
-            <option value="0">No (0)</option>
-            <option value="1">Sí (1)</option>
-          </select>
-        </div>
-
-        <div>
-          <label for="hf">Insuficiencia cardiaca crónica</label>
-          <select id="hf">
-            <option value="0">No (0)</option>
-            <option value="1">Sí (1)</option>
-          </select>
-        </div>
-
-        <div>
-          <label for="vasc">Enfermedad vascular</label>
-          <select id="vasc">
-            <option value="0">No (0)</option>
-            <option value="1">Sí (1)</option>
-          </select>
-        </div>
-
-        <div>
-          <label for="stroke">Ictus/AIT/embolia arterial previa</label>
-          <select id="stroke">
-            <option value="0">No (0)</option>
-            <option value="2">Sí (2)</option>
-          </select>
-        </div>
-      </div>
-      <p class="note">Tasas aproximadas por 100 pacientes-año (referencia): 0→0,5 · 1→1,5 · 2→2,9 · 3→5,1 · 4→7,3 · 5→11,2 · 6→15,5 · 7→14,7 · 8→19,5.</p>
+    <div class="grid">
+      <div><label for="age">Edad</label>
+        <select id="age">
+          <option value="0">&lt;65 años (0)</option>
+          <option value="1">65–74 años (1)</option>
+          <option value="2">≥75 años (2)</option>
+        </select></div>
+      <div><label for="htn">Hipertensión</label>
+        <select id="htn"><option value="0">No (0)</option><option value="1">Sí (1)</option></select></div>
+      <div><label for="dm">Diabetes mellitus</label>
+        <select id="dm"><option value="0">No (0)</option><option value="1">Sí (1)</option></select></div>
+      <div><label for="hf">Insuficiencia cardiaca</label>
+        <select id="hf"><option value="0">No (0)</option><option value="1">Sí (1)</option></select></div>
+      <div><label for="vasc">Enfermedad vascular</label>
+        <select id="vasc"><option value="0">No (0)</option><option value="1">Sí (1)</option></select></div>
+      <div><label for="stroke">Ictus/AIT/embolia arterial previa</label>
+        <select id="stroke"><option value="0">No (0)</option><option value="2">Sí (2)</option></select></div>
     </div>
 
-    <!-- RESULTADOS -->
-    <div id="resultCard" class="card" style="display:none">
-      <div id="chips" class="chips"></div>
+    <div class="card" id="resultCard" style="margin-top:16px;">
+      <div class="kpi">
+        <div class="box"><div class="ttl">CHA₂DS₂-VA</div><div class="val" id="scoreVal">-</div></div>
+        <div class="box" id="riskBox"><div class="ttl">Riesgo</div><div class="val" id="riskVal">-</div></div>
+      </div>
 
       <div class="kpi">
-        <div class="box"><div class="ttl">CHA₂DS₂-VA</div><div class="val" id="scoreVal">—</div></div>
-        <div class="box" id="riskBox"><div class="ttl">Riesgo</div><div class="val" id="riskVal">—</div></div>
+        <div class="box" id="rateBox"><div class="ttl">Riesgo anual</div><div class="val" id="rateVal">-</div></div>
+        <div class="box" id="recBox"><div class="ttl">Recomendación</div><div class="val" id="recVal">-</div></div>
       </div>
 
-      <div class="kpi" style="margin-top:10px;">
-        <div class="box" id="rateBox"><div class="ttl">Riesgo anual</div><div class="val" id="rateVal">—</div></div>
-        <div class="box" id="recBox"><div class="ttl">Recomendación</div><div class="val" id="recVal">—</div><div class="mini">Adaptar a riesgo hemorrágico y preferencias</div></div>
+      <div class="actions">
+        <button id="btnClear" class="btn-action btn-clear">Borrar</button>
+        <button id="btnCopy" class="btn-action btn-copy">Copiar resumen</button>
       </div>
+      <div id="resumenText"></div>
     </div>
   </section>
 </main>
 
 <script>
-  // Cabecera con sombra al hacer scroll
-  (function(){
-    const a=document.querySelector('.appbar');
-    const s=()=>a.classList.toggle('scrolled',window.scrollY>8);
-    document.addEventListener('scroll',s,{passive:true}); s();
-  })();
+const RATE={0:0.5,1:1.5,2:2.9,3:5.1,4:7.3,5:11.2,6:15.5,7:14.7,8:19.5};
+function toneFor(s){return s===0?'ok':s===1?'warn':'bad';}
+function labelFor(s){return s===0?'Bajo':s===1?'Intermedio':'Alto';}
+function recFor(s){return s===0?'No recomendar anticoagulación':s===1?'Considerar individualmente':'Recomendar anticoagulación si no hay contraindicaciones';}
+function fmtPct(x){return x.toString().replace('.',',')+' %';}
+function val(id){return Number(document.getElementById(id).value||0);}
 
-  // Caracteres seguros (Blogger)
-  const MDASH = String.fromCharCode(8212);
-  const SUB2  = String.fromCharCode(8322); // ₂
+function calc(){
+  const s=val('age')+val('htn')+val('dm')+val('hf')+val('vasc')+val('stroke');
+  const cat=labelFor(s), tone=toneFor(s), rate=RATE[s]??'—';
+  document.getElementById('scoreVal').textContent=s;
+  document.getElementById('riskVal').textContent=cat;
+  document.getElementById('rateVal').textContent=(rate==='—')?'—':fmtPct(rate);
+  document.getElementById('recVal').textContent=recFor(s);
 
-  const RATE = {0:0.5,1:1.5,2:2.9,3:5.1,4:7.3,5:11.2,6:15.5,7:14.7,8:19.5};
+  ['riskBox','rateBox','recBox'].forEach(id=>{
+    const el=document.getElementById(id);
+    el.classList.remove('ok','warn','bad');
+    el.classList.add(tone);
+  });
 
-  function toneFor(score){
-    if(score===0) return 'tone-green';
-    if(score===1) return 'tone-amber';
-    return 'tone-red';
-  }
-  function riskLabel(score){
-    if(score===0) return 'Bajo';
-    if(score===1) return 'Intermedio';
-    return 'Alto';
-  }
-  function recText(score){
-    if(score===0) return 'No recomendar anticoagulación.';
-    if(score===1) return 'Considerar anticoagulación individualmente.';
-    return 'Recomendar anticoagulación si no hay contraindicaciones.';
-  }
-  function fmtPct(x){ return x.toString().replace('.',',') + ' %'; }
+  const pill=document.getElementById('pill');
+  pill.className='pill pill-'+tone;
+  pill.textContent=`${s} - ${cat}`;
+  mostrarResumen(s,cat,rate);
+}
 
-  function val(id){ return Number(document.getElementById(id).value||0); }
-  function updatePill(score, band, tone){
-    const pill = document.getElementById('pillTop');
-    pill.classList.remove('tone-green','tone-amber','tone-red');
-    pill.classList.add(tone);
-    const name = `CHA${SUB2}DS${SUB2}-VA`;
-    pill.textContent = `${name} ${score} ${MDASH} ${band}`;
-  }
+function mostrarResumen(s, cat, rate){
+  const res = document.getElementById('resumenText');
+  const pct = (rate==='—') ? '-' : fmtPct(rate);
+  
+  // Interpretación textual
+  let interp = '';
+  if (rate === '—') interp = 'sin datos estimados disponibles';
+  else if (s === 0) interp = `riesgo anual de ictus muy bajo (~${pct})`;
+  else if (s === 1) interp = `riesgo anual de ictus bajo (~${pct})`;
+  else if (s === 2) interp = `riesgo anual de ictus moderado (~${pct})`;
+  else if (s >= 3 && s <= 4) interp = `riesgo anual de ictus alto (~${pct})`;
+  else interp = `riesgo anual de ictus muy alto (~${pct})`;
 
-  function calc(){
-    const score = val('age')+val('htn')+val('dm')+val('hf')+val('vasc')+val('stroke');
-    const band  = riskLabel(score);
-    const tone  = toneFor(score);
-    const rate  = RATE[score] ?? '—';
+  // Construcción del texto principal
+  let texto = `CHA₂DS₂-VA: ${s} (${cat})\n`;
+  texto += `Corresponde a un ${interp} según las guías ESC 2024\n`;
+  texto += `Recomendación: ${recFor(s)}\n\nDetalle de variables:\n`;
 
-    // Mostrar tarjeta
-    document.getElementById('resultCard').style.display='block';
+  const campos = ['age','htn','dm','hf','vasc','stroke'];
+  const nombres = [
+    'Edad','Hipertensión','Diabetes mellitus',
+    'Insuficiencia cardiaca crónica','Enfermedad vascular',
+    'Ictus/AIT/embolia arterial previa'
+  ];
+  
+  campos.forEach((id,i)=>{
+    const sel=document.getElementById(id);
+    const opt=sel.options[sel.selectedIndex];
+    texto += `- ${nombres[i]}: ${opt.textContent}\n`;
+  });
 
-    // KPIs
-    document.getElementById('scoreVal').textContent = score;
-    document.getElementById('riskVal').textContent  = band;
-    document.getElementById('rateVal').textContent  = (rate==='—')?'—':fmtPct(rate);
-    document.getElementById('recVal').textContent   = recText(score);
+  // Conclusión breve según riesgo
+  texto += `\nInterpretación clínica: `;
+  if (s === 0) texto += `paciente con riesgo mínimo de ictus; no se recomienda anticoagulación`;
+  else if (s === 1) texto += `riesgo bajo, considerar anticoagulación individualmente`;
+  else texto += `riesgo elevado de ictus; se recomienda anticoagulación salvo contraindicación`;
 
-    // Colores
-    ['riskBox','rateBox','recBox'].forEach(id=>{
-      const el=document.getElementById(id);
-      el.classList.remove('tone-green','tone-amber','tone-red');
-      el.classList.add(tone);
-    });
+  res.textContent = texto;
+}
 
-    // Chips informativos
-    const chips=document.getElementById('chips');
-    chips.innerHTML='';
-    chips.insertAdjacentHTML('beforeend', `<span class="chip">Escala 0–8 puntos</span>`);
-    chips.insertAdjacentHTML('beforeend', `<span class="chip">Guías ESC 2024</span>`);
+function borrar(){
+  ['age','htn','dm','hf','vasc','stroke'].forEach(id=>document.getElementById(id).selectedIndex=0);
+  calc();
+}
 
-    // Píldora superior
-    updatePill(score, band, tone);
-  }
+function copiar(){
+  const t=document.getElementById('resumenText').textContent.trim();
+  if(!t)return;
+  navigator.clipboard.writeText(t).then(()=>{
+    const b=document.getElementById('btnCopy');
+    b.classList.add('copiado');
+    b.textContent='Copiado';
+    setTimeout(()=>{b.classList.remove('copiado');b.textContent='Copiar resumen';},3000);
+  });
+}
 
-  // Cálculo automático
-  document.querySelectorAll('select').forEach(s=>s.addEventListener('change', calc));
-  document.addEventListener('DOMContentLoaded', calc);
+document.querySelectorAll('select').forEach(s=>s.addEventListener('change',calc));
+document.getElementById('btnClear').addEventListener('click',borrar);
+document.getElementById('btnCopy').addEventListener('click',copiar);
+document.addEventListener('DOMContentLoaded',calc);
 </script>
-<footer style="
-    position:relative;
-    left:50%;
-    transform:translateX(-50%);
-    width:100vw;
-    margin:2rem 0 0 0;
-    padding:1.5rem 0;
-    border-top:1px solid #e5e7eb;
-    background:#ffffff;
-    text-align:center;
-    box-shadow:0 -2px 6px rgba(0,0,0,0.04);
-">
-      <img src="uibanner.png"
-         alt="Unidad de Ictus Málaga" style="max-width:380px;height:auto;opacity:.96;">
-  </a>
 
+<footer>
+  <img src="uibanner.png" alt="Unidad de Ictus Málaga" style="max-width:380px;height:auto;opacity:.96;">
 </footer>
-
 </body>
 </html>

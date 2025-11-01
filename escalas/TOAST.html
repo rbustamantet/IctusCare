@@ -3,292 +3,416 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="icon" type="image/png" href="https://rbustamantet.github.io/ictus.cardiopatia/favicon-96x96.png" sizes="96x96" />
-<link rel="icon" type="image/svg+xml" href="https://rbustamantet.github.io/ictus.cardiopatia/favicon.svg" />
-<link rel="shortcut icon" href="https://rbustamantet.github.io/ictus.cardiopatia/favicon.ico" />
-<link rel="apple-touch-icon" sizes="180x180" href="https://rbustamantet.github.io/ictus.cardiopatia/apple-touch-icon.png" />
-<link rel="manifest" href="https://rbustamantet.github.io/ictus.cardiopatia/site.webmanifest" />
 <title>Clasificación TOAST - Ictus Isquémico</title>
+<link rel="manifest" href="../site.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="../iconos/ictusgps.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../iconos/ictusgps.png">
+<link rel="shortcut icon" href="../iconos/ictusgps.png">
+<meta name="theme-color" content="#0f3d83">
+
 <style>
-/* =================================================
-  ESTILOS TOAST CLASSIFICATION (Versión actualizada)
-================================================= */
 :root{
-  --bg:#f8fafc; --ink:#0f172a;
-  --azul:#0b2c5f; --gris:#6b7280; --borde:#e5e7eb;
-  --ok:#0a7f3f; --error:#b91c1c;
-  --accent:#2563eb; 
-  --accent-light:#dbeafe;
+  --bg:#f8fafc; --ink:#0f172a; --borde:#e5e7eb;
+  --azul:#0b2c5f; --gris:#6b7280;
+  --accent:#2563eb; --accent-light:#dbeafe;
   --toast-orange:#f57c00;
+  --ok:#166534; --ok-bg:#e9fce7; --ok-ring:#bbf7d0;
+  --mid:#92400e; --mid-bg:#fff7ed; --mid-ring:#fed7aa;
+  --bad:#991b1b; --bad-bg:#fef2f2; --bad-ring:#fecaca;
 }
 
-/* Cabecera */
-.toast-appbar{
-  position:sticky; top:0; z-index:1000;
-  background:rgba(255,255,255,0.9);
-  border-bottom:1px solid var(--accent-light);
-  backdrop-filter:saturate(140%) blur(8px);
-  -webkit-backdrop-filter:saturate(140%) blur(8px);
-  transition:box-shadow .15s,border-color .15s,background .15s;
+/* ===== CABECERA INSTITUCIONAL ===== */
+.appbar {
+  position: sticky; top: 0; z-index: 1000;
+  background: #0f3d83; color: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
-.toast-appbar-inner{max-width:980px;margin:0 auto;display:flex;align-items:center;gap:12px;padding:10px 16px}
-.toast-appbar h1{margin:0;font-size:22px;line-height:1.2;color:var(--accent);font-weight:800}
-.toast-spacer{flex:1}
-.toast-pill{
-  display:inline-block;max-width:60vw;
-  padding:6px 10px;border-radius:999px;
-  background:var(--accent-light);color:var(--azul);
-  border:1px solid #bfdbfe;
-  font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+.appbar-inner {
+  max-width: 980px; margin: 0 auto;
+  padding: 4px 16px;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px;
+}
+.left-group { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+.appbar h1 { margin:0; font-size:22px; font-weight:800; color:#fff; }
+.pill {
+  display:inline-flex; align-items:center; justify-content:center;
+  min-width:38px; height:32px; padding:6px 10px;
+  border-radius:999px; font-size:13px; font-weight:700;
+  border:1px solid #86b6ff; background:#e6f0ff; color:#123f8b;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.btn {
+  display:inline-flex; align-items:center; justify-content:center;
+  height:32px; padding:0 14px; border-radius:10px;
+  text-decoration:none; border:1px solid rgba(127,179,255,.35);
+  background:#1c60c3; color:#fff; font-size:.9rem; font-weight:700;
+  transition:background .2s,border-color .2s;
+}
+.btn:hover{ background:#0C00FF; }
+
+/* ===== CUERPO ===== */
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Verdana, Geneva, Tahoma, sans-serif;}
+.wrap{max-width:980px;margin:16px auto 48px;padding:0 16px;}
+.panel{background:#fff;border:1px solid var(--borde);border-radius:16px;padding:16px;box-shadow:0 2px 10px rgba(15,23,42,.06);}
+
+label{font-weight:900;color:#0b1f44;margin-top:8px;display:block;}
+select{width:100%;padding:10px 12px;border:1px solid #cbd5e1;border-radius:10px;background:#fff;font-size:14px;}
+select:focus{outline:none;box-shadow:0 0 0 3px #dbeafe;}
+.note{color:#64748b;font-size:12px;margin-top:8px;}
+
+/* ===== RESULTADOS ===== */
+.card{margin-top:16px;background:#fff;border:1px solid var(--borde);border-radius:16px;padding:14px;box-shadow:0 2px 10px rgba(15,23,42,.06)}
+.kpi-title{font-size:1.1rem;font-weight:800;color:var(--azul);margin:0 0 8px;border-bottom:1px dashed #bfdbfe;padding-bottom:6px}
+.conclusion{font-size:1.15rem;font-weight:800;color:var(--azul);margin:6px 0}
+.criteria{white-space:pre-wrap;font-size:.95rem;color:#0f172a}
+.note-warn{margin-top:10px;font-size:.95rem;color:#92400e;background:#fff7ed;border-left:4px solid var(--toast-orange);padding:8px 10px;border-radius:8px}
+
+/* Segunda tarjeta */
+#resumenText{
+  white-space:pre-wrap;font-size:13px;color:#0f172a;margin-top:8px;
+  border:1px dashed var(--borde);border-radius:10px;padding:10px 12px;
+  background:#f8fafc;line-height:1.45;
 }
 
-/* Contenido */
-.toast-container{max-width:900px;margin:16px auto 48px;padding:0 16px}
-.toast-card{background:#fff;border:1px solid var(--borde);border-radius:16px;padding:18px;box-shadow:0 2px 10px rgba(15,23,42,.06);margin-top:12px}
-.toast-title{font-size:1.2rem;font-weight:800;color:var(--azul);margin:0 0 10px 0;border-bottom:2px solid var(--accent-light);padding-bottom:5px}
+/* ===== BOTONES ===== */
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;}
+.btn-action{
+  flex:1 1 48%;
+  border:1px solid #2563eb;border-radius:10px;padding:12px;
+  background:#fff;color:#0f3d83;font-size:15px;font-weight:700;cursor:pointer;
+  transition:background .2s;
+}
+.btn-action:hover{background:#eff6ff;}
+.btn-copy.copiado{background:#0f3d83!important;color:#fff!important;}
 
-/* Formulario */
-label{font-size:14px;font-weight:700;display:block;margin:12px 0 6px;color:var(--azul)}
-select{
-  width:100%;border:1px solid var(--borde);border-radius:10px;
-  padding:12px;font-size:15px;background:#fff;outline:none;
+/* ===== BLOQUES COLAPSABLES ===== */
+details.toast-collapsible{
+  border:1px solid var(--borde);
+  border-radius:12px; background:#fff; margin-top:12px;
 }
-select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(37,99,235,.2);}
-.note{font-size:0.85rem;color:var(--gris);margin-top:5px}
+details.toast-collapsible > summary{
+  list-style:none; user-select:none; cursor:pointer;
+  display:flex; align-items:center; gap:8px;
+  padding:12px 14px; font-weight:800; color:#0b1f44;
+  border-bottom:1px solid #eef2f7; background:#eef6ff;
+}
+details[open].toast-collapsible > summary{ border-bottom-color:#e5edf9; }
+details.toast-collapsible .inner{ padding:12px 14px; }
 
-/* Resultado */
-.toast-result{display:none}
-.toast-result.show{display:block}
-.toast-score-box{
-  border:1px solid var(--toast-orange);
-  background:#fff8e1;
-  border-radius:16px;
-  padding:18px;margin-top:15px;
-}
-.toast-score-box h3{
-  margin:0 0 10px 0;font-size:1.1rem;color:var(--toast-orange);
-  border-bottom:1px dashed #ffd54f;padding-bottom:5px;
-}
-.toast-conclusion{font-size:1.15rem;font-weight:700;color:var(--azul);line-height:1.4;margin-bottom:5px}
-.toast-criterios{font-size:0.95rem;color:var(--ink);white-space:pre-wrap}
-.toast-note{margin-top:10px;font-size:0.9rem;color:#92400e;background:#fff7ed;border-left:4px solid #f57c00;padding:8px 10px;border-radius:8px}
-.err{display:none;background:#fef2f2;color:var(--error);border:1px solid #fecaca;border-radius:12px;padding:10px 12px;margin-top:10px}
+/* Icono caret */
+summary .caret{ display:inline-block; width:1em; text-align:center; font-weight:900; }
+details[open] summary .caret{ transform:rotate(90deg); }
 
-/* Botones */
-.toast-actions{margin-top:20px;display:flex;gap:10px;}
-.toast-actions button{flex:1;}
-.btn-clear{
-  border:1px solid var(--azul);border-radius:10px;padding:12px 16px;font-size:15px;
-  background:var(--bg);color:var(--azul);font-weight:700;cursor:pointer;transition:background-color 0.2s;
-}
-.btn-copy-summary{
-  background:var(--accent);color:#fff;border-color:var(--accent);font-weight:700;
-}
-.btn-copy-summary:hover{background:#1e69b8;}
-.btn-clear:hover{background:#eef6ff;}
+/* Abierto en escritorio, cerrado en móvil por JS (con media listener) */
 
-body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:Verdana, Geneva, Tahoma, sans-serif;overflow-x:hidden}
+/* ===== TABLA CLAVES ===== */
+.table-wrap{overflow-x:auto;}
+.table{width:100%; border-collapse:collapse; font-size:14px; background:#fff;}
+.table th, .table td{border:1px solid #e5e7eb; padding:10px; vertical-align:top;}
+.table th{background:#f1f5ff; color:#0b1f44; text-align:left;}
+.table tr:nth-child(even) td{background:#f9fbff;}
+.table b{font-weight:800;}
 </style>
 </head>
 <body>
 
-<div class="toast-wrapper">
-<header class="toast-appbar">
-  <div class="toast-appbar-inner">
-    <h1>Clasificación TOAST</h1>
-    <div class="toast-spacer"></div>
-    <output id="pill" class="toast-pill">TOAST: —</output>
+<header class="appbar" role="region" aria-label="Cabecera TOAST">
+  <div class="appbar-inner">
+    <div class="left-group">
+      <h1>Clasificación TOAST</h1>
+      <output id="pill" class="pill" aria-live="polite" aria-atomic="true">—</output>
+    </div>
+    <a class="btn" href="../index.html">Inicio</a>
   </div>
 </header>
 
-<div class="toast-container">
-  <div class="toast-card">
-    <h2 class="toast-title">Etiología del Ictus Isquémico</h2>
-    <form id="toastForm" autocomplete="off">
-      <p class="note">Selecciona las condiciones diagnósticas más probables según estudios clínicos e imagenológicos.</p>
+<main class="wrap">
+  <section class="panel" aria-labelledby="title-to">
+    <p class="note">Seleccione las condiciones diagnósticas más probables según estudios clínicos e imagenológicos.</p>
 
-      <label for="lvo">1. Lesión Arterial Aterosclerótica (LAA)</label>
-      <select id="lvo">
-        <option value="">Selecciona...</option>
-        <option value="none">Sin estenosis significativa ni placa de riesgo ipsilateral</option>
-        <option value="probable">Placa aterosclerótica ulcerada o irregular (&lt;50%)</option>
-        <option value="definite">Estenosis ≥50% de gran arteria intracraneal o extracraneal (de origen aterosclerótico)</option>
-      </select>
-      <p class="note">Incluye arteria carótida, cerebral media (M1), vertebral o basilar.</p>
+    <div class="grid">
+      <div>
+        <label for="lvo">1. Lesión Arterial Aterosclerótica (LAA)</label>
+        <select id="lvo">
+          <option value="">Selecciona…</option>
+          <option value="none">Sin estenosis significativa ni placa de riesgo ipsilateral</option>
+          <option value="probable">Placa aterosclerótica ulcerada o irregular (&lt;50%)</option>
+          <option value="definite">Estenosis ≥50%/placa compleja relevante</option>
+        </select>
+        <p class="note">Incluye carótida, M1, vertebral o basilar.</p>
+      </div>
 
-      <label for="cardiac">2. Fuente Cardioembólica</label>
-      <select id="cardiac">
-        <option value="">Selecciona...</option>
-        <option value="none">No se identificó fuente cardiaca</option>
-        <option value="definite">Fuente de alto riesgo (FA, trombo mural, prótesis mecánica, EM severa)</option>
-        <option value="minor">Fuente de riesgo menor/moderado (FOP, aneurisma septal, etc.)</option>
-      </select>
+      <div>
+        <label for="cardiac">2. Fuente Cardioembólica</label>
+        <select id="cardiac">
+          <option value="">Selecciona…</option>
+          <option value="none">No identificada</option>
+          <option value="definite">Alto riesgo (FA, trombo mural, prótesis mecánica, EM severa)</option>
+          <option value="minor">Riesgo menor/moderado (FOP, aneurisma septal, etc.)</option>
+        </select>
+      </div>
 
-      <label for="lacunar">3. Hallazgos Lacunares</label>
-      <select id="lacunar">
-        <option value="">Selecciona...</option>
-        <option value="none">No hay infarto lacunar</option>
-        <option value="definite">Infarto lacunar típico (&lt;1.5 cm en territorio perforante)</option>
-      </select>
+      <div>
+        <label for="lacunar">3. Hallazgos Lacunares</label>
+        <select id="lacunar">
+          <option value="">Selecciona…</option>
+          <option value="none">No</option>
+          <option value="definite">Infarto lacunar típico (&lt;1.5 cm, perforantes)</option>
+        </select>
+      </div>
 
-      <label for="other">4. Otras Etiologías Definidas</label>
-      <select id="other">
-        <option value="">Selecciona...</option>
-        <option value="none">No hay otra causa definida</option>
-        <option value="definite">Sí, otra causa definida (disección arterial, vasculitis, trombofilia, vasoespasmo, etc.)</option>
-      </select>
-
-      <div id="err" class="err"></div>
-    </form>
-  </div>
-
-  <div id="resultCard" class="toast-card toast-result">
-    <div class="toast-score-box">
-      <h3>Clasificación TOAST Final</h3>
-      <div id="toastConclusion" class="toast-conclusion">Clasificación pendiente.</div>
-      <div id="toastCriterios" class="toast-criterios">Seleccione las opciones para ver la clasificación.</div>
-      <div id="toastNote" class="toast-note" style="display:none"></div>
+      <div>
+        <label for="other">4. Otras Etiologías Definidas</label>
+        <select id="other">
+          <option value="">Selecciona…</option>
+          <option value="none">No</option>
+          <option value="definite">Sí (disección, vasculitis, trombofilia, vasoespasmo, etc.)</option>
+        </select>
+      </div>
     </div>
-    <div class="toast-actions">
-      <button id="btnCopy" type="button" class="btn-copy-summary" disabled>Copiar Resumen</button>
-      <button id="btnBorrar" type="button" class="btn-clear">Borrar Formulario</button>
+
+    <div id="err" class="note-warn" style="display:none;margin-top:12px"></div>
+  </section>
+
+  <!-- Tarjeta principal de resultados -->
+  <section class="card" id="resultCard" style="display:none">
+    <h3 class="kpi-title">Clasificación TOAST Final</h3>
+    <div class="conclusion" id="toastConclusion">—</div>
+    <div class="criteria" id="toastCriterios">—</div>
+    <div class="note-warn" id="toastNote" style="display:none"></div>
+
+    <div class="actions">
+      <button id="btnBorrar" class="btn-action" type="button">Borrar</button>
+      <button id="btnCopy" class="btn-action btn-copy" type="button">Copiar resumen</button>
     </div>
-  </div>
-</div>
-</div>
+  </section>
+
+  <!-- Tarjeta secundaria (Resumen listo para HCE) -->
+  <section class="card" id="secondaryCard" style="display:none">
+    <h3 class="kpi-title">Resumen para historia clínica</h3>
+    <div id="resumenText"></div>
+  </section>
+
+  <!-- Colapsable 1: Criterios TOAST detallados -->
+  <details class="toast-collapsible" id="colCriteria">
+    <summary><span class="caret">▸</span> Criterios TOAST (detallados)</summary>
+    <div class="inner">
+      <ul style="margin:0 0 6px 18px">
+        <li><b>LAA</b>: estenosis ≥50% o placa compleja ipsilateral al evento; sin fuente cardioembólica de alto riesgo.</li>
+        <li><b>CE</b>: fuente cardíaca de alto riesgo (FA, trombo mural, prótesis mecánica, EM severa) sin LAA significativa.</li>
+        <li><b>SVO</b>: infarto lacunar típico (&lt;1.5 cm) en territorio perforante; sin LAA ≥50% ni CE alto riesgo.</li>
+        <li><b>ODE</b>: causa específica (p. ej., disección, vasculitis, trombofilia, vasoespasmo, etc.).</li>
+        <li><b>UE</b>: indeterminada (sin causa, múltiples posibles o evaluación incompleta).</li>
+      </ul>
+      <p class="note" style="margin-top:6px">TOAST: Trial of Org 10172 in Acute Stroke Treatment.</p>
+    </div>
+  </details>
+
+  <!-- Colapsable 2: Claves diagnósticas y diferenciales (TABLA) -->
+  <details class="toast-collapsible" id="colTable">
+    <summary><span class="caret">▸</span> 🩻 Claves diagnósticas y diferenciales</summary>
+    <div class="inner">
+      <div class="table-wrap">
+        <table class="table" aria-label="Claves diagnósticas y diferenciales">
+          <thead>
+            <tr>
+              <th>Subtipo</th>
+              <th>Imagen típica</th>
+              <th>Características clínicas</th>
+              <th>Diagnóstico diferencial</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><b>LAA (Aterosclerosis de gran arteria)</b></td>
+              <td>Estenosis ≥50% o placa ulcerada en arteria relevante (carótida, M1, basilar, vertebral)</td>
+              <td>Ictus cortical o subcortical extenso, territorial; posible progresión/fluctuación</td>
+              <td>CE si embolismo distal; SVO si infarto pequeño sin estenosis significativa</td>
+            </tr>
+            <tr>
+              <td><b>CE (Cardioembolismo)</b></td>
+              <td>Infartos corticales o multiterritoriales; transformación hemorrágica temprana más frecuente</td>
+              <td>Inicio súbito con déficit máximo desde el comienzo; antecedentes de FA/fuente cardiaca</td>
+              <td>LAA si estenosis proximal; UE/ESUS si no hay fuente definida</td>
+            </tr>
+            <tr>
+              <td><b>SVO (Pequeño vaso)</b></td>
+              <td>Infarto profundo &lt;1.5 cm (núcleos, cápsula interna, tálamo, protuberancia)</td>
+              <td>Síndromes lacunares: motor/sensitivo puro, sin signos corticales</td>
+              <td>LAA si infarto mayor con estenosis; CE si embolismo distal en perforantes</td>
+            </tr>
+            <tr>
+              <td><b>ODE (Otra etiología definida)</b></td>
+              <td>Disección, vasculitis, trombosis venosa, trombofilia, vasoespasmo…</td>
+              <td>Variable según causa subyacente</td>
+              <td>Descartar LAA/CE/SVO si no se confirma la etiología específica</td>
+            </tr>
+            <tr>
+              <td><b>UE (Indeterminada / Criptogénico)</b></td>
+              <td>No específico; a veces patrón embólico</td>
+              <td>Estudios negativos o más de una causa posible</td>
+              <td>ESUS, LAA leve o CE menor no confirmados</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </details>
+</main>
 
 <script>
-const resultCard=document.getElementById('resultCard');
-const errBox=document.getElementById('err');
-const conclusionDiv=document.getElementById('toastConclusion');
-const criteriosDiv=document.getElementById('toastCriterios');
-const noteDiv=document.getElementById('toastNote');
-const pill=document.getElementById('pill');
-const btnCopy=document.getElementById('btnCopy');
+(function(){
+  const $ = id => document.getElementById(id);
+  const pill = $('pill');
+  const err  = $('err');
+  const resultCard = $('resultCard');
+  const secondaryCard = $('secondaryCard');
+  const concl = $('toastConclusion');
+  const crit  = $('toastCriterios');
+  const note  = $('toastNote');
+  const resumen = $('resumenText');
+  const btnCopy = $('btnCopy');
 
-function updatePill(classification){
-  let abbr='—';
-  if(classification.includes("Aterosclerosis")) abbr='LAA';
-  else if(classification.includes("Cardioembolismo")) abbr='CE';
-  else if(classification.includes("Pequeño Vaso")) abbr='SVO';
-  else if(classification.includes("Otra Etiología")) abbr='ODE';
-  else if(classification.includes("Indeterminada")) abbr='UE';
-  pill.textContent='TOAST: '+abbr;
-}
+  // 🎨 COLORES POR ETIOLOGÍA (para píldora, tarjeta y nota)
+  const tone = {
+    'LAA': {bg:'#dcfce7', color:'#166534', border:'#bbf7d0'},
+    'CE':  {bg:'#fef9c3', color:'#92400e', border:'#fde68a'},
+    'SVO': {bg:'#dbeafe', color:'#1e3a8a', border:'#bfdbfe'},
+    'ODE': {bg:'#fee2e2', color:'#991b1b', border:'#fecaca'},
+    'UE':  {bg:'#f9fafb', color:'#334155', border:'#e2e8f0'},
+    '—':   {bg:'#e6f0ff', color:'#123f8b', border:'#86b6ff'}
+  };
 
-function clasificarTOAST(){
-  errBox.style.display='none'; noteDiv.style.display='none';
-  const lvo=document.getElementById('lvo').value;
-  const cardiac=document.getElementById('cardiac').value;
-  const lacunar=document.getElementById('lacunar').value;
-  const other=document.getElementById('other').value;
-
-  if([lvo,cardiac,lacunar,other].includes('')){
-    errBox.textContent='Seleccione una opción para cada criterio.';
-    errBox.style.display='block';
-    resultCard.classList.remove('show');
-    conclusionDiv.textContent='Clasificación pendiente.';
-    criteriosDiv.textContent='Complete todos los campos.';
-    updatePill('—'); btnCopy.disabled=true; return;
-  }
-
-  let conclusion="", criterios=[], isDefinitive=false;
-
-  // 1️⃣ Otra Etiología Definida
-  if(other==='definite'){
-    conclusion="Ictus de Otra Etiología Determinada (ODE)";
-    criterios.push("Causa específica identificada (disección, vasculitis, trombofilia, vasoespasmo, etc.).");
-    noteDiv.innerHTML="Aunque puedan coexistir factores ateroscleróticos o cardiacos menores, la presencia de una causa específica determina la clasificación como <b>ODE</b>.";
-    noteDiv.style.display='block';
-    isDefinitive=true;
-  }
-  // 2️⃣ Aterosclerosis de Gran Arteria (LAA)
-  else if(lvo==='definite' && cardiac!=='definite'){
-    conclusion="Aterosclerosis de Gran Arteria (LAA)";
-    criterios.push("Estenosis ≥50% o placa aterosclerótica compleja ulcerada en arteria relevante, sin fuente cardioembólica de alto riesgo.");
-    isDefinitive=true;
-  }
-  // 3️⃣ Cardioembolismo (CE)
-  else if(cardiac==='definite' && lvo!=='definite'){
-    conclusion="Cardioembolismo (CE)";
-    criterios.push("Fuente cardíaca de alto riesgo (FA, trombo mural, prótesis mecánica, EM severa) sin estenosis aterosclerótica significativa.");
-    isDefinitive=true;
-  }
-  // 4️⃣ Pequeño Vaso (SVO)
-  else if(lacunar==='definite' && (lvo==='none' || lvo==='probable') && (cardiac==='none' || cardiac==='minor')){
-    conclusion="Oclusión de Pequeño Vaso (SVO)";
-    criterios.push("Infarto lacunar típico (<1.5 cm) con ausencia de causas mayores (LAA ≥50%, CE alto riesgo).");
-    if(lvo==='probable' || cardiac==='minor'){
-      noteDiv.innerHTML="Se identifica una causa menor coexistente (p. ej., FOP o placa <50%), pero se mantiene la clasificación como <b>lacunar (SVO)</b> por la compatibilidad clínico-radiológica. Confirmar patrón lacunar.";
-      noteDiv.style.display='block';
-    }
-    isDefinitive=true;
-  }
-  // 5️⃣ Indeterminada
-  else{
-    let numCausas=0;
-    if(['definite','probable'].includes(lvo)) numCausas++;
-    if(['definite','minor'].includes(cardiac)) numCausas++;
-    if(numCausas===0){
-      conclusion="Ictus de Etiología Indeterminada (UE) - Criptogénico Puro";
-      criterios.push("No se identificó ninguna causa mayor (LAA, CE, SVO u ODE).");
-    } else if(numCausas>=2){
-      conclusion="Ictus de Etiología Indeterminada (UE) - Dos o más causas posibles";
-      if(lvo!=='none') criterios.push("LAA: probable/definida.");
-      if(cardiac!=='none') criterios.push("CE: menor o definida.");
-    } else {
-      conclusion="Ictus de Etiología Indeterminada (UE) - Criptogénico / ESUS";
-      criterios.push("Ninguna causa mayor clara. Posible mecanismo embólico (ESUS).");
+  function colorize(abbrev){
+    const t = tone[abbrev] || tone['—'];
+    // Píldora
+    pill.style.background = t.bg;
+    pill.style.color = t.color;
+    pill.style.borderColor = t.border;
+    // Tarjeta principal
+    resultCard.style.borderColor = t.border;
+    resultCard.style.background = t.bg;
+    // Nota (si está visible)
+    if (note.style.display === 'block') {
+      note.style.borderLeftColor = t.border;
+      note.style.background = t.bg;
+      note.style.color = t.color;
     }
   }
 
-  conclusionDiv.textContent=conclusion;
-  criteriosDiv.innerHTML="— "+criterios.join("<br>— ");
-  resultCard.classList.add('show');
-  updatePill(conclusion);
-  btnCopy.disabled=false;
-}
+  function updatePill(abbrev){
+    pill.textContent = '' + (abbrev || '—');
+    colorize(abbrev);
+  }
 
-function copiarResumen(){
-  const classification=conclusionDiv.textContent;
-  const criteria=criteriosDiv.innerText;
-  let note=(noteDiv.style.display==='block')?("\nNota: "+noteDiv.innerText):"";
-  const summary="Clasificación TOAST (Ictus Isquémico)\n=====================================\n"+
-    "Clasificación final: "+classification+"\n\nCriterios aplicados:\n"+criteria+note;
-  navigator.clipboard.writeText(summary);
-  btnCopy.textContent='Copiado ✓'; setTimeout(()=>btnCopy.textContent='Copiar Resumen',1200);
-}
+  function buildSummary(classification, criteriaText){
+    const lvo = $('lvo').options[$('lvo').selectedIndex].text;
+    const ce  = $('cardiac').options[$('cardiac').selectedIndex].text;
+    const lac = $('lacunar').options[$('lacunar').selectedIndex].text;
+    const oth = $('other').options[$('other').selectedIndex].text;
+    let s = 'Clasificación TOAST — Resumen\n';
+    s += '=====================================\n';
+    s += 'Clasificación final: ' + classification + '\n\n';
+    s += 'Criterios aplicados:\n' + criteriaText.replaceAll('— ','- ') + '\n\n';
+    s += 'Selección en formulario:\n';
+    s += `- LAA: ${lvo}\n- Cardioembolia: ${ce}\n- Lacunar: ${lac}\n- Otra etiología: ${oth}\n`;
+    if (note.style.display === 'block') s += '\nNota: ' + note.textContent + '\n';
+    return s;
+  }
 
-function borrarFormulario(){
-  document.getElementById('toastForm').reset();
-  resultCard.classList.remove('show');
-  conclusionDiv.textContent="Clasificación pendiente.";
-  criteriosDiv.textContent="Seleccione las opciones para ver la clasificación.";
-  noteDiv.style.display='none'; errBox.style.display='none';
-  updatePill('—'); btnCopy.disabled=true;
-}
+  function classify(){
+    err.style.display='none';
+    note.style.display='none';
+    const lvo=$('lvo').value, ce=$('cardiac').value, lac=$('lacunar').value, oth=$('other').value;
+    if([lvo,ce,lac,oth].some(v=>v==='')){
+      resultCard.style.display='none'; secondaryCard.style.display='none';
+      updatePill('—'); err.textContent='Complete todas las selecciones.'; err.style.display='block'; return;
+    }
 
-document.querySelectorAll('#toastForm select').forEach(sel=>sel.addEventListener('change',clasificarTOAST));
-btnCopy.addEventListener('click',copiarResumen);
-document.getElementById('btnBorrar').addEventListener('click',borrarFormulario);
+    let conclusion='', criterios=[], abbrev='—';
+
+    if(oth==='definite'){
+      conclusion='Ictus de Otra Etiología Determinada (ODE)';
+      criterios.push('Causa específica identificada (disección, vasculitis, trombofilia, vasoespasmo, etc.).');
+      note.innerHTML='Aunque puedan coexistir factores ateroscleróticos o cardiacos menores, la presencia de una causa específica determina la clasificación como <b>ODE</b>.';
+      note.style.display='block'; abbrev='ODE';
+    }
+    else if(lvo==='definite' && ce!=='definite'){
+      conclusion='Aterosclerosis de Gran Arteria (LAA)';
+      criterios.push('Estenosis ≥50% o placa compleja relevante, sin fuente cardioembólica de alto riesgo.'); abbrev='LAA';
+    }
+    else if(ce==='definite' && lvo!=='definite'){
+      conclusion='Cardioembolismo (CE)';
+      criterios.push('Fuente cardiaca de alto riesgo (FA, trombo mural, prótesis mecánica, EM severa) sin LAA significativa.'); abbrev='CE';
+    }
+    else if(lac==='definite' && (lvo==='none'||lvo==='probable') && (ce==='none'||ce==='minor')){
+      conclusion='Oclusión de Pequeño Vaso (SVO)';
+      criterios.push('Infarto lacunar típico (<1.5 cm) sin LAA ≥50% ni CE alto riesgo.');
+      if(lvo==='probable'||ce==='minor'){
+        note.innerHTML='Se identifica una causa menor coexistente (p. ej., FOP o placa &lt;50%), pero se mantiene la clasificación como <b>SVO</b> por la compatibilidad clínico-radiológica.';
+        note.style.display='block';
+      }
+      abbrev='SVO';
+    }
+    else{
+      let nC=0; if(['definite','probable'].includes(lvo))nC++; if(['definite','minor'].includes(ce))nC++;
+      if(nC===0){ conclusion='Ictus de Etiología Indeterminada (UE) — Criptogénico puro'; criterios.push('No se identificó ninguna causa mayor.'); }
+      else if(nC>=2){ conclusion='Ictus de Etiología Indeterminada (UE) — Dos o más causas posibles';
+        if(lvo!=='none')criterios.push('LAA: probable/definida.'); if(ce!=='none')criterios.push('CE: menor/definida.'); }
+      else{ conclusion='Ictus de Etiología Indeterminada (UE) — Criptogénico/ESUS'; criterios.push('Posible mecanismo embólico (ESUS).'); }
+      abbrev='UE';
+    }
+
+    concl.textContent=conclusion;
+    crit.innerHTML='— '+criterios.join('<br>— ');
+    resultCard.style.display='block'; secondaryCard.style.display='block';
+    resumen.textContent=buildSummary(conclusion, crit.textContent);
+    updatePill(abbrev);
+  }
+
+  function borrar(){
+    ['lvo','cardiac','lacunar','other'].forEach(id=>$(id).selectedIndex=0);
+    resultCard.style.display='none'; secondaryCard.style.display='none';
+    err.style.display='none'; note.style.display='none';
+    updatePill('—');
+  }
+
+  function copiar(){
+    if(resultCard.style.display!=='block')return;
+    const txt=resumen.textContent.trim(); if(!txt)return;
+    navigator.clipboard.writeText(txt).then(()=>{
+      btnCopy.classList.add('copiado'); btnCopy.textContent='Copiado ✓';
+      setTimeout(()=>{btnCopy.classList.remove('copiado');btnCopy.textContent='Copiar resumen';},1400);
+    });
+  }
+
+  document.querySelectorAll('select').forEach(s=>s.addEventListener('change',classify));
+  $('btnBorrar').addEventListener('click',borrar);
+  $('btnCopy').addEventListener('click',copiar);
+
+  // Colapsables abiertos en escritorio
+  function setDetailsOpen(){
+    const open=window.matchMedia('(min-width:768px)').matches;
+    ['colCriteria','colTable'].forEach(id=>{
+      const d=$(id); if(!d)return;
+      open?d.setAttribute('open',''):d.removeAttribute('open');
+    });
+  }
+  setDetailsOpen(); window.addEventListener('resize',setDetailsOpen);
+
+  // Estado inicial neutro
+  updatePill('—');
+})();
 </script>
 
-<footer style="
-    position:relative;
-    left:50%;
-    transform:translateX(-50%);
-    width:100vw;
-    margin:2rem 0 0 0;
-    padding:1.5rem 0;
-    border-top:1px solid #e5e7eb;
-    background:#ffffff;
-    text-align:center;
-    box-shadow:0 -2px 6px rgba(0,0,0,0.04);
-">
-      <img src="uibanner.png"
-         alt="Unidad de Ictus Málaga" style="max-width:380px;height:auto;opacity:.96;">
-  </a>
 
+<footer style="
+  position:relative; left:50%; transform:translateX(-50%);
+  width:100vw; margin:2rem 0 0 0; padding:1.5rem 0;
+  border-top:1px solid #e5e7eb; background:#ffffff; text-align:center;
+  box-shadow:0 -2px 6px rgba(0,0,0,0.04);">
+  <img src="uibanner.png" alt="Unidad de Ictus Málaga" style="max-width:380px;height:auto;opacity:.96;">
 </footer>
 
 </body>

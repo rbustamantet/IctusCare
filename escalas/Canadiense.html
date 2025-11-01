@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="icon" type="image/png" href="https://rbustamantet.github.io/ictus.cardiopatia/favicon-96x96.png" sizes="96x96" />
-<link rel="icon" type="image/svg+xml" href="https://rbustamantet.github.io/ictus.cardiopatia/favicon.svg" />
-<link rel="shortcut icon" href="https://rbustamantet.github.io/ictus.cardiopatia/favicon.ico" />
-<link rel="apple-touch-icon" sizes="180x180" href="https://rbustamantet.github.io/ictus.cardiopatia/apple-touch-icon.png" />
-<link rel="manifest" href="https://rbustamantet.github.io/ictus.cardiopatia/site.webmanifest" />
+<link rel="manifest" href="../site.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="../iconos/ictusgps.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../iconos/ictusgps.png">
+<link rel="shortcut icon" href="../iconos/ictusgps.png">
+<meta name="theme-color" content="#0f3d83">
 <title>Escala Canadiense</title>
 <style>
   :root{
@@ -22,28 +22,81 @@
   html, body{font-family: Verdana, Geneva, Tahoma, sans-serif; background:var(--bg); color:#0f172a; margin:0; padding:0}
 
   /* Cabecera pegajosa */
-  .appbar{
-    position:sticky; top:0; z-index:1000;
-    background:rgba(255,255,255,0.9);
-    border-bottom:1px solid var(--accent-light);
-    backdrop-filter:saturate(140%) blur(8px);
-    -webkit-backdrop-filter:saturate(140%) blur(8px);
-    transition:box-shadow .15s, border-color .15s, background .15s;
-  }
+  .appbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: #0f3d83; /* azul institucional */
+  color: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
   .appbar.scrolled{box-shadow:0 8px 24px rgba(0,0,0,.08); border-color:#e2e8f0}
-  .appbar-inner{max-width:980px; margin:0 auto; display:flex; align-items:center; gap:12px; padding:10px 16px}
-  .appbar h1{margin:0; font-size:22px; line-height:1.2; color:var(--accent); font-weight:800}
-  .spacer{flex:1}
-  .pill{
-    display:inline-block; max-width:60vw;
-    padding:6px 10px; border-radius:999px;
-    background:var(--accent-light); color:#1e3a8a; border:1px solid #bfdbfe;
-    font-size:12px; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-  }
+ .appbar-inner {
+  max-width: 980px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* izquierda ↔ derecha */
+  padding: 12px 16px;
+  gap: 12px;
+}
+
+.left-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap; /* en móvil pueden apilarse */
+}
+
+.appbar h1 {
+  margin: 0;
+  font-size: 22px;
+  line-height: 1;
+  color: white;
+  font-weight: 800;
+}
+
+.pill {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: var(--accent-light);
+  color: #1e3a8a;
+  border: 1px solid #bfdbfe;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transform: translateY(-1px);
+}
+
+/* Botón Inicio (ya similar a tus otros botones) */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 6px 12px;
+  border-radius: 12px;
+  text-decoration: none;
+  border: 1px solid rgba(127, 179, 255, .35);
+  background: #1c60c3;
+  color: white;
+  font-size: 0.9rem;
+  font-weight: 700;
+  transition: background 0.2s, border-color 0.2s;
+}
+.btn:hover {
+  background: #0C00FF;
+  border-color: rgba(127, 179, 255, .35);
+}
+
+
   @media (min-width:640px){ .pill{ max-width:420px } }
 
   /* Contenido */
-  .container{max-width:900px; margin:16px auto 48px; padding:0 16px}
+  .container{max-width:980px; margin:16px auto 48px; padding:0 16px}
   .card{background:#fff; border:1px solid var(--borde); border-radius:16px; padding:18px; box-shadow:0 2px 10px rgba(15,23,42,.06); margin-top:12px}
   .grid{display:grid; grid-template-columns:1fr; gap:16px}
   @media (min-width:760px){ .grid{ grid-template-columns:1.1fr .9fr } }
@@ -63,9 +116,43 @@
 
   .result{display:none}
   .result.show{display:block}
-  .score{display:flex; align-items:center; justify-content:space-between; border:1px dashed var(--borde); border-radius:12px; padding:12px 16px; margin-top:6px}
-  .score .ttl{font-size:13px; color:var(--gris)}
-  .score .val{font-size:28px; font-weight:700; color:var(--azul)}
+
+  .score {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border: 1px dashed var(--borde);
+  border-radius: 14px;
+  padding: 20px 16px;
+  margin-top: 8px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+}
+
+.score .ttl {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--gris);
+  margin-bottom: 8px;
+}
+
+.score .val {
+  font-size: 40px;
+  font-weight: 800;
+  color: var(--azul);
+  line-height: 1.1;
+}
+
+.score-label {
+  font-size: 15px;
+  font-weight: 700;
+  margin-top: 6px;
+  text-align: center;
+}
+
+
   .err{display:none; background:#fef2f2; color:var(--error); border:1px solid #fecaca; border-radius:12px; padding:10px 12px; margin-top:10px}
   .ok{color:var(--ok); font-weight:700}
   .muted{color:var(--gris); font-size:12px}
@@ -73,6 +160,17 @@
   .two-col{display:grid; grid-template-columns:1fr; gap:12px}
   @media (min-width:520px){ .two-col{ grid-template-columns:1fr 1fr } }
   footer.smallprint{margin-top:16px; font-size:11px; color:var(--gris)}
+
+.score-label {
+  font-size: 13px;
+  font-weight: 700;
+  margin-top: 4px;
+  text-align: center;
+}
+.actions button {
+  flex: 1 1 48%;
+}
+
 </style>
 </head>
 <body>
@@ -80,11 +178,16 @@
 <!-- Cabecera -->
 <header class="appbar" role="region" aria-label="Cabecera Escala Canadiense">
   <div class="appbar-inner">
-    <h1>Escala Canadiense</h1>
-    <div class="spacer"></div>
-    <output id="pill" class="pill" aria-live="polite" aria-atomic="true">Canadiense: —</output>
+    <div class="left-group">
+      <h1>Escala Canadiense</h1>
+      <output id="pill" class="pill" aria-live="polite" aria-atomic="true">Canadiense: —</output>
+    </div>
+    <div class="actions">
+      <a class="btn" href="../index.html">Inicio</a>
+    </div>
   </div>
 </header>
+
 
 <div class="container">
   <div class="grid">
@@ -96,7 +199,7 @@
             <select id="conciencia">
               <option value="">Selecciona…</option>
               <option value="3">Alerta</option>
-              <option value="1.5">Obnubilado / somnoliento</option>
+              <option value="1.5">Obnubilado/somnoliento </option>
             </select>
           </div>
           <div>
@@ -104,7 +207,7 @@
             <select id="orientacion">
               <option value="">Selecciona…</option>
               <option value="1">Orientado</option>
-              <option value="0">Desorientado</option>
+              <option value="0">Desorientado, n/a </option>
             </select>
           </div>
         </fieldset>
@@ -113,10 +216,10 @@
         <select id="lenguaje">
           <option value="">Selecciona…</option>
           <option value="1">Normal</option>
-          <option value="0.5">Déficit expresivo (incluye disartria severa)</option>
-          <option value="0">Déficit receptivo (no comprende)</option>
+          <option value="0.5">Déficit expresivo (incluye disartria severa) </option>
+          <option value="0">Déficit de comprensión</option>
         </select>
-        <p class="hint" id="modoHint">Si se selecciona “déficit receptivo”, se evaluará la función motora con el modo “no comprende”.</p>
+        <p class="hint" id="modoHint">Si se selecciona “déficit de comprensión”, se evaluará la función motora con el modo “no comprende”.</p>
 
         <!-- Motor: paciente comprende -->
         <div id="motor1" class="card" style="padding:12px; margin-top:14px;">
@@ -126,38 +229,38 @@
               <label for="m1c">Cara</label>
               <select id="m1c">
                 <option value="">Selecciona…</option>
-                <option value="0.5">Sin asimetría facial</option>
-                <option value="0">Asimetría facial</option>
+                <option value="0.5">Sin asimetrías </option>
+                <option value="0">Asimétrica</option>
               </select>
             </div>
             <div>
               <label for="m1b">Brazo proximal</label>
               <select id="m1b">
                 <option value="">Selecciona…</option>
-                <option value="1.5">Sin debilidad</option>
-                <option value="1">Paresia leve</option>
-                <option value="0.5">Paresia significativa</option>
-                <option value="0">Afectación completa</option>
+                <option value="1.5">No paresia</option>
+                <option value="1">Paresia leve-moderada (vence gravedad) </option>
+                <option value="0.5">Paresia importante (no vence gravedad) </option>
+                <option value="0">Paresia completa (no moviliza)</option>
               </select>
             </div>
             <div>
               <label for="m1bd">Brazo distal</label>
               <select id="m1bd">
                 <option value="">Selecciona…</option>
-                <option value="1.5">Sin debilidad</option>
-                <option value="1">Paresia leve</option>
-                <option value="0.5">Paresia significativa</option>
-                <option value="0">Afectación completa</option>
+                <option value="1.5">No paresia</option>
+                <option value="1">Paresia leve-moderada (vence gravedad) </option>
+                <option value="0.5">Paresia importante (no vence gravedad) </option>
+                <option value="0">Paresia completa (no moviliza)</option>
               </select>
             </div>
             <div>
               <label for="m1p">Pierna</label>
               <select id="m1p">
                 <option value="">Selecciona…</option>
-                <option value="1.5">Sin debilidad</option>
-                <option value="1">Paresia leve</option>
-                <option value="0.5">Paresia significativa</option>
-                <option value="0">Afectación completa</option>
+                <option value="1.5">No paresia</option>
+                <option value="1">Paresia leve-moderada (vence gravedad) </option>
+                <option value="0.5">Paresia importante (no vence gravedad) </option>
+                <option value="0">Paresia completa (no moviliza)</option>
               </select>
             </div>
           </div>
@@ -171,7 +274,7 @@
               <label for="m2c">Cara</label>
               <select id="m2c">
                 <option value="">Selecciona…</option>
-                <option value="0.5">Sin asimetrías</option>
+                <option value="0.5">Sin asimetrías </option>
                 <option value="0">Asimétrica</option>
               </select>
             </div>
@@ -180,7 +283,7 @@
               <select id="m2b">
                 <option value="">Selecciona…</option>
                 <option value="1.5">Iguales / respuesta simétrica</option>
-                <option value="0">Desiguales / respuesta asimétrica</option>
+                <option value="0">Desiguales / respuesta asimétrica </option>
               </select>
             </div>
             <div>
@@ -188,16 +291,17 @@
               <select id="m2p">
                 <option value="">Selecciona…</option>
                 <option value="1.5">Iguales / respuesta simétrica</option>
-                <option value="0">Desiguales / respuesta asimétrica</option>
+                <option value="0">Desiguales / respuesta asimétrica </option>
               </select>
             </div>
           </div>
         </div>
 
         <div class="actions">
-          <!-- Eliminado botón Calcular -->
-          <button id="btnBorrar" type="button" class="btn-secondary">Borrar</button>
-        </div>
+  <button id="btnBorrar" type="button" class="btn-secondary">Borrar</button>
+  <button id="btnCopiar" type="button" class="btn-secondary">Copiar resumen</button>
+</div>
+
         <p class="muted">Puntuación total 0–10 (mayor es mejor). Herramienta orientativa: la decisión final corresponde al facultativo.</p>
         <div id="err" class="err"></div>
       </form>
@@ -205,8 +309,11 @@
 
     <div id="resultCard" class="card result">
       <div class="score">
-        <div class="ttl">Puntuación (Escala Canadiense)</div>
-        <div class="val"><span id="scoreVal">—</span></div>
+        <div class="ttl">Puntuación</div>
+<div class="val">
+  <span id="scoreVal">—</span>
+  <div id="scoreLabel" class="score-label"> </div>
+</div>
       </div>
       <footer class="smallprint">Si elegiste “déficit receptivo”, la valoración motora se realizó con el modo “no comprende”.</footer>
     </div>
@@ -220,12 +327,62 @@
   document.addEventListener('scroll', onScroll, {passive:true}); onScroll();
 
   var SEP = ' \u2014 ';
-  function updateHeaderPill(score){
-    var pill = document.getElementById('pill');
-    if(!pill) return;
-    if (typeof score !== 'number') pill.textContent = 'Canadiense: ' + '\u2014';
-    else pill.textContent = 'Canadiense: ' + score.toFixed(1).replace('.', ',');
+
+  function updateHeaderPill(score) {
+  const pill = document.getElementById('pill');
+  const scoreVal = document.getElementById('scoreVal');
+  const scoreLabel = document.getElementById('scoreLabel');
+  if (!pill || !scoreVal || !scoreLabel) return;
+
+  // Estado neutro (sin puntuación)
+  if (typeof score !== 'number' || isNaN(score)) {
+    pill.textContent = '—';
+    pill.style.background = 'var(--accent-light)';
+    pill.style.color = '#1e3a8a';
+    pill.style.borderColor = '#bfdbfe';
+
+    scoreVal.textContent = '—';
+    scoreVal.style.color = 'var(--azul)';
+    scoreLabel.textContent = '';
+    return;
   }
+
+  // Mostrar puntuación con coma decimal
+  const shown = score.toFixed(1).replace('.', ',');
+  pill.textContent = shown;
+  scoreVal.textContent = shown;
+
+  // Determinar color y etiqueta según valor
+  if (score >= 8) {
+    pill.style.background = '#dcfce7';
+    pill.style.color = '#065f46';
+    pill.style.borderColor = '#86efac';
+
+    scoreVal.style.color = '#047857';
+    scoreLabel.textContent = 'Déficit leve o ausente';
+    scoreLabel.style.color = '#047857';
+  } else if (score >= 5) {
+    pill.style.background = '#fef3c7';
+    pill.style.color = '#92400e';
+    pill.style.borderColor = '#fde68a';
+
+    scoreVal.style.color = '#b45309';
+    scoreLabel.textContent = 'Déficit moderado';
+    scoreLabel.style.color = '#b45309';
+  } else {
+    pill.style.background = '#fee2e2';
+    pill.style.color = '#991b1b';
+    pill.style.borderColor = '#fecaca';
+
+    scoreVal.style.color = '#b91c1c';
+    scoreLabel.textContent = 'Déficit grave';
+    scoreLabel.style.color = '#b91c1c';
+  }
+}
+
+
+
+
 
   // ===== Lógica
   function el(id){ return document.getElementById(id); }
@@ -316,6 +473,40 @@
   }else{
     attachAuto(); toggleMotor(); updateHeaderPill();
   }
+// ===== Copiar resumen al portapapeles =====
+function copiarResumen() {
+  const scoreVal = document.getElementById('scoreVal');
+  const scoreLabel = document.getElementById('scoreLabel');
+
+  const valor = scoreVal ? scoreVal.textContent.trim() : '—';
+  const etiqueta = scoreLabel ? scoreLabel.textContent.trim() : '';
+
+  if (valor === '—' || !valor) {
+    alert('Primero completa la escala antes de copiar el resumen.');
+    return;
+  }
+
+  const texto = `Escala Canadiense: ${valor} – ${etiqueta}`;
+  navigator.clipboard.writeText(texto).then(() => {
+    // feedback visual breve
+    const btn = document.getElementById('btnCopiar');
+    const original = btn.textContent;
+    btn.textContent = 'Copiado';
+    btn.style.background = '#0f3d83';
+    btn.style.color = '#fff';
+    setTimeout(() => {
+      btn.textContent = original;
+      btn.style.background = '';
+      btn.style.color = '';
+    }, 1500);
+  }).catch(err => {
+    alert('No se pudo copiar el resumen: ' + err);
+  });
+}
+
+// Asignar evento al botón
+document.getElementById('btnCopiar').addEventListener('click', copiarResumen);
+
 </script>
 <footer style="
     position:relative;

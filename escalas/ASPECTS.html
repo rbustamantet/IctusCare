@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="icon" type="image/png" href="https://rbustamantet.github.io/ictus.cardiopatia/favicon-96x96.png" sizes="96x96" />
-<link rel="icon" type="image/svg+xml" href="https://rbustamantet.github.io/ictus.cardiopatia/favicon.svg" />
-<link rel="shortcut icon" href="https://rbustamantet.github.io/ictus.cardiopatia/favicon.ico" />
-<link rel="apple-touch-icon" sizes="180x180" href="https://rbustamantet.github.io/ictus.cardiopatia/apple-touch-icon.png" />
-<link rel="manifest" href="https://rbustamantet.github.io/ictus.cardiopatia/site.webmanifest" />
+<link rel="manifest" href="../site.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="../iconos/ictusgps.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../iconos/ictusgps.png">
+<link rel="shortcut icon" href="../iconos/ictusgps.png">
+<meta name="theme-color" content="#0f3d83">
 <title>ASPECTS – TC temprano ACM</title>
 <style>
   :root{
@@ -21,11 +21,79 @@
   *{box-sizing:border-box}
   html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:Verdana, Geneva, sans-serif}
 
-  .appbar{position:sticky; top:0; z-index:10; background:rgba(255,255,255,.92); border-bottom:1px solid var(--accent-light); backdrop-filter:saturate(140%) blur(8px)}
-  .appbar-inner{max-width:980px;margin:0 auto;padding:10px 14px;display:flex;gap:10px;align-items:center}
-  .appbar h1{margin:0;font-size:22px;font-weight:800;color:var(--accent)}
-  .spacer{flex:1}
-  .pill-top{display:inline-block;padding:6px 12px;border-radius:999px;background:#eaf2ff;border:1px solid #c7dbff;color:#1e3a8a;font-weight:800;white-space:nowrap}
+  .appbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: #0f3d83; /* azul institucional */
+  color: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+.appbar-inner {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 4px 16px;
+  display: flex;
+  align-items: center;     /* eje vertical centrado */
+  justify-content: space-between;
+  gap: 12px;
+}
+.left-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.appbar h1 {
+  margin: 0;
+  font-size: 22px;
+  line-height: 1;
+  color: white;
+  font-weight: 800;
+}
+/* Píldora dinámica de puntuación */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 38px;
+  height: 32px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.pill-ok   {background:#dcfce7; color:#065f46; border-color:#86efac;}   /* verde */
+.pill-warn {background:#fef3c7; color:#92400e; border-color:#fde68a;}   /* ámbar */
+.pill-bad  {background:#fee2e2; color:#991b1b; border-color:#fecaca;}   /* rojo */
+/* Botón Inicio */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  padding: 0 14px;
+  border-radius: 10px;
+  text-decoration: none;
+  border: 1px solid rgba(127,179,255,.35);
+  background: #1c60c3;
+  color: white;
+  font-size: 0.9rem;
+  font-weight: 700;
+  transition: background 0.2s, border-color 0.2s;overflow: hidden;
+  text-overflow: ellipsis;
+  transform: translateY(-8px);
+
+
+}
+.btn:hover {
+  background: #0C00FF;
+  border-color: rgba(127,179,255,.35);
+}
 
   .wrap{max-width:980px;margin:16px auto 40px;padding:0 14px}
   .panel{background:#fff;border:1px solid var(--accent-light);border-radius:16px;box-shadow:0 4px 16px rgba(0,0,0,.06);padding:16px}
@@ -52,18 +120,51 @@
   .tone-amber{background:var(--mid-bg); border-color:var(--mid-bd); color:var(--mid)}
   .tone-red{background:var(--bad-bg); border-color:var(--bad-bd); color:var(--bad)}
   .tone-green .big, .tone-amber .big, .tone-red .big{color:inherit}
+.actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 18px;
+}
+
+.btn-secondary {
+  flex: 1 1 48%;
+  border: 1px solid #0f3d83;
+  border-radius: 10px;
+  padding: 12px;
+  font-size: 15px;
+  font-weight: 700;
+  background: #fff;
+  color: #0f3d83;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.btn-secondary:hover {
+  background: #e6ecff;
+}
+
+/* efecto temporal cuando se copia */
+.btn-secondary.copiado {
+  background: #0f3d83 !important;
+  color: #fff !important;
+  border-color: #0f3d83 !important;
+}
 </style>
 </head>
 <body>
 
-<header class="appbar" aria-label="Cabecera ASPECTS">
+<header class="appbar" role="region" aria-label="Cabecera Escala ASPECTS">
   <div class="appbar-inner">
-    <h1>ASPECTS</h1>
-    <div class="spacer"></div>
-    <output id="pillTop" class="pill-top" aria-live="polite">ASPECTS —</output>
+    <div class="left-group">
+      <h1>ASPECTS</h1>
+      <output id="pill" class="pill" aria-live="polite" aria-atomic="true">10</output>
+    </div>
+    <div class="actions">
+      <a class="btn" href="../index.html">Inicio</a>
+    </div>
   </div>
 </header>
-
 <main class="wrap">
   <section class="panel">
     <h2>Evaluación</h2>
@@ -99,6 +200,10 @@
         <div class="big" id="catVal">—</div>
       </div>
     </div>
+<div class="actions">
+  <button id="btnBorrar" type="button" class="btn-secondary">Borrar</button>
+  <button id="btnCopiar" type="button" class="btn-secondary">Copiar resumen</button>
+</div>
   </section>
 </main>
 
@@ -143,6 +248,82 @@
 
   document.querySelectorAll('.r').forEach(ch => ch.addEventListener('change', actualizar));
   document.addEventListener('DOMContentLoaded', actualizar);
+// === Actualización dinámica de la pill de cabecera ===
+function actualizarPill(score) {
+  const pill = document.getElementById('pill');
+  pill.className = 'pill'; // resetear clases
+  if (score >= 7) pill.classList.add('pill-ok');
+  else if (score >= 5) pill.classList.add('pill-warn');
+  else pill.classList.add('pill-bad');
+  pill.textContent = score;
+}
+
+// Llamar dentro de actualizar()
+function actualizar(){
+  const marcadas = document.querySelectorAll('.r:checked').length;
+  const score = 10 - marcadas;
+  document.getElementById('scoreVal').textContent = String(score);
+
+  const catBox = document.getElementById('catBox');
+  const catVal = document.getElementById('catVal');
+  catBox.classList.remove('tone-green','tone-amber','tone-red');
+
+  if(score >= 7){
+    catBox.classList.add('tone-green');
+    catVal.textContent = `Favorable (≥7)`;
+  }else if(score >= 5){
+    catBox.classList.add('tone-amber');
+    catVal.textContent = `Intermedio (5–6)`;
+  }else{
+    catBox.classList.add('tone-red');
+    catVal.textContent = `Extenso (≤4)`;
+  }
+
+  const chips = document.getElementById('chips');
+  chips.innerHTML = '';
+  chips.insertAdjacentHTML('beforeend', `<span class="chip">Marcadas: ${marcadas}</span>`);
+  chips.insertAdjacentHTML('beforeend', `<span class="chip">Sin marcar: ${10 - marcadas}</span>`);
+
+  actualizarPill(score); // <-- nuevo
+}
+
+// ======= Función BORRAR =======
+function borrarASPECTS() {
+  document.querySelectorAll('.r').forEach(ch => ch.checked = false);
+  actualizar();
+}
+
+// ======= Función COPIAR RESUMEN =======
+function copiarASPECTS() {
+  const score = parseInt(document.getElementById('scoreVal').textContent) || 0;
+  const cat = document.getElementById('catVal').textContent.trim();
+
+  let texto = `ASPECTS: ${score} — ${cat}. `;
+
+  if (score >= 7) {
+    texto += 'Patrón favorable: pequeño infarto o cambios isquémicos mínimos, con bajo riesgo de transformación hemorrágica y buena respuesta potencial a tratamientos de reperfusión.';
+  } else if (score >= 5) {
+    texto += 'Patrón intermedio: infarto moderado, la extensión puede condicionar la indicación de trombectomía o trombólisis según criterios clínicos e imagenológicos.';
+  } else {
+    texto += 'Patrón extenso: afectación amplia del territorio ACM, mal pronóstico funcional y alto riesgo de complicaciones hemorrágicas.';
+  }
+
+  navigator.clipboard.writeText(texto).then(() => {
+    const btn = document.getElementById('btnCopiar');
+    btn.classList.add('copiado');
+    btn.textContent = 'Copiado';
+    setTimeout(() => {
+      btn.classList.remove('copiado');
+      btn.textContent = 'Copiar resumen';
+    }, 3000);
+  }).catch(err => {
+    console.error('Error al copiar:', err);
+  });
+}
+
+// Asignar eventos
+document.getElementById('btnBorrar').addEventListener('click', borrarASPECTS);
+document.getElementById('btnCopiar').addEventListener('click', copiarASPECTS);
 </script>
 <footer style="
     position:relative;
