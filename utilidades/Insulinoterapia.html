@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="icon" type="image/png" href="https://rbustamantet.github.io/ictus.cardiopatia/favicon-96x96.png" sizes="96x96" />
-<link rel="icon" type="image/svg+xml" href="https://rbustamantet.github.io/ictus.cardiopatia/favicon.svg" />
-<link rel="shortcut icon" href="https://rbustamantet.github.io/ictus.cardiopatia/favicon.ico" />
-<link rel="apple-touch-icon" sizes="180x180" href="https://rbustamantet.github.io/ictus.cardiopatia/apple-touch-icon.png" />
-<link rel="manifest" href="https://rbustamantet.github.io/ictus.cardiopatia/site.webmanifest" />
+<link rel="manifest" href="../site.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="../iconos/ictusgps.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../iconos/ictusgps.png">
+<link rel="shortcut icon" href="../iconos/ictusgps.png">
+<meta name="theme-color" content="#0f3d83">
 <title>Dosificación de Insulina</title>
 <style>
   :root{
@@ -194,7 +194,24 @@ html,body{
 .disclaimer-red b{
   color:#991b1b;
 }
-
+/* Botón Volver inferior */
+.back-btn{
+  display:inline-block;
+  margin:1.5rem auto 0;
+  background:#0f3d83;
+  color:#fff;
+  text-decoration:none;
+  font-weight:700;
+  padding:0.7rem 1.4rem;
+  border-radius:10px;
+  box-shadow:0 4px 10px rgba(15,61,131,.25);
+  transition:background .2s, transform .1s, box-shadow .2s;
+}
+.back-btn:hover{
+  background:#1c60c3;
+  transform:translateY(-1px);
+  box-shadow:0 6px 12px rgba(15,61,131,.35);
+}
   </style>
 </head>
 <body>
@@ -301,6 +318,7 @@ html,body{
       </div>
     </div>
   </section>
+
 
 </div>
 
@@ -667,7 +685,9 @@ ${recs.length?('\n'+recs.join('\n')):''}
     y conforme a los protocolos locales de insulinoterapia.
   </p>
 </div>
-
+<div style="text-align:center;">
+  <a href="index.html" class="back-btn">Volver</a>
+</div>
 <footer style="
     position:relative;
     left:50%;

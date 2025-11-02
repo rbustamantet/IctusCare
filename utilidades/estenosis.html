@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Tratamiento de la estenosis carotídea</title>
+<link rel="icon" type="image/png" sizes="192x192" href="../iconos/ictusgps.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../iconos/ictusgps.png">
+<meta name="theme-color" content="#0f3d83">
+
+<style>
+:root{
+  --bg:#f8fafc;--ink:#0f172a;--borde:#e5e7eb;
+  --ok:#166534;--ok-bg:#e9fce7;--ok-ring:#bbf7d0;
+  --mid:#92400e;--mid-bg:#fff7ed;--mid-ring:#fed7aa;
+  --bad:#991b1b;--bad-bg:#fef2f2;--bad-ring:#fecaca;
+  --accent:#2563eb;
+}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Verdana, Geneva, sans-serif}
+
+/* CABECERA */
+.appbar{position:sticky;top:0;z-index:1000;background:#0f3d83;color:#fff;box-shadow:0 2px 6px rgba(0,0,0,.1)}
+.appbar-inner{max-width:980px;margin:0 auto;padding:6px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.left-group{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.appbar h1{margin:0;font-size:20px;font-weight:800}
+.pill{display:inline-flex;align-items:center;justify-content:center;min-width:38px;height:28px;padding:4px 10px;border-radius:999px;font-size:13px;font-weight:700;border:1px solid transparent;white-space:nowrap}
+.pill-init{background:#dbeafe;color:#1e3a8a;border-color:#bfdbfe}
+.pill-ok{background:#dcfce7;color:#065f46;border-color:#86efac}
+.pill-warn{background:#fef3c7;color:#92400e;border-color:#fde68a}
+.pill-bad{background:#fee2e2;color:#991b1b;border-color:#fecaca}
+.btn{display:inline-flex;align-items:center;justify-content:center;height:32px;padding:0 14px;border-radius:10px;text-decoration:none;border:1px solid rgba(127,179,255,.35);background:#1c60c3;color:#fff;font-size:.9rem;font-weight:700}
+.btn:hover{background:#0C00FF}
+
+/* BLOQUES */
+.wrap{max-width:980px;margin:16px auto 48px;padding:0 16px}
+.panel{background:#fff;border:1px solid var(--borde);border-radius:16px;padding:16px;box-shadow:0 2px 10px rgba(15,23,42,.06)}
+.block{border-radius:14px;padding:14px 16px;margin:14px 0;transition:background .3s}
+.block h3{margin:0 0 8px 0;font-size:1.05rem;font-weight:800;display:flex;align-items:center;gap:6px}
+.block.rope{background:#eff6ff;border-left:4px solid #3b82f6}   /* azul */
+.block.anat{background:#ecfdf5;border-left:4px solid #10b981}  /* verde */
+.block.clin{background:#fffbeb;border-left:4px solid #f59e0b} /* amarillo */
+.block.info{background:#ffffff;border-left:4px solid #000}
+
+.block:hover{box-shadow:0 2px 6px rgba(0,0,0,.08)}
+.note{color:#64748b;font-size:12px;margin:6px 0 12px}
+label{font-weight:400;color:#1e293b;margin-top:8px;display:block}
+select{width:100%;padding:10px 12px;border:1px solid #cbd5e1;border-radius:10px;background:#fff;font-size:14px}
+.grid{display:grid;gap:10px}
+@media(min-width:860px){.grid.cols-2{grid-template-columns:1fr 1fr}}
+.check{display:flex;align-items:flex-start;gap:8px;margin:6px 0;color:#1e293b;font-weight:400;transition:color .2s}
+.check:hover{color:#0f3d83}
+.check input{margin-top:2px;transform:scale(1.05);accent-color:#0f3d83}
+
+/* Radios en línea para NASCET */
+.inline-options{
+  display:flex;gap:16px;flex-wrap:wrap;align-items:center;margin-top:6px
+}
+.inline-options .check{margin:0}
+
+/* RESULTADOS */
+.kpi{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px}
+.box{border:1.5px dashed #c7dbff;border-radius:14px;padding:14px;background:#f8fbff;text-align:center}
+.ttl{font-size:14px;color:#334155;font-weight:800;margin-bottom:2px}
+.val{font-size:22px;font-weight:900;color:#0b2c5f}
+.mini{font-size:12px;color:#64748b;margin-top:4px}
+.ok{background:var(--ok-bg);border-color:var(--ok-ring)}
+.warn{background:var(--mid-bg);border-color:var(--mid-ring)}
+.bad{background:var(--bad-bg);border-color:var(--bad-ring)}
+.ok .val{color:var(--ok)}.warn .val{color:var(--mid)}.bad .val{color:var(--bad)}
+
+/* BOTONES */
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.btn-action{flex:1 1 32%;border:none;border-radius:10px;padding:12px;font-size:15px;font-weight:700;cursor:pointer}
+.btn-clear{background:#fff;color:#0b2c5f;border:1px solid #2563eb}
+.btn-clear:hover{background:#eff6ff}
+.btn-copy{background:#fff;color:#0f3d83;border:1px solid #2563eb}
+.btn-copy:hover{background:#eff6ff}
+.btn-copy.copiado{background:#0f3d83!important;color:#fff!important}
+.btn-calc{background:#0f3d83;color:#fff;border:1px solid #0f3d83}
+.btn-calc:hover{background:#1c60c3}
+
+/* Botón Volver inferior */
+.back-btn{
+  display:inline-block;
+  margin:1.5rem auto 0;
+  background:#0f3d83;
+  color:#fff;
+  text-decoration:none;
+  font-weight:700;
+  padding:0.7rem 1.4rem;
+  border-radius:10px;
+  box-shadow:0 4px 10px rgba(15,61,131,.25);
+  transition:background .2s, transform .1s, box-shadow .2s;
+}
+.back-btn:hover{
+  background:#1c60c3;
+  transform:translateY(-1px);
+  box-shadow:0 6px 12px rgba(15,61,131,.35);
+}
+
+
+/* OTROS */
+#resumenText{white-space:pre-wrap;font-size:13px;color:#0f172a;margin-top:12px;border:1px dashed var(--borde);border-radius:10px;padding:10px 12px;background:#f8fafc;line-height:1.45}
+.disclaimer-red{
+  background:#fef2f2;border:1px solid #fecaca;border-radius:12px;
+  padding:14px 16px;margin:18px 0 0 0;box-shadow:0 2px 8px rgba(185,28,28,0.05)
+}
+.disclaimer-red p{margin:0;color:#7f1d1d;font-size:14px;line-height:1.5;text-align:left}
+.disclaimer-red b{color:#991b1b}
+footer{position:relative;left:50%;transform:translateX(-50%);width:100vw;margin:2rem 0 0 0;padding:1.5rem 0;border-top:1px solid #e5e7eb;background:#ffffff;text-align:center;box-shadow:0 -2px 6px rgba(0,0,0,.04)}
+
+.tooltip {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: help;
+  margin: 4px 0;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.info-icon {
+  display: inline-block;
+  font-size: 0.8rem;
+  background-color: #e0ebff;
+  color: #0f3d83;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  text-align: center;
+  line-height: 18px;
+  font-weight: bold;
+  cursor: help;
+  transition: background-color 0.2s ease-in-out, transform 0.15s;
+}
+.info-icon:hover {
+  background-color: #c9dcff;
+  transform: scale(1.1);
+}
+
+.tooltiptext {
+  visibility: hidden;
+  width: 280px;
+  background-color: #0f3d83;
+  color: #f8fafc;
+  text-align: left;
+  border-radius: 12px;
+  padding: 10px 12px;
+  position: absolute;
+  z-index: 10;
+  bottom: 135%;
+  left: 20px;
+  opacity: 0;
+  transition: opacity 0.25s ease-in-out;
+  font-size: 0.8rem;
+  line-height: 1.35;
+  box-shadow: 0 3px 10px rgba(15, 61, 131, 0.25);
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+/* Flecha */
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 24px;
+  border-width: 6px;
+  border-style: solid;
+  border-color: #0f3d83 transparent transparent transparent;
+}
+
+/* Mostrar al pasar por el icono */
+.tooltip:hover .tooltiptext,
+.tooltip:focus-within .tooltiptext,
+.tooltip .info-icon:hover + .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* Versión móvil */
+@media (max-width: 600px){
+  .tooltiptext {
+    width: 90vw;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.85rem;
+  }
+  .tooltip .tooltiptext::after {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+</style>
+</head>
+
+<body>
+<header class="appbar">
+  <div class="appbar-inner">
+    <div class="left-group">
+      <h1>Tratamiento de la estenosis carotídea</h1>
+      <output id="pill" class="pill pill-init">—</output>
+    </div>
+    <a class="btn" href="../index.html">Inicio</a>
+  </div>
+</header>
+
+<main class="wrap">
+<section class="panel">
+<p class="note">Integra situación clínica, características de la placa/anatomía y grado de estenosis (NASCET) para orientar la indicación de <b>antiagregación</b>, <b>DAPT</b>, <b>endarterectomía (CEA)</b> o <b>stent carotídeo (CAS)</b>. No cálculo automático: usa “Calcular”.</p>
+
+<!-- BLOQUE CLÍNICO -->
+<div class="block rope">
+  <h3>🩺 Situación clínica</h3>
+  <div class="grid cols-2">
+    <div>
+      <label><b>Clínica neurológica</b></label>
+      <label class="check"><input type="radio" name="clin" id="sxReciente"> Ictus/AIT ≤14 días</label>
+      <label class="check"><input type="radio" name="clin" id="sxAntiguo"> Ictus/AIT &gt;14 días</label>
+      <label class="check"><input type="radio" name="clin" id="asint"> Asintomática</label>
+    </div>
+    <div>
+      <label><b>Condiciones generales</b></label>
+  <label class="tooltip">
+    <input type="checkbox" id="contraInterv">
+        <span class="info-icon">ℹ️</span>
+Contraindicación para intervenir
+ <span class="tooltiptext">
+      Situación médica o anatómica que impide la revascularización 
+      (p. ej. fragilidad extrema, comorbilidad severa, otras).
+    </span>
+  </label>
+
+  <label class="tooltip">
+    <input type="checkbox" id="expVida5">
+        <span class="info-icon">ℹ️</span>
+Expectativa de vida ≥5 años
+<span class="tooltiptext">
+      Paciente con buena situación funcional y esperanza de vida suficiente 
+      para beneficiarse del tratamiento preventivo de revascularización.
+    </span>
+  </label>
+
+  <label class="tooltip">
+    <input type="checkbox" id="riesgoCEAbajo">
+        <span class="info-icon">ℹ️</span>
+Riesgo perioperatorio CEA bajo
+<span class="tooltiptext">
+      Probabilidad estimada de complicaciones neurológicas o muerte 
+      dentro de los límites aceptables para considerar endarterectomía carotídea (≤6% sintomáticos, ≤3% asintomáticos).
+    </span>
+  </label>    </div>
+  </div>
+</div>
+
+<!-- BLOQUE PLACA / ANATOMÍA -->
+<div class="block anat">
+  <h3>🧠 Características de la placa y anatomía</h3>
+  <div class="grid cols-2">
+<label class="tooltip">
+    <input type="checkbox" id="placaUlcerada">
+        <span class="info-icon">ℹ️</span>
+Placa ulcerada o irregular
+    <span class="tooltiptext">
+      Superficie de la placa con ulceración o irregularidad luminal. 
+      Indica inestabilidad y mayor riesgo embólico.
+    </span>
+  </label>
+
+  <label class="tooltip">
+    <input type="checkbox" id="placaBlanda">
+        <span class="info-icon">ℹ️</span>
+Placa hipodensa/heterogénea/hemorrágica
+    <span class="tooltiptext">
+      Placa blanda o con contenido lipídico/hemorrágico en imagen. 
+      Asociada a vulnerabilidad y riesgo de progresión.
+    </span>
+  </label>
+
+  <label class="tooltip">
+    <input type="checkbox" id="trombo">
+        <span class="info-icon">ℹ️</span>
+Trombo adherido
+    <span class="tooltiptext">
+      Presencia de material trombótico adherido a la placa. 
+      Riesgo elevado de embolia cerebral oclusiva.
+    </span>
+  </label>
+
+  <label class="tooltip">
+    <input type="checkbox" id="estenosisBilateral">
+        <span class="info-icon">ℹ️</span>
+Estenosis bilateral
+    <span class="tooltiptext">
+      Afectación significativa de ambas arterias carótidas. 
+      Aumenta riesgo de hipoperfusión y complica la estrategia de revascularización.
+    </span>
+  </label>
+
+  <label class="tooltip">
+    <input type="checkbox" id="oclContralateral">
+        <span class="info-icon">ℹ️</span>
+Oclusión contralateral
+    <span class="tooltiptext">
+      Carótida opuesta totalmente ocluida. 
+      Reduce la circulación colateral y eleva el riesgo quirúrgico de endarterectomía.
+    </span>
+  </label>
+
+  <label class="tooltip">
+    <input type="checkbox" id="reestenosisCEA">
+        <span class="info-icon">ℹ️</span>
+Reestenosis tras CEA
+    <span class="tooltiptext">
+      Nueva estenosis en el sitio de una endarterectomía previa. 
+      Suele deberse a hiperplasia intimal o recurrencia aterosclerótica.
+    </span>
+  </label>
+
+  <label class="tooltip">
+    <input type="checkbox" id="radRT">
+        <span class="info-icon">ℹ️</span>
+Estenosis por radioterapia cervical
+    <span class="tooltiptext">
+      Lesión posradiación con fibrosis o alteración anatómica del cuello ( hostil). 
+      Aumenta el riesgo quirúrgico y suele preferirse abordaje endovascular.
+    </span>
+  </label>
+
+  <label class="tooltip">
+    <input type="checkbox" id="altoRiesgoQx">
+        <span class="info-icon">ℹ️</span>
+Alto riesgo quirúrgico
+    <span class="tooltiptext">
+      Condiciones médicas o anatómicas que incrementan la morbimortalidad 
+      de una cirugía abierta (cardiopatía grave, cuello hostil, edad avanzada).
+    </span>
+  </label>
+
+  <label class="tooltip">
+    <input type="checkbox" id="altoRiesgoEndo">
+        <span class="info-icon">ℹ️</span>
+Dificultad endovascular local
+    <span class="tooltiptext">
+      Tortuosidad o calcificación en el trayecto carotídeo que dificulta 
+      el avance o posicionamiento del stent, sin afectar el acceso proximal.
+    </span>
+  </label>
+
+  <label class="tooltip">
+    <input type="checkbox" id="aortaHostil">
+        <span class="info-icon">ℹ️</span>
+Aorta o troncos supraaórticos hostiles
+    <span class="tooltiptext">
+      Arco aórtico elongado (tipo III)  o calcificado y troncos de salida tortuosos. 
+      Dificulta el acceso endovascular desde el arco hacia la carótida.
+    </span>
+  </label>
+
+  <label class="tooltip">
+    <input type="checkbox" id="cervicalAlta">
+        <span class="info-icon">ℹ️</span>
+Estenosis carotídea cervical alta
+    <span class="tooltiptext">
+      Lesión localizada muy alta (por encima del ángulo mandibular), 
+      de difícil exposición quirúrgica. Puede preferirse abordaje endovascular.
+    </span>
+  </label>
+
+  <label class="tooltip">
+    <input type="checkbox" id="intraStent">
+        <span class="info-icon">ℹ️</span>
+Estenosis intrastent
+    <span class="tooltiptext">
+      Reestenosis dentro de un stent carotídeo previo. 
+      Generalmente manejable con nueva angioplastia o stent.
+    </span>
+  </label>
+
+  <label class="tooltip">
+    <input type="checkbox" id="distalPresente">
+        <span class="info-icon">ℹ️</span>
+Estenosis distal ipsilateral no tratable
+    <span class="tooltiptext">
+      Estenosis significativa en territorio intracraneal distal a la lesión carotídea. 
+      Limita el beneficio de la revascularización cervical.
+    </span>
+  </label>
+
+  <label class="tooltip">
+    <input type="checkbox" id="distalTratable">
+        <span class="info-icon">ℹ️</span>
+Estenosis distal ipsilateral tratable
+    <span class="tooltiptext">
+      Lesión intracraneal asociada pero susceptible de tratamiento endovascular, 
+      permitiendo abordaje combinado (“tándem tratable”).
+    </span>
+  </label>  </div>
+</div>
+
+<!-- BLOQUE GRADO -->
+<div class="block clin">
+  <h3>📈 Grado de estenosis (NASCET)</h3>
+  <div class="inline-options" role="group" aria-label="Grado NASCET">
+    <label class="check"><input type="radio" name="grado" id="glt50"> &lt;50%</label>
+    <label class="check"><input type="radio" name="grado" id="g50a69"> 50–69%</label>
+    <label class="check"><input type="radio" name="grado" id="g70a99"> 70–99%</label>
+    <label class="check"><input type="radio" name="grado" id="gOclusion"> Oclusión total</label>
+  </div>
+</div>
+
+<!-- BOTONES -->
+<div class="actions">
+  <button id="btnCalc" class="btn-action btn-calc">Calcular</button>
+  <button id="btnClear" class="btn-action btn-clear">Borrar</button>
+  <button id="btnCopy" class="btn-action btn-copy">Copiar resumen</button>
+</div>
+
+<!-- RESULTADOS -->
+<div class="panel" id="resultCard" style="margin-top:16px;display:none;">
+  <div class="kpi">
+    <div class="box" id="kClin"><div class="ttl">Clasificación clínica</div><div class="val" id="valClin">-</div></div>
+    <div class="box" id="kGrado"><div class="ttl">Grado (NASCET)</div><div class="val" id="valGrado">-</div></div>
+  </div>
+
+  <div class="kpi">
+    <div class="box" id="kRiesgo"><div class="ttl">Riesgo embólico morfológico</div><div class="val" id="valRiesgo">-</div><div class="mini" id="miniRiesgo">-</div></div>
+    <div class="box" id="kTandem"><div class="ttl">Lesión tándem</div><div class="val" id="valTandem">-</div><div class="mini" id="miniTandem">-</div></div>
+  </div>
+
+  <!-- Recomendación ocupa todo el ancho -->
+  <div style="margin-top:12px;">
+    <div class="box" id="recBox">
+      <div class="ttl">Tratamiento recomendado</div>
+      <div class="val" id="recVal">-</div>
+      <div class="mini" id="recNote">-</div>
+      <div class="mini" id="postTx">-</div> <!-- tratamiento asociado/postprocedimiento -->
+    </div>
+  </div>
+
+  <div class="kpi" style="margin-top:12px;">
+    <div class="box" id="contraBox"><div class="ttl">Técnica contraindicada</div><div class="val" id="contraVal">-</div></div>
+    <div class="box" id="prefBox"><div class="ttl">Preferencia local</div><div class="val" id="prefVal">-</div><div class="mini">La elección final dependerá de la morbimortalidad y experiencia del centro.</div></div>
+  </div>
+
+<div id="resumenText" class="resumen" style="white-space:pre-line; margin-top:1rem; border-top:1px dashed #e5e7eb; padding-top:1rem;"></div>
+
+  <div class="disclaimer-red">
+    <p><b>Advertencia.</b> Herramienta orientativa; no sustituye el juicio clínico ni el consenso multidisciplinar.</p>
+    <p>Interpretar en el contexto individual, protocolos locales y guías (AHA/ASA, ESO).</p>
+  </div>
+</div>
+
+<!-- DETALLES -->
+<details style="margin-top:16px;">
+  <summary style="cursor:pointer;font-weight:700;color:#0f3d83;">📋 Explicación de ítems</summary>
+  <div style="margin-top:8px;font-size:13px;line-height:1.5;color:#1e293b;">
+    <b>Clínica:</b> ictus/AIT ≤14 días = prioridad de intervención; >14 días = beneficio menor; asintomática = considerar ≥70% con riesgo operatorio bajo y expectativa de vida &ge;5 años.<br>
+    <b>Placa/Anatomía:</b> ulcerada/trombo/hipodensa/hemorragia intraplaca = alto riesgo embólico; radioterapia, reestenosis pos-CEA, cervical alta e intrastent = <i>cuello hostil</i> (favorece CAS). Oclusión contralateral aumenta riesgo en CEA. Lesión distal intracraneal crítica no tratable: descarta beneficio de CEA/CAS; si tratable endovascularmente, favorece CAS en abordaje combinado.<br>
+    <b>Grado NASCET:</b> &lt;50% = manejo médico; 50–69% = beneficio selectivo; 70–99% = beneficio claro en sintomáticos.
+  </div>
+</details>
+
+</section>
+<div style="text-align:center;">
+  <a href="index.html" class="back-btn">Volver</a>
+</div>
+</main>
+
+<script>
+const $=id=>document.getElementById(id);
+
+function getClinica(){
+  if ($('sxReciente').checked) return 'Sintomática ≤14d';
+  if ($('sxAntiguo').checked)  return 'Sintomática >14d';
+  if ($('asint').checked)      return 'Asintomática';
+  return '';
+}
+function getGrado(){
+  if ($('glt50').checked)   return '<50%';
+  if ($('g50a69').checked)  return '50–69%';
+  if ($('g70a99').checked)  return '70–99%';
+  if ($('gOclusion').checked) return 'Oclusión total';
+  return '';
+}
+function bool(id){ const el=$(id); return el && el.checked; }
+
+function riesgoMorfologico(){
+  const altos = ['placaUlcerada','trombo','placaBlanda'].filter(id=>bool(id)).length;
+  if (altos>=2) return {txt:'Alto', mini:'Placa inestable (≥2 rasgos)'};
+  if (altos===1) return {txt:'Intermedio', mini:'Un rasgo de inestabilidad'};
+  return {txt:'Bajo', mini:'Sin rasgos de alto riesgo'};
+}
+
+function tandemInfo(){
+  const distal = bool('distalPresente');
+  const trat   = bool('distalTratable');
+  if (!distal) return {txt:'No', mini:'Sin lesión distal'};
+  return {txt: trat?'Sí (tratable)':'Sí (no tratable)', mini: trat?'Abordaje endovascular posible':'Descarta beneficio de CEA/CAS'};
+}
+
+function setPill(kind){
+  const pill=$('pill');
+  pill.className='pill '+(kind==='ok'?'pill-ok':kind==='warn'?'pill-warn':kind==='bad'?'pill-bad':'pill-init');
+}
+
+function calcular(){
+  const clin = getClinica();
+  const grado = getGrado();
+
+  if (!clin || !grado){
+    $('resultCard').style.display='none';
+    $('pill').className='pill pill-init'; $('pill').textContent='—';
+    return;
+  }
+
+  const contraInterv = bool('contraInterv');
+  const expVida5     = bool('expVida5');
+  const riesgoCEAb   = bool('riesgoCEAbajo');
+
+  const placaUlcerada=bool('placaUlcerada');
+  const trombo=bool('trombo');
+  const placaBlanda=bool('placaBlanda');
+
+  const oclContra=bool('oclContralateral');
+  const radRT=bool('radRT');
+  const reCEA=bool('reestenosisCEA');
+  const altoEndo=bool('altoRiesgoEndo');
+  const altoQxBase=bool('altoRiesgoQx');
+  const cervicalAlta=bool('cervicalAlta');
+  const intraStent=bool('intraStent');
+  const distal=bool('distalPresente');
+  const distalTratable=bool('distalTratable');
+  const aortaHostil=bool('aortaHostil'); // <--- NUEVO FACTOR
+
+  // Derivados
+  const cuelloHostil = (altoQxBase || radRT || reCEA || cervicalAlta || intraStent || oclContra);
+  const riesgo = riesgoMorfologico();
+  const tandem = tandemInfo();
+
+  // Inicialización
+  let rec='-', note='-', contra='-', pref='-';
+  let post='-';
+  let tone='warn';
+  let tagDAPT=false;
+
+  // Exclusiones iniciales
+  if (grado==='Oclusión total'){
+    rec='Tratamiento médico óptimo';
+    note='Oclusión completa: sin beneficio de revascularización';
+    contra='CEA y CAS';
+    pref='—';
+    post='AS (AAS o clopidogrel) indefinida + estatina alta y control FRV';
+    tone='bad';
+  }
+  else if (distal && !distalTratable){
+    rec='Tratamiento médico (AS o DAPT según clínica)';
+    note='Lesión distal intracraneal crítica no tratable';
+    contra='CEA y CAS';
+    pref='—';
+    post= (clin.startsWith('Sintomática')) ? 'DAPT 21–30 días → monoterapia indefinida' : 'AS (AAS o clopidogrel) indefinida';
+    tagDAPT=true;
+    tone='bad';
+  }
+  else if (contraInterv){
+    rec='Antiagregación simple';
+    note='No candidato a intervención';
+    post='AS (AAS o clopidogrel) indefinida';
+    contra='CEA y CAS';
+    pref='—';
+    tone='bad';
+  } else {
+    const esSintoRec = clin==='Sintomática ≤14d';
+    const esSintoAnt = clin==='Sintomática >14d';
+    const esAsinto   = clin==='Asintomática';
+
+    // ======= COMORBILIDAD ANATÓMICA GLOBAL (nuevo control combinado) =======
+    if (radRT && aortaHostil){
+      rec='Tratamiento médico optimizado';
+      note='Cuello irradiado + aorta hostil: ambas técnicas desaconsejadas';
+      contra='CEA y CAS';
+      pref='—';
+      post='AS (AAS o clopidogrel) indefinida + estatina alta y control FRV';
+      tone='bad';
+    }
+    else if (radRT){
+      rec='CAS preferible';
+      note='Cuello irradiado: alto riesgo quirúrgico; preferir abordaje endovascular';
+      contra='CEA';
+      pref='CAS indicada';
+      post='Tras CAS: DAPT 1–3 meses → monoterapia indefinida';
+      tone='ok';
+    }
+    else if (aortaHostil){
+      rec='CEA preferible';
+      note='Acceso endovascular dificultoso (aorta calcificada o tipo III)';
+      contra='CAS';
+      pref='CEA indicada';
+      post='Tras CEA: AAS indefinido';
+      tone='ok';
+    }
+
+    // ======= SINTOMÁTICAS =======
+    else if (esSintoRec || esSintoAnt){
+      if (grado==='70–99%'){
+        if (cuelloHostil){
+          rec='CAS recomendada';
+          note='Alto riesgo quirúrgico/cuello hostil';
+          contra='CEA';
+          post='Tras CAS: DAPT 1–3 m → monoterapia indefinida';
+          tone='ok';
+        } else if (altoEndo){
+          rec='CEA recomendada';
+          note='Anatomía desfavorable para CAS';
+          contra='CAS';
+          post='Tras CEA: AAS indefinido';
+          tone='ok';
+        } else {
+          rec='CEA o CAS (ambas posibles)';
+          note='Beneficio alto en sintomáticos';
+          contra='Ninguna';
+          pref='CEA si riesgo ≤6%; CAS si cuello hostil';
+          post='CEA→AAS indef. · CAS→DAPT 1–3 m → monoterapia';
+          tone='ok';
+        }
+      } else if (grado==='50–69%'){
+        if (placaUlcerada || trombo || placaBlanda){
+          rec='DAPT temporal (21–30 días) → monoterapia';
+          note='Placa inestable; beneficio moderado sin intervención inmediata';
+          contra='CEA y CAS';
+          post='Tras DAPT: AAS o clopidogrel indefinido';
+          tagDAPT=true;
+          tone='warn';
+        } else {
+          rec='Manejo médico';
+          note='Beneficio limitado; individualizar';
+          contra='CEA y CAS';
+          post='AS (AAS o clopidogrel) indefinida';
+          tone='bad';
+        }
+      } else { 
+        rec='Antiagregación simple';
+        note='Estenosis <50% no significativa';
+        contra='CEA y CAS';
+        post='AS (AAS o clopidogrel) indefinida';
+        tone='bad';
+      }
+    } 
+
+    // ======= ASINTOMÁTICAS =======
+    else if (esAsinto){
+      if (grado==='Oclusión total'){
+        rec='Tratamiento médico';
+        note='Oclusión completa: no indicada revascularización';
+        contra='CEA y CAS';
+        post='AS o clopidogrel indefinido';
+        tone='bad';
+      }
+      else if (grado==='<50%'){
+        rec='Tratamiento médico';
+        note='Estenosis leve sin indicación';
+        contra='CEA y CAS';
+        post='AS o clopidogrel indefinido';
+        tone='bad';
+      }
+      else if (grado==='50–69%'){
+        if (placaUlcerada || trombo){
+          rec='DAPT temporal (21–30 días) → monoterapia';
+          note='Placa de alto riesgo embólico asintomática';
+          contra='Ninguna';
+          post='DAPT 21–30 d → monoterapia indefinida';
+          tagDAPT=true;
+          tone='warn';
+        } else {
+          rec='Tratamiento médico óptimo';
+          note='Beneficio incierto de revascularización';
+          contra='CEA y CAS';
+          post='AS o clopidogrel indefinido';
+          tone='bad';
+        }
+      }
+      else if (grado==='70–99%'){
+        if (!expVida5){
+          rec='Tratamiento médico';
+          note='Expectativa <5 años: sin beneficio duradero';
+          contra='CEA y CAS';
+          post='AS o clopidogrel indefinido';
+          tone='bad';
+        }
+        else if (oclContra){
+          if (altoEndo){
+            rec='CAS o manejo médico';
+            note='Oclusión contralateral (descarta CEA); CAS solo si riesgo técnico bajo';
+            contra='CEA';
+            pref='MDT';
+            post='Si CAS: DAPT 1–3 m → monoterapia; si médico: AS indefinida';
+            tone='warn';
+          } else {
+            rec='CAS preferible';
+            note='Oclusión contralateral: preferible abordaje endovascular';
+            contra='CEA';
+            pref='CAS indicada';
+            post='Tras CAS: DAPT 1–3 m → monoterapia indefinida';
+            tone='ok';
+          }
+        }
+        else if (placaUlcerada || trombo){
+          rec='CEA o CAS (ambas posibles); considerar DAPT temporal';
+          note='Placa ulcerada o con trombo mural (riesgo embólico alto)';
+          contra='Ninguna';
+          post='DAPT 21–30 d → monoterapia indefinida';
+          tagDAPT=true;
+          tone='warn';
+        }
+        else{
+          rec='CEA o CAS (ambas posibles)';
+          note='Asintomática ≥70%, beneficio mayor si >80–85%';
+          contra='Ninguna';
+          pref='CEA si riesgo ≤3%; CAS si cuello hostil';
+          post='CEA→AAS indef. · CAS→DAPT 1–3 m → monoterapia';
+          tone='ok';
+        }
+      }
+    }
+  }
+
+  // Mostrar resultados
+  $('valClin').textContent = clin;
+  $('valGrado').textContent = grado;
+  $('recVal').textContent = rec;
+  $('recNote').textContent = note;
+  $('postTx').textContent = post;
+  $('contraVal').textContent = contra;
+  $('prefVal').textContent = (rec.includes('CEA o CAS') || rec.includes('Valorar')) ? (pref || 'Según morbimortalidad y experiencia local') : (pref || '—');
+
+  const toneClass = (tone==='ok')?'ok':(tone==='warn')?'warn':'bad';
+  ['recBox','contraBox','prefBox'].forEach(id=>{
+    const el=$(id); el.classList.remove('ok','warn','bad'); el.classList.add(toneClass);
+  });
+
+  const pillText = (()=>{ 
+    if (rec.startsWith('CEA')) return 'CEA recomendada';
+    if (rec.startsWith('CAS o manejo médico')) return 'CAS o manejo médico';
+    if (rec.startsWith('CAS')) return 'CAS recomendada';
+    if (rec.includes('DAPT temporal')) return 'DAPT temporal';
+    if (rec.startsWith('Antiagregación') || rec.startsWith('Tratamiento médico') || rec.startsWith('Manejo médico')) return 'Manejo médico';
+    if (rec.includes('CEA o CAS')) return 'Ambas posibles';
+    return '—';
+  })();
+  $('pill').textContent = pillText;
+  setPill(tone);
+
+  // Etiqueta DAPT temporal
+  let tag = $('tagDAPT');
+  if (!tag){
+    tag = document.createElement('div');
+    tag.id='tagDAPT';
+    tag.style.background='#fef3c7';
+    tag.style.border='1px solid #facc15';
+    tag.style.borderRadius='8px';
+    tag.style.color='#854d0e';
+    tag.style.fontSize='0.9rem';
+    tag.style.fontWeight='500';
+    tag.style.padding='6px 10px';
+    tag.style.marginTop='10px';
+    tag.style.display='none';
+    $('recBox').appendChild(tag);
+  }
+  tag.style.display = tagDAPT ? 'block' : 'none';
+  if (tagDAPT) tag.textContent='💡 DAPT temporal (21–30 días) → monoterapia indefinida';
+
+  $('resultCard').style.display='block';
+}
+
+function borrar(){
+  ['sxReciente','sxAntiguo','asint','glt50','g50a69','g70a99','gOclusion'].forEach(id=>{ const el=$(id); if(el) el.checked=false; });
+  ['contraInterv','expVida5','riesgoCEAbajo','placaUlcerada','trombo','placaBlanda','estenosisBilateral','oclContralateral','radRT','reestenosisCEA','altoRiesgoEndo','altoRiesgoQx','cervicalAlta','intraStent','distalPresente','distalTratable','aortaHostil'].forEach(id=>{ const el=$(id); if(el) el.checked=false; });
+  $('resultCard').style.display='none';
+  $('pill').className='pill pill-init'; $('pill').textContent='—';
+  const tag=$('tagDAPT'); if(tag) tag.style.display='none';
+}
+
+$('btnCalc').addEventListener('click',calcular);
+$('btnClear').addEventListener('click',borrar);
+</script>
+
+
+
+
+<footer>
+  <img src="uibanner.png" alt="Unidad de Ictus Málaga" style="max-width:380px;height:auto;opacity:.96">
+</footer>
+</body>
+</html>

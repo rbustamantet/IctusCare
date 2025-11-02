@@ -3,6 +3,12 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="manifest" href="../site.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="../iconos/ictusgps.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../iconos/ictusgps.png">
+<link rel="shortcut icon" href="../iconos/ictusgps.png">
+<meta name="theme-color" content="#0f3d83">
+
 <title>Territorios vasculares cerebrales</title>
 
 <style>
@@ -69,6 +75,25 @@ body.lightbox-open{ overflow:hidden; }
 .gal-close{right:14px}
 .gal-prev{left:14px;top:50%;transform:translateY(-50%)}
 .gal-next{right:14px;top:50%;transform:translateY(-50%)}
+/* Botón Volver inferior */
+.back-btn{
+  display:inline-block;
+  margin:1.5rem auto 0;
+  background:#0f3d83;
+  color:#fff;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  text-decoration:none;
+  font-weight:700;
+  padding:0.7rem 1.4rem;
+  border-radius:10px;
+  box-shadow:0 4px 10px rgba(15,61,131,.25);
+  transition:background .2s, transform .1s, box-shadow .2s;
+}
+.back-btn:hover{
+  background:#1c60c3;
+  transform:translateY(-1px);
+  box-shadow:0 6px 12px rgba(15,61,131,.35);
+}
 </style>
 </head>
 <body>
@@ -337,6 +362,9 @@ body.lightbox-open{ overflow:hidden; }
   <a aria-label="Siguiente" class="gal-next" href="#l4ee2f2de">⟩</a>
   <a aria-label="Cerrar" class="gal-close" href="#sb1a5e728">✕</a>
   <img alt="Perforantes y núcleos grises (ganglios basales y tálamo) / Deep perforators (basal ganglia &amp; thalamus)" src="https://blogger.googleusercontent.com/img/a/AVvXsEhokrhXwbDu1w8EBFApPjwNM1O0Im5hyB8vFIdY04krQwtevJBzxxZlUskTUwHXf8a-TiJSIgg0RGWHiFe0lbboyzbYbfNnneJ0kM6uQ9V3-ZziE6hQufWOHs-YtEjZp-tCXsFRdp_6yPICNVAN6gAWQWdO5DLmEM8Q2rHeQNCNgRdvzxmfq0kd3aN0beE" />
+</div>
+<div style="text-align:center;">
+  <a href="index.html" class="back-btn">Volver</a>
 </div>
 
 <script>

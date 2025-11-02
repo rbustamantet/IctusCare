@@ -4,11 +4,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light dark">
-<link rel="icon" type="image/png" href="https://rbustamantet.github.io/ictus.cardiopatia/favicon-96x96.png" sizes="96x96" />
-<link rel="icon" type="image/svg+xml" href="https://rbustamantet.github.io/ictus.cardiopatia/favicon.svg" />
-<link rel="shortcut icon" href="https://rbustamantet.github.io/ictus.cardiopatia/favicon.ico" />
-<link rel="apple-touch-icon" sizes="180x180" href="https://rbustamantet.github.io/ictus.cardiopatia/apple-touch-icon.png" />
-<link rel="manifest" href="https://rbustamantet.github.io/ictus.cardiopatia/site.webmanifest" />
+<link rel="manifest" href="../site.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="../iconos/ictusgps.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../iconos/ictusgps.png">
+<link rel="shortcut icon" href="../iconos/ictusgps.png">
+<meta name="theme-color" content="#0f3d83">
   <title>Anticoagulación oral en Fibrilación Auricular</title>
   <style>
     :root{--c1:#e9f4ff;--c2:#d2ebff;--c3:#a7d4ff;--accent:#1976d2;--ok:#1b5e20;--bad:#b71c1c;}
@@ -105,7 +105,26 @@ header h1 {
   display: block !important;
   max-height: 4000px; /* suficiente para todo el listado */
 }
-  </style>
+  /* Botón Volver inferior */
+.back-btn{
+  display:inline-block;
+  margin:1.5rem auto 0;
+  background:#0f3d83;
+  color:#fff;
+  text-decoration:none;
+  font-weight:700;
+  padding:0.7rem 1.4rem;
+  border-radius:10px;
+  box-shadow:0 4px 10px rgba(15,61,131,.25);
+  transition:background .2s, transform .1s, box-shadow .2s;
+}
+.back-btn:hover{
+  background:#1c60c3;
+  transform:translateY(-1px);
+  box-shadow:0 6px 12px rgba(15,61,131,.35);
+}
+
+</style>
 </head>
 <body>
   <header>
@@ -291,6 +310,7 @@ header h1 {
 
     <!-- Toast -->
     <div id="toast" class="toast" role="alert" aria-live="assertive"></div>
+
 
     <script>
     /* ===== Utilidades ===== */
@@ -876,6 +896,9 @@ header h1 {
   </li>
 </ol>    </div>
   </div>
+<div style="text-align:center;">
+  <a href="index.html" class="back-btn">Volver</a>
+</div>
 
 <script>
 const refToggle = document.getElementById('refToggle');
