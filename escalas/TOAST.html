@@ -85,7 +85,24 @@ select:focus{outline:none;box-shadow:0 0 0 3px #dbeafe;}
 }
 .btn-action:hover{background:#eff6ff;}
 .btn-copy.copiado{background:#0f3d83!important;color:#fff!important;}
-
+/* Botón Volver inferior */
+.back-btn{
+  display:inline-block;
+  margin:1.5rem auto 0;
+  background:#0f3d83;
+  color:#fff;
+  text-decoration:none;
+  font-weight:700;
+  padding:0.7rem 1.4rem;
+  border-radius:10px;
+  box-shadow:0 4px 10px rgba(15,61,131,.25);
+  transition:background .2s, transform .1s, box-shadow .2s;
+}
+.back-btn:hover{
+  background:#1c60c3;
+  transform:translateY(-1px);
+  box-shadow:0 6px 12px rgba(15,61,131,.35);
+}
 /* ===== BLOQUES COLAPSABLES ===== */
 details.toast-collapsible{
   border:1px solid var(--borde);
@@ -113,6 +130,7 @@ details[open] summary .caret{ transform:rotate(90deg); }
 .table th{background:#f1f5ff; color:#0b1f44; text-align:left;}
 .table tr:nth-child(even) td{background:#f9fbff;}
 .table b{font-weight:800;}
+
 </style>
 </head>
 <body>
@@ -259,6 +277,9 @@ details[open] summary .caret{ transform:rotate(90deg); }
       </div>
     </div>
   </details>
+<div style="text-align:center;">
+  <a href="index.html" class="back-btn">Volver</a>
+</div>
 </main>
 
 <script>

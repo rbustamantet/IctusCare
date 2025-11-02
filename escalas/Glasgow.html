@@ -91,6 +91,24 @@ select:focus{outline:2px solid var(--accent-light)}
 footer.smallprint{text-align:center;margin-top:2rem;padding:1rem 0;
                   border-top:1px solid #e5e7eb;background:#ffffff}
 footer img{max-width:320px;height:auto;opacity:.95}
+/* Botón Volver inferior */
+.back-btn{
+  display:inline-block;
+  margin:1.5rem auto 0;
+  background:#0f3d83;
+  color:#fff;
+  text-decoration:none;
+  font-weight:700;
+  padding:0.7rem 1.4rem;
+  border-radius:10px;
+  box-shadow:0 4px 10px rgba(15,61,131,.25);
+  transition:background .2s, transform .1s, box-shadow .2s;
+}
+.back-btn:hover{
+  background:#1c60c3;
+  transform:translateY(-1px);
+  box-shadow:0 6px 12px rgba(15,61,131,.35);
+}
 </style>
 </head>
 
@@ -153,6 +171,9 @@ footer img{max-width:320px;height:auto;opacity:.95}
 
     <div id="resumenText"></div>
   </div>
+<div style="text-align:center;">
+  <a href="index.html" class="back-btn">Volver</a>
+</div>
 </div>
 
 <script>

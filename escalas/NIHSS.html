@@ -165,6 +165,24 @@ footer{position:relative;left:50%;transform:translateX(-50%);
   border-top:1px solid #e5e7eb;background:#ffffff;
   text-align:center;box-shadow:0 -2px 6px rgba(0,0,0,0.04);}
 footer img{max-width:380px;height:auto;opacity:.96;}
+/* Botón Volver inferior */
+.back-btn{
+  display:inline-block;
+  margin:1.5rem auto 0;
+  background:#0f3d83;
+  color:#fff;
+  text-decoration:none;
+  font-weight:700;
+  padding:0.7rem 1.4rem;
+  border-radius:10px;
+  box-shadow:0 4px 10px rgba(15,61,131,.25);
+  transition:background .2s, transform .1s, box-shadow .2s;
+}
+.back-btn:hover{
+  background:#1c60c3;
+  transform:translateY(-1px);
+  box-shadow:0 6px 12px rgba(15,61,131,.35);
+}
 </style>
 </head>
 <body>
@@ -476,6 +494,9 @@ footer img{max-width:380px;height:auto;opacity:.96;}
       <div id="resumenText" aria-label="Resumen para copiar"></div>
     </div>
   </section>
+<div style="text-align:center;">
+  <a href="index.html" class="back-btn">Volver</a>
+</div>
 </main>
 
 <!-- MODAL DE AYUDA -->
