@@ -4,104 +4,82 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light dark">
-  <link rel="manifest" href="../site.webmanifest">
-  <link rel="icon" type="image/png" sizes="192x192" href="../iconos/ictusgps.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="../iconos/ictusgps.png">
-  <link rel="shortcut icon" href="../iconos/ictusgps.png">
-  <meta name="theme-color" content="#0f3d83">
+<link rel="manifest" href="../site.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="../iconos/ictusgps.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../iconos/ictusgps.png">
+<link rel="shortcut icon" href="../iconos/ictusgps.png">
+<meta name="theme-color" content="#0f3d83">
   <title>Anticoagulación oral en Fibrilación Auricular</title>
   <style>
-<!-- CABECERA UNIFICADA -->
-:root{
-  --accent-dark:#0f3d83;
-  --accent-light:#2563eb;
-  --ink:#0e1a33;
-  --border:#e5e9f2;
+    :root{--c1:#e9f4ff;--c2:#d2ebff;--c3:#a7d4ff;--accent:#1976d2;--ok:#1b5e20;--bad:#b71c1c;}
+    html,body{margin:0;padding:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial,sans-serif;background:#f7fbff;color:#112;}
+    /* Cabecera común para todas las calculadoras */
+header {
+  position: sticky;
+  top: 0;
+  background: linear-gradient(180deg, #a7d4ff, #d2ebff); /* igual que var(--c3), var(--c2) */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, .1);
+  z-index: 9;
 }
 
-/* Cabecera institucional */
-header{
-  background:#0f3d83;
-  color:#fff;
-  text-align:left;
-  padding:1rem 0.5rem;
-  font-weight:800;
-  font-size:1.2rem;
-  box-shadow:0 2px 6px rgba(0,0,0,0.08);
-  position:sticky;
-  top:0;
-  z-index:20;
+/* Centrado y márgenes */
+header .wrap {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 10px 16px;   /* controla altura */
 }
-.bar{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  max-width:1080px;
-  margin:0 auto;
-  padding:0.25rem 1.25rem;
+
+/* Estilo del título */
+header h1 {
+  margin: 0;
+  font-size: 22px;
+  color: #083b66;
+  font-family: system-ui, Verdana, Geneva, Tahoma, sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  line-height: 1.3;
 }
-.title{
-  font-weight:700;
-  letter-spacing:.2px;
-  font-size:1.15rem;
-  line-height:1.3;
-}
-.headcol{display:flex;flex-direction:column}
-.actions{margin-left:auto}
-.btn{
-  display:inline-flex;
-  align-items:center;
-  gap:2px;
-  padding:4px 10px;
-  border-radius:12px;
-  text-decoration:none;
-  border:1px solid rgba(255,255,255,.14);
-  background:rgba(255,255,255,.06);
-  color:white;
-  font-size:.9rem;
-}
-.btn:hover{
-  border-color:rgba(127,179,255,.35);
-  background:#1c60c3;
-  color:white;
-}
- 
-        /* Verdana forzada */
-    html,body,.wrap,.card,label,input,select,button,table,p,h1,h2,h3,li{font-family:Verdana,Geneva,sans-serif!important}
+/* CAMBIO DE TIPOGRAFÍA: Verdana forzada */
+    html,body, .wrap, .card, label, input, select, button, table, p, h1, h2, h3, li {
+        font-family: Verdana, Geneva, sans-serif !important;
+        /* Asegura que Verdana se use en todos los elementos */
+    }
     .wrap{max-width:1080px;margin:16px auto;padding:0 12px 40px}
-    .card{background:#fff;border-radius:14px;box-shadow:0 3px 14px rgba(16,71,119,.12);padding:16px;margin:12px 0}
+    .card{background:white;border-radius:14px;box-shadow:0 3px 14px rgba(16,71,119,.12);padding:16px;margin:12px 0}
     .grid{display:grid;gap:12px}
     .g-2{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
     label{font-weight:600;font-size:.92rem;color:#0f3f66;display:block;margin-bottom:6px}
+    /* Ítems de escalas/condiciones SIN negrita */
     label.row{font-weight:400}
     .row{display:flex;gap:8px;align-items:center;margin:4px 0}
-    input[type="number"],select{width:100%;box-sizing:border-box;border:1px solid #cfe3f6;background:#fff;border-radius:10px;padding:10px 12px;font-size:1rem}
+    input[type="number"], select{width:100%;box-sizing:border-box;border:1px solid #cfe3f6;background:#fff;border-radius:10px;padding:10px 12px;font-size:1rem}
     small.hint{color:#345;opacity:.8}
     .btnbar{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px;align-items:center}
-    button{border:0;border-radius:999px;padding:10px 16px; font-weight:700;cursor:pointer;line-height:1;flex:0 0 auto;height:auto}
-    .primary{background:#0f3d83;color:#fff}
+    button{border:0;border-radius:999px;padding:10px 16px;font-weight:700;cursor:pointer;line-height:1;flex:0 0 auto;height:auto}
+    .primary{background:var(--accent);color:#fff}
     .ghost{background:#fff;color:#083b66;border:2px solid #b6dcff}
-    table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden;font-size:.95rem}
+    table{width:100%;border-collapse:collapse;background:white;border-radius:12px;overflow:hidden;font-size:.95rem}
     th,td{padding:6px;border-bottom:1px solid #e8f2fb;text-align:left;vertical-align:top}
     thead th{background:#eef6ff;color:#0b4576;font-size:.9rem}
     tfoot td{background:#f3f9ff}
     .muted{color:#567}
+    .tag{background:#3366ff;border:1px solid #cfe3f6;color:#ffffff;padding:2px 8px;border-radius:999px;font-size:.78rem;font-weight:700}
     .pill{display:inline-block;padding:2px 8px;border-radius:999px;font-weight:700;font-size:.8rem}
     .ok{background:#e8f5e9;color:#1b5e20}
     .okr{background:#ffcccc;color:#660000}
     .bad{background:#ffebee;color:#b71c1c}
-    .note{font-size:.86rem;color:#456}
     .center{text-align:center}
     .subtle{color:#345;opacity:.85}
     .sticky-result{position:relative}
     .result-anchor{scroll-margin-top:84px}
+    .sr{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0;}
+    .note{font-size:.86rem;color:#456}
     .sep{height:1px;background:#e7f0fb;margin:14px 0}
     .inlineSelect{display:flex;gap:8px}
     .unit{width:44%}.val{flex:1}
-    /* Mejores opciones */
-    #comparative tbody tr.best td{background:#e8f5e9}
-    #comparative tbody tr.best td:first-child{border-left:4px solid var(--ok);font-weight:700}
+    /* Mejores opciones por beneficio/daño */
+    #comparative tbody tr.best td{background:#e8f5e9;}
+    #comparative tbody tr.best td:first-child{border-left:4px solid var(--ok);font-weight:700;}
     /* Adecuación clínica */
     .tagPref{background:#e8f5e9;color:#1b5e20;border:1px solid #b7dfbf}
     .tagAvoid{background:#ffebee;color:#b71c1c;border:1px solid #f3c5c8}
@@ -111,42 +89,57 @@ header{
     .doseTag{background:#fff4ce;color:#7a4e00;border:1px solid #ffe08a;padding:2px 8px;border-radius:999px;font-weight:800}
     .noOac{color:#b71c1c;font-weight:800}
     /* Zebra por columnas visibles */
-    #comparative tbody td._zebra{background:#eef6ff}
+    #comparative tbody td._zebra{background:#eef6ff;}
+    /* Ocultar RRA y RRS en móviles */
     @media (max-width:640px){.col-rra,.col-rrs{display:none}}
-    /* Toast */
-    .toast{position:fixed;top:16px;right:16px;background:#b71c1c;color:#fff;padding:10px 14px;border-radius:10px;box-shadow:0 6px 24px rgba(0,0,0,.18);opacity:0;transform:translateY(-10px);pointer-events:none;z-index:1000;transition:opacity .25s,transform .25s;max-width:min(92vw,520px);line-height:1.25;font-weight:600}
+    /* Toast (rojo por defecto) */
+    .toast{position:fixed;top:16px;right:16px;background:#b71c1c;color:#fff;padding:10px 14px;border-radius:10px;box-shadow:0 6px 24px rgba(0,0,0,.18);opacity:0;transform:translateY(-10px);pointer-events:none;z-index:1000;transition:opacity .25s ease,transform .25s ease;max-width:min(92vw,520px);line-height:1.25;font-weight:600}
     .toast.show{opacity:1;transform:translateY(0);pointer-events:auto}
     .toast.warn{background:#f57c00}.toast.info{background:#1976d2}
-    #refContent{overflow:hidden;max-height:0;transition:max-height .4s ease}
-    #refContent.show{display:block!important;max-height:4000px}
-    .back-btn{display:inline-block;margin:1.5rem auto 0;background:#0f3d83;color:#fff;text-decoration:none;font-weight:700;padding:.7rem 1.4rem;border-radius:10px;box-shadow:0 4px 10px rgba(15,61,131,.25);transition:background .2s,transform .1s,box-shadow .2s}
-    .back-btn:hover{background:#1c60c3;transform:translateY(-1px);box-shadow:0 6px 12px rgba(15,61,131,.35)}
-    /* Bloque reno-disclaimer */
-    .renal-disclaimer{background:#f8fbff;border:1px solid #e3eef9;border-left:4px solid #1976d2;border-radius:12px;padding:10px 12px;margin:10px 0 0 0}
-    .renal-disclaimer b{color:#0b4576}
-  </style>
+#refContent {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.4s ease;
+}
+#refContent.show {
+  display: block !important;
+  max-height: 4000px; /* suficiente para todo el listado */
+}
+  /* Botón Volver inferior */
+.back-btn{
+  display:inline-block;
+  margin:1.5rem auto 0;
+  background:#0f3d83;
+  color:#fff;
+  text-decoration:none;
+  font-weight:700;
+  padding:0.7rem 1.4rem;
+  border-radius:10px;
+  box-shadow:0 4px 10px rgba(15,61,131,.25);
+  transition:background .2s, transform .1s, box-shadow .2s;
+}
+.back-btn:hover{
+  background:#1c60c3;
+  transform:translateY(-1px);
+  box-shadow:0 6px 12px rgba(15,61,131,.35);
+}
+
+</style>
 </head>
 <body>
-
-<header>
-  <div class="bar">
-    <div class="headcol">
-      <div class="title">Anticoagulación oral en Fibrilación Auricular</div>
-    </div>
-    <div class="actions">
-      <a class="btn" href="../index.html">Inicio</a>
-    </div>
+  <header>
+  <div class="wrap">
+    <h1>Anticoagulación oral en Fibrilación Auricular</h1>
   </div>
 </header>
-
   <div class="wrap">
     <div class="card">
       <p class="note"><b>Cómo usar:</b> introduce los datos del paciente, marca los factores de riesgo y las
-        <b>condiciones clínicas especiales</b>, y pulsa <span class="pill ok">Calcular</span>. Calcula
+        <b>condiciones clínicas especiales</b>, y pulsa <span class="tag">Calcular</span>. Esta versión calcula
         <b>CHA<sub>2</sub>DS<sub>2</sub>-VASc</b>, <b>CHA<sub>2</sub>DS<sub>2</sub>-VA</b>, <b>HAS-BLED</b>,
-        <b>ClCr (Cockcroft–Gault)</b> y muestra comparativa de eficacia/seguridad. Aplica
-        <u>reglas de preferencia/evitación</u> por escenarios clínicos y sugiere <b>posología</b>
-        resaltando la <b>dosis reducida</b> cuando proceda.
+        <b>ClCr (Cockcroft–Gault)</b> y muestra una comparativa de eficacia/seguridad. Además aplica
+        <u>reglas de preferencia/evitación</u> por escenarios clínicos, genera <b>recomendaciones individualizadas</b>
+        y sugiere <b>posología</b> con resaltado cuando procede la dosis reducida.
       </p>
     </div>
 
@@ -156,7 +149,7 @@ header{
       <div class="grid g-2">
         <div>
           <label for="age">Edad (años)</label>
-          <input id="age" inputmode="numeric" max="110" min="18" placeholder="p. ej., 74" type="number"/>
+          <input id="age" inputmode="numeric" max="110" min="18" placeholder="p. ej., 74" type="number" />
         </div>
         <div>
           <label for="sex">Sexo</label>
@@ -169,7 +162,7 @@ header{
         <div>
           <label for="weight">Peso</label>
           <div class="inlineSelect">
-            <input class="val" id="weight" max="400" min="10" placeholder="p. ej., 84.5" step="0.1" type="number"/>
+            <input class="val" id="weight" max="400" min="10" placeholder="p. ej., 84.5" step="0.1" type="number" />
             <select class="unit" id="weightUnit">
               <option value="kg">kg</option>
               <option value="lb">lb</option>
@@ -180,7 +173,7 @@ header{
         <div>
           <label for="scr">Creatinina sérica</label>
           <div class="inlineSelect">
-            <input class="val" id="scr" max="15" min="0.1" placeholder="p. ej., 1.1" step="0.01" type="number"/>
+            <input class="val" id="scr" max="15" min="0.1" placeholder="p. ej., 1.1" step="0.01" type="number" />
             <select class="unit" id="scrUnit">
               <option value="mgdl">mg/dL</option>
               <option value="umol">µmol/L</option>
@@ -189,51 +182,51 @@ header{
           <small class="hint">Para µmol/L, el sistema convierte a mg/dL (/ 88.4).</small>
         </div>
       </div>
-
       <div class="sep"></div>
       <div class="grid g-2">
         <div>
           <label>Factores CHA<sub>2</sub>DS<sub>2</sub>-VASc</label>
-          <label class="row" for="cSc"><input id="cSc" type="checkbox"/> Sexo femenino</label>
-          <label class="row" for="cAge65"><input id="cAge65" type="checkbox"/> Edad 65–74 años</label>
-          <label class="row" for="cAge75"><input id="cAge75" type="checkbox"/> Edad ≥ 75 años (2 pt)</label>
-          <label class="row" for="cCongest"><input id="cCongest" type="checkbox"/> Insuficiencia cardiaca / disfunción VI</label>
-          <label class="row" for="cStroke"><input id="cStroke" type="checkbox"/> Ictus/AIT/TE previo (2 pt)</label>
-          <label class="row" for="cHTN"><input id="cHTN" type="checkbox"/> Hipertensión</label>
-          <label class="row" for="cDiab"><input id="cDiab" type="checkbox"/> Diabetes</label>
-          <label class="row" for="cVasc"><input id="cVasc" type="checkbox"/> Vascular (IAM, placa Ao, EAP)</label>
+          <label class="row" for="cSc"><input id="cSc" type="checkbox" /> Sexo femenino</label>
+          <label class="row" for="cAge65"><input id="cAge65" type="checkbox" /> Edad 65–74 años</label>
+          <label class="row" for="cAge75"><input id="cAge75" type="checkbox" /> Edad ≥ 75 años (2 pt)</label>
+          <label class="row" for="cCongest"><input id="cCongest" type="checkbox" /> Insuficiencia cardiaca / disfunción VI</label>
+          <label class="row" for="cStroke"><input id="cStroke" type="checkbox" /> Ictus/AIT/TE previo (2 pt)</label>
+          <label class="row" for="cHTN"><input id="cHTN" type="checkbox" /> Hipertensión</label>
+          <label class="row" for="cDiab"><input id="cDiab" type="checkbox" /> Diabetes</label>
+          <label class="row" for="cVasc"><input id="cVasc" type="checkbox" /> Vascular (IAM, placa Ao, EAP)</label>
         </div>
         <div>
           <label>HAS-BLED</label>
-          <label class="row" for="hHTN"><input id="hHTN" type="checkbox"/> HTA (&gt;160 mmHg sist.)</label>
-          <label class="row" for="hRenal"><input id="hRenal" type="checkbox" title="Autorrelleno si SCr ≥2.26 mg/dL (~200 µmol/L) o ClCr &lt;30 ml/min"/> Disfunción renal (incluye trasplante)</label>
-          <label class="row" for="hLiver"><input id="hLiver" type="checkbox"/> Disfunción hepática</label>
-          <label class="row" for="hStroke"><input id="hStroke" type="checkbox"/> Ictus previo</label>
-          <label class="row" for="hBleed"><input id="hBleed" type="checkbox"/> Sangrado mayor/diátesis</label>
-          <label class="row" for="hLabileINR"><input id="hLabileINR" type="checkbox"/> INR lábil (si en VKA)</label>
-          <label class="row" for="hElder"><input id="hElder" type="checkbox" title="Autorrelleno si edad &gt;65 años"/> Edad &gt;65</label>
-          <label class="row" for="hDrugs"><input id="hDrugs" type="checkbox"/> Fármacos (antiagregantes, AINEs...)</label>
-          <label class="row" for="hAlcohol"><input id="hAlcohol" type="checkbox"/> Alcohol</label>
+          <label class="row" for="hHTN"><input id="hHTN" type="checkbox" /> HTA (&gt;160 mmHg sist.)</label>
+          <label class="row" for="hRenal"><input id="hRenal" type="checkbox" title="Autorrelleno si SCr ≥2.26 mg/dL (~200 µmol/L) o ClCr &lt;30 ml/min" /> Disfunción renal (incluye trasplante)</label>
+          <label class="row" for="hLiver"><input id="hLiver" type="checkbox" /> Disfunción hepática</label>
+          <label class="row" for="hStroke"><input id="hStroke" type="checkbox" /> Ictus previo</label>
+          <label class="row" for="hBleed"><input id="hBleed" type="checkbox" /> Sangrado mayor/diátesis</label>
+          <label class="row" for="hLabileINR"><input id="hLabileINR" type="checkbox" /> INR lábil (si en VKA)</label>
+          <label class="row" for="hElder"><input id="hElder" type="checkbox" title="Autorrelleno si edad &gt;65 años" /> Edad &gt;65</label>
+          <label class="row" for="hDrugs"><input id="hDrugs" type="checkbox" /> Fármacos (antiagregantes, AINEs...)</label>
+          <label class="row" for="hAlcohol"><input id="hAlcohol" type="checkbox" /> Alcohol</label>
         </div>
       </div>
 
       <div class="sep"></div>
+      <!-- Condiciones clínicas especiales -->
       <h3 style="margin:0 0 6px;">Condiciones clínicas especiales</h3>
       <div class="grid g-2">
         <div>
-          <label class="row"><input id="condDysphagia" type="checkbox"/> Disfagia / administración por SNG</label>
-          <label class="row"><input id="condGIbleed" type="checkbox"/> Antecedente de hemorragia digestiva severa</label>
-          <label class="row"><input id="condICHrisk" type="checkbox"/> Alto riesgo de hemorragia intracraneal</label>
-          <label class="row"><input id="condValvular" type="checkbox"/> Prótesis valvular mecánica o EM reumática significativa</label>
-          <label class="row"><input id="condOncoGI" type="checkbox"/> Neoplasia GI/GU activa</label>
+          <label class="row"><input id="condDysphagia" type="checkbox" /> Disfagia / administración por SNG</label>
+          <label class="row"><input id="condGIbleed" type="checkbox" /> Antecedente de hemorragia digestiva severa</label>
+          <label class="row"><input id="condICHrisk" type="checkbox" /> Alto riesgo de hemorragia intracraneal</label>
+          <label class="row"><input id="condValvular" type="checkbox" /> Prótesis valvular mecánica o EM reumática significativa</label>
+          <label class="row"><input id="condOncoGI" type="checkbox" /> Neoplasia GI/GU activa</label>
         </div>
         <div>
-          <label class="row"><input id="condPolypharm" type="checkbox"/> Polimedicación/intolerancia a interacciones</label>
-          <label class="row"><input id="condCirrhosis" type="checkbox"/> Hepatopatía avanzada (Child-Pugh B–C)</label>
-          <label class="row"><input id="condObesity" type="checkbox" title="Autorrelleno si peso &gt;120 kg (o IMC &gt;40, si disponible)"/> Obesidad mórbida (IMC &gt;40 o &gt;120 kg)</label>
-          <label class="row"><input id="condPoorINR" type="checkbox"/> Dificultad para monitorizar INR/visitas</label>
-          <label class="row"><input id="condQD" type="checkbox"/> Preferencia por dosis única diaria</label>
-          <label class="row"><input id="condPgp" type="checkbox"/> Inhibidor potente de P-gp (verapamilo/dronedarona/quinidina)</label>
+          <label class="row"><input id="condPolypharm" type="checkbox" /> Polimedicación/intolerancia a interacciones</label>
+          <label class="row"><input id="condCirrhosis" type="checkbox" /> Hepatopatía avanzada (Child-Pugh B–C)</label>
+          <label class="row"><input id="condObesity" type="checkbox" title="Autorrelleno si peso &gt;120 kg (o IMC &gt;40, si disponible)" /> Obesidad mórbida (IMC &gt;40 o &gt;120 kg)</label>
+          <label class="row"><input id="condPoorINR" type="checkbox" /> Dificultad para monitorizar INR/visitas</label>
+          <label class="row"><input id="condQD" type="checkbox" /> Preferencia por dosis única diaria</label>
+          <label class="row"><input id="condPgp" type="checkbox" /> Inhibidor potente de P-gp (verapamilo/dronedarona/quinidina)</label>
         </div>
       </div>
 
@@ -283,30 +276,19 @@ header{
         </tfoot>
       </table>
 
-      <!-- NUEVO: Disclaimer bajo la tabla (umbral renal + seguimiento) -->
-      <div class="renal-disclaimer" id="renalDisclaimer">
-        <div class="note">
-          <b>Ajuste por función renal (FA; EMA/ESC):</b>
-          <ul class="list-min">
-            <li><b>Apixabán</b>: 2,5 mg/12 h si <b>≥2</b> criterios (edad ≥80 a, peso ≤60 kg, SCr ≥1,5 mg/dL) <i>o</i> <b>ClCr 15–29</b> mL/min. Evitar si <b>ClCr &lt;15</b> o diálisis (EMA).</li>
-            <li><b>Dabigatrán</b>: <b>110 mg/12 h</b> si <b>ClCr 30–50</b> mL/min (o riesgo hemorrágico alto); <b>contraindicado &lt;30</b>.</li>
-            <li><b>Rivaroxabán</b>: <b>15 mg/24 h</b> si <b>ClCr 15–49</b> mL/min; <b>contraindicado &lt;15</b>.</li>
-            <li><b>Edoxabán</b>: <b>30 mg/24 h</b> si <b>ClCr 15–50</b> mL/min o ≤60 kg o inhibidor potente P-gp; <b>evitar &lt;15</b>. <span class="muted">Menor eficacia si <b>ClCr &gt;95</b> (etiqueta FDA).</span></li>
-          </ul>
-          <div class="subtle"><b>Seguimiento de función renal:</b> cada 6–12 meses si ClCr &gt;60; cada 3–6 meses si 30–60; cada 1–3 meses si &lt;30 o en ancianos/frágiles.</div>
-        </div>
-      </div>
-
       <div class="sep"></div>
       <h3 style="margin:0 0 6px;">Recomendaciones individualizadas</h3>
       <ul id="recList" class="rec-list list-min"></ul>
 
       <div class="sep"></div>
+      <!-- Bloque de posología (se oculta si no se recomienda anticoagular) -->
       <div id="doseSection">
         <h3 style="margin:0 0 6px;">Posología sugerida según datos introducidos</h3>
         <ul id="doseList" class="rec-list list-min"></ul>
       </div>
 
+
+      <!-- Botones de informe -->
       <div class="btnbar">
         <button type="button" class="ghost" id="btnPrint" disabled>Imprimir informe</button>
         <button type="button" class="ghost" id="btnCopy" disabled>Copiar informe</button>
@@ -318,21 +300,21 @@ header{
         <b>NNT</b>=nº necesario a tratar; <b>RS</b>=riesgo anual de sangrado mayor; <b>RRS</b>=riesgo relativo de sangrado vs VKA; <b>NNH</b>=nº necesario para dañar.
       </p>
     </div>
-
-    <app-disclaimer
-      data-target="#resultCard"
-      data-position="after"
-      data-when="visible"
-      data-version="1.0"
-      data-context="FA no valvular — Anticoagulación">
-    </app-disclaimer>
+<app-disclaimer
+  data-target="#resultCard"
+  data-position="after"
+  data-when="visible"
+  data-version="1.0"
+  data-context="FA no valvular — Anticoagulación">
+</app-disclaimer>
 
     <!-- Toast -->
     <div id="toast" class="toast" role="alert" aria-live="assertive"></div>
 
+
     <script>
     /* ===== Utilidades ===== */
-    const NDASH='\\u2013';
+    const NDASH='\u2013';
     const clamp=(v,min,max)=>Math.max(min,Math.min(max,v));
     const fmt=(x,d=1)=>isFinite(x)?(+x).toFixed(d):NDASH;
     const oneIn=pct=>{const p=parseFloat(pct);if(!isFinite(p)||p<=0)return NDASH;return Math.round(100/p);};
@@ -354,16 +336,9 @@ header{
     function calcHASBLED(flags,age){let s=0;if(flags.hHTN)s+=1;if(flags.hRenal)s+=1;if(flags.hLiver)s+=1;if(flags.hStroke)s+=1;if(flags.hBleed)s+=1;if(flags.hLabileINR)s+=1;if(age>65||flags.hElder)s+=1;if(flags.hDrugs)s+=1;if(flags.hAlcohol)s+=1;return s;}
     function getStrokeRiskPct(vasc){const k=Math.max(0,Math.min(9,vasc|0));return strokeRisksByVasc[k]??0;}
     function getBleedRiskPct(hasbled){const k=Math.max(0,Math.min(6,hasbled|0));return bleedRiskByHASBLED[k]??bleedRiskByHASBLED[6];}
-    function calcCrCl(age,sex,weightVal,wUnit,scrVal,scrUnit){
-      if(!isFinite(age)||!sex||!isFinite(weightVal)||!isFinite(scrVal))return{crcl:NaN,scr_mgdl:NaN};
-      const wtKg=(wUnit==='lb')?(weightVal/2.20462):weightVal;
-      const scrMg=(scrUnit==='umol')?(scrVal/88.4):scrVal;
-      const base=(140-age)*wtKg/(72*scrMg);
-      const factor=(sex==='F')?0.85:1.0;
-      return{crcl:base*factor,scr_mgdl:scrMg};
-    }
+    function calcCrCl(age,sex,weightVal,wUnit,scrVal,scrUnit){if(!isFinite(age)||!sex||!isFinite(weightVal)||!isFinite(scrVal))return{crcl:NaN,scr_mgdl:NaN};const wtKg=(wUnit==='lb')?(weightVal/2.20462):weightVal;const scrMg=(scrUnit==='umol')?(scrVal/88.4):scrVal;const base=(140-age)*wtKg/(72*scrMg);const factor=(sex==='F')?0.85:1.0;return{crcl:base*factor,scr_mgdl:scrMg};}
 
-    /* ===== Autorrelleno ===== */
+    /* ===== Autorrelleno de casillas ===== */
     function autoCheckByInputs(){
       const age=clamp(parseFloat(document.getElementById('age').value)||0,0,150);
       const sex=document.getElementById('sex').value;
@@ -387,7 +362,7 @@ header{
       document.getElementById('hRenal').checked=(renalByScr||renalByClCr);
     }
 
-    /* ===== Validación ===== */
+    /* ===== Validación de contradicciones ===== */
     function checkAndFixContradictions(controlId){
       const age=clamp(parseFloat(document.getElementById('age').value)||0,0,150);
       const sex=document.getElementById('sex').value;
@@ -413,97 +388,57 @@ header{
     }
     ['condObesity','cAge65','cAge75','hElder','hRenal','cSc'].forEach(id=>document.getElementById(id).addEventListener('change',()=>checkAndFixContradictions(id)));
 
-    /* ===== Reglas clínicas (incluye riñón) ===== */
+    /* ===== Reglas clínicas ===== */
     function buildClinicalRules(context){
       const {crcl,age,special,weightKg}=context;
       const prefer={"VKA":new Set(),"Apixabán":new Set(),"Dabigatrán":new Set(),"Edoxabán":new Set(),"Rivaroxabán":new Set()};
       const avoid={"VKA":new Set(),"Apixabán":new Set(),"Dabigatrán":new Set(),"Edoxabán":new Set(),"Rivaroxabán":new Set()};
       const notes=[];
-
-      // Disfagia / SNG
-      if(special.dysphagia){
-        avoid.Dabigatrán.add("Disfagia/SNG (no abrir cápsula)");
-        prefer.Apixabán.add("Compatible triturado/SNG");
-        prefer.Rivaroxabán.add("Compatible triturado/SNG (>=15 mg con comida)");
-        prefer.VKA.add("Se puede triturar/SNG");
-        notes.push("Disfagia/SNG: evitar dabigatrán; apixabán, rivaroxabán o VKA son opciones.");
-      }
-
-      // Función renal
-      if(isFinite(crcl)){
-        if(crcl<15){
-          prefer.VKA.add("ERC terminal (<15 mL/min) o diálisis");
-          avoid.Dabigatrán.add("ERC terminal");
-          avoid.Rivaroxabán.add("ERC terminal");
-          avoid.Edoxabán.add("ERC terminal");
-          avoid.Apixabán.add("No recomendado por EMA en ERC terminal/diálisis");
-          notes.push("ClCr <15 mL/min o diálisis: preferir VKA; evitar DOAC.");
-        }else if(crcl>=15&&crcl<30){
-          prefer.Apixabán.add("ERC 15–29 (baja excreción renal)");
-          avoid.Dabigatrán.add("ERC 15–29 (contraindicado si <30)");
-          notes.push("ClCr 15–29 mL/min: preferir apixabán; evitar dabigatrán; ajustar rivaroxabán/edoxabán.");
-        }else if(crcl>95){
-          avoid.Edoxabán.add("Menor eficacia si ClCr >95 mL/min (FDA, Savaysa)");
-          notes.push("ClCr >95 mL/min: evitar edoxabán por menor eficacia relativa (FA no valvular).");
-        }
-      }
-
-      // Otros condicionantes
-      if(special.giBleed){prefer.Apixabán.add("Mejor perfil GI");avoid.Rivaroxabán.add("Más sangrado GI");avoid.Dabigatrán.add("Más sangrado GI (150 mg)");avoid.Edoxabán.add("Más sangrado GI");notes.push("Antecedente de HDA severa: preferir apixabán.");}
-      if(special.ichRisk){prefer.Apixabán.add("Menor HIC vs VKA");prefer.Edoxabán.add("Menor HIC vs VKA");avoid.VKA.add("Más HIC vs DOAC");notes.push("Alto riesgo de HIC: priorizar DOAC (apixabán/edoxabán).");}
-      if(special.valvular){prefer.VKA.add("Prótesis mecánica/EM reumática (indicación absoluta)");avoid.Apixabán.add("No indicado");avoid.Dabigatrán.add("No indicado");avoid.Edoxabán.add("No indicado");avoid.Rivaroxabán.add("No indicado");notes.push("Prótesis mecánica/EM reumática significativa: VKA obligatorio.");}
-      if(special.polypharm){prefer.Apixabán.add("Menos interacciones globales");prefer.Edoxabán.add("Menos interacciones globales");avoid.VKA.add("Múltiples interacciones");notes.push("Polimedicación: preferir apixabán/edoxabán.");}
-      if(special.cirrhosis){prefer.VKA.add("Hepatopatía avanzada");avoid.Apixabán.add("Evitar Child C");avoid.Dabigatrán.add("Evitar Child C");avoid.Edoxabán.add("Evitar Child C");avoid.Rivaroxabán.add("Evitar Child C");notes.push("Hepatopatía avanzada: preferir VKA; evitar DOAC en Child C.");}
+      if(special.dysphagia){avoid.Dabigatrán.add("Disfagia/SNG (no abrir cápsula)");prefer.Apixabán.add("Compatible triturado/SNG");prefer.Rivaroxabán.add("Compatible triturado/SNG (>=15 mg con comida)");prefer.VKA.add("Se puede triturar/SNG");notes.push("Disfagia/SNG: evitar dabigatrán; apixabán, rivaroxabán o VKA son opciones.");}
+      if(isFinite(crcl)){if(crcl<15){prefer.VKA.add("ERC terminal");avoid.Dabigatrán.add("ERC terminal");avoid.Rivaroxabán.add("ERC terminal");avoid.Edoxabán.add("ERC terminal");notes.push("ClCr <15 ml/min: preferir VKA; evitar DOAC.");}else if(crcl>=15&&crcl<30){prefer.Apixabán.add("ERC 15–29 (baja excreción renal)");avoid.Dabigatrán.add("ERC 15–29");notes.push("ClCr 15–29 ml/min: preferir apixabán; evitar dabigatrán; rivaroxabán/edoxabán requieren ajuste.");}}
+      if(special.giBleed){prefer.Apixabán.add("Mejor perfil GI");avoid.Rivaroxabán.add("Mas sangrado GI");avoid.Dabigatrán.add("Mas sangrado GI (150 mg)");avoid.Edoxabán.add("Mas sangrado GI");notes.push("Antecedente de HDA severa: preferir apixabán.");}
+      if(special.ichRisk){prefer.Apixabán.add("Menor HIC vs VKA");prefer.Edoxabán.add("Menor HIC vs VKA");avoid.VKA.add("Mas HIC vs DOAC");notes.push("Alto riesgo de HIC: priorizar DOAC (apixabán/edoxabán).");}
+      if(special.valvular){prefer.VKA.add("Protesis mecanica/EM reumatica (indicacion absoluta)");avoid.Apixabán.add("No indicado");avoid.Dabigatrán.add("No indicado");avoid.Edoxabán.add("No indicado");avoid.Rivaroxabán.add("No indicado");notes.push("Protesis mecanica/EM reumatica significativa: VKA obligatorio.");}
+      if(special.polypharm){prefer.Apixabán.add("Menos interacciones globales");prefer.Edoxabán.add("Menos interacciones globales");avoid.VKA.add("Multiples interacciones");notes.push("Polimedicacion: preferir apixabán/edoxabán.");}
+      if(special.cirrhosis){prefer.VKA.add("Hepatopatia avanzada");avoid.Apixabán.add("Evitar Child C");avoid.Dabigatrán.add("Evitar Child C");avoid.Edoxabán.add("Evitar Child C");avoid.Rivaroxabán.add("Evitar Child C");notes.push("Hepatopatia avanzada: preferir VKA; evitar DOAC en Child C.");}
       const over120=isFinite(weightKg)&&weightKg>120;
-      if(special.obesity||over120){prefer.VKA.add("Obesidad mórbida");avoid.Dabigatrán.add("Evidencia limitada");avoid.Edoxabán.add("Evidencia limitada");notes.push("Obesidad mórbida: preferir VKA; si DOAC, mejor apixabán/rivaroxabán.");}
-      if(special.oncoGI){prefer.VKA.add("Alternativa en tumor GI/GU activo");avoid.Rivaroxabán.add("Mayor riesgo GI");avoid.Dabigatrán.add("Mayor riesgo GI");avoid.Edoxabán.add("Mayor riesgo GI");prefer.Apixabán.add("Perfil GI favorable");notes.push("Neoplasia GI/GU activa: preferible apixabán o VKA.");}
-      if(age>=80){prefer.Apixabán.add("Mejor balance en ancianos");avoid.Dabigatrán.add("Evitar 150 mg en ancianos");notes.push("Anciano frágil: apixabán suele ser la opción más segura.");}
-      if(special.poorINR){avoid.VKA.add("Difícil monitorización INR");prefer.Apixabán.add("Sin INR rutinario");prefer.Rivaroxabán.add("Sin INR rutinario");prefer.Edoxabán.add("Sin INR rutinario");prefer.Dabigatrán.add("Sin INR rutinario");notes.push("Si no se puede monitorizar INR: preferir DOAC.");}
-      if(special.qd){prefer.Rivaroxabán.add("Posología QD");prefer.Edoxabán.add("Posología QD");notes.push("Preferencia por dosis única diaria: rivaroxabán o edoxabán.");}
-
+      if(special.obesity||over120){prefer.VKA.add("Obesidad morbida");avoid.Dabigatrán.add("Evidencia limitada");avoid.Edoxabán.add("Evidencia limitada");notes.push("Obesidad morbida: preferir VKA; si DOAC, mejor apixabán/rivaroxabán.");}
+      if(special.oncoGI){prefer.VKA.add("Alternativa en tumor GI/GU activo");avoid.Rivaroxabán.add("Mayor riesgo GI");avoid.Dabigatrán.add("Mayor riesgo GI");avoid.Edoxabán.add("Mayor riesgo GI");prefer.Apixabán.add("Perfil favorable");notes.push("Neoplasia GI/GU activa: preferible apixabán o VKA.");}
+      if(age>=80){prefer.Apixabán.add("Mejor balance en ancianos");avoid.Dabigatrán.add("Evitar 150 mg en ancianos");notes.push("Anciano fragil: apixabán suele ser la opcion mas segura.");}
+      if(special.poorINR){avoid.VKA.add("Dificil monitorizacion INR");prefer.Apixabán.add("Sin INR rutinario");prefer.Rivaroxabán.add("Sin INR rutinario");prefer.Edoxabán.add("Sin INR rutinario");prefer.Dabigatrán.add("Sin INR rutinario");notes.push("Si no se puede monitorizar INR: preferir DOAC.");}
+      if(special.qd){prefer.Rivaroxabán.add("Posologia QD");prefer.Edoxabán.add("Posologia QD");notes.push("Preferencia por dosis unica diaria: rivaroxabán o edoxabán.");}
       return {prefer,avoid,notes};
     }
 
-    /* ===== Posología (actualizada) ===== */
+    /* ===== Posología ===== */
     function doseSuggestions(ctx,avoid){
       const {age,crcl,hasbled,weightKg,scr_mgdl,special}=ctx;
       const out=[]; const isAvoided=name=> (avoid?.[name]&&avoid[name].size>0);
-
-      // Apixabán
       if(!isAvoided("Apixabán")){
         const apxCrit=((age>=80)?1:0)+((isFinite(weightKg)&&weightKg<=60)?1:0)+((isFinite(scr_mgdl)&&scr_mgdl>=1.5)?1:0);
         const apxReduce=(apxCrit>=2)||(isFinite(crcl)&&crcl>=15&&crcl<30);
         out.push({name:"Apixabán",dose:apxReduce?"2.5 mg cada 12 h":"5 mg cada 12 h",highlight:apxReduce,why:apxReduce?">=2 criterios (edad >=80, peso <=60 kg, SCr >=1.5 mg/dL) o ClCr 15–29 ml/min":"Criterios de reducción no presentes"});
       }
-
-      // Rivaroxabán
       if(!isAvoided("Rivaroxabán")){
         const rivaReduce=(isFinite(crcl)&&crcl>=15&&crcl<50);
         out.push({name:"Rivaroxabán",dose:rivaReduce?"15 mg cada 24 h":"20 mg cada 24 h",highlight:rivaReduce,why:rivaReduce?"ClCr 15–49 ml/min":"ClCr >=50 ml/min"});
       }
-
-      // Edoxabán
       if(!isAvoided("Edoxabán")){
         const edoReduce=((isFinite(crcl)&&crcl>=15&&crcl<=50)||(isFinite(weightKg)&&weightKg<=60)||special.pgp===true);
         out.push({name:"Edoxabán",dose:edoReduce?"30 mg cada 24 h":"60 mg cada 24 h",highlight:edoReduce,why:edoReduce?"ClCr 15–50 ml/min o peso <=60 kg o inhibidor potente P-gp":"Sin criterios de reducción"});
       }
-
-      // Dabigatrán
       if(!isAvoided("Dabigatrán")){
         const dabAvoid=(isFinite(crcl)&&crcl<30);
         if(!dabAvoid){
-          const dabReduce = (isFinite(crcl)&&crcl>=30&&crcl<=50) || (age>=80) || (age>=75&&age<80&&hasbled>=3) || special.pgp===true;
-          out.push({name:"Dabigatrán",dose:dabReduce?"110 mg cada 12 h":"150 mg cada 12 h",highlight:dabReduce,why:(dabReduce?"ClCr 30–50 mL/min o edad ≥80 (o 75–80 con HAS-BLED alto) o inhibidor potente P-gp":"Sin criterios de reducción")});
+          const dabReduce=(age>=80)||(age>=75&&age<80&&hasbled>=3)||(isFinite(crcl)&&crcl>=30&&crcl<50&&hasbled>=3)||special.pgp===true;
+          out.push({name:"Dabigatrán",dose:dabReduce?"110 mg cada 12 h":"150 mg cada 12 h",highlight:dabReduce,why:(dabReduce?"Edad >=80 años o (75–80 con HAS-BLED alto) o ClCr 30–49 con HAS-BLED alto o inhibidor potente P-gp":"Sin criterios de reducción")});
         }
       }
-
-      // VKA
       if(!isAvoided("VKA")){out.push({name:"VKA",dose:"Ajuste a INR entre 2 y 3",highlight:false,why:"Dosis individualizada según INR"});}
-
       return out;
     }
 
-    /* ===== Zebra por columnas ===== */
+    /* ===== Zebra por columnas visibles ===== */
     function applyColumnStriping(){
       const rows=document.querySelectorAll('#comparative tbody tr');
       rows.forEach(row=>{
@@ -521,7 +456,7 @@ header{
       return{label:'—',cls:'tagNeutral',tooltip:'Sin condicionantes específicos'};
     }
 
-    /* ===== Estado para informe ===== */
+    /* ===== Estado para imprimir/copiar ===== */
     let __lastReport=null;
 
     /* ===== Compute principal ===== */
@@ -596,7 +531,7 @@ header{
       rows.forEach(({tr,score})=>{if(withinTolerance(score,bestScore))tr.classList.add('best');});
       applyColumnStriping();
 
-      // Recomendaciones y posología
+      // Recomendaciones y posología en pantalla
       const recList=document.getElementById('recList');
       const doseSection=document.getElementById('doseSection');
       recList.innerHTML='';
@@ -626,7 +561,7 @@ header{
         }
       }
 
-      // Guardar estado
+      // Guardar estado para imprimir/copiar y habilitar botones
       __lastReport={
         ts:new Date().toISOString(),
         inputs:{age,sex,weight:isFinite(weight)?weight:null,weightUnit:wUnit,scr:isFinite(scr)?scr:null,scrUnit,weightKg:isFinite(weightKg)?weightKg:null},
@@ -642,7 +577,7 @@ header{
       document.getElementById('btnCopy').disabled=false;
     }
 
-    /* ===== Informe imprimible ===== */
+    /* ===== Informe imprimible (HTML aparte) ===== */
     function printReport(){
       if(!__lastReport){showToast('Primero calcule los resultados para generar el informe.','warn');return;}
       const r=__lastReport;
@@ -653,25 +588,12 @@ header{
       const dosesHTML = (r.noOAC||!r.doses||r.doses.length===0) ? ''
         : ('<h3>Posología sugerida</h3><ul>' + r.doses.map(d=>`<li><b>${d.name}:</b> ${d.dose}${d.highlight?' <span style="background:#fff4ce;border:1px solid #ffe08a;border-radius:999px;padding:2px 8px;font-weight:700">Dosis reducida</span>':''} — <span style="color:#666">${d.why}</span></li>`).join('') + '</ul>');
 
-      const renalHTML = `
-        <div style="margin-top:10px;padding:8px 10px;border-left:4px solid #1976d2;background:#f8fbff;border:1px solid #e3eef9;border-radius:10px;">
-          <div style="font-size:.92rem;color:#0b4576;"><b>Ajuste por función renal (FA; EMA/ESC)</b></div>
-          <ul style="margin:6px 0 0 18px;font-size:.9rem;color:#234;">
-            <li><b>Apixabán</b>: 2,5 mg/12 h si ≥2 criterios o ClCr 15–29; evitar &lt;15 o diálisis (EMA).</li>
-            <li><b>Dabigatrán</b>: 110 mg/12 h si ClCr 30–50; <b>contraindicado &lt;30</b>.</li>
-            <li><b>Rivaroxabán</b>: 15 mg/24 h si ClCr 15–49; <b>contraindicado &lt;15</b>.</li>
-            <li><b>Edoxabán</b>: 30 mg/24 h si ClCr 15–50 (o ≤60 kg o P-gp); evitar &lt;15. <i>Evitar &gt;95 por menor eficacia (FDA).</i></li>
-          </ul>
-          <div style="color:#456;font-size:.88rem;margin-top:4px;"><b>Seguimiento renal:</b> 6–12 m si ClCr &gt;60; 3–6 m si 30–60; 1–3 m si &lt;30 o ancianos/frágiles.</div>
-        </div>`;
-
       const recHTML = r.noOAC
         ? '<p style="color:#b71c1c;font-weight:800">NO SE RECOMIENDA TRATAMIENTO ANTICOAGULANTE</p>'
         : `
           ${r.notes.length?('<h3>Recomendaciones individualizadas</h3><ul>'+r.notes.map(n=>`<li>${decodeEntities(n)}</li>`).join('')+'</ul>'):''}
           ${r.preferredGlobal.length?('<p><b>Estrategias preferibles:</b> '+r.preferredGlobal.join(', ')+'</p>'):''}
           ${r.avoidedGlobal.length?('<p><b>Estrategias a evitar:</b> '+r.avoidedGlobal.join(', ')+'</p>'):''}
-          ${renalHTML}
         `;
 
       const html = `
@@ -740,14 +662,19 @@ header{
       w.document.open(); w.document.write(html); w.document.close();
     }
 
-    /* ===== Informe texto ===== */
+    /* ===== Informe en TEXTO (limpio para Blogger) ===== */
     function buildPlainReport(r){
-      const clean = (s)=> String(s).replace(/[•]/g,'*').replace(/[—–]/g,'-').replace(/≥/g,'>=').replace(/≤/g,'<=');
+      // Normaliza caracteres problemáticos a ASCII seguro manteniendo tildes/ñ
+      const clean = (s)=> String(s)
+        .replace(/[•]/g,'*')
+        .replace(/[—–]/g,'-')
+        .replace(/≥/g,'>=').replace(/≤/g,'<=');
       const sexTxt = r.inputs.sex==='M'?'Varón':(r.inputs.sex==='F'?'Mujer':'-');
       const fecha = (new Date(r.ts)).toLocaleString('es-ES');
       const bullets = [];
       bullets.push('INFORME - Selección de anticoagulante oral');
-      bullets.push('Generado: ' + fecha); bullets.push('');
+      bullets.push('Generado: ' + fecha);
+      bullets.push('');
       bullets.push('DATOS Y PUNTUACIONES');
       bullets.push('* Edad: ' + (r.inputs.age ?? '-') + ' años');
       bullets.push('* Sexo: ' + sexTxt);
@@ -759,32 +686,41 @@ header{
       bullets.push('* Riesgo ictus sin tto: ' + r.risks.strokeBase + '%/año  |  Riesgo sangrado base: ' + r.risks.bleedBase + '%/año');
       bullets.push('');
       bullets.push('CONCLUSIÓN');
-      if(r.noOAC){ bullets.push('NO SE RECOMIENDA TRATAMIENTO ANTICOAGULANTE'); }
-      else{
-        if(r.notes.length){ bullets.push('Recomendaciones individualizadas:'); r.notes.forEach(n=>bullets.push('* ' + clean(decodeEntities(n)))); }
+      if(r.noOAC){
+        bullets.push('NO SE RECOMIENDA TRATAMIENTO ANTICOAGULANTE');
+      }else{
+        if(r.notes.length){
+          bullets.push('Recomendaciones individualizadas:');
+          r.notes.forEach(n=>bullets.push('* ' + clean(decodeEntities(n))));
+        }
         if(r.preferredGlobal.length) bullets.push('Estrategias preferibles: ' + r.preferredGlobal.join(', '));
         if(r.avoidedGlobal.length) bullets.push('Estrategias a evitar: ' + r.avoidedGlobal.join(', '));
-        if(r.doses && r.doses.length){ bullets.push(''); bullets.push('Posología sugerida:'); r.doses.forEach(d=>{bullets.push('* ' + d.name + ': ' + d.dose + (d.highlight?' [Dosis reducida]':'') + ' - ' + clean(d.why));}); }
-        bullets.push('');
-        bullets.push('Ajuste renal (FA; EMA/ESC):');
-        bullets.push('* Apixabán: 2,5 mg/12 h si ≥2 criterios o ClCr 15–29; evitar <15 o diálisis (EMA).');
-        bullets.push('* Dabigatrán: 110 mg/12 h si ClCr 30–50; CI <30.');
-        bullets.push('* Rivaroxabán: 15 mg/24 h si ClCr 15–49; CI <15.');
-        bullets.push('* Edoxabán: 30 mg/24 h si ClCr 15–50 (o ≤60 kg o P-gp); evitar <15; evitar >95 por menor eficacia (FDA).');
-        bullets.push('Seguimiento renal: 6–12 m si ClCr >60; 3–6 m si 30–60; 1–3 m si <30 o ancianos/frágiles.');
+        if(r.doses && r.doses.length){
+          bullets.push('');
+          bullets.push('Posología sugerida:');
+          r.doses.forEach(d=>{
+            bullets.push('* ' + d.name + ': ' + d.dose + (d.highlight?' [Dosis reducida]':'') + ' - ' + clean(d.why));
+          });
+        }
       }
-      return bullets.join('\\n');
+      return bullets.join('\n');
     }
 
     async function copyReport(){
       if(!__lastReport){showToast('Primero calcule los resultados para generar el informe.','warn');return;}
       const text = buildPlainReport(__lastReport);
-      try{ await navigator.clipboard.writeText(text); }
-      catch(e){
-        const ta=document.createElement('textarea'); ta.value=text; ta.style.position='fixed'; ta.style.left='-1000px';
-        document.body.appendChild(ta); ta.select(); try{ document.execCommand('copy'); } finally{ document.body.removeChild(ta); }
+      try{
+        await navigator.clipboard.writeText(text);
+      }catch(e){
+        const ta=document.createElement('textarea');
+        ta.value=text; ta.style.position='fixed'; ta.style.left='-1000px';
+        document.body.appendChild(ta); ta.select();
+        try{ document.execCommand('copy'); } finally{ document.body.removeChild(ta); }
       }
-      const btn=document.getElementById('btnCopy'); const old=btn.textContent; btn.textContent='Copiado [OK]'; setTimeout(()=>{btn.textContent=old;},1600);
+      const btn=document.getElementById('btnCopy');
+      const old=btn.textContent;
+      btn.textContent='Copiado [OK]';
+      setTimeout(()=>{btn.textContent=old;},1600);
     }
 
     /* ===== Eventos ===== */
@@ -818,42 +754,191 @@ header{
     document.getElementById('btnPrint').addEventListener('click', (e)=>{ e.preventDefault(); printReport(); });
     document.getElementById('btnCopy').addEventListener('click', (e)=>{ e.preventDefault(); copyReport(); });
 
+    // Inicializa auto-relleno al cargar
     window.addEventListener('DOMContentLoaded', autoCheckByInputs);
     </script>
 
     <!-- Referencias / Bibliografía -->
     <div class="card" id="referencias">
-      <h2 id="refToggle" style="margin:0 0 8px;cursor:pointer;">Referencias <span id="refArrow" style="font-size:0.9em;">▼</span></h2>
-      <div id="refContent" style="display:none;">
-        <!-- Mantén aquí tus referencias existentes (ESC 2024, EHRA 2021, SmPC EMA, etc.) -->
-      </div>
-    </div>
+  <h2 id="refToggle" style="margin:0 0 8px;cursor:pointer;">
+    Referencias <span id="refArrow" style="font-size:0.9em;">▼</span>
+  </h2>
+  <div id="refContent" style="display:none;">
+    <ol>
+  <li>
+    Friberg L, Rosenqvist M, Lip GYH. Evaluation of risk stratification schemes for ischaemic stroke and bleeding in 182,678 patients with atrial fibrillation.
+    <i>Eur Heart J.</i> 2012;33(12):1500–1510.
+    <a href="https://doi.org/10.1093/eurheartj/ehr488" rel="noopener" target="_blank">doi:10.1093/eurheartj/ehr488</a>
+  </li>
+  <li>
+    Olesen JB, et al. Validation of risk stratification schemes for predicting stroke and thromboembolism in atrial fibrillation.
+    <i>BMJ.</i> 2011;342:d124.
+    <a href="https://www.bmj.com/content/342/bmj.d124" rel="noopener" target="_blank">BMJ 2011;342:d124</a>
+  </li>
+  <li>
+    Pisters R, Lane DA, Nieuwlaat R, de Vos CB, Crijns HJGM, Lip GYH. A novel user-friendly score (HAS-BLED) to assess one-year risk of major bleeding in atrial fibrillation.
+    <i>Chest.</i> 2010;138(5):1093–1100.
+    <a href="https://doi.org/10.1378/chest.10-0134" rel="noopener" target="_blank">doi:10.1378/chest.10-0134</a>
+  </li>
+  <li>
+    Lip GYH, Frison L, Halperin JL, Lane DA. Comparative validation of the HAS-BLED score in anticoagulated patients with AF.
+    <i>J Am Coll Cardiol.</i> 2011;57(2):173–180.
+    <a href="https://doi.org/10.1016/j.jacc.2010.09.024" rel="noopener" target="_blank">doi:10.1016/j.jacc.2010.09.024</a>
+  </li>
+  <li>
+    Cockcroft DW, Gault MH. Prediction of creatinine clearance from serum creatinine.
+    <i>Nephron.</i> 1976;16(1):31–41.
+    <a href="https://pubmed.ncbi.nlm.nih.gov/1244564/" rel="noopener" target="_blank">PMID:1244564</a>
+  </li>
+  <li>
+    Granger CB, et al. Apixaban versus warfarin in patients with AF (ARISTOTLE).
+    <i>N Engl J Med.</i> 2011;365:981–992.
+    <a href="https://www.nejm.org/doi/full/10.1056/NEJMoa1107039" rel="noopener" target="_blank">NEJM 2011</a>
+  </li>
+  <li>
+    Connolly SJ, et al. Dabigatran versus warfarin in AF (RE-LY).
+    <i>N Engl J Med.</i> 2009;361:1139–1151.
+    <a href="https://www.nejm.org/doi/full/10.1056/NEJMoa0905561" rel="noopener" target="_blank">NEJM 2009</a>
+  </li>
+  <li>
+    Patel MR, et al. Rivaroxaban versus warfarin in AF (ROCKET-AF).
+    <i>N Engl J Med.</i> 2011;365:883–891.
+    <a href="https://www.nejm.org/doi/full/10.1056/NEJMoa1009638" rel="noopener" target="_blank">NEJM 2011</a>
+  </li>
+  <li>
+    Giugliano RP, et al. Edoxaban versus warfarin in AF (ENGAGE AF–TIMI 48).
+    <i>N Engl J Med.</i> 2013;369:2093–2104.
+    <a href="https://www.nejm.org/doi/full/10.1056/NEJMoa1310907" rel="noopener" target="_blank">NEJM 2013</a>
+  </li>
+  <li>
+    Hart RG, Pearce LA, Aguilar MI. Meta-analysis: antithrombotic therapy to prevent stroke in AF.
+    <i>Ann Intern Med.</i> 2007;146:857–867.
+    <a href="https://pubmed.ncbi.nlm.nih.gov/17577005/" rel="noopener" target="_blank">PMID:17577005</a>
+  </li>
+  <li>
+    Aguilar MI, Hart R, Pearce LA. Antithrombotic therapy for AF (Cochrane Review).
+    <i>Cochrane Database Syst Rev.</i> 2005;CD001927.
+    <a href="https://doi.org/10.1002/14651858.CD001927.pub2" rel="noopener" target="_blank">doi:10.1002/14651858.CD001927.pub2</a>
+  </li>
 
-    <div style="text-align:center;">
-      <a href="index.html" class="back-btn">Volver</a>
-    </div>
+  <!-- Añadidos -->
+  <li>
+    Van Gelder IC, et al. 2024 ESC Guidelines for the management of atrial fibrillation (developed with EACTS).
+    <i>Eur Heart J.</i> 2024;45(36):3314–? 
+    <a href="https://academic.oup.com/eurheartj/article/45/36/3314/7738779" rel="noopener" target="_blank">Artículo OUP</a> | 
+    <a href="https://www.escardio.org/Guidelines/Clinical-Practice-Guidelines/Atrial-Fibrillation" rel="noopener" target="_blank">Página ESC</a>
+  </li>
+  <li>
+    Joglar JA, et al. 2023 ACC/AHA/ACCP/HRS Guideline for the Diagnosis and Management of Atrial Fibrillation.
+    <i>Circulation.</i> 2023;148:eXXX–eXXX.
+    <a href="https://doi.org/10.1161/CIR.0000000000001193" rel="noopener" target="_blank">doi:10.1161/CIR.0000000000001193</a>
+  </li>
+  <li>
+    Steffel J, et al. 2021 European Heart Rhythm Association Practical Guide on the use of NOACs in AF.
+    <i>Europace.</i> 2021;23(10):1612–1676.
+    <a href="https://doi.org/10.1093/europace/euab065" rel="noopener" target="_blank">doi:10.1093/europace/euab065</a>
+  </li>
+  <li>
+    <b>SmPC EMA – Apixabán (Eliquis)</b>. Criterios 2/3 para 2,5 mg c/12 h; opciones triturado/SNG.
+    <a href="https://www.ema.europa.eu/en/documents/product-information/eliquis-epar-product-information_en.pdf" rel="noopener" target="_blank">EMA – Eliquis</a>
+  </li>
+  <li>
+    <b>SmPC EMA – Rivaroxabán (Xarelto)</b>. Triturado/SNG; 15–20 mg con comida.
+    <a href="https://www.ema.europa.eu/en/documents/product-information/xarelto-epar-product-information_en.pdf" rel="noopener" target="_blank">EMA – Xarelto</a>
+  </li>
+  <li>
+    <b>SmPC EMA – Edoxabán (Lixiana)</b>. Reducción a 30 mg con inhibidores potentes de P-gp o ≤60 kg; opciones triturado/SNG.
+    <a href="https://www.ema.europa.eu/en/documents/product-information/lixiana-epar-product-information_en.pdf" rel="noopener" target="_blank">EMA – Lixiana</a>
+  </li>
+  <li>
+    <b>SmPC EMA – Dabigatrán (Pradaxa)</b>. No abrir cápsulas; precauciones con inhibidores de P-gp; contraindicado si ClCr &lt;30 ml/min.
+    <a href="https://www.ema.europa.eu/en/documents/product-information/pradaxa-epar-product-information_en.pdf" rel="noopener" target="_blank">EMA – Pradaxa</a>
+  </li>
+  <li>
+    <b>FDA – Savaysa (edoxabán)</b>. <i>Boxed warning</i>: menor eficacia si ClCr &gt;95 mL/min en FA no valvular.
+    <a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2015/206316lbl.pdf" rel="noopener" target="_blank">FDA label</a>
+  </li>
+  <li>
+    Radadiya D, et al. Major gastrointestinal bleeding risk with DOACs: Does type and dose matter? Network meta-analysis.
+    <i>Eur J Gastroenterol Hepatol.</i> 2021;33(1S Suppl 1):e50–e58.
+    <a href="https://doi.org/10.1097/MEG.0000000000002035" rel="noopener" target="_blank">doi:10.1097/MEG.0000000000002035</a>
+  </li>
+  <li>
+    Mamas MA, et al. Meta-Analysis Comparing Apixaban Versus Rivaroxaban in Patients With AF.
+    <i>Am J Cardiol.</i> 2022;170:33–43.
+    <a href="https://www.ajconline.org/article/S0002-9149(21)01148-6/fulltext" rel="noopener" target="_blank">Texto completo</a>
+  </li>
+  <li>
+    Ruff CT, et al. Comparison of the efficacy and safety of new oral anticoagulants with warfarin in AF: meta-analysis of RCTs.
+    <i>Lancet.</i> 2014;383(9921):955–962.
+    <a href="https://doi.org/10.1016/S0140-6736(13)62343-0" rel="noopener" target="_blank">doi:10.1016/S0140-6736(13)62343-0</a>
+  </li>
+  <li>
+    Song Y, et al. Relative Bioavailability of Apixaban Solution or Crushed Tablet Administered by Mouth or via NGT.
+    <i>Clin Ther.</i> 2015;37(8):1703–1712.
+    <a href="https://doi.org/10.1016/j.clinthera.2015.05.497" rel="noopener" target="_blank">doi:10.1016/j.clinthera.2015.05.497</a>
+  </li>
+  <li>
+    Duchin K, et al. PK of edoxaban 60-mg tablet crushed y administrado por SNG o en puré de manzana (estudio cruzado).
+    <i>Clin Pharmacokinet.</i> 2018;57:221–228.
+    <a href="https://pubmed.ncbi.nlm.nih.gov/28512699/" rel="noopener" target="_blank">PMID:28512699</a> |
+    <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC5784001/" rel="noopener" target="_blank">PMC</a>
+  </li>
+  <li>
+    Byon W, et al. Apixaban: Clinical Pharmacokinetic and Pharmacodynamic Overview (incluye datos de trituración/applesauce).
+    <i>Clin Pharmacokinet.</i> 2019;58:1265–1279.
+    <a href="https://link.springer.com/article/10.1007/s40262-019-00775-z" rel="noopener" target="_blank">Resumen</a>
+  </li>
+  <li>
+    Martin K, et al. Use of DOACs in patients with obesity: Updated communication from the ISTH SSC (resumen de 2021).
+    <i>J Thromb Haemost.</i> 2021;19:1874–1882.
+    <a href="https://www.jthjournal.org/article/S1538-7836(22)01848-7/fulltext" rel="noopener" target="_blank">Texto</a>
+  </li>
+</ol>    </div>
+  </div>
+<div style="text-align:center;">
+  <a href="index.html" class="back-btn">Volver</a>
+</div>
 
-    <script>
-      const refToggle=document.getElementById('refToggle');
-      const refContent=document.getElementById('refContent');
-      const refArrow=document.getElementById('refArrow');
-      refToggle.addEventListener('click',()=>{const isOpen=refContent.classList.toggle('show');refArrow.textContent=isOpen?'▲':'▼';});
-    </script>
+<script>
+const refToggle = document.getElementById('refToggle');
+const refContent = document.getElementById('refContent');
+const refArrow = document.getElementById('refArrow');
+refToggle.addEventListener('click', () => {
+  const isOpen = refContent.classList.toggle('show');
+  refArrow.textContent = isOpen ? '▲' : '▼';
+});
+</script>
 
-    <!-- Componente universal de advertencia contextual -->
-    <script>
-    (()=>{
-      class AppDisclaimer extends HTMLElement{
-        static get observedAttributes(){ return ["data-version","data-context","data-target","data-position","data-when","data-require"]; }
-        constructor(){ super(); this._shadow=this.attachShadow({mode:"open"}); this._render(); }
-        connectedCallback(){ this._ensureMounted(); this._setupObservers(); }
-        attributeChangedCallback(){ this._render(); this._ensureMounted(); }
-        _render(){
-          this._shadow.innerHTML=`
+<!-- Componente universal de advertencia contextual — fondo rojo tenue + gating por resultado -->
+<script>
+(()=>{
+  class AppDisclaimer extends HTMLElement{
+    static get observedAttributes(){ return ["data-version","data-context","data-target","data-position","data-when","data-require"]; }
+    constructor(){ super(); this._shadow=this.attachShadow({mode:"open"}); this._render(); }
+    connectedCallback(){ this._ensureMounted(); this._setupObservers(); }
+    attributeChangedCallback(){ this._render(); this._ensureMounted(); }
+
+    _render(){
+      const version=this.getAttribute("data-version")||"1.0";
+      const context=this.getAttribute("data-context")||"";
+      const d=new Date(), f=`${String(d.getDate()).padStart(2,"0")}/${String(d.getMonth()+1).padStart(2,"0")}/${d.getFullYear()}`;
+      this._shadow.innerHTML=`
         <style>
           :host{display:block}
-          .box{font-family: Verdana, Geneva, Tahoma, sans-serif;color: var(--ink,#0f172a);background:#fff5f5;border:1px solid #fbd5d5;border-left:4px solid var(--bad,#b71c1c);border-radius:12px;padding:12px 14px;margin:12px 0 0 0;line-height:1.45}
+          .box{
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            color: var(--ink,#0f172a);
+            background:#fff5f5;               /* fondo muy suave rojo */
+            border:1px solid #fbd5d5;         /* borde suave */
+            border-left:4px solid var(--bad,#b71c1c);
+            border-radius:12px;
+            padding:12px 14px;
+            margin:12px 0 0 0;
+            line-height:1.45;
+          }
           .box strong{ color: var(--bad,#b71c1c); }
+          .meta{ display:block; margin-top:6px; font-size:12px; color: var(--muted,#64748b); }
           .hidden{ display:none!important; }
         </style>
         <aside class="box hidden" role="note" aria-label="Advertencia de uso">
@@ -863,78 +948,129 @@ header{
           contraindicaciones, interacciones, posología y disponibilidad según su centro.
           Ante discrepancias, <b>prevalecen los protocolos vigentes</b> y el criterio del equipo responsable.
         </aside>`;
-        }
-        _getTarget(){
-          const explicit=this.getAttribute("data-target");
-          if(explicit){ try{const el=document.querySelector(explicit); if(el) return el;}catch(_){ }
-          }
-          const candidates=["#resultCard",".resultado","#resultado",".result","#result",".recomendacion",".recommendation",".output","#output",".rope-result",".calc-result",".box-result",".card-result"];
-          for(const sel of candidates){ const el=document.querySelector(sel); if(el) return el; }
-          return null;
-        }
-        _ensureMounted(){
-          const tgt=this._getTarget();
-          if(tgt){ this._mountTo(tgt); return; }
-          if(this._waitMO) return;
-          this._waitMO=new MutationObserver(()=>{ const t=this._getTarget(); if(t){ this._mountTo(t); this._waitMO.disconnect(); this._waitMO=null; }});
-          this._waitMO.observe(document.body,{childList:true,subtree:true});
-        }
-        _mountTo(tgt){
-          if(this._mountedTo===tgt) return; this._mountedTo=tgt;
-          const pos=(this.getAttribute("data-position")||"after").toLowerCase();
-          if(pos==="before"){ tgt.insertAdjacentElement("beforebegin",this); }
-          else if(pos==="inside-start"){ tgt.insertAdjacentElement("afterbegin",this); }
-          else if(pos==="inside-end"){ tgt.insertAdjacentElement("beforeend",this); }
-          else{ tgt.insertAdjacentElement("afterend",this); }
-        }
-        _setupObservers(){
-          const tgt=this._getTarget(); if(!tgt) return;
-          this._mo && this._mo.disconnect();
-          this._mo=new MutationObserver(()=>this._evaluateVisibility());
-          this._mo.observe(tgt,{attributes:true,attributeFilter:["class","style","aria-hidden"],subtree:false});
-          this._contentMO && this._contentMO.disconnect();
-          this._contentMO=new MutationObserver(()=>this._evaluateVisibility());
-          const recList=document.querySelector("#recList"); if(recList) this._contentMO.observe(recList,{childList:true,subtree:false});
-          const compBody=document.querySelector("#comparative tbody"); if(compBody) this._contentMO.observe(compBody,{childList:true,subtree:false});
-          this._io && this._io.disconnect();
-          this._io=new IntersectionObserver((entries)=>{const visible=entries.some(e=>e.isIntersecting);this._evaluateVisibility(visible);},{root:null,threshold:0.01});
-          this._io.observe(tgt);
-          this._tick && clearInterval(this._tick);
-          this._tick=setInterval(()=>this._evaluateVisibility(),500);
-          this._evaluateVisibility();
-        }
-        _hasComputedResult(){
-          if (typeof window!=="undefined" && window.__lastReport) return true;
-          const hasRec = !!document.querySelector("#recList li");
-          const hasRows = !!document.querySelector("#comparative tbody tr");
-          const btnP=document.getElementById('btnPrint'), btnC=document.getElementById('btnCopy');
-          const buttonsReady = !!(btnP && btnC && !btnP.disabled && !btnC.disabled);
-          return hasRec || hasRows || buttonsReady;
-        }
-        _evaluateVisibility(ioVisible){
-          const tgt=this._getTarget(); if(!tgt){ this._setVisible(false); return; }
-          const style=getComputedStyle(tgt);
-          const displayOk=style.display!=="none" && style.visibility!=="hidden" && style.opacity!=="0";
-          const classOk=!(tgt.classList && tgt.classList.contains("hidden"));
-          const showOk=(tgt.classList && (tgt.classList.contains("show")||tgt.classList.contains("active"))) || tgt.getAttribute("aria-hidden")==="false";
-          const when=(this.getAttribute("data-when")||"visible").toLowerCase();
-          const require=(this.getAttribute("data-require")||"report").toLowerCase();
-          const logicalVisible = (when==="always") ? true : (showOk || (displayOk && classOk));
-          let computedOk=true;
-          if(require==="report"){ computedOk = this._hasComputedResult(); }
-          else if(require==="rows"){ const rec = !!document.querySelector("#recList li"); const rows=!!document.querySelector("#comparative tbody tr"); computedOk = (rec||rows); }
-          const finalVisible = logicalVisible && computedOk && (ioVisible===undefined ? true : ioVisible);
-          this._setVisible(finalVisible);
-        }
-        _setVisible(flag){ const box=this._shadow.querySelector(".box"); if(box) box.classList.toggle("hidden",!flag); }
-      }
-      if(!customElements.get("app-disclaimer")){ customElements.define("app-disclaimer",AppDisclaimer); }
-    })();
-    </script>
+    }
 
-    <footer style="position:relative;left:50%;transform:translateX(-50%);width:100vw;margin:2rem 0 0 0;padding:1.5rem 0;border-top:1px solid #e5e7eb;background:#ffffff;text-align:center;box-shadow:0 -2px 6px rgba(0,0,0,0.04);">
-      <img src="uibanner.png" alt="Unidad de Ictus Málaga" style="max-width:380px;height:auto;opacity:.96;">
-    </footer>
-  </div>
+    _getTarget(){
+      const explicit=this.getAttribute("data-target");
+      if(explicit){ try{const el=document.querySelector(explicit); if(el) return el;}catch(_){ } }
+      const candidates=["#resultCard",".resultado","#resultado",".result","#result",".recomendacion",
+                        ".recommendation",".output","#output",".rope-result",".calc-result",".box-result",".card-result"];
+      for(const sel of candidates){ const el=document.querySelector(sel); if(el) return el; }
+      return null;
+    }
+
+    _ensureMounted(){
+      const tgt=this._getTarget();
+      if(tgt){ this._mountTo(tgt); return; }
+      if(this._waitMO) return;
+      this._waitMO=new MutationObserver(()=>{ const t=this._getTarget(); if(t){ this._mountTo(t); this._waitMO.disconnect(); this._waitMO=null; }});
+      this._waitMO.observe(document.body,{childList:true,subtree:true});
+    }
+
+    _mountTo(tgt){
+      if(this._mountedTo===tgt) return; this._mountedTo=tgt;
+      const pos=(this.getAttribute("data-position")||"after").toLowerCase();
+      if(pos==="before"){ tgt.insertAdjacentElement("beforebegin",this); }
+      else if(pos==="inside-start"){ tgt.insertAdjacentElement("afterbegin",this); }
+      else if(pos==="inside-end"){ tgt.insertAdjacentElement("beforeend",this); }
+      else{ tgt.insertAdjacentElement("afterend",this); } // after por defecto
+    }
+
+    _setupObservers(){
+      const when=(this.getAttribute("data-when")||"visible").toLowerCase();
+      // Observa el target y también señales de "resultado listo"
+      const tgt=this._getTarget(); if(!tgt) return;
+
+      this._mo && this._mo.disconnect();
+      this._mo=new MutationObserver(()=>this._evaluateVisibility());
+      this._mo.observe(tgt,{attributes:true,attributeFilter:["class","style","aria-hidden"],subtree:false});
+
+      // Cambios de contenido relevantes (#recList, #comparative tbody)
+      this._contentMO && this._contentMO.disconnect();
+      this._contentMO=new MutationObserver(()=>this._evaluateVisibility());
+      const recList=document.querySelector("#recList"); if(recList) this._contentMO.observe(recList,{childList:true,subtree:false});
+      const compBody=document.querySelector("#comparative tbody"); if(compBody) this._contentMO.observe(compBody,{childList:true,subtree:false});
+
+      // IntersectionObserver como salvaguarda
+      this._io && this._io.disconnect();
+      this._io=new IntersectionObserver((entries)=>{
+        const visible=entries.some(e=>e.isIntersecting);
+        this._evaluateVisibility(visible);
+      },{root:null,threshold:0.01});
+      this._io.observe(tgt);
+
+      // Re-evaluar periódicamente por si __lastReport cambia
+      this._tick && clearInterval(this._tick);
+      this._tick=setInterval(()=>this._evaluateVisibility(),500);
+
+      this._evaluateVisibility();
+    }
+
+    _hasComputedResult(){
+      // 1) Señal primaria: variable global establecida por tu lógica
+      if (typeof window!=="undefined" && window.__lastReport) return true;
+      // 2) Alternativas: contenido en resultados
+      const hasRec = !!document.querySelector("#recList li");
+      const hasRows = !!document.querySelector("#comparative tbody tr");
+      // 3) Botones de informe habilitados (proxy)
+      const btnP=document.getElementById('btnPrint'), btnC=document.getElementById('btnCopy');
+      const buttonsReady = !!(btnP && btnC && !btnP.disabled && !btnC.disabled);
+      return hasRec || hasRows || buttonsReady;
+    }
+
+    _evaluateVisibility(ioVisible){
+      const tgt=this._getTarget();
+      if(!tgt){ this._setVisible(false); return; }
+
+      const style=getComputedStyle(tgt);
+      const displayOk=style.display!=="none" && style.visibility!=="hidden" && style.opacity!=="0";
+      const classOk=!(tgt.classList && tgt.classList.contains("hidden"));
+      const showOk=(tgt.classList && (tgt.classList.contains("show")||tgt.classList.contains("active")))
+                    || tgt.getAttribute("aria-hidden")==="false";
+
+      const when=(this.getAttribute("data-when")||"visible").toLowerCase();
+      const require=(this.getAttribute("data-require")||"report").toLowerCase(); // "report" | "rows" | "none"
+      const logicalVisible = (when==="always") ? true : (showOk || (displayOk && classOk));
+
+      // Gating por resultado
+      let computedOk=true;
+      if(require==="report"){ computedOk = this._hasComputedResult(); }
+      else if(require==="rows"){ const rec = !!document.querySelector("#recList li"); const rows=!!document.querySelector("#comparative tbody tr"); computedOk = (rec||rows); }
+      // "none" => no exige nada
+
+      const finalVisible = logicalVisible && computedOk && (ioVisible===undefined ? true : ioVisible);
+      this._setVisible(finalVisible);
+    }
+
+    _setVisible(flag){
+      const box=this._shadow.querySelector(".box");
+      if(box) box.classList.toggle("hidden",!flag);
+    }
+  }
+
+  if(!customElements.get("app-disclaimer")){
+    customElements.define("app-disclaimer",AppDisclaimer);
+  }
+})();
+</script>
+
+<footer style="
+    position:relative;
+    left:50%;
+    transform:translateX(-50%);
+    width:100vw;
+    margin:2rem 0 0 0;
+    padding:1.5rem 0;
+    border-top:1px solid #e5e7eb;
+    background:#ffffff;
+    text-align:center;
+    box-shadow:0 -2px 6px rgba(0,0,0,0.04);
+">
+      <img src="uibanner.png"
+         alt="Unidad de Ictus Málaga" style="max-width:380px;height:auto;opacity:.96;">
+  </a>
+
+</footer>
+
 </body>
 </html>
