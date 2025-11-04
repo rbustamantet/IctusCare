@@ -3,7 +3,6 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="color-scheme" content="light dark">
   <link rel="manifest" href="../site.webmanifest">
   <link rel="icon" type="image/png" sizes="192x192" href="../iconos/ictusgps.png">
   <link rel="apple-touch-icon" sizes="180x180" href="../iconos/ictusgps.png">
@@ -11,68 +10,77 @@
   <meta name="theme-color" content="#0f3d83">
   <title>Anticoagulación oral en Fibrilación Auricular</title>
   <style>
-<!-- CABECERA UNIFICADA -->
-:root{
-  --accent-dark:#0f3d83;
-  --accent-light:#2563eb;
-  --ink:#0e1a33;
-  --border:#e5e9f2;
+ :root{
+    --bg:#f8fafc; --ink:#0f172a;
+    --azul:#0f3d83; --gris:#6b7280; --borde:#e5e7eb;
+    --ok:#0a7f3f; --error:#b91c1c;
+
+  html, body{font-family: Verdana, Geneva, Tahoma, sans-serif; background:#fff; color:#0f172a; margin:0; padding:0}
+
+  /* Cabecera pegajosa */
+  .appbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: #0f3d83; /* azul institucional */
+  color: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
-/* Cabecera institucional */
-header{
-  background:#0f3d83;
-  color:#fff;
-  text-align:left;
-  padding:1rem 0.5rem;
-  font-weight:800;
-  font-size:1.2rem;
-  box-shadow:0 2px 6px rgba(0,0,0,0.08);
-  position:sticky;
-  top:0;
-  z-index:20;
+  .appbar.scrolled{box-shadow:0 8px 24px rgba(0,0,0,.08); border-color:#e2e8f0}
+ .appbar-inner {
+  max-width: 980px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* izquierda ↔ derecha */
+  padding: 12px 16px;
+  gap: 12px;
 }
-.bar{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  max-width:1080px;
-  margin:0 auto;
-  padding:0.25rem 1.25rem;
+
+.left-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap; /* en móvil pueden apilarse */
 }
-.title{
-  font-weight:700;
-  letter-spacing:.2px;
-  font-size:1.15rem;
-  line-height:1.3;
-}
-.headcol{display:flex;flex-direction:column}
-.actions{margin-left:auto}
-.btn{
-  display:inline-flex;
-  align-items:center;
-  gap:2px;
-  padding:4px 10px;
-  border-radius:12px;
-  text-decoration:none;
-  border:1px solid rgba(255,255,255,.14);
-  background:rgba(255,255,255,.06);
-  color:white;
-  font-size:.9rem;
-}
-.btn:hover{
-  border-color:rgba(127,179,255,.35);
-  background:#1c60c3;
-  color:white;
+
+.appbar h1 {
+  margin: 0;
+  font-size: 22px;
+  line-height: 1;
+  color: white;
+  font-weight: 800;
 }
  
-        /* Verdana forzada */
+/* Botón Inicio (ya similar a tus otros botones) */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 6px 12px;
+  border-radius: 12px;
+  text-decoration: none;
+  border: 1px solid rgba(127, 179, 255, .35);
+  background: #1c60c3;
+  color: white;
+  font-size: 0.9rem;
+  font-weight: 700;
+  transition: background 0.2s, border-color 0.2s;
+}
+.btn:hover {
+  background: #0C00FF;
+  border-color: rgba(127, 179, 255, .35);
+}
+  
+
+      /* Verdana forzada */
     html,body,.wrap,.card,label,input,select,button,table,p,h1,h2,h3,li{font-family:Verdana,Geneva,sans-serif!important}
-    .wrap{max-width:1080px;margin:16px auto;padding:0 12px 40px}
+    .wrap{max-width:980px;margin:16px auto;padding:0 12px 40px}
     .card{background:#fff;border-radius:14px;box-shadow:0 3px 14px rgba(16,71,119,.12);padding:16px;margin:12px 0}
     .grid{display:grid;gap:12px}
     .g-2{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+    .g-3{grid-template-columns:repeat(auto-fit,minmax(40%,1fr))}
     label{font-weight:600;font-size:.92rem;color:#0f3f66;display:block;margin-bottom:6px}
     label.row{font-weight:400}
     .row{display:flex;gap:8px;align-items:center;margin:4px 0}
@@ -81,7 +89,11 @@ header{
     .btnbar{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px;align-items:center}
     button{border:0;border-radius:999px;padding:10px 16px; font-weight:700;cursor:pointer;line-height:1;flex:0 0 auto;height:auto}
     .primary{background:#0f3d83;color:#fff}
-    .ghost{background:#fff;color:#083b66;border:2px solid #b6dcff}
+    .primary:hover {background:#fff;color:#0f3d83;border:2px solid #0f3d83}
+    .ghost{background:#fff;color:#0f3d83;border:2px solid #0f3d83}
+    .ghost:hover {background:#0f3d83;color:#fff;border:2px solid #0f3d83}
+
+
     table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden;font-size:.95rem}
     th,td{padding:6px;border-bottom:1px solid #e8f2fb;text-align:left;vertical-align:top}
     thead th{background:#eef6ff;color:#0b4576;font-size:.9rem}
@@ -90,10 +102,12 @@ header{
     .pill{display:inline-block;padding:2px 8px;border-radius:999px;font-weight:700;font-size:.8rem}
     .ok{background:#e8f5e9;color:#1b5e20}
     .okr{background:#ffcccc;color:#660000}
+    .okb{background:#0f3d83;color:#ffffff}
     .bad{background:#ffebee;color:#b71c1c}
     .note{font-size:.86rem;color:#456}
     .center{text-align:center}
     .subtle{color:#345;opacity:.85}
+    .subtle2{background:#fff5f5;color:#660000;opacity:.85}
     .sticky-result{position:relative}
     .result-anchor{scroll-margin-top:84px}
     .sep{height:1px;background:#e7f0fb;margin:14px 0}
@@ -108,7 +122,7 @@ header{
     .tagNeutral{background:#eef6ff;color:#0b4576;border:1px solid #cfe3f6}
     .rec-list li{margin:4px 0}
     .list-min{padding-left:16px;margin:0}
-    .doseTag{background:#fff4ce;color:#7a4e00;border:1px solid #ffe08a;padding:2px 8px;border-radius:999px;font-weight:800}
+    .doseTag{background:#fff4ce;color:#7a4e00;border:1px solid #ffe08a;padding:2px 8px;border-radius:999px;font-weight:700;font-size:.8rem}
     .noOac{color:#b71c1c;font-weight:800}
     /* Zebra por columnas visibles */
     #comparative tbody td._zebra{background:#eef6ff}
@@ -128,10 +142,10 @@ header{
 </head>
 <body>
 
-<header>
-  <div class="bar">
-    <div class="headcol">
-      <div class="title">Anticoagulación oral en Fibrilación Auricular</div>
+<header class="appbar" role="region" aria-label="Anticoagulación en FA">
+  <div class="appbar-inner">
+    <div class="left-group">
+      <h1>Anticoagulación oral en fibrilación auricular</h1>
     </div>
     <div class="actions">
       <a class="btn" href="../index.html">Inicio</a>
@@ -142,11 +156,11 @@ header{
   <div class="wrap">
     <div class="card">
       <p class="note"><b>Cómo usar:</b> introduce los datos del paciente, marca los factores de riesgo y las
-        <b>condiciones clínicas especiales</b>, y pulsa <span class="pill ok">Calcular</span>. Calcula
+        <b>condiciones clínicas especiales</b>, y pulsa <span class="pill okb">Calcular</span>. Calcula
         <b>CHA<sub>2</sub>DS<sub>2</sub>-VASc</b>, <b>CHA<sub>2</sub>DS<sub>2</sub>-VA</b>, <b>HAS-BLED</b>,
         <b>ClCr (Cockcroft–Gault)</b> y muestra comparativa de eficacia/seguridad. Aplica
-        <u>reglas de preferencia/evitación</u> por escenarios clínicos y sugiere <b>posología</b>
-        resaltando la <b>dosis reducida</b> cuando proceda.
+        reglas de <span class="pill ok">preferencia</span>🆚<span class="pill okr">evitación</span> por escenarios clínicos y sugiere posología
+        resaltando la <span class="doseTag">dosis reducida</span> cuando proceda.
       </p>
     </div>
 
@@ -237,9 +251,9 @@ header{
         </div>
       </div>
 
-      <div class="btnbar">
+      <div class="button">
         <button type="button" class="primary" id="btnCalc">Calcular</button>
-        <button type="button" class="ghost" id="btnReset">Borrar</button>
+        <button type="button" class="primary" id="btnReset">Borrar</button>
         <span aria-live="polite" role="status" class="muted" id="calcMsg"></span>
       </div>
     </div>
@@ -247,7 +261,7 @@ header{
     <!-- Resultados -->
     <div class="card sticky-result result-anchor" id="resultCard">
       <h2 style="margin:0 0 8px;">Resultados</h2>
-      <div class="grid g-2">
+      <div class="grid g-3">
         <div>
           <div><b>CHA<sub>2</sub>DS<sub>2</sub>-VA</b>: <span class="pill ok" id="scoreVA">–</span>
             &nbsp;<span class="muted">(sin sexo)</span></div>
@@ -260,8 +274,8 @@ header{
           <div class="muted"><sup>*</sup>En pacientes con FA y VKA</div>
         </div>
         <div>
-          <div>Aclaramiento de creatinina: <span id="crcl">–</span> ml/min</div>
-          <div class="muted">Conversión SCr: <span id="scrConv">–</span> mg/dL</div>
+          <div><b>Aclaramiento de creatinina:</b> <span id="crcl" class="doseTag">–</span> ml/min</div>
+          <div class="muted">Conversión SCr: <span id="scrConv" class="doseTag">–</span> mg/dL</div>
         </div>
       </div>
 
@@ -279,8 +293,11 @@ header{
         </thead>
         <tbody></tbody>
         <tfoot>
-          <tr><td class="subtle" colspan="9"><b>Nota:</b> coeficientes orientativos; adapta a tus fuentes.</td></tr>
-        </tfoot>
+      </div>
+          <tr><td class="subtle" colspan="9"><b>Abreviaturas:</b> <b>RA</b>=riesgo anual de ictus; <b>RRR</b>=reducción relativa; <b>RRA</b>=reducción absoluta;
+        <b>NNT</b>=nº necesario a tratar; <b>RS</b>=riesgo anual de sangrado mayor; <b>RRS</b>=riesgo relativo de sangrado vs VKA; <b>NNH</b>=nº necesario para dañar.</td></tr>
+        <tr><td class="subtle2" colspan="9"><span color: var(--ink,#0f172a); background:#fff5f5;><b>Nota:</b> coeficientes orientativos; adapta a tus fuentes.</span></td></tr>
+</tfoot>
       </table>
 
       <!-- NUEVO: Disclaimer bajo la tabla (umbral renal + seguimiento) -->
@@ -309,14 +326,9 @@ header{
 
       <div class="btnbar">
         <button type="button" class="ghost" id="btnPrint" disabled>Imprimir informe</button>
+                     <button type="button" class="ghost" id="btnPDF" disabled>Exportar PDF</button>
         <button type="button" class="ghost" id="btnCopy" disabled>Copiar informe</button>
-        <span class="muted" id="printHint">Genera un resumen imprimible/copiable con conclusiones y (si procede) posología.</span>
       </div>
-
-      <p class="note" style="margin-top:8px;">
-        <b>Abreviaturas:</b> <b>RA</b>=riesgo anual de ictus; <b>RRR</b>=reducción relativa; <b>RRA</b>=reducción absoluta;
-        <b>NNT</b>=nº necesario a tratar; <b>RS</b>=riesgo anual de sangrado mayor; <b>RRS</b>=riesgo relativo de sangrado vs VKA; <b>NNH</b>=nº necesario para dañar.
-      </p>
     </div>
 
     <app-disclaimer
@@ -332,7 +344,7 @@ header{
 
     <script>
     /* ===== Utilidades ===== */
-    const NDASH='\\u2013';
+    const NDASH='—';
     const clamp=(v,min,max)=>Math.max(min,Math.min(max,v));
     const fmt=(x,d=1)=>isFinite(x)?(+x).toFixed(d):NDASH;
     const oneIn=pct=>{const p=parseFloat(pct);if(!isFinite(p)||p<=0)return NDASH;return Math.round(100/p);};
@@ -345,9 +357,9 @@ header{
     /* ===== Parámetros ===== */
     let strokeRisksByVasc={0:0.2,1:0.6,2:2.2,3:3.2,4:4.8,5:7.2,6:9.7,7:11.2,8:10.8,9:12.2};
     let bleedRiskByHASBLED={0:1.1,1:1.9,2:3.4,3:5.8,4:8.9,5:12.5,6:15.0};
-    let RR_Stroke={"No terapia":1.00,"VKA":0.36,"Apixabán":0.36*0.79,"Dabigatrán":0.36*0.66,"Edoxabán":0.36*0.87,"Rivaroxabán":0.36*0.79};
-    let RR_Bleed_vs_VKA={"No terapia":0.30,"VKA":1.00,"Apixabán":0.69,"Dabigatrán":0.93,"Edoxabán":0.80,"Rivaroxabán":1.04};
-    const STRATS=["No terapia","VKA","Apixabán","Dabigatrán","Edoxabán","Rivaroxabán"];
+    let RR_Stroke={"No ACO":1.00,"VKA":0.36,"Apixabán":0.36*0.79,"Dabigatrán":0.36*0.66,"Edoxabán":0.36*0.87,"Rivaroxabán":0.36*0.79};
+    let RR_Bleed_vs_VKA={"No ACO":0.30,"VKA":1.00,"Apixabán":0.69,"Dabigatrán":0.93,"Edoxabán":0.80,"Rivaroxabán":1.04};
+    const STRATS=["No ACO","VKA","Apixabán","Dabigatrán","Edoxabán","Rivaroxabán"];
 
     /* ===== Cálculos base ===== */
     function calcVasc(age,female,flags){let s=0;if(flags.cCongest)s+=1;if(flags.cHTN)s+=1;if(age>=75||flags.cAge75)s+=2;if(flags.cDiab)s+=1;if(flags.cStroke)s+=2;if(flags.cVasc)s+=1;if((age>=65&&age<=74)||flags.cAge65)s+=1;const classicVASc=s+(female?1:0);return{va:s,vasc:classicVASc};}
@@ -640,6 +652,7 @@ header{
       };
       document.getElementById('btnPrint').disabled=false;
       document.getElementById('btnCopy').disabled=false;
+      document.getElementById('btnPDF').disabled = false;
     }
 
     /* ===== Informe imprimible ===== */
@@ -740,14 +753,19 @@ header{
       w.document.open(); w.document.write(html); w.document.close();
     }
 
-    /* ===== Informe texto ===== */
+   /* ===== Informe en TEXTO (limpio para Blogger) ===== */
     function buildPlainReport(r){
-      const clean = (s)=> String(s).replace(/[•]/g,'*').replace(/[—–]/g,'-').replace(/≥/g,'>=').replace(/≤/g,'<=');
+      // Normaliza caracteres problemáticos a ASCII seguro manteniendo tildes/ñ
+      const clean = (s)=> String(s)
+        .replace(/[•]/g,'*')
+        .replace(/[—–]/g,'-')
+        .replace(/≥/g,'>=').replace(/≤/g,'<=');
       const sexTxt = r.inputs.sex==='M'?'Varón':(r.inputs.sex==='F'?'Mujer':'-');
       const fecha = (new Date(r.ts)).toLocaleString('es-ES');
       const bullets = [];
       bullets.push('INFORME - Selección de anticoagulante oral');
-      bullets.push('Generado: ' + fecha); bullets.push('');
+      bullets.push('Generado: ' + fecha);
+      bullets.push('');
       bullets.push('DATOS Y PUNTUACIONES');
       bullets.push('* Edad: ' + (r.inputs.age ?? '-') + ' años');
       bullets.push('* Sexo: ' + sexTxt);
@@ -759,21 +777,24 @@ header{
       bullets.push('* Riesgo ictus sin tto: ' + r.risks.strokeBase + '%/año  |  Riesgo sangrado base: ' + r.risks.bleedBase + '%/año');
       bullets.push('');
       bullets.push('CONCLUSIÓN');
-      if(r.noOAC){ bullets.push('NO SE RECOMIENDA TRATAMIENTO ANTICOAGULANTE'); }
-      else{
-        if(r.notes.length){ bullets.push('Recomendaciones individualizadas:'); r.notes.forEach(n=>bullets.push('* ' + clean(decodeEntities(n)))); }
+      if(r.noOAC){
+        bullets.push('NO SE RECOMIENDA TRATAMIENTO ANTICOAGULANTE');
+      }else{
+        if(r.notes.length){
+          bullets.push('Recomendaciones individualizadas:');
+          r.notes.forEach(n=>bullets.push('* ' + clean(decodeEntities(n))));
+        }
         if(r.preferredGlobal.length) bullets.push('Estrategias preferibles: ' + r.preferredGlobal.join(', '));
         if(r.avoidedGlobal.length) bullets.push('Estrategias a evitar: ' + r.avoidedGlobal.join(', '));
-        if(r.doses && r.doses.length){ bullets.push(''); bullets.push('Posología sugerida:'); r.doses.forEach(d=>{bullets.push('* ' + d.name + ': ' + d.dose + (d.highlight?' [Dosis reducida]':'') + ' - ' + clean(d.why));}); }
-        bullets.push('');
-        bullets.push('Ajuste renal (FA; EMA/ESC):');
-        bullets.push('* Apixabán: 2,5 mg/12 h si ≥2 criterios o ClCr 15–29; evitar <15 o diálisis (EMA).');
-        bullets.push('* Dabigatrán: 110 mg/12 h si ClCr 30–50; CI <30.');
-        bullets.push('* Rivaroxabán: 15 mg/24 h si ClCr 15–49; CI <15.');
-        bullets.push('* Edoxabán: 30 mg/24 h si ClCr 15–50 (o ≤60 kg o P-gp); evitar <15; evitar >95 por menor eficacia (FDA).');
-        bullets.push('Seguimiento renal: 6–12 m si ClCr >60; 3–6 m si 30–60; 1–3 m si <30 o ancianos/frágiles.');
+        if(r.doses && r.doses.length){
+          bullets.push('');
+          bullets.push('Posología sugerida:');
+          r.doses.forEach(d=>{
+            bullets.push('* ' + d.name + ': ' + d.dose + (d.highlight?' [Dosis reducida]':'') + ' - ' + clean(d.why));
+          });
+        }
       }
-      return bullets.join('\\n');
+      return bullets.join('\n');
     }
 
     async function copyReport(){
@@ -784,7 +805,7 @@ header{
         const ta=document.createElement('textarea'); ta.value=text; ta.style.position='fixed'; ta.style.left='-1000px';
         document.body.appendChild(ta); ta.select(); try{ document.execCommand('copy'); } finally{ document.body.removeChild(ta); }
       }
-      const btn=document.getElementById('btnCopy'); const old=btn.textContent; btn.textContent='Copiado [OK]'; setTimeout(()=>{btn.textContent=old;},1600);
+      const btn=document.getElementById('btnCopy'); const old=btn.textContent; btn.textContent='Copiado'; setTimeout(()=>{btn.textContent=old;},1600);
     }
 
     /* ===== Eventos ===== */
@@ -798,7 +819,7 @@ header{
       el.addEventListener('change',()=>checkAndFixContradictions(id));
     });
     document.getElementById('btnCalc').addEventListener('click',e=>{
-      e.preventDefault(); compute(); document.getElementById('calcMsg').textContent='Listo.'; scrollToResult();
+      e.preventDefault(); compute(); document.getElementById('calcMsg'); scrollToResult();
     });
     document.getElementById('btnReset').addEventListener('click',e=>{
       e.preventDefault();
@@ -809,9 +830,83 @@ header{
       document.getElementById('recList').innerHTML='';
       document.getElementById('doseList').innerHTML='';
       document.getElementById('doseSection').style.display='';
-      document.getElementById('calcMsg').textContent='Borrado.';
+      document.getElementById('calcMsg');
       document.getElementById('btnPrint').disabled=true;
       document.getElementById('btnCopy').disabled=true;
+      document.getElementById('btnPDF').addEventListener('click', async (e) => {
+  e.preventDefault();
+
+  // Comprueba si hay un informe previo
+  if (typeof __lastReport === "undefined" || !__lastReport) {
+    showToast?.('Primero calcule los resultados para generar el informe.', 'warn');
+    console.warn("No hay informe previo (__lastReport indefinido).");
+    return;
+  }
+
+  // Comprueba si existe el contenedor de resultados
+  const resultDiv = document.getElementById('resultCard');
+  if (!resultDiv) {
+    showToast?.('No se encontró el bloque de resultados para exportar.', 'warn');
+    console.error("No se encontró el elemento con id='resultCard'");
+    return;
+  }
+
+  // Llama a la función global para exportar PDF
+  console.log("Ejecutando exportarPDFconCabecera() desde listener →", resultDiv.id);
+  try {
+    await exportarPDFconCabecera('resultCard', 'Informe_Anticoagulacion.pdf');
+    showToast?.('📄 Informe PDF generado correctamente.', 'info');
+  } catch (err) {
+    console.error("Error en exportarPDFconCabecera:", err);
+    alert("No se pudo generar el PDF. Consulta la consola para más detalles.");
+  }
+});
+
+  
+
+async function generarInformePDF(nombre, edad, nhc) {
+  try {
+    if (!__lastReport) return;
+
+    const r = __lastReport;
+    const fecha = (new Date(r.ts)).toLocaleString('es-ES');
+    const sexTxt = r.inputs.sex === 'M' ? 'Varón' : (r.inputs.sex === 'F' ? 'Mujer' : '—');
+
+    const datosPaciente = `
+      <div style="margin:10px 0 20px;padding:10px;border-left:4px solid #0f3d83;background:#f3f8ff;border-radius:8px">
+        <b>Paciente:</b> ${nombre || '—'}<br>
+        <b>Edad:</b> ${edad || '—'} años<br>
+        ${nhc ? `<b>NHC:</b> ${nhc}<br>` : ''}
+        <b>Sexo:</b> ${sexTxt}<br>
+        <b>Generado:</b> ${fecha}
+      </div>
+    `;
+
+    // Contenido del informe (idéntico al imprimible)
+    const informeHTML = `
+      <div id="informeCompleto">
+        <h2 style="color:#0f3d83;margin-bottom:6px">Informe — Selección de anticoagulante oral</h2>
+        ${datosPaciente}
+        ${document.getElementById('resultCard').outerHTML}
+      </div>
+    `;
+
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = informeHTML;
+    document.body.appendChild(tempDiv);
+
+    await exportarPDFconCabecera('informeCompleto', 'Informe_Anticoagulacion.pdf');
+
+    document.body.removeChild(tempDiv);
+
+  } catch (err) {
+    console.error(err);
+    showToast('Error al generar el PDF.','error');
+  }
+}
+
+
+
       __lastReport=null;
       window.scrollTo({top:0,behavior:'smooth'}); applyColumnStriping();
     });
@@ -823,12 +918,140 @@ header{
 
     <!-- Referencias / Bibliografía -->
     <div class="card" id="referencias">
-      <h2 id="refToggle" style="margin:0 0 8px;cursor:pointer;">Referencias <span id="refArrow" style="font-size:0.9em;">▼</span></h2>
+      <h2 id="refToggle" style="margin:0 0 8px;font-size:1em;cursor:pointer;">Referencias <span id="refArrow" style="font-size:1em;">▼</span></h2>
       <div id="refContent" style="display:none;">
-        <!-- Mantén aquí tus referencias existentes (ESC 2024, EHRA 2021, SmPC EMA, etc.) -->
-      </div>
+<div>
+<ol>
+  <li>
+    Friberg L, Rosenqvist M, Lip GYH. Evaluation of risk stratification schemes for ischaemic stroke and bleeding in 182,678 patients with atrial fibrillation.
+    <i>Eur Heart J.</i> 2012;33(12):1500–1510.
+    <a href="https://doi.org/10.1093/eurheartj/ehr488" rel="noopener" target="_blank">doi:10.1093/eurheartj/ehr488</a>
+  </li>
+  <li>
+    Olesen JB, et al. Validation of risk stratification schemes for predicting stroke and thromboembolism in atrial fibrillation.
+    <i>BMJ.</i> 2011;342:d124.
+    <a href="https://www.bmj.com/content/342/bmj.d124" rel="noopener" target="_blank">BMJ 2011;342:d124</a>
+  </li>
+  <li>
+    Pisters R, Lane DA, Nieuwlaat R, de Vos CB, Crijns HJGM, Lip GYH. A novel user-friendly score (HAS-BLED) to assess one-year risk of major bleeding in atrial fibrillation.
+    <i>Chest.</i> 2010;138(5):1093–1100.
+    <a href="https://doi.org/10.1378/chest.10-0134" rel="noopener" target="_blank">doi:10.1378/chest.10-0134</a>
+  </li>
+  <li>
+    Lip GYH, Frison L, Halperin JL, Lane DA. Comparative validation of the HAS-BLED score in anticoagulated patients with AF.
+    <i>J Am Coll Cardiol.</i> 2011;57(2):173–180.
+    <a href="https://doi.org/10.1016/j.jacc.2010.09.024" rel="noopener" target="_blank">doi:10.1016/j.jacc.2010.09.024</a>
+  </li>
+  <li>
+    Cockcroft DW, Gault MH. Prediction of creatinine clearance from serum creatinine.
+    <i>Nephron.</i> 1976;16(1):31–41.
+    <a href="https://pubmed.ncbi.nlm.nih.gov/1244564/" rel="noopener" target="_blank">PMID:1244564</a>
+  </li>
+  <li>
+    Granger CB, et al. Apixaban versus warfarin in patients with AF (ARISTOTLE).
+    <i>N Engl J Med.</i> 2011;365:981–992.
+    <a href="https://www.nejm.org/doi/full/10.1056/NEJMoa1107039" rel="noopener" target="_blank">NEJM 2011</a>
+  </li>
+  <li>
+    Connolly SJ, et al. Dabigatran versus warfarin in AF (RE-LY).
+    <i>N Engl J Med.</i> 2009;361:1139–1151.
+    <a href="https://www.nejm.org/doi/full/10.1056/NEJMoa0905561" rel="noopener" target="_blank">NEJM 2009</a>
+  </li>
+  <li>
+    Patel MR, et al. Rivaroxaban versus warfarin in AF (ROCKET-AF).
+    <i>N Engl J Med.</i> 2011;365:883–891.
+    <a href="https://www.nejm.org/doi/full/10.1056/NEJMoa1009638" rel="noopener" target="_blank">NEJM 2011</a>
+  </li>
+  <li>
+    Giugliano RP, et al. Edoxaban versus warfarin in AF (ENGAGE AF–TIMI 48).
+    <i>N Engl J Med.</i> 2013;369:2093–2104.
+    <a href="https://www.nejm.org/doi/full/10.1056/NEJMoa1310907" rel="noopener" target="_blank">NEJM 2013</a>
+  </li>
+  <li>
+    Hart RG, Pearce LA, Aguilar MI. Meta-analysis: antithrombotic therapy to prevent stroke in AF.
+    <i>Ann Intern Med.</i> 2007;146:857–867.
+    <a href="https://pubmed.ncbi.nlm.nih.gov/17577005/" rel="noopener" target="_blank">PMID:17577005</a>
+  </li>
+  <li>
+    Aguilar MI, Hart R, Pearce LA. Antithrombotic therapy for AF (Cochrane Review).
+    <i>Cochrane Database Syst Rev.</i> 2005;CD001927.
+    <a href="https://doi.org/10.1002/14651858.CD001927.pub2" rel="noopener" target="_blank">doi:10.1002/14651858.CD001927.pub2</a>
+  </li>
+  <li>
+    Van Gelder IC, et al. 2024 ESC Guidelines for the management of atrial fibrillation (developed with EACTS).
+    <i>Eur Heart J.</i> 2024;45(36):3314–? 
+    <a href="https://academic.oup.com/eurheartj/article/45/36/3314/7738779" rel="noopener" target="_blank">Artículo OUP</a> | 
+    <a href="https://www.escardio.org/Guidelines/Clinical-Practice-Guidelines/Atrial-Fibrillation" rel="noopener" target="_blank">Página ESC</a>
+  </li>
+  <li>
+    Joglar JA, et al. 2023 ACC/AHA/ACCP/HRS Guideline for the Diagnosis and Management of Atrial Fibrillation.
+    <i>Circulation.</i> 2023;148:eXXX–eXXX.
+    <a href="https://doi.org/10.1161/CIR.0000000000001193" rel="noopener" target="_blank">doi:10.1161/CIR.0000000000001193</a>
+  </li>
+  <li>
+    Steffel J, et al. 2021 European Heart Rhythm Association Practical Guide on the use of NOACs in AF.
+    <i>Europace.</i> 2021;23(10):1612–1676.
+    <a href="https://doi.org/10.1093/europace/euab065" rel="noopener" target="_blank">doi:10.1093/europace/euab065</a>
+  </li>
+  <li>
+    SmPC EMA – Apixabán (Eliquis). Criterios 2/3 para 2,5 mg c/12 h; opciones triturado/SNG.
+    <a href="https://www.ema.europa.eu/en/documents/product-information/eliquis-epar-product-information_en.pdf" rel="noopener" target="_blank">EMA – Eliquis</a>
+  </li>
+  <li>
+    SmPC EMA – Rivaroxabán (Xarelto). Triturado/SNG; 15–20 mg con comida.
+    <a href="https://www.ema.europa.eu/en/documents/product-information/xarelto-epar-product-information_en.pdf" rel="noopener" target="_blank">EMA – Xarelto</a>
+  </li>
+  <li>
+    SmPC EMA – Edoxabán (Lixiana). Reducción a 30 mg con inhibidores potentes de P-gp o ≤60 kg; opciones triturado/SNG.
+    <a href="https://www.ema.europa.eu/en/documents/product-information/lixiana-epar-product-information_en.pdf" rel="noopener" target="_blank">EMA – Lixiana</a>
+  </li>
+  <li>
+    SmPC EMA – Dabigatrán (Pradaxa). No abrir cápsulas; precauciones con inhibidores de P-gp; contraindicado si ClCr &lt;30 ml/min.
+    <a href="https://www.ema.europa.eu/en/documents/product-information/pradaxa-epar-product-information_en.pdf" rel="noopener" target="_blank">EMA – Pradaxa</a>
+  </li>
+  <li>
+    FDA – Savaysa (edoxabán). <i>Boxed warning</i>: menor eficacia si ClCr &gt;95 mL/min en FA no valvular.
+    <a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2015/206316lbl.pdf" rel="noopener" target="_blank">FDA label</a>
+  </li>
+  <li>
+    Radadiya D, et al. Major gastrointestinal bleeding risk with DOACs: Does type and dose matter? Network meta-analysis.
+    <i>Eur J Gastroenterol Hepatol.</i> 2021;33(1S Suppl 1):e50–e58.
+    <a href="https://doi.org/10.1097/MEG.0000000000002035" rel="noopener" target="_blank">doi:10.1097/MEG.0000000000002035</a>
+  </li>
+  <li>
+    Mamas MA, et al. Meta-Analysis Comparing Apixaban Versus Rivaroxaban in Patients With AF.
+    <i>Am J Cardiol.</i> 2022;170:33–43.
+    <a href="https://www.ajconline.org/article/S0002-9149(21)01148-6/fulltext" rel="noopener" target="_blank">Texto completo</a>
+  </li>
+  <li>
+    Ruff CT, et al. Comparison of the efficacy and safety of new oral anticoagulants with warfarin in AF: meta-analysis of RCTs.
+    <i>Lancet.</i> 2014;383(9921):955–962.
+    <a href="https://doi.org/10.1016/S0140-6736(13)62343-0" rel="noopener" target="_blank">doi:10.1016/S0140-6736(13)62343-0</a>
+  </li>
+  <li>
+    Song Y, et al. Relative Bioavailability of Apixaban Solution or Crushed Tablet Administered by Mouth or via NGT.
+    <i>Clin Ther.</i> 2015;37(8):1703–1712.
+    <a href="https://doi.org/10.1016/j.clinthera.2015.05.497" rel="noopener" target="_blank">doi:10.1016/j.clinthera.2015.05.497</a>
+  </li>
+  <li>
+    Duchin K, et al. PK of edoxaban 60-mg tablet crushed y administrado por SNG o en puré de manzana (estudio cruzado).
+    <i>Clin Pharmacokinet.</i> 2018;57:221–228.
+    <a href="https://pubmed.ncbi.nlm.nih.gov/28512699/" rel="noopener" target="_blank">PMID:28512699</a> |
+    <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC5784001/" rel="noopener" target="_blank">PMC</a>
+  </li>
+  <li>
+    Byon W, et al. Apixaban: Clinical Pharmacokinetic and Pharmacodynamic Overview (incluye datos de trituración/applesauce).
+    <i>Clin Pharmacokinet.</i> 2019;58:1265–1279.
+    <a href="https://link.springer.com/article/10.1007/s40262-019-00775-z" rel="noopener" target="_blank">Resumen</a>
+  </li>
+  <li>
+    Martin K, et al. Use of DOACs in patients with obesity: Updated communication from the ISTH SSC (resumen de 2021).
+    <i>J Thromb Haemost.</i> 2021;19:1874–1882.
+    <a href="https://www.jthjournal.org/article/S1538-7836(22)01848-7/fulltext" rel="noopener" target="_blank">Texto</a>
+  </li>
+</ol> 
+     </div>
     </div>
-
     <div style="text-align:center;">
       <a href="index.html" class="back-btn">Volver</a>
     </div>
@@ -936,5 +1159,7 @@ header{
       <img src="uibanner.png" alt="Unidad de Ictus Málaga" style="max-width:380px;height:auto;opacity:.96;">
     </footer>
   </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="js/index.js"></script>
 </body>
 </html>
