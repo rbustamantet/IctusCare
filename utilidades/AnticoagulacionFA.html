@@ -293,10 +293,9 @@
         </thead>
         <tbody></tbody>
         <tfoot>
-      </div>
           <tr><td class="subtle" colspan="9"><b>Abreviaturas:</b> <b>RA</b>=riesgo anual de ictus; <b>RRR</b>=reducción relativa; <b>RRA</b>=reducción absoluta;
         <b>NNT</b>=nº necesario a tratar; <b>RS</b>=riesgo anual de sangrado mayor; <b>RRS</b>=riesgo relativo de sangrado vs VKA; <b>NNH</b>=nº necesario para dañar.</td></tr>
-        <tr><td class="subtle2" colspan="9"><span color: var(--ink,#0f172a); background:#fff5f5;><b>Nota:</b> coeficientes orientativos; adapta a tus fuentes.</span></td></tr>
+        <tr><td class="subtle2" colspan="9"><span style color: var(--ink,#0f172a); background:#fff5f5;><b>Nota:</b> coeficientes orientativos; adapta a tus fuentes.</span></td></tr>
 </tfoot>
       </table>
 
@@ -833,34 +832,33 @@
       document.getElementById('calcMsg');
       document.getElementById('btnPrint').disabled=true;
       document.getElementById('btnCopy').disabled=true;
-      document.getElementById('btnPDF').addEventListener('click', async (e) => {
+      
+// ====== BOTÓN EXPORTAR PDF (versión tolerante) ======
+document.getElementById('btnPDF').addEventListener('click', async (e) => {
   e.preventDefault();
 
-  // Comprueba si hay un informe previo
-  if (typeof __lastReport === "undefined" || !__lastReport) {
-    showToast?.('Primero calcule los resultados para generar el informe.', 'warn');
-    console.warn("No hay informe previo (__lastReport indefinido).");
-    return;
-  }
-
-  // Comprueba si existe el contenedor de resultados
   const resultDiv = document.getElementById('resultCard');
-  if (!resultDiv) {
-    showToast?.('No se encontró el bloque de resultados para exportar.', 'warn');
-    console.error("No se encontró el elemento con id='resultCard'");
+
+  if (!resultDiv || resultDiv.innerText.trim() === '') {
+    (typeof showToast === 'function')
+      ? showToast('No hay contenido para exportar.', 'warn')
+      : alert('No hay contenido para exportar.');
     return;
   }
 
-  // Llama a la función global para exportar PDF
-  console.log("Ejecutando exportarPDFconCabecera() desde listener →", resultDiv.id);
   try {
     await exportarPDFconCabecera('resultCard', 'Informe_Anticoagulacion.pdf');
-    showToast?.('📄 Informe PDF generado correctamente.', 'info');
+    (typeof showToast === 'function')
+      ? showToast('📄 Informe PDF generado correctamente.', 'info')
+      : alert('Informe PDF generado correctamente.');
   } catch (err) {
-    console.error("Error en exportarPDFconCabecera:", err);
-    alert("No se pudo generar el PDF. Consulta la consola para más detalles.");
+    console.error('Error en exportarPDFconCabecera:', err);
+    (typeof showToast === 'function')
+      ? showToast('⚠️ Error al generar el PDF.', 'warn')
+      : alert('Error al generar el PDF.');
   }
 });
+
 
   
 
@@ -1159,7 +1157,7 @@ async function generarInformePDF(nombre, edad, nhc) {
       <img src="uibanner.png" alt="Unidad de Ictus Málaga" style="max-width:380px;height:auto;opacity:.96;">
     </footer>
   </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-<script src="js/index.js"></script>
+<script src="../lib/html2pdf.bundle.min.js"></script>
+<script src="../js/index.js"></script>
 </body>
 </html>
