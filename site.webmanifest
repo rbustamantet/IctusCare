@@ -1,7 +1,7 @@
 {
-  "name": "Ictus GPS · Unidad de Ictus Málaga",
+  "name": "Ictus GPS",
   "short_name": "Ictus GPS",
-  "description": "Aplicación de apoyo clínico y recursos docentes de la Unidad de Neurología Vascular del Hospital Regional Universitario de Málaga.",
+  "description": "Aplicación de apoyo clínico y recursos docentes para la atención al paciente con ictus.",
   "lang": "es-ES",
   "start_url": "splash.html",
   "scope": "./",
