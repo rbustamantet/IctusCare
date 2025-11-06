@@ -6,11 +6,38 @@ document.addEventListener("deviceready", function() {
   console.log("Cordova ready:", cordova.platformId, cordova.version);
 
   // ====== STATUS BAR ======
-  if (window.StatusBar) {
-    StatusBar.backgroundColorByHexString("#0f3d83");
-    StatusBar.styleLightContent();
-    StatusBar.show();
+if (window.StatusBar) {
+  // Asegura que la barra no tape el contenido HTML
+  StatusBar.overlaysWebView(false);
+  // Aplica el color azul institucional
+  StatusBar.backgroundColorByHexString("#0f3d83");
+  // Fuerza iconos claros sobre fondo oscuro
+  StatusBar.styleLightContent();
+  // Garantiza que sea visible (por si algún splash la oculta)
+  StatusBar.show();
+}
+
+   // NAVIGATION BAR (solo Android 8+)
+  if (window.AndroidFullScreen && AndroidFullScreen.setSystemUiVisibility) {
+    try {
+      // Fija color de navegación
+      AndroidFullScreen.setSystemUiVisibility({
+        statusBarColor: "#0F3D83",
+        navigationBarColor: "#0F3D83",
+        statusBarLight: false,
+        navigationBarLight: false
+      });
+    } catch (e) {
+      console.warn("Navigation bar color no soportado:", e);
+    }
+  } else if (window.navigator && window.navigator.plugins) {
+    // Alternativa mediante CSS meta
+    const navMeta = document.createElement("meta");
+    navMeta.name = "theme-color";
+    navMeta.content = "#0F3D83";
+    document.head.appendChild(navMeta);
   }
+});
 
   // ====== ZOOM ======
   (function() {
@@ -41,34 +68,77 @@ document.addEventListener("deviceready", function() {
     true
   );
 
-  // ====== BOTÓN "ATRÁS" ======
-  document.addEventListener(
-    "backbutton",
-    function () {
-      const path = window.location.pathname;
-      const isHome = path.endsWith("/index.html") || path.endsWith("/");
+// ====== BOTÓN "ATRÁS" (Android con Toast estilo Ictus GPS) ======
+let backPressedOnce = false;
 
-      if (isHome) {
-        // Confirmar salida
-        if (window.confirm("¿Deseas salir de Ictus GPS?")) {
-          navigator.app.exitApp();
-        }
-      } else {
-        navigator.app.backHistory();
-      }
-    },
-    false
-  );
+document.addEventListener("backbutton", function (e) {
+  e.preventDefault();
+  const url = window.location.href;
+  const isHome = url.includes("index.html") || url.endsWith("/");
+
+  if (isHome) {
+    if (backPressedOnce) {
+      navigator.app.exitApp();
+      return;
+    }
+    backPressedOnce = true;
+    mostrarToastIctus("Pulsa de nuevo para salir");
+
+    setTimeout(() => {
+      backPressedOnce = false;
+    }, 2000);
+  } else {
+    if (window.history.length > 1) window.history.back();
+    else navigator.app.backHistory();
+  }
 }, false);
 
-// ============================================================
-// EXPORTAR PDF
-// ============================================================
+// ====== FUNCIÓN TOAST ESTILO ICTUS GPS ======
+function mostrarToastIctus(mensaje) {
+  let toast = document.getElementById("toast-ictus");
+  if (!toast) {
+    toast = document.createElement("div");
+    toast.id = "toast-ictus";
+    Object.assign(toast.style, {
+      position: "fixed",
+      bottom: "60px",
+      left: "50%",
+      transform: "translateX(-50%)",
+      background: "#0f3d83", // azul institucional
+      color: "#ffffff",
+      padding: "10px 20px",
+      borderRadius: "25px",
+      fontSize: "14px",
+      fontFamily: "Verdana, Geneva, sans-serif",
+      fontWeight: "500",
+      zIndex: "9999",
+      boxShadow: "0 4px 10px rgba(0,0,0,0.25)",
+      opacity: "0",
+      transition: "opacity 0.3s ease, transform 0.3s ease",
+    });
+    document.body.appendChild(toast);
+  }
+  toast.textContent = mensaje;
+  toast.style.opacity = "1";
+  toast.style.transform = "translateX(-50%) translateY(-8px)";
 
-async function exportarPDFconCabecera(
-  elementId,
-  nombreArchivo = "Informe_Ictus.pdf"
-) {
+  setTimeout(() => {
+    toast.style.opacity = "0";
+    toast.style.transform = "translateX(-50%) translateY(0)";
+  }, 1500);
+}
+
+
+// ============================================================
+// EXPORTAR PDF (versión robusta Cordova)
+// ============================================================
+async function exportarPDFconCabecera(elementId, nombreArchivo = "Informe_Ictus.pdf") {
+  // 1) Comprobar librería
+  if (typeof html2pdf === "undefined") {
+    alert("Falta html2pdf.bundle.min.js. Inclúyelo antes de index.js");
+    return;
+  }
+
   try {
     const element = document.getElementById(elementId);
     if (!element) {
@@ -83,16 +153,11 @@ async function exportarPDFconCabecera(
       overlay.id = "pdfOverlay";
       Object.assign(overlay.style, {
         position: "fixed",
-        top: "0",
-        left: "0",
-        width: "100vw",
-        height: "100vh",
+        top: "0", left: "0",
+        width: "100vw", height: "100vh",
         background: "rgba(255,255,255,0.9)",
-        zIndex: "9999",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
+        zIndex: "9999", display: "flex",
+        flexDirection: "column", justifyContent: "center", alignItems: "center",
         fontFamily: "Verdana, Geneva, sans-serif",
       });
       overlay.innerHTML = `
@@ -101,67 +166,124 @@ async function exportarPDFconCabecera(
         <style>@keyframes spin{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}</style>
       `;
       document.body.appendChild(overlay);
-    } else overlay.style.display = "flex";
+    } else {
+      overlay.style.display = "flex";
+    }
 
-    // ===== Construcción del contenido =====
+    // ===== Preparar logo como dataURL (evita CORS en file://) =====
+    async function cargarLogoDataURL() {
+      try {
+        // Ruta absoluta dentro del APK/Bundle
+        const rutaLogo =
+          (window.cordova && cordova.file && cordova.file.applicationDirectory)
+            ? cordova.file.applicationDirectory + "www/iconos/ictusgps.png"
+            : "iconos/ictusgps.png"; // en navegador
+        const resp = await fetch(rutaLogo);
+        const blob = await resp.blob();
+        return await new Promise((res) => {
+          const r = new FileReader();
+          r.onload = () => res(r.result);
+          r.readAsDataURL(blob);
+        });
+      } catch {
+        return null;
+      }
+    }
+    const logoDataURL = await cargarLogoDataURL();
+
+    // ===== Construcción del contenido (debe estar en el DOM, pero fuera de vista) =====
     const wrapper = document.createElement("div");
+    wrapper.style.position = "fixed";
+    wrapper.style.left = "-99999px"; // fuera de pantalla, NO display:none
+    wrapper.style.top = "0";
+    wrapper.style.width = "794px";   // aprox ancho A4 a 96dpi para consistencia
     wrapper.style.padding = "20px";
     wrapper.style.fontFamily = "Verdana, Geneva, sans-serif";
     wrapper.style.color = "#0e1a33";
+    wrapper.style.background = "#fff";
 
-    wrapper.innerHTML = `
+    const cabeceraHTML = `
       <div style="text-align:center;margin-bottom:20px;">
-        <img src="../iconos/ictusgps.png" style="height:70px;margin-bottom:10px;">
+        ${logoDataURL ? `<img src="${logoDataURL}" style="height:70px;margin-bottom:10px;">`
+                       : `<div style="height:70px"></div>`}
         <h2 style="color:#0f3d83;margin:0;">Unidad de Ictus Málaga</h2>
         <hr style="border:1px solid #0f3d83;margin-top:10px;">
       </div>
     `;
+    wrapper.innerHTML = cabeceraHTML;
+
     const contenido = element.cloneNode(true);
     contenido.style.margin = "20px 0";
     wrapper.appendChild(contenido);
 
     const fecha = new Date().toLocaleString("es-ES");
-    wrapper.innerHTML += `
+    const pieHTML = `
       <div style="text-align:center;margin-top:30px;font-size:0.8rem;">
         <hr style="border:1px solid #0f3d83;margin-bottom:6px;">
         <p style="margin:0;color:#64748b;">Generado con Ictus GPS — ${fecha}</p>
         <p style="margin:0;color:#64748b;">www.unidadictusmalaga.com</p>
       </div>
     `;
+    wrapper.insertAdjacentHTML("beforeend", pieHTML);
 
-    // ===== Generar PDF con html2pdf.js =====
+    document.body.appendChild(wrapper); // <-- clave para que html2canvas tome estilos
+
+    // ===== Opciones html2pdf / html2canvas =====
     const opt = {
       margin: 10,
       filename: nombreArchivo,
       image: { type: "jpeg", quality: 0.98 },
-      html2canvas: { scale: 2, useCORS: true },
+      html2canvas: {
+        scale: 2,
+        useCORS: true,
+        allowTaint: true, // tolera imágenes file://
+        logging: false,
+        backgroundColor: "#ffffff",
+        onclone: (clonedDoc) => {
+          // Asegura tipografías/estilos si usas CSS externos
+        }
+      },
       jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
     };
 
-    const pdfBlob = await html2pdf()
-      .set(opt)
-      .from(wrapper)
-      .toPdf()
-      .get("pdf")
-      .then((pdf) => pdf.output("blob"));
+    // ===== Generar PDF (Blob) =====
+    const pdfBlob = await html2pdf().set(opt).from(wrapper).toPdf().get("pdf").then(pdf => pdf.output("blob"));
+
+    // Limpieza del wrapper temporal
+    wrapper.remove();
 
     // ===== Guardar en app o navegador =====
     if (window.cordova && window.resolveLocalFileSystemURL && cordova.file) {
-      const path = cordova.file.externalDataDirectory;
+      // Preferible almacenamiento interno de la app (no requiere permisos)
+      const path = cordova.file.dataDirectory; // p.ej. /data/data/<app>/files/
       window.resolveLocalFileSystemURL(path, (dir) => {
         dir.getFile(nombreArchivo, { create: true }, (file) => {
           file.createWriter((writer) => {
             writer.onwriteend = () => {
               overlay.style.display = "none";
-              if (window.cordova.plugins.fileOpener2)
-                cordova.plugins.fileOpener2.open(
-                  path + nombreArchivo,
-                  "application/pdf"
-                );
+              // Abrir PDF
+              if (window.cordova.plugins && window.cordova.plugins.fileOpener2) {
+                cordova.plugins.fileOpener2.open(path + nombreArchivo, "application/pdf");
+              } else {
+                alert("PDF guardado en la app (no se pudo abrir automáticamente).");
+              }
+            };
+            writer.onerror = (e) => {
+              console.error("Error al escribir PDF:", e);
+              overlay.style.display = "none";
+              alert("No se pudo guardar el PDF.");
             };
             writer.write(pdfBlob);
           });
+        }, (e) => {
+          console.error("Error getFile:", e);
+          overlay.style.display = "none";
+          alert("No se pudo crear el fichero PDF.");
         });
+      }, (e) => {
+        console.error("Error resolveLocalFileSystemURL:", e);
+        overlay.style.display = "none";
+        alert("No se pudo acceder al directorio de la app.");
       });
     } else {
       // Navegador
