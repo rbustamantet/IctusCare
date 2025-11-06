@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ictus GPS – Inicio</title>
+  <!-- 🔹 ICONOS Y MANIFIESTO PWA -->
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="icon" type="image/png" sizes="192x192" href="iconos/ictusgps.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="iconos/ictusgps.png">
+  <link rel="shortcut icon" href="iconos/ictusgps.png">
+  <meta name="theme-color" content="#0f3d83">
+
+<style>
+  :root {
+    --azul1:#0f3d83;
+    --azul2:#2563eb;
+  }
+
+  body {
+    margin:0;
+    height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    background: #0f3d83;
+    background-size:200% 200%;
+    font-family: Verdana, sans-serif;
+  }
+
+  .contenedor {
+    text-align:center;
+    color:white;
+    position:relative;
+  }
+
+  
+
+  .logo {
+    max-width:80vmin;
+    max-height:70vh;
+    height:auto;
+    width:auto;
+    z-index:2;
+    position:relative;
+    animation:tvOn 0.8s ease-out forwards;;
+  }
+
+  
+  /* Animaciones principales */
+  @keyframes fondo {
+    0%{background-position:0% 50%;}
+    100%{background-position:100% 50%;}
+  }
+
+  @keyframes fadeIn {
+    from{opacity:0;transform:translateY(15px);}
+    to{opacity:1;transform:translateY(0);}
+  }
+
+  @keyframes breathing {
+    0%{transform:scale(1);opacity:0.9;}
+    50%{transform:scale(1.06);opacity:1;}
+    100%{transform:scale(1);opacity:0.9;}
+  }
+
+  @keyframes encendido {
+    0%{opacity:0;transform:translate(-50%, -50%) scale(0.3);}
+    40%{opacity:1;transform:translate(-50%, -50%) scale(1);}
+    100%{opacity:0;transform:translate(-50%, -50%) scale(1.6);}
+  }
+
+  /* “Apagado de TV”: se aplana y se desvanece */
+  @keyframes tvOff {
+    0%   {transform:scaleY(1) scaleX(1); opacity:1;}
+    60%  {transform:scaleY(0.05) scaleX(1.1); opacity:0.8;}
+    80%  {transform:scaleY(0.02) scaleX(1.5); opacity:0.4;}
+    100% {transform:scaleY(0) scaleX(2); opacity:0;}
+  }
+@keyframes tvOn {
+  0%   {transform:scaleY(0) scaleX(2); opacity:0;}
+  90%  {transform:scaleY(0.05) scaleX(1.9); opacity:0.2;}
+  95%  {transform:scaleY(0.2) scaleX(1.8); opacity:0.6;}
+  100% {transform:scaleY(1) scaleX(1); opacity:1;}
+}
+  @keyframes fadeBody {
+    from {opacity:1;}
+    to {opacity:0; background:#0f3d83;}
+  }
+</style>
+
+<script>
+  const DURACION_SPLASH = 6000;
+
+  document.addEventListener("DOMContentLoaded", () => {
+    setTimeout(() => {
+      const logo = document.querySelector(".logo");
+
+      logo.style.animation = "tvOff 1s ease-in forwards";
+
+      setTimeout(() => {
+        document.body.style.animation = "fadeBody 0.8s forwards";
+        setTimeout(() => {
+          window.location.href = "advertencia.html";
+        }, 500);
+      }, 1000);
+    }, DURACION_SPLASH);
+  });
+</script>
+</head>
+<body>
+  <div class="contenedor">
+    <img src="img/ictusgpssplash.png" alt="Ictus GPS" class="logo">
+  </div>
+</body>
+</html>

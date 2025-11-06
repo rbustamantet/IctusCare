@@ -1159,5 +1159,30 @@ async function generarInformePDF(nombre, edad, nhc) {
   </div>
 <script src="../lib/html2pdf.bundle.min.js"></script>
 <script src="../js/index.js"></script>
+<script>
+document.addEventListener('deviceready', function () {
+  // Registrar todos los botones aquí dentro
+  const btnPDF = document.getElementById('btnPDF');
+  if (btnPDF) {
+    btnPDF.addEventListener('click', async (e) => {
+      e.preventDefault();
+
+      const resultDiv = document.getElementById('resultCard');
+      if (!resultDiv || resultDiv.innerText.trim() === '') {
+        alert('No hay contenido para exportar.');
+        return;
+      }
+
+      try {
+        await exportarPDFconCabecera('resultCard', 'Informe_Anticoagulacion.pdf');
+        alert('Informe PDF generado correctamente.');
+      } catch (err) {
+        console.error('Error PDF:', err);
+        alert('Error al generar el PDF.');
+      }
+    });
+  }
+}, false);
+</script>
 </body>
 </html>

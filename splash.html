@@ -4,12 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Ictus GPS – Inicio</title>
-  <!-- 🔹 ICONOS Y MANIFIESTO PWA -->
-  <link rel="manifest" href="site.webmanifest">
-  <link rel="icon" type="image/png" sizes="192x192" href="iconos/ictusgps.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="iconos/ictusgps.png">
-  <link rel="shortcut icon" href="iconos/ictusgps.png">
-  <meta name="theme-color" content="#0f3d83">
+
+<!-- 🔹 ICONOS Y MANIFIESTO PWA -->
+<link rel="manifest" href="site.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="iconos/ictusgps.png">
+<link rel="apple-touch-icon" sizes="180x180" href="iconos/ictusgps.png">
+<link rel="shortcut icon" href="iconos/ictusgps.png">
+<meta name="theme-color" content="#0f3d83">
 
 <style>
   :root {
@@ -17,86 +18,73 @@
     --azul2:#2563eb;
   }
 
-  body {
+  html, body {
     margin:0;
-    height:100vh;
+    padding:0;
+    width:100%;
+    height:100%;
     display:flex;
     align-items:center;
     justify-content:center;
     overflow:hidden;
-    background: linear-gradient(135deg, var(--azul1), var(--azul2));
+    background:#0f3d83;
     background-size:200% 200%;
-    animation:fondo 6s ease-in-out infinite alternate;
     font-family: Verdana, sans-serif;
   }
 
   .contenedor {
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
     text-align:center;
     color:white;
-    position:relative;
-    animation:fadeIn 1.5s ease-out;
-  }
-
-  .halo {
-    position:absolute;
-    top:50%;
-    left:50%;
-    width:250px;
-    height:250px;
-    border-radius:50%;
-    background: radial-gradient(circle, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0) 70%);
-    transform:translate(-50%, -50%) scale(0);
-    opacity:0;
-    animation:encendido 2.5s ease-out forwards;
+    width:100%;
+    height:100%;
   }
 
   .logo {
-    width:160px;
-    height:160px;
+    max-width:80vmin;
+    max-height:70vh;
+    height:auto;
+    width:auto;
     z-index:2;
     position:relative;
-    animation:breathing 3.5s ease-in-out infinite;
-    filter:drop-shadow(0 0 8px rgba(255,255,255,0.25));
-  }
+    animation:focusFade 5s ease-in-out forwards;  }
 
   h1 {
     margin-top:1.2rem;
-    font-size:1.3rem;
+    font-size:clamp(1rem, 2vw, 1.3rem);
     letter-spacing:1px;
     font-weight:normal;
     text-shadow:0 1px 3px rgba(0,0,0,0.3);
   }
 
-  /* Animaciones principales */
+  /* 🔹 Animaciones */
   @keyframes fondo {
     0%{background-position:0% 50%;}
     100%{background-position:100% 50%;}
   }
 
-  @keyframes fadeIn {
-    from{opacity:0;transform:translateY(15px);}
-    to{opacity:1;transform:translateY(0);}
+  @keyframes entradaZoom {
+    from {opacity:0; transform:scale(0.9);}
+    to {opacity:1; transform:scale(1);}
   }
 
-  @keyframes breathing {
-    0%{transform:scale(1);opacity:0.9;}
-    50%{transform:scale(1.06);opacity:1;}
-    100%{transform:scale(1);opacity:0.9;}
-  }
+  @keyframes tiltFadeOut {
+  from {opacity:1; transform:rotate(0deg);}
+  to   {opacity:0; transform:rotate(90deg) scale(0.3);}
+}
 
-  @keyframes encendido {
-    0%{opacity:0;transform:translate(-50%, -50%) scale(0.3);}
-    40%{opacity:1;transform:translate(-50%, -50%) scale(1);}
-    100%{opacity:0;transform:translate(-50%, -50%) scale(1.6);}
-  }
+  @keyframes focusFade {
+  0%   {opacity:0; filter:blur(12px);}
+  5%   {opacity:0; filter:blur(9px);}
+  15%  {opacity:1; filter:blur(6px);}
+  20%  {opacity:1; filter:blur(3);}
+  25%  {opacity:1; filter:blur(0);}     /* mantiene el enfoque unos 3 s */
+  100% {opacity:1; filter:blur(0px);}   
+}
 
-  /* “Apagado de TV”: se aplana y se desvanece */
-  @keyframes tvOff {
-    0%   {transform:scaleY(1) scaleX(1); opacity:1; filter:brightness(1);}
-    60%  {transform:scaleY(0.05) scaleX(1.2); opacity:1; filter:brightness(1.8);}
-    80%  {transform:scaleY(0.02) scaleX(1.6); opacity:0.9;}
-    100% {transform:scaleY(0) scaleX(2); opacity:0;}
-  }
 
   @keyframes fadeBody {
     from {opacity:1;}
@@ -105,22 +93,21 @@
 </style>
 
 <script>
-  const DURACION_SPLASH = 3500;
+  const DURACION_SPLASH = 10000; // duración antes de salida (ms)
 
   document.addEventListener("DOMContentLoaded", () => {
     setTimeout(() => {
       const logo = document.querySelector(".logo");
       const texto = document.querySelector("h1");
-      const halo = document.querySelector(".halo");
 
-      halo.style.opacity = "0";
-      texto.style.opacity = "0";
-      logo.style.animation = "tvOff 1s ease-in forwards";
+      if (texto) texto.style.opacity = "0";
+
+      // animación de salida del logo
+      logo.style.animation = "tiltFadeOut 1.7s ease-in forwards";
 
       setTimeout(() => {
-        document.body.style.animation = "fadeBody 0.8s forwards";
         setTimeout(() => {
-          window.location.href = "advertencia.html";
+          window.location.href = "splash2.html"; // 👉 siguiente pantalla
         }, 800);
       }, 1000);
     }, DURACION_SPLASH);
@@ -129,9 +116,7 @@
 </head>
 <body>
   <div class="contenedor">
-    <div class="halo"></div>
-    <img src="iconos/ictuscareico1.png" alt="Ictus GPS" class="logo">
-    <h1>Ictus GPS</h1>
+    <img src="img/neuroappssplash.png" alt="NeuroApps" class="logo">
   </div>
 </body>
 </html>

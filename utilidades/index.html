@@ -2,7 +2,6 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="manifest" href="../site.webmanifest">
 <link rel="icon" type="image/png" sizes="192x192" href="../iconos/ictusgps.png">
@@ -12,115 +11,17 @@
 
 <title>Unidad de Ictus · Utilidades</title>
 <meta name="color-scheme" content="light dark">
+
 <style>
-  :root{
-    --navy:#0b1e3a;          /* azul navy */
-    --ink:#e6ecf5;           /* texto sobre navy */
-    --muted:#b6c3d6;         /* texto secundario */
-    --card:#0f274d;          /* tarjetas sobre navy */
-    --card-hover:#11305f;
-    --accent:#7fb3ff;        /* acento sutil */
-    --ring:#3a69b8;
-    --shadow:0 8px 18px rgba(0,0,0,.35);
-    --radius:18px;
-  }
-  *{box-sizing:border-box}
-  html,body{margin:0; height:100%}
-  body{
-    font-family: Verdana, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", sans-serif;
-    background: white;
-    color: var(--ink);
-    -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
-  }
-  .wrap{max-width:1080px; margin:0 auto; padding:24px}
-  header{
-    position:sticky; top:0; z-index:20;
-    backdrop-filter: blur(6px);
-    background:#1b3a8a;
-    border-bottom: 1px solid rgba(255,255,255,.08);
-  }
-  .bar{display:flex; align-items:center; gap:12px; padding:14px 18px}
-  .logo{
-    width:36px; height:36px; border-radius:10px;
-    display:grid; place-items:center;
-    background: linear-gradient(160deg,#2a56a3,#1e3d77);
-    box-shadow: inset 0 0 0 1px rgba(255,255,255,.12);
-  }
-  .title{font-size:26px; font-weight:700; color:white; letter-spacing:.2px}
-  .subtitle{font-size:.9rem; color:var(--muted)}
-  .headcol{display:flex; flex-direction:column}
-  .grid{
-    display:grid;
-    grid-template-columns: repeat(1, minmax(0,1fr));
-    gap:16px;
-    margin-top:22px;
-  }
-  @media (min-width:520px){ .grid{ grid-template-columns: repeat(2, minmax(0,1fr)); } }
-  @media (min-width:900px){ .grid{ grid-template-columns: repeat(3, minmax(0,1fr)); } }
-
-  a.card{
-    display:flex; align-items:flex-start; gap:14px;
-    padding:18px; border-radius: var(--radius);
-    background: linear-gradient(180deg, var(--card), rgba(15,39,77,.96));
-    color: var(--ink); text-decoration:none;
-    box-shadow: var(--shadow);
-    border: 1px solid rgba(255,255,255,.06);
-    outline: none;
-    transition: transform .12s ease, background .2s ease, border-color .2s ease, box-shadow .2s ease;
-  }
-  a.card:hover{ background: var(--card-hover); transform: translateY(-2px); border-color: rgba(127,179,255,.25); }
-  a.card:focus-visible{ box-shadow: 0 0 0 3px var(--ring), var(--shadow); }
-  .ic {
-  width: 42px;
-  height: 42px;
-  flex: 0 0 42px;
-  display: grid;
-  place-items: center;
-  border-radius: 12px;
-
-  background: none !important;      /* 🔹 Sin fondo alguno */
-  border: none !important;          /* 🔹 Sin borde */
-  box-shadow: none !important;      /* 🔹 Sin sombra */
-  backdrop-filter: none !important; /* 🔹 Evita difuminados del fondo */
-}
-.icon img {
-  width: 42px;
-  height: 42px;
-  display: block;
-  margin: 0 auto;
-  background: transparent !important;
-  filter: none !important;
-  mix-blend-mode: normal !important;
-  box-shadow: none !important;
-}
-
-
-  .card h3{
-    margin:2px 0 6px; font-size:1.0rem; line-height:1.2; font-weight:700;
-  }
-  .card p{
-    margin:0; font-size:.92rem; line-height:1.35; color:var(--muted);
-  }
-  footer{
-    margin:28px 0 8px; font-size:.8rem; color:var(--muted); text-align:center;
-    opacity:.9;
-  }
-  /* Botón grande opcional para volver a la portada/app */
-  .actions{
-    display:flex; gap:10px; flex-wrap:wrap; margin-top:16px;
-  }
-  .btn{
-    display:inline-flex; align-items:center; gap:10px;
-    padding:10px 14px; border-radius:12px; text-decoration:none;
-    border:1px solid rgba(255,255,255,.14);
-    background: rgba(255,255,255,.06); color:var(--ink);
-  }
-  .btn:hover{ border-color: rgba(127,179,255,.35); background: rgba(255,255,255,.10); }
-</style>
-<style>
+/* =========================================================
+   VARIABLES Y BASE
+========================================================= */
 :root{
   --bg:#f9fafc;
   --ink:#0e1a33;
+  --muted:#b6c3d6;
+  --card:#0f274d;
+  --card-hover:#11305f;
   --accent:#7fb3ff;
   --accent-light:#d7e3f8;
   --accent-dark:#0f3d83;
@@ -128,32 +29,69 @@
   --alert:#b30000;
   --alert-bg:#fef3f2;
   --alert-border:#f5c2c0;
+  --ring:#3a69b8;
+  --shadow:0 8px 18px rgba(0,0,0,.35);
+  --radius:18px;
 }
 
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
 
-  .wrap{max-width:850px; margin:0 auto; padding:24px}
-
-html,body{
-  margin:0; padding:0;
-  background:var(--bg);
-  color:var(--ink);
-  font-family:Verdana, Geneva, Tahoma, sans-serif;
+body{
+  font-family: Verdana, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
   line-height:1.6;
-  -webkit-text-size-adjust:100%;
 }
 
+.wrap{max-width:1080px; margin:0 auto; padding:24px}
+
+/* =========================================================
+   CABECERA
+========================================================= */
 header{
+  position:sticky;
+  top:0;
+  z-index:20;
+  backdrop-filter:blur(6px);
   background:var(--accent-dark);
-  color:#fff;
-  text-align:LEFT;
-  padding:1rem;
-  font-weight:800;
-  font-size:1.2rem;
+  border-bottom:1px solid rgba(255,255,255,.08);
   box-shadow:0 2px 6px rgba(0,0,0,0.08);
-  position:sticky;top:0;z-index:10;
+  color:#fff;
 }
+.bar{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:4px 18px;
+}
+.logo{
+  width:36px;
+  height:36px;
+  border-radius:10px;
+  display:grid;
+  place-items:center;
+  background:linear-gradient(160deg,#2a56a3,#1e3d77);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.12);
+}
+.title{font-size:1.4rem;font-weight:700;letter-spacing:.2px;color:#fff;}
+.headcol{display:flex;flex-direction:column}
+.actions{margin-left:auto}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:8px 14px;border-radius:12px;
+  border:1px solid rgba(255,255,255,.14);
+  background:rgba(255,255,255,.06);
+  color:white;text-decoration:none;font-weight:600;
+  transition:background .25s,border-color .25s;
+}
+.btn:hover{border-color:rgba(127,179,255,.35);background:#1c60c3}
 
-
+/* =========================================================
+   CONTENIDO PRINCIPAL
+========================================================= */
 main{
   max-width:850px;
   margin:0 auto;
@@ -163,76 +101,91 @@ main{
   box-shadow:0 2px 10px rgba(0,0,0,0.04);
 }
 
-p{margin:0.75rem 0;text-align:left;}
-a{color:var(--accent-dark);text-decoration:none;}
-a:hover{color:var(--accent);}
-strong,b{color:var(--accent-dark);}
-h3{color:white;margin-top:1.2rem;font-size:1.05rem;}
-ul{margin:0.6rem 0 0.6rem 1.2rem;}
-li{margin:0.3rem 0;}
-hr{border:none;border-top:1px solid var(--border);margin:1.4rem 0;}
-.highlight-red{color:var(--alert);font-weight:700;}
-
-.related{
-  margin-top:1.6rem;
-  background:var(--accent-light);
-  padding:1rem;
-  border-radius:8px;
+.grid{
+  display:grid;
+  grid-template-columns: repeat(1,minmax(0,1fr));
+  gap:16px;
+  margin-top:22px;
 }
-.related h3{margin:0 0 .5rem 0;color:var(--accent-dark);font-size:1rem;}
-.related ol{margin:0;padding-left:1.2rem;}
-.related li{margin:0.25rem 0;}
+@media(min-width:520px){.grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
+@media(min-width:900px){.grid{grid-template-columns:repeat(3,minmax(0,1fr));}}
 
-.alert{
-  text-align:center;
-  background:var(--alert-bg);
-  border:1px solid var(--alert-border);
-  border-radius:6px;
-  padding:0.8rem;
-  color:#800000;
-  font-weight:700;
-  margin-top:1rem;
-}
-.bar{display:flex; align-items:center; gap:12px; padding:1px 18px}
- 
-  .title{font-weight:700; letter-spacing:.2px; font-size:1.2rem;}
-  .subtitle{font-size:.9rem; color:var(--muted)}
-  .headcol{display:flex; flex-direction:column}
-
-  .grid{
-    display:grid;
-    grid-template-columns: repeat(1, minmax(0,1fr));
-    gap:16px;
-    margin-top:22px;
-  }
-  @media (min-width:520px){ .grid{ grid-template-columns: repeat(2, minmax(0,1fr)); } }
-  @media (min-width:900px){ .grid{ grid-template-columns: repeat(3, minmax(0,1fr)); } }
-
-   
-  .actions{margin-left:auto}
-  .btn{
-    display:inline-flex; align-items:center; gap:2px;
-    padding:4px 8px; border-radius:12px; text-decoration:none;
-    border:1px solid rgba(255,255,255,.14);
-    background: rgba(255,255,255,.06); color:white;
-  }
-  .btn:hover{ border-color: rgba(127,179,255,.35); background: #1c60c3; color:white;}
-.back-btn{
-  display:inline-block;
-  margin-top:1.5rem;
-  background:var(--accent-dark);
-  color:#fff;
+/* =========================================================
+   TARJETAS DE UTILIDADES
+========================================================= */
+.card{
+  display:flex;
+  align-items:flex-start;
+  gap:14px;
+  padding:18px;
+  border-radius:var(--radius);
+  background:linear-gradient(180deg,var(--card),rgba(15,39,77,.96));
+  color:var(--ink);
   text-decoration:none;
-  font-weight:700;
-  padding:0.6rem 1.2rem;
-  border-radius:8px;
-  transition:background .2s, transform .1s;
-  text-align:center;
+  box-shadow:var(--shadow);
+  border:1px solid rgba(255,255,255,.06);
+  transition:transform .25s ease, background .25s ease, border-color .25s ease, box-shadow .25s ease;
 }
-.back-btn:hover{
-  background:#1c60c3;
-  color:#fff;
-  transform:translateY(-1px);
+.card:hover{
+  background:var(--card-hover);
+  transform:translateY(-2px);
+  border-color:rgba(127,179,255,.25);
+  box-shadow:0 0 14px rgba(127,179,255,0.35);
+}
+
+.ic{
+  width:42px;
+  height:42px;
+  flex:0 0 42px;
+  display:grid;
+  place-items:center;
+}
+.icon img{
+  width:42px;
+  height:42px;
+  display:block;
+  margin:0 auto;
+  filter:drop-shadow(0 2px 3px rgba(0,0,0,0.15));
+  transition:transform 0.25s ease, filter 0.25s ease;
+}
+.card:hover .icon img{
+  transform:scale(1.08);
+  filter:brightness(1.15);
+}
+
+.card h3{
+  margin:2px 0 6px;
+  font-size:1rem;
+  line-height:1.2;
+  font-weight:700;
+  color:white;
+}
+.card p{
+  margin:0;
+  font-size:.92rem;
+  line-height:1.35;
+  color:var(--muted);
+}
+
+/* =========================================================
+   PIE DE PÁGINA
+========================================================= */
+footer{
+  position:relative;
+  left:50%;
+  transform:translateX(-50%);
+  width:100vw;
+  margin:2rem 0 0;
+  padding:1.5rem 0;
+  border-top:1px solid #e5e7eb;
+  background:#fff;
+  text-align:center;
+  box-shadow:0 -2px 6px rgba(0,0,0,0.04);
+}
+footer img{
+  max-width:380px;
+  height:auto;
+  opacity:.96;
 }
 
 @media(max-width:768px){
@@ -240,175 +193,103 @@ hr{border:none;border-top:1px solid var(--border);margin:1.4rem 0;}
   main{padding:0.9rem 1rem;}
   body{font-size:0.96rem;}
 }
-.icon img {
-  width: 42px;          /* Tamaño base */
-  height: 42px;
-  margin-bottom: 8px;   /* Separación respecto al texto */
-  filter: drop-shadow(0 2px 3px rgba(0,0,0,0.15)); /* sombra opcional */
-}
-
-.card:hover .icon img {
-  transform: scale(1.08);
-  transition: transform 0.2s ease;
-}
 </style>
 </head>
+
 <body>
-  <header>
-    <div class="bar wrap">
-      
-      <div class="headcol">
-        <div class="title">UTILIDADES</div>
-        </div>
-      <div class="actions">
-        <a class="btn" href="../index.html">Inicio</a>
+<header>
+  <div class="bar wrap">
+    <div class="headcol">
+      <div class="title">UTILIDADES</div>
+    </div>
+    <div class="actions">
+      <a class="btn" href="../index.html">Inicio</a>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="grid" role="list">
+
+    <a class="card" href="AnticoagulacionFA.html" role="listitem">
+      <span class="ic"><div class="icon"><img src="anticoagulacion.png" alt="Anticoagulación en FA"></div></span>
+      <div>
+        <h3>Anticoagulación en FA</h3>
+        <p>Selección de ACOD/AVK según escalas de riesgo y condiciones clínicas.</p>
       </div>
-    </div>
-  </header>
+    </a>
 
-  <main class="wrap">
-    <div class="grid" role="list">
+    <a class="card" href="fop.html" role="listitem">
+      <span class="ic"><div class="icon"><img src="fopico.png" alt="Foramen oval permeable"></div></span>
+      <div>
+        <h3>Foramen Oval Permeable</h3>
+        <p>Recomendación de tratamiento en FOP según RoPE y criterios clínicos.</p>
+      </div>
+    </a>
 
-      <!-- Anticoagulación en FA -->
-      <a class="card" role="listitem" href="AnticoagulacionFA.html">
-        <span class="ic" aria-hidden="true">
-          <div class="icon">
-  <img src="anticoagulacion.png" alt="Anticoagulación en FA">
-</div>
-        </span>
-        <div>
-          <h3>Anticoagulación en FA</h3>
-          <p>Selección de ACOD/AVK según escalas de riesgo y condiciones clínicas.</p>
-        </div>
-      </a>
+    <a class="card" href="CPemboligena.html" role="listitem">
+      <span class="ic"><div class="icon"><img src="cardiopatiasico.png" alt="Ictus Cardioembólico"></div></span>
+      <div>
+        <h3>Otros Ictus Cardioembólicos</h3>
+        <p>Ayuda a la selección del tratamiento en otras cardiopatías embolígenas.</p>
+      </div>
+    </a>
 
-      <!-- Foramen Oval Permeable -->
-      <a class="card" role="listitem" href="fop.html">
-        <span class="ic" aria-hidden="true">
-          <div class="icon">
-  <img src="fopico.png" alt="Foramen oval permeable">
-</div>
-        </span>
-
-        <div>
-          <h3>Foramen Oval Permeable</h3>
-          <p>Recomendación de tratamiento en FOP según RoPE y criterios clínicos.</p>
-        </div>
-      </a>
-
-<!-- Ictus Cardioembólico -->
-      <a class="card" role="listitem" href="CPemboligena.html">
-        <span class="ic" aria-hidden="true">
-          <div class="icon">
-  <img src="cardiopatiasico.png" alt="Ictus Cardioembólico">
-</div>
-        </span>
-
-        <div>
-          <h3>Otros Ictus Cardioembólicos</h3>
-          <p>Ayuda a la selección del tratamiento en otras cardiopatías embolígenas.</p>
-        </div>
-      </a>
-
-      <!-- Ictus aterotrombótico -->
-      <a class="card" role="listitem" href="Aterotrombotico.html">
-        <span class="ic" aria-hidden="true">
-          <div class="icon">
-  <img src="aterotromboticoico.png" alt="Ictus aterotrombótico">
-</div>
-        </span>
-        <div>
+    <a class="card" href="Aterotrombotico.html" role="listitem">
+      <span class="ic"><div class="icon"><img src="aterotromboticoico.png" alt="Ictus aterotrombótico"></div></span>
+      <div>
         <h3>Ictus aterotrombótico</h3>
-          <p>Manejo de antiagregación y estrategias de prevención secundaria.</p>
-        </div>
-      </a>
+        <p>Manejo de antiagregación y estrategias de prevención secundaria.</p>
+      </div>
+    </a>
 
-<!-- Estenosis carotídea -->
-      <a class="card" role="listitem" href="estenosis.html">
-        <span class="ic" aria-hidden="true">
-          <div class="icon">
-  <img src="estenosisico.png" alt="Estenosis carotídea">
-</div>
-        </span>
-        <div>
+    <a class="card" href="estenosis.html" role="listitem">
+      <span class="ic"><div class="icon"><img src="estenosisico.png" alt="Estenosis carotídea"></div></span>
+      <div>
         <h3>Estenosis carotídea</h3>
-          <p>Selección de tratamiento en estenosis carotídea.</p>
-        </div>
-      </a>
+        <p>Selección de tratamiento en estenosis carotídea.</p>
+      </div>
+    </a>
 
-      <!-- Insulinoterapia -->
-      <a class="card" role="listitem" href="Insulinoterapia.html">
-        <span class="ic" aria-hidden="true">
-          <div class="icon">
-  <img src="insulinoterapiaico.png" alt="Insulinoterapia">
-</div>
-        </span>
-        <div>
-          <h3>Insulinoterapia</h3>
-          <p>Terapia Basal-Bolus-Corrección en la Unidad de Ictus.</p>
-        </div>
-      </a>
+    <a class="card" href="Insulinoterapia.html" role="listitem">
+      <span class="ic"><div class="icon"><img src="insulinoterapiaico.png" alt="Insulinoterapia"></div></span>
+      <div>
+        <h3>Insulinoterapia</h3>
+        <p>Terapia Basal-Bolus-Corrección en la Unidad de Ictus.</p>
+      </div>
+    </a>
 
+    <a class="card" href="Hipolipemiantes.html" role="listitem">
+      <span class="ic"><div class="icon"><img src="hipolipemiantesico.png" alt="Hipolipemiantes"></div></span>
+      <div>
+        <h3>Hipolipemiantes</h3>
+        <p>Manejo de hipolipemiantes según tipo de ictus y LDL-c.</p>
+      </div>
+    </a>
 
-      <!-- Hipolipemiantes -->
-      <a class="card" role="listitem" href="Hipolipemiantes.html">
-        <span class="ic" aria-hidden="true">
-          <div class="icon">
-  <img src="hipolipemiantesico.png" alt="Hipolipemiantes">
-</div>
-        </span>
-        <div>
-          <h3>Hipolipemiantes</h3>
-          <p>Manejo de hipolipemiantes según tipo de ictus y LDL-c.</p>
-        </div>
-      </a>
+    <a class="card" href="TerritoriosVasculares.html" role="listitem">
+      <span class="ic"><div class="icon"><img src="territoriosico.png" alt="Territorios vasculares"></div></span>
+      <div>
+        <h3>Territorios vasculares</h3>
+        <p>Mapas cerebrales con sombreado por territorios arteriales.</p>
+      </div>
+    </a>
 
-      <!-- Territorios vasculares -->
-      <a class="card" role="listitem" href="TerritoriosVasculares.html">
-        <span class="ic" aria-hidden="true">
-          <div class="icon">
-  <img src="territoriosico.png" alt="Territorios Vasculares">
-</div>
-        </span>
-        <div>
-          <h3>Territorios vasculares</h3>
-          <p>Mapas cerebrales con sombreado por territorios arteriales.</p>
-        </div>
-      </a>
+    <a class="card" href="IctusGPS.html" role="listitem">
+      <span class="ic"><div class="icon"><img src="ictusgpsico.png" alt="Ictus GPS"></div></span>
+      <div>
+        <h3>Ictus GPS</h3>
+        <p>Herramienta para el diagnóstico de localización vascular del ictus.</p>
+      </div>
+    </a>
 
-      <!-- Ictus GPS -->
-      <a class="card" role="listitem" href="IctusGPS.html">
-        <span class="ic" aria-hidden="true">
-          <div class="icon">
-  <img src="ictusgpsico.png" alt="IctusGPS">
-</div>
-        </span>
-        <div>
-          <h3>Ictus GPS</h3>
-          <p>Herramienta para el diagnóstico de localización vascular del ictus.</p>
-        </div>
-      </a>
+  </div>
 
-    </div>
+  <footer>
+    <img src="uibanner.png" alt="Unidad de Ictus Málaga">
+  </footer>
+</main>
 
-<footer style="
-    position:relative;
-    left:50%;
-    transform:translateX(-50%);
-    width:100vw;
-    margin:2rem 0 0 0;
-    padding:1.5rem 0;
-    border-top:1px solid #e5e7eb;
-    background:#ffffff;
-    text-align:center;
-    box-shadow:0 -2px 6px rgba(0,0,0,0.04);
-">
-      <img src="uibanner.png"
-         alt="Unidad de Ictus Málaga" style="max-width:380px;height:auto;opacity:.96;">
-  </a>
-
-</footer>
-  </main>
 <script src="js/index.js"></script>
 </body>
 </html>
