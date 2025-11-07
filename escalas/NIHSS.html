@@ -21,25 +21,40 @@
   --bad:#991b1b; --bad-bg:#fef2f2; --bad-ring:#fecaca;
 }
 
-/* ===== CABECERA ===== */
 .appbar {
-  position: sticky; top: 0; z-index: 1000;
-  background: var(--brand); color: #fff;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: var(--brand);
+  color: #fff;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  backdrop-filter: blur(6px);
 }
 .appbar-inner {
-  max-width: 980px; margin: 0 auto;
-  padding: 2px 16px;
-  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 2px 12px;
 }
-.left-group{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
-.appbar h1 { margin: 0; font-size: 22px; font-weight: 800; color: #fff; }
+.appbar-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 1px 10px;
+}
+.left-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.actions { margin-left: auto; }
 
 /* Pill junto al título */
 .pill {
   display: inline-flex; align-items: center; justify-content: center;
   min-width: 38px; height: 32px; padding: 6px 10px;
-  border-radius: 999px; font-size: 13px; font-weight: 700;
+  border-radius: 999px; font-size: 12px; font-weight: 700;
   border: 1px solid transparent;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   background: #eef2ff; color:#1e293b; border-color:#c7dbff;
@@ -48,17 +63,20 @@
 .pill.warn { background:#fef3c7; color:#92400e; border-color:#fde68a; }
 .pill.bad  { background:#fee2e2; color:#991b1b; border-color:#fecaca; }
 
-/* Botón Inicio como las anteriores */
+/* Botón Inicio estándar */
 .btn {
-  display:inline-flex;align-items:center;justify-content:center;
-  height:32px;padding:0 14px;border-radius:10px;
-  text-decoration:none;border:1px solid rgba(127,179,255,.35);
-  background:#1c60c3;color:white;font-size:0.9rem;font-weight:700;
-  transition:background .2s,border-color .2s;
-overflow: hidden;
+  display:inline-flex;align-items:center;gap:8px;
+  padding:8px 14px;border-radius:12px;
+  border:1px solid rgba(255,255,255,.14);
+  background:rgba(255,255,255,.06);
+  color:white;text-decoration:none;font-weight:600;font-size:15px;
+  transition:background .25s,border-color .25s;
+  overflow: hidden;
   text-overflow: ellipsis;
-  transform: translateY(-8px);}
-.btn:hover{ background:#0C00FF; }
+  transform: translateY(-9px) translateX(-15px);
+
+}
+.btn:hover{border-color:rgba(127,179,255,.35);background:#1c60c3;}
 
 /* ===== CUERPO ===== */
 body{margin:0;background:var(--bg);color:var(--ink);font-family:Verdana, Geneva, sans-serif;}
@@ -189,12 +207,16 @@ footer img{max-width:380px;height:auto;opacity:.96;}
 
 <header class="appbar" role="region" aria-label="Cabecera NIHSS">
   <div class="appbar-inner">
-    <div class="left-group">
-      <h1>Escala del NIH para el Ictus (NIHSS)</h1>
-      <output id="pill" class="pill" aria-live="polite" aria-atomic="true">-</output>
-    </div>
-    <div class="actions">
-      <a class="btn" href="../index.html">Inicio</a>
+    <div class="appbar-bar">
+      <img src="../iconos/nihss.png" alt="NIHSS" width="40" height="40"
+           style="border-radius:50%;background:white;box-shadow:0 0 6px rgba(0,0,0,.08);margin-right:8px;">
+      <div class="left-group">
+        <h1 style="margin:0;font-size:1.4rem;line-height:1;font-weight:800;letter-spacing:.2px;color:#fff;">
+          NIHSS
+        </h1>
+        <output id="pill" class="pill" aria-live="polite" aria-atomic="true">–</output>
+      </div>
+      <div class="actions"><a class="btn" href="../index.html">Inicio</a></div>
     </div>
   </div>
 </header>
@@ -477,6 +499,18 @@ footer img{max-width:380px;height:auto;opacity:.96;}
       </div>
     </div>
 
+<!-- COMENTARIOS -->
+<div class="card" id="comentariosCard" style="margin-top:18px;">
+  <label for="comentarios" style="font-weight:900;color:#0b1f44;display:block;margin-bottom:6px;">
+    Comentarios
+  </label>
+  <textarea id="comentarios" placeholder="Añada observaciones o detalles clínicos..."
+    style="width:100%;min-height:80px;resize:vertical;font-size:14px;font-family:Verdana, sans-serif;
+           border:1px solid var(--borde);border-radius:10px;padding:10px 12px;line-height:1.45;
+           background:#f9fafc;color:#0f172a;"></textarea>
+</div>
+
+
     <!-- ACCIONES -->
     <div class="actions">
       <button id="btnClear" class="btn-action btn-clear" type="button">Borrar</button>
@@ -495,7 +529,7 @@ footer img{max-width:380px;height:auto;opacity:.96;}
     </div>
   </section>
 <div style="text-align:center;">
-  <a href="index.html" class="back-btn">Volver</a>
+<a href="javascript:history.back()" class="back-btn">Volver</a>
 </div>
 </main>
 
@@ -591,13 +625,26 @@ function buildResumen(total, sev){
   const lineas = campos.map(id => `- ${labelTextFor(id)}: ${optionTextFor(id)}`);
   lineas.push('');
   lineas.push(`NIHSS total: ${total} (${sev})`);
+
+  // Añadir comentarios si existen
+  const comentarios = document.getElementById('comentarios')?.value.trim();
+  if (comentarios) {
+    lineas.push('');
+    lineas.push('Comentarios:');
+    lineas.push(comentarios);
+  }
+
   return `Exploración neurológica (NIHSS)\n` + lineas.join('\n');
 }
+
 
 /* ===== Acciones ===== */
 document.querySelectorAll('select').forEach(s=>{
   s.addEventListener('change', actualizar);
   s.addEventListener('input', actualizar);
+// Actualizar resumen al escribir comentarios
+document.getElementById('comentarios').addEventListener('input', actualizar);
+
 });
 document.getElementById('btnClear').addEventListener('click', ()=>{
   document.querySelectorAll('select').forEach(s=> s.selectedIndex = 0);

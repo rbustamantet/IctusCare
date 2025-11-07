@@ -8,7 +8,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="../iconos/ictusgps.png">
 <link rel="shortcut icon" href="../iconos/ictusgps.png">
 <meta name="theme-color" content="#0f3d83">
-<title>ABCD² — Riesgo AIT</title>
+<title>ABCD² — Riesgo de ictus tras AIT</title>
 <style>
 :root{
   --bg:#f8fafc; --ink:#0f172a; --muted:#64748b;
@@ -20,19 +20,23 @@
 }
 /* ==== CABECERA AJUSTADA Y FUNCIONAL ==== */
 .appbar {
-  position: sticky;
+position: sticky;
   top: 0;
   z-index: 1000;
   background: #0f3d83; /* azul institucional */
   color: #fff;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  border-bottom:1px solid rgba(255,255,255,.08);
+  box-shadow:0 2px 6px rgba(0,0,0,0.08);
+  backdrop-filter:blur(6px);
 }
-  .appbar.scrolled{box-shadow:0 8px 24px rgba(0,0,0,.08); border-color:#e2e8f0}
+
+
+.appbar.scrolled{box-shadow:0 8px 24px rgba(0,0,0,.08); border-color:#e2e8f0}
 
 .appbar-inner {
-  max-width: 980px;
-  margin: 0 auto;
-  padding: 4px 16px;
+  max-width:1080px;
+  margin:0 auto;
+  padding:4px 18px; /* igual que la .bar de ASPECTS */
   display: flex;
   align-items: center;     /* eje vertical perfecto */
   justify-content: space-between;
@@ -48,10 +52,11 @@
 
 .appbar h1 {
   margin: 0;
-  font-size: 22px;
+  font-size: 1.4rem;
   line-height: 1;          /* evita empuje por el ² */
   color: white;
   font-weight: 800;
+  letter-spacing:.2px;
 }
 
 /* === Pill visible y alineada === */
@@ -61,7 +66,7 @@
   justify-content: center;
   min-width: 38px;
   height: 32px;
-  padding: 6 10px;
+  padding: 6px 10px;
   border-radius: 999px;
   font-size: 12px;
   font-weight: 700;
@@ -78,38 +83,29 @@
 
 /* Botón Inicio */
 .btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  height: 32px;
-  padding: 0 14px;
-  border-radius: 10px;
-  text-decoration: none;
-  border: 1px solid rgba(127, 179, 255, .35);
-  background: #1c60c3;
-  color: white;
-  font-size: 0.9rem;
-  font-weight: 700;
-  transition: background 0.2s, border-color 0.2s;
+  display:inline-flex;align-items:center;gap:8px;
+      padding:8px 14px;border-radius:12px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(255,255,255,.06);
+      color:white;text-decoration:none;font-weight:600;font-size:15px;
+      transition:background .25s,border-color .25s;
   overflow: hidden;
   text-overflow: ellipsis;
   transform: translateY(-8px);
 
 }
 
-.btn:hover {
-  background: #0C00FF;
-  border-color: rgba(127, 179, 255, .35);
-}
+    .btn:hover{border-color:rgba(127,179,255,.35);background:#1c60c3;color:white;text-decoration:none;font-weight:600;}
+
 
 *{box-sizing:border-box}
 html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
   font-family:Verdana, Geneva, Tahoma, sans-serif;font-size:15px}
 
 /* Layout */
-.wrap{max-width:980px;margin:14px auto 40px;padding:0 14px}
-.sub{color:var(--muted);margin:2px 0 12px}
-.panel{background:#f3f7ff;border:1px solid var(--borde);border-radius:16px;padding:14px;
+.wrap{max-width:1080px;margin:14px auto 40px;padding:0 14px}
+.sub{color:var(--muted);margin:2px 0 12px;font-size: 0.9rem}
+.panel{background:#fff;border:1px solid var(--borde);border-radius:16px;padding:14px;
        box-shadow:0 8px 22px rgba(31,86,179,.06)}
 .grid{display:grid;grid-template-columns:1fr;gap:12px}
 @media(min-width:760px){ .grid{grid-template-columns:1fr 1fr} }
@@ -171,20 +167,20 @@ select:focus{outline:none;box-shadow:0 0 0 4px var(--accent-soft)}
   transform:translateY(-1px);
   box-shadow:0 6px 12px rgba(15,61,131,.35);
 }
+.appbar-inner {
+  justify-content: flex-start;
+}
+
+.actions {
+  margin-left: auto;
+}
+
 </style>
 </head>
 <body>
 
 <header class="appbar" role="region" aria-label="Cabecera Escala ABCD²">
-  <div class="appbar-inner">
-    <div class="left-group">
-      <h1>Escala ABCD<sup>2</sup></h1>
-      <output id="pill" class="pill" aria-live="polite" aria-atomic="true" aria-label="Puntuación ABCD²">—</output>
-    </div>
-    <div class="actions">
-      <a class="btn" href="../index.html">Inicio</a>
-    </div>
-  </div>
+  <div class="appbar-inner"><img src="../iconos/abcd2.png" alt="ABCD²" width="40" height="40" style="border-radius:50%;background:white;box-shadow:0 0 6px rgba(0,0,0,.08);margin-right:8px;"><div class="left-group"><h1>ABCD²</h1><output id="pill" class="pill" aria-live="polite" aria-atomic="true" aria-label="Puntuación ABCD²">—</output></div><div class="actions"><a class="btn" href="../index.html">Inicio</a></div></div>
 </header>
 
 <main class="wrap">
@@ -243,7 +239,7 @@ select:focus{outline:none;box-shadow:0 0 0 4px var(--accent-soft)}
     </div>
   </section>
 <div style="text-align:center;">
-  <a href="index.html" class="back-btn">Volver</a>
+<a href="javascript:history.back()" class="back-btn">Volver</a>
 </div>
 </main>
 
