@@ -12,18 +12,96 @@
   <style>
     :root{ --borde:#e5e7eb; --ink:#0f172a; --bg:#ffffff; --muted:#6b7280; --accent:#2563eb; --accent-light:#dbeafe; --base-scale:0.60; }
     html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:Verdana, Geneva, Tahoma, sans-serif;}
-    .appbar{position:sticky;top:0;z-index:1000;background:rgba(248,250,252,.9);border-bottom:1px solid var(--accent-light);backdrop-filter:saturate(180%) blur(6px);padding:.85rem 1.25rem;box-shadow:0 2px 4px rgba(0,0,0,.05);}
-    .appbar h1{margin:0;font-size:2rem;color:var(--accent);font-weight:700}
-    main{padding:1.2rem 1.5rem 1.5rem}
+    /* CABECERA */
+.appbar{position:sticky;top:0;z-index:1000;background:#0f3d83;color:#fff;box-shadow:0 0px 0px rgba(0,0,0,.1)}
+.appbar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 4px 6px; /* pequeño margen lateral real */
+  box-sizing: border-box;
+  width: 100%; /* asegura ancho completo dentro del azul */
+  min-height: 72px;
+}
+
+.left-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: nowrap;  /* evita salto del texto */
+}
+
+.appbar h1 {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #fff;
+  flex-shrink: 0;      /* no se comprime */
+}
+
+.btn {
+  display:inline-flex;align-items:center;gap:8px;
+      padding:9px 16px;border-radius:12px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(255,255,255,.06);
+      color:white;text-decoration:none;font-weight:600;font-size:15px;
+      transition:background .25s,border-color .25s;
+  }
+
+    .btn:hover{border-color:rgba(127,179,255,.35);background:#1c60c3;color:white;text-decoration:none;font-weight:600;}
+
+/* Botón icono institucional (igual que en Unidades) */
+.icon-btn{
+  position:relative;
+  display:inline-block;
+  width:40px;height:40px;
+  border:none;outline:0;background:#fff;border-radius:50%;
+  box-shadow:0 0 6px rgba(0,0,0,.08);
+  padding:0;margin-right:8px;
+  vertical-align:middle;
+  cursor:pointer;
+  }
+.icon-btn .icon-unit,
+.icon-btn .icon-arrow{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+  transition:opacity .22s ease;
+  pointer-events:none;
+}
+.icon-btn .icon-unit{opacity:1;}
+.icon-btn .icon-arrow{opacity:0;}
+.icon-btn:hover .icon-unit{opacity:0;}
+.icon-btn:hover .icon-arrow{opacity:1;}
+.icon-btn:active{transform:scale(.96);}
+
+
+    main{padding:2rem 1.5rem 1.5rem}
     .content{display:flex;gap:20px;align-items:flex-start;justify-content:space-between;}
     .panel{width:48%;text-align:left}
     h2{margin:.3rem 0 1rem 0; font-size:1.5rem;color:var(--accent)}
     .toolbar{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;margin-bottom:.75rem}
     .toolbar button{border:1px solid var(--borde);background:#f8fafc;padding:.45rem .7rem;border-radius:.5rem;cursor:pointer;}
     .toolbar button:hover{background:#eef2ff;border-color:#c7d2fe}
+/* 🔹 Limitar el ancho máximo del cuerpo */
+main {
+  max-width: 1080px;      /* ancho máximo del contenido */
+  margin: 0 auto;         /* centra horizontalmente */
+  box-sizing: border-box;
+}
+
+/* Opcional: para pantallas muy anchas, dar un fondo de página distinto */
+body {
+  background: #f8fafc;    /* tono gris claro para márgenes */
+}
+
+.panel {
+  width: 100%;            /* cada panel ocupa su espacio dentro del ancho limitado */
+}
 
     .overlay-container{position:relative;display:block;overflow:hidden;width:100%;min-height:260px;border:1px dashed var(--borde);border-radius:.5rem;background:#fff;touch-action:none;}
-    @media (min-width:1101px){ .overlay-container{width:calc(100% * var(--base-scale));} }
+    @media (min-width:1080px){ .overlay-container{width:calc(100% * var(--base-scale));} }
     #imagenCargada{position:relative;z-index:0;display:block;width:100%;height:auto;user-select:none;-webkit-user-drag:none}
     #mapaReferencia{position:absolute;top:0;left:0;opacity:.5;cursor:grab;user-select:none;-webkit-user-drag:none;transform-origin:0 0;z-index:1;width:auto;height:auto;max-width:none;max-height:none;}
     #mapaReferencia.grabbing{cursor:grabbing}
@@ -71,7 +149,7 @@
     #leyenda{margin-top:20px} #leyenda h3{margin:.2rem 0 .4rem 0}
     #leyenda ul{list-style:none;padding:0;margin:.25rem 0} #leyenda li{margin:.15rem 0}
 
-    @media (max-width:1100px){ .content{flex-direction:column;align-items:stretch} .panel{width:100%} .overlay-container{width:100%} details.help{max-width:100%} }
+    @media (max-width:1080px){ .content{flex-direction:column;align-items:stretch} .panel{width:100%} .overlay-container{width:100%} details.help{max-width:100%} }
 
     /* Mejora móvil */
     @media (max-width: 600px){
@@ -134,8 +212,20 @@
 </style>
 </head>
 <body>
-  <header class="appbar"><h1>Ictus GPS</h1></header>
-
+<header class="appbar" role="region" aria-label="Ictus GPS">
+  <div class="appbar-inner">
+    <div class="left-group">
+      <button id="backIcon" class="icon-btn" aria-label="Atrás" title="Atrás">
+        <img class="icon-unit" src="ictusgpsico.png" alt="Ictus GPS" width="40" height="40">
+        <svg class="icon-arrow" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M15 18l-6-6 6-6" fill="none" stroke="#0F3D83" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <h1>Ictus GPS</h1>
+    </div>
+    <div class="actions"><a class="btn" href="../index.html">Inicio</a></div>
+  </div>
+</header>
   <main>
     <div class="content">
       <div class="panel">
@@ -556,5 +646,35 @@ window.addEventListener('DOMContentLoaded', ()=>{
 
 </footer>
 <script src="js/index.js"></script>
+<script>
+  (function(){
+    const btn = document.getElementById('backIcon');
+    if(!btn) return;
+
+    btn.addEventListener('click', function(){
+      // Solo activo en ordenador (mouse o trackpad)
+      const isDesktop = window.matchMedia("(pointer: fine)").matches;
+      if(!isDesktop) return;
+
+      console.log('[IctusGPS] Botón atrás pulsado. Historial:', window.history.length);
+      if (window.history.length > 1) history.back();
+      else window.location.href = '../index.html';
+    });
+  })();
+</script>
+<script>
+  (function(){
+    const btn = document.getElementById('backIcon');
+    if(!btn) return;
+
+    btn.addEventListener('click', () => {
+  if (document.referrer && document.referrer !== window.location.href) {
+    history.back();
+  } else {
+    window.location.href = '../index.html';
+  }
+});
+
+</script>
 </body>
 </html>

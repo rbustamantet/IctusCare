@@ -4,22 +4,21 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <!-- ===== META DATA / SEO ===== -->
-<meta name="title" content="Elección de tratamiento en FOP — Ictus GPS">
+<meta name="title" content="Foramen oval permeable">
 <meta name="description" content="Herramienta clínica interactiva basada en la escala RoPE y los criterios anatómicos y clínicos (A+C) para orientar la elección de tratamiento en el foramen oval permeable (FOP) tras ictus isquémico. Desarrollado por Rafael Bustamante Toledo.">
 <meta name="keywords" content="FOP, foramen oval permeable, RoPE, ictus criptogénico, cierre percutáneo, embolia paradojal, neurología vascular, Ictus GPS, tratamiento ictus, prevención secundaria, cierre FOP">
-<meta name="author" content="Unidad de Ictus · Hospital Regional Universitario de Málaga">
+<meta name="author" content="Rafael Bustamante Toledo">
 <meta name="robots" content="index, follow">
-<meta property="og:title" content="Elección de tratamiento en FOP — Ictus GPS">
+<meta property="og:title" content="Foramen oval permeable">
 <meta property="og:description" content="Escala RoPE + A + C para estimar la probabilidad de causalidad del FOP y orientar el manejo (cierre percutáneo, antiagregación o consenso multidisciplinar).">
 <meta property="og:type" content="website">
 <meta property="og:image" content="../iconos/ictusgps.png">
 <meta property="og:locale" content="es_ES">
 <meta name="theme-color" content="#0f3d83">
 
-<title>Elección de tratamiento en FOP (RoPE + A + C)</title>
+<title>Foramen oval permeable</title>
 <link rel="icon" type="image/png" sizes="192x192" href="../iconos/ictusgps.png">
 <link rel="apple-touch-icon" sizes="180x180" href="../iconos/ictusgps.png">
-<meta name="theme-color" content="#0f3d83">
 
 <style>
 :root{
@@ -31,21 +30,51 @@
 }
 body{margin:0;background:var(--bg);color:var(--ink);font-family:Verdana, Geneva, sans-serif}
 
-/* CABECERA */
-.appbar{position:sticky;top:0;z-index:1000;background:#0f3d83;color:#fff;box-shadow:0 2px 6px rgba(0,0,0,.1)}
-.appbar-inner{max-width:980px;margin:0 auto;padding:6px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px}
-.left-group{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.appbar h1{margin:0;font-size:20px;font-weight:800}
-.pill{display:inline-flex;align-items:center;justify-content:center;min-width:38px;height:28px;padding:4px 10px;border-radius:999px;font-size:13px;font-weight:700;border:1px solid transparent;white-space:nowrap}
-.pill-init{background:#dbeafe;color:#1e3a8a;border-color:#bfdbfe}
-.pill-ok{background:#dcfce7;color:#065f46;border-color:#86efac}
-.pill-warn{background:#fef3c7;color:#92400e;border-color:#fde68a}
-.pill-bad{background:#fee2e2;color:#991b1b;border-color:#fecaca}
-.btn{display:inline-flex;align-items:center;justify-content:center;height:32px;padding:0 14px;border-radius:10px;text-decoration:none;border:1px solid rgba(127,179,255,.35);background:#1c60c3;color:#fff;font-size:.9rem;font-weight:700}
-.btn:hover{background:#0C00FF}
+/* === CABECERA INSTITUCIONAL === */
+.appbar{position:sticky;top:0;z-index:1000;background:#0f3d83;color:#fff;box-shadow:0 0px 0px rgba(0,0,0,.1)}
+.appbar-inner{max-width:1080px;margin:0 auto;padding:4px 2px;display:flex;align-items:center;justify-content:space-between;gap:0px}
+.left-group{display:flex;align-items:center;gap:10px}
+.appbar h1{margin:0;font-size:1.4rem;font-weight:800;color:#fff}
+.appbar-inner { min-height: 64px; }
+.appbar h1 { font-size: clamp(1.2rem, 2.8vw, 1.4rem); line-height:1.2; white-space:nowrap; }
 
-/* BLOQUES */
-.wrap{max-width:980px;margin:16px auto 48px;padding:0 16px}
+.btn {
+  display:inline-flex;align-items:center;gap:8px;
+      padding:9px 16px;border-radius:12px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(255,255,255,.06);
+      color:white;text-decoration:none;font-weight:600;font-size:15px;
+      transition:background .25s,border-color .25s;
+  }
+
+    .btn:hover{border-color:rgba(127,179,255,.35);background:#1c60c3;color:white;text-decoration:none;font-weight:600;}
+
+/* Botón icono institucional (igual que en Unidades) */
+.icon-btn{
+  position:relative;
+  display:inline-block;
+  width:40px;height:40px;
+  border:none;outline:0;background:#fff;border-radius:50%;
+  box-shadow:0 0 6px rgba(0,0,0,.08);
+  padding:0;margin-right:8px;
+  vertical-align:middle;
+  cursor:pointer;
+}
+.icon-btn .icon-unit,
+.icon-btn .icon-arrow{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+  transition:opacity .22s ease;
+  pointer-events:none;
+}
+.icon-btn .icon-unit{opacity:1;}
+.icon-btn .icon-arrow{opacity:0;}
+.icon-btn:hover .icon-unit{opacity:0;}
+.icon-btn:hover .icon-arrow{opacity:1;}
+.icon-btn:active{transform:scale(.96);}
+
+/* ===== CONTENIDO ===== */
+.wrap{max-width:1080px;margin:16px auto 48px;padding:0 16px}
 .panel{background:#fff;border:1px solid var(--borde);border-radius:16px;padding:16px;box-shadow:0 2px 10px rgba(15,23,42,.06)}
 .block{border-radius:14px;padding:14px 16px;margin:14px 0;transition:background .3s}
 .block h3{margin:0 0 8px 0;font-size:1.05rem;font-weight:800;display:flex;align-items:center;gap:6px}
@@ -53,8 +82,6 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:Verdana, Geneva,
 .block.anat{background:#ecfdf5;border-left:4px solid #10b981}
 .block.clin{background:#fffbeb;border-left:4px solid #f59e0b}
 .block.info{background:#ffffff;border-left:4px solid #000000}
-
-.block:hover{box-shadow:0 2px 6px rgba(0,0,0,.08)}
 .note{color:#64748b;font-size:12px;margin:6px 0 12px}
 label{font-weight:400;color:#1e293b;margin-top:8px;display:block}
 select{width:100%;padding:10px 12px;border:1px solid #cbd5e1;border-radius:10px;background:#fff;font-size:14px}
@@ -75,8 +102,7 @@ select{width:100%;padding:10px 12px;border:1px solid #cbd5e1;border-radius:10px;
 .bad{background:var(--bad-bg);border-color:var(--bad-ring)}
 .ok .val{color:var(--ok)}.warn .val{color:var(--mid)}.bad .val{color:var(--bad)}
 
-/* BOTONES */
-.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.actions { margin-left: auto; }
 .btn-action{flex:1 1 32%;border:none;border-radius:10px;padding:12px;font-size:15px;font-weight:700;cursor:pointer}
 .btn-clear{background:#fff;color:#0b2c5f;border:1px solid #2563eb}
 .btn-clear:hover{background:#eff6ff}
@@ -86,61 +112,36 @@ select{width:100%;padding:10px 12px;border:1px solid #cbd5e1;border-radius:10px;
 .btn-calc{background:#0f3d83;color:#fff;border:1px solid #0f3d83}
 .btn-calc:hover{background:#1c60c3}
 
-/* OTROS */
 #resumenText{white-space:pre-wrap;font-size:13px;color:#0f172a;margin-top:12px;border:1px dashed var(--borde);border-radius:10px;padding:10px 12px;background:#f8fafc;line-height:1.45}
 .advertencia{background:#fffbe6;border-left:4px solid #f59e0b;padding:10px;border-radius:10px;font-size:13px;color:#78350f;margin-top:16px;line-height:1.5}
-footer{position:relative;left:50%;transform:translateX(-50%);width:100vw;margin:2rem 0 0 0;padding:1.5rem 0;border-top:1px solid #e5e7eb;background:#ffffff;text-align:center;box-shadow:0 -2px 6px rgba(0,0,0,.04)}
-/* =======================================================
-   DISCLAIMER FINAL — fondo rojo tenue
-======================================================= */
+
+/* DISCLAIMER FINAL */
 .disclaimer-red{
-  background:#fef2f2;             /* rojo muy claro */
-  border:1px solid #fecaca;       /* borde rosado suave */
-  border-radius:12px;
-  padding:14px 16px;
-  margin:28px auto 0;
-  max-width:960px;
+  background:#fef2f2;border:1px solid #fecaca;border-radius:12px;
+  padding:14px 16px;margin:28px auto 0;max-width:960px;
   box-shadow:0 2px 8px rgba(185,28,28,0.05);
 }
-.disclaimer-red p{
-  margin:0;
-  color:#7f1d1d;                  /* texto rojo oscuro */
-  font-size:14px;
-  line-height:1.5;
-  text-align:left;
-}
-.disclaimer-red b{
-  color:#991b1b;
-}
-/* Botón Volver inferior */
-.back-btn{
-  display:inline-block;
-  margin:1.5rem auto 0;
-  background:#0f3d83;
-  color:#fff;
-  text-decoration:none;
-  font-weight:700;
-  padding:0.7rem 1.4rem;
-  border-radius:10px;
-  box-shadow:0 4px 10px rgba(15,61,131,.25);
-  transition:background .2s, transform .1s, box-shadow .2s;
-}
-.back-btn:hover{
-  background:#1c60c3;
-  transform:translateY(-1px);
-  box-shadow:0 6px 12px rgba(15,61,131,.35);
-}
+.disclaimer-red p{margin:0;color:#7f1d1d;font-size:14px;line-height:1.5;text-align:left;}
+.disclaimer-red b{color:#991b1b;}
+.back-btn{display:inline-block;margin:1.5rem auto 0;background:#0f3d83;color:#fff;text-decoration:none;font-weight:700;padding:0.7rem 1.4rem;border-radius:10px;box-shadow:0 4px 10px rgba(15,61,131,.25);transition:background .2s, transform .1s, box-shadow .2s;}
+.back-btn:hover{background:#1c60c3;transform:translateY(-1px);box-shadow:0 6px 12px rgba(15,61,131,.35);}
+footer{position:relative;left:50%;transform:translateX(-50%);width:100vw;margin:2rem 0 0 0;padding:1.5rem 0;border-top:1px solid #e5e7eb;background:#ffffff;text-align:center;box-shadow:0 -2px 6px rgba(0,0,0,.04)}
 </style>
 </head>
 
 <body>
-<header class="appbar">
+<header class="appbar" role="region" aria-label="Elección de tratamiento en FOP">
   <div class="appbar-inner">
     <div class="left-group">
-      <h1>Elección de tratamiento en FOP</h1>
-      <output id="pill" class="pill pill-init">—</output>
+      <button id="backIcon" class="icon-btn" aria-label="Atrás" title="Atrás">
+        <img class="icon-unit" src="fopico.png" alt="Icono FOP" width="40" height="40">
+        <svg class="icon-arrow" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M15 18l-6-6 6-6" fill="none" stroke="#0F3D83" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <h1>Foramen oval permeable</h1>
     </div>
-    <a class="btn" href="../index.html">Inicio</a>
+    <div class="actions"><a class="btn" href="../index.html">Inicio</a></div>
   </div>
 </header>
 
@@ -178,7 +179,7 @@ footer{position:relative;left:50%;transform:translateX(-50%);width:100vw;margin:
   <h3>🫀 Características anatómicas</h3>
   <div class="grid cols-2">
     <label class="check"><input type="checkbox" id="asa"> Aneurisma o movilidad del tabique interauricular (ASA ≥10–15 mm o septo laxo)</label>
-    <label class="check"><input type="checkbox" id="largeShunt"> Gran paso D→I / shunt tipo “en ducha o cortina”</label>
+    <label class="check"><input type="checkbox" id="largeShunt"> Gran paso D-I / shunt tipo “en ducha o cortina”</label>
     <label class="check"><input type="checkbox" id="longTunnel"> Canal interauricular largo (>8 mm)</label>
     <label class="check"><input type="checkbox" id="eustachian"> Válvula de Eustaquio o red de Chiari prominente</label>
     <label class="check"><input type="checkbox" id="pulmShunt"> Shunt pulmonar coexistente</label>
@@ -315,7 +316,7 @@ function decideReco(score,A,C,contra){
 function mostrarResumen(s,prob,cat,A,C,decision,contra){
 const selAnat=getAnat().map(id=>({
   asa:'Aneurisma o movilidad del tabique interauricular (ASA ≥10–15 mm o septo laxo)',
-  largeShunt:'Gran paso D→I / shunt tipo “en ducha”',
+  largeShunt:'Gran paso D-I / shunt tipo “en ducha”',
   longTunnel:'Canal interauricular largo (>8 mm)',
   eustachian:'Válvula de Eustaquio o red de Chiari prominente',
   pulmShunt:'Shunt pulmonar coexistente'
@@ -324,12 +325,12 @@ const selAnat=getAnat().map(id=>({
   const selClin=getClin().map(id=>({crypt60:'Ictus criptogénico <60',noOtherCause:'Sin otra causa (TOAST)',noAF:'Sin FA documentada',embolicPattern:'Patrón embólico',recurOnAP:'Recurrencia con AAS',lowBleed:'Riesgo hemorrágico bajo'}[id]));
 
   let t = `FOP – Recomendación (Ictus GPS)\n`;
-  t += `================================\n`;
-  t += `RoPE: ${s}/10 — Prob. FOP causal: ${prob} (${cat})\n`;
-  t += `Rasgos anatómicos (A): ${A}${A ? ' → ' + selAnat.join(', ') : ''}\n`;
-  t += `Criterios clínicos (C): ${C}${C ? ' → ' + selClin.join(', ') : ''}\n`;
-  if(contra) t += `*Nota seguridad*: Contraindicación o alto riesgo para cierre.\n`;
-  t += `\nRecomendación: ${decision.rec} — ${decision.note}\n`;
+  t += `======================\n`;
+  t += `RoPE: ${s}/10 - Prob. FOP causal: ${prob} (${cat}).\n`;
+  t += `Rasgos anatómicos (A): ${A}${A ? ' - ' + selAnat.join(', ') : ''}.\n`;
+  t += `Criterios clínicos (C): ${C}${C ? ' - ' + selClin.join(', ') : ''}.\n`;
+  if(contra) t += `ATENCIÓN: Contraindicación o alto riesgo para cierre.\n`;
+  t += `\nRecomendación: ${decision.rec} - ${decision.note}.\n`;
   t += `\nReferencias: AHA/ASA 2021; ESO 2021.\n`;
   t += `Aviso: herramienta orientativa; no sustituye el juicio clínico ni la discusión multidisciplinar.`;
   $('resumenText').textContent = t;
@@ -371,9 +372,7 @@ function calcular(){
 
   $('resultCard').style.display='block';
 
-  const pill=$('pill');
-  pill.className='pill '+(decision.tone==='ok'?'pill-ok':decision.tone==='warn'?'pill-warn':'pill-bad');
-  pill.textContent=`RoPE ${s} · ${prob} — ${decision.rec}`;
+ 
 
   mostrarResumen(s,prob,cat,A,C,decision,contra);
 }
@@ -407,9 +406,22 @@ $('btnCalc').addEventListener('click',calcular);
 $('btnClear').addEventListener('click',borrar);
 $('btnCopy').addEventListener('click',copiar);
 </script>
+
 <footer>
   <img src="uibanner.png" alt="Unidad de Ictus Málaga" style="max-width:380px;height:auto;opacity:.96">
 </footer>
+
 <script src="js/index.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded",function(){
+  const btn=document.getElementById("backIcon");
+  if(!btn)return;
+  btn.addEventListener("click",function(){
+    console.log("[IctusGPS] Atrás clicado. Historial:",window.history.length);
+    if(window.history.length>1)history.back();
+    else window.location.href="../index.html";
+  });
+});
+</script>
 </body>
 </html>

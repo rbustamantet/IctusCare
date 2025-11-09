@@ -9,7 +9,7 @@
 <link rel="shortcut icon" href="../iconos/ictusgps.png">
 <meta name="theme-color" content="#0f3d83">
 
-<title>Unidad de Ictus · Utilidades</title>
+<title>Utilidades</title>
 <meta name="color-scheme" content="light dark">
 
 <style>
@@ -38,7 +38,7 @@
 html,body{height:100%}
 
 body{
-  font-family: Verdana, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", sans-serif;
+  font-family: Verdana, Geneva, sans-serif;
   background: var(--bg);
   color: var(--ink);
   -webkit-font-smoothing: antialiased;
@@ -46,59 +46,60 @@ body{
   line-height:1.6;
 }
 
-.wrap{max-width:1080px; margin:0 auto; padding:24px}
+.wrap{max-width:1080px; margin:16px auto 48px; padding:0 16px;}
 
 /* =========================================================
    CABECERA
 ========================================================= */
-header{
-  position:sticky;
-  top:0;
-  z-index:20;
-  backdrop-filter:blur(6px);
-  background:var(--accent-dark);
-  border-bottom:1px solid rgba(255,255,255,.08);
-  box-shadow:0 2px 6px rgba(0,0,0,0.08);
-  color:#fff;
-}
-.bar{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  padding:4px 18px;
-}
-.logo{
-  width:36px;
-  height:36px;
-  border-radius:10px;
-  display:grid;
-  place-items:center;
-  background:linear-gradient(160deg,#2a56a3,#1e3d77);
-  box-shadow:inset 0 0 0 1px rgba(255,255,255,.12);
-}
-.title{font-size:1.4rem;font-weight:700;letter-spacing:.2px;color:#fff;}
-.headcol{display:flex;flex-direction:column}
-.actions{margin-left:auto}
-.btn{
+.appbar{position:sticky;top:0;z-index:1000;background:#0f3d83;color:#fff;box-shadow:0 0px 0px rgba(0,0,0,.1)}
+.appbar-inner{max-width:1080px;margin:0 auto;padding:4px 2px;display:flex;align-items:center;justify-content:space-between;gap:0px}
+.appbar-inner { min-height: 64px; }
+.left-group{display:flex;align-items:center;gap:10px}
+.appbar h1{margin:0;font-size:1.4rem;font-weight:800;color:#fff}
+.appbar h1 { font-size: clamp(1.2rem, 2.8vw, 1.4rem); line-height:1.2; white-space:nowrap; }
+.actions { margin-left: auto; }
+.btn {
   display:inline-flex;align-items:center;gap:8px;
-  padding:8px 14px;border-radius:12px;
+  padding:7px 16px;border-radius:12px;
   border:1px solid rgba(255,255,255,.14);
   background:rgba(255,255,255,.06);
-  color:white;text-decoration:none;font-weight:600;
+  color:white;text-decoration:none;font-weight:600;font-size:15px;
   transition:background .25s,border-color .25s;
 }
-.btn:hover{border-color:rgba(127,179,255,.35);background:#1c60c3}
+.btn:hover{
+  border-color:rgba(127,179,255,.35);
+  background:#1c60c3;color:white;text-decoration:none;font-weight:600;
+}
+
+/* === Icono interactivo con hover a flecha === */
+.icon-btn{
+  position:relative;
+  display:inline-block;
+  width:40px;height:40px;
+  border:none;outline:0;background:#fff;border-radius:50%;
+  box-shadow:0 0 6px rgba(0,0,0,.08);
+  padding:0;margin-right:8px;
+  vertical-align:middle;
+  cursor:pointer;
+}
+.icon-btn .icon-unit,
+.icon-btn .icon-arrow{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+  transition:opacity .22s ease;
+  pointer-events:none;
+}
+.icon-btn .icon-unit{opacity:1;}
+.icon-btn .icon-arrow{opacity:0;}
+.icon-btn:hover .icon-unit{opacity:0;}
+.icon-btn:hover .icon-arrow{opacity:1;}
+.icon-btn:active{transform:scale(.96);}
 
 /* =========================================================
    CONTENIDO PRINCIPAL
 ========================================================= */
 main{
-  max-width:850px;
-  margin:0 auto;
-  padding:1rem 1.25rem 2.5rem;
-  background:#fff;
-  border-radius:12px;
-  box-shadow:0 2px 10px rgba(0,0,0,0.04);
+  max-width:1080px;margin:16px auto 48px;padding:0 16px
 }
 
 .grid{
@@ -107,8 +108,8 @@ main{
   gap:16px;
   margin-top:22px;
 }
-@media(min-width:520px){.grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
-@media(min-width:900px){.grid{grid-template-columns:repeat(3,minmax(0,1fr));}}
+@media(min-width:520px){.grid{grid-template-columns:repeat(1,minmax(0,1fr));}}
+@media(min-width:900px){.grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
 
 /* =========================================================
    TARJETAS DE UTILIDADES
@@ -197,16 +198,21 @@ footer img{
 </head>
 
 <body>
-<header>
-  <div class="bar wrap">
-    <div class="headcol">
-      <div class="title">UTILIDADES</div>
+<header class="appbar" role="region" aria-label="Utilidades">
+  <div class="appbar-inner">
+    <div class="left-group">
+      <button id="backIcon" class="icon-btn" aria-label="Atrás" title="Atrás">
+        <img class="icon-unit" src="../iconos/utilidadesico.png" alt="Icono Utilidades" width="40" height="40">
+        <svg class="icon-arrow" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M15 18l-6-6 6-6" fill="none" stroke="#0F3D83" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <h1>Utilidades</h1>
     </div>
-    <div class="actions">
-      <a class="btn" href="../index.html">Inicio</a>
-    </div>
+    <div class="actions"><a class="btn" href="../index.html">Inicio</a></div>
   </div>
 </header>
+
 
 <main class="wrap">
   <div class="grid" role="list">
@@ -214,7 +220,7 @@ footer img{
     <a class="card" href="AnticoagulacionFA.html" role="listitem">
       <span class="ic"><div class="icon"><img src="anticoagulacion.png" alt="Anticoagulación en FA"></div></span>
       <div>
-        <h3>Anticoagulación en FA</h3>
+        <h3>Fibrilación auricular</h3>
         <p>Selección de ACOD/AVK según escalas de riesgo y condiciones clínicas.</p>
       </div>
     </a>
@@ -222,7 +228,7 @@ footer img{
     <a class="card" href="fop.html" role="listitem">
       <span class="ic"><div class="icon"><img src="fopico.png" alt="Foramen oval permeable"></div></span>
       <div>
-        <h3>Foramen Oval Permeable</h3>
+        <h3>Foramen oval permeable</h3>
         <p>Recomendación de tratamiento en FOP según RoPE y criterios clínicos.</p>
       </div>
     </a>
@@ -230,8 +236,8 @@ footer img{
     <a class="card" href="CPemboligena.html" role="listitem">
       <span class="ic"><div class="icon"><img src="cardiopatiasico.png" alt="Ictus Cardioembólico"></div></span>
       <div>
-        <h3>Otros Ictus Cardioembólicos</h3>
-        <p>Ayuda a la selección del tratamiento en otras cardiopatías embolígenas.</p>
+        <h3>Otras cardiopatías embolígenas</h3>
+        <p>Ayuda a la selección del tratamiento cardiopatías embolígenas distintas a FA y FOP.</p>
       </div>
     </a>
 
@@ -291,5 +297,21 @@ footer img{
 </main>
 
 <script src="js/index.js"></script>
+<script>
+  (function(){
+    const btn = document.getElementById('backIcon');
+    if(!btn) return;
+
+    btn.addEventListener('click', function(){
+      // Solo activo en ordenador (mouse o trackpad)
+      const isDesktop = window.matchMedia("(pointer: fine)").matches;
+      if(!isDesktop) return;
+
+      console.log('[IctusGPS] Botón atrás pulsado. Historial:', window.history.length);
+      if (window.history.length > 1) history.back();
+      else window.location.href = '../index.html';
+    });
+  })();
+</script>
 </body>
 </html>

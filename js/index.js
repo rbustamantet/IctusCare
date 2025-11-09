@@ -2,40 +2,66 @@
 // Ictus GPS - Script principal Cordova
 // ============================================================
 
+// ====== EVENTO DEVICE READY ======
 document.addEventListener("deviceready", function() {
-  console.log("Cordova ready:", cordova.platformId, cordova.version);
+  try {
+    console.log("Cordova ready:", cordova.platformId, cordova.version);
 
-  // ====== STATUS BAR ======
-if (window.StatusBar) {
-  // Asegura que la barra no tape el contenido HTML
-  StatusBar.overlaysWebView(false);
-  // Aplica el color azul institucional
-  StatusBar.backgroundColorByHexString("#0f3d83");
-  // Fuerza iconos claros sobre fondo oscuro
-  StatusBar.styleLightContent();
-  // Garantiza que sea visible (por si algún splash la oculta)
-  StatusBar.show();
-}
-
-   // NAVIGATION BAR (solo Android 8+)
-  if (window.AndroidFullScreen && AndroidFullScreen.setSystemUiVisibility) {
-    try {
-      // Fija color de navegación
-      AndroidFullScreen.setSystemUiVisibility({
-        statusBarColor: "#0F3D83",
-        navigationBarColor: "#0F3D83",
-        statusBarLight: false,
-        navigationBarLight: false
-      });
-    } catch (e) {
-      console.warn("Navigation bar color no soportado:", e);
+    // ===== STATUS BAR =====
+    if (window.StatusBar) {
+      setTimeout(() => {
+        try {
+          StatusBar.overlaysWebView(false);
+          StatusBar.backgroundColorByHexString("#0F3D83");
+          StatusBar.styleLightContent();
+          StatusBar.show();
+          console.log("✅ Barra de estado azul aplicada correctamente");
+        } catch (e) {
+          console.warn("⚠️ Error al aplicar StatusBar:", e);
+        }
+      }, 800);
+    } else {
+      console.warn("⚠️ Plugin StatusBar no detectado");
     }
-  } else if (window.navigator && window.navigator.plugins) {
-    // Alternativa mediante CSS meta
-    const navMeta = document.createElement("meta");
-    navMeta.name = "theme-color";
-    navMeta.content = "#0F3D83";
-    document.head.appendChild(navMeta);
+
+    // ===== SPLASH =====
+    if (navigator.splashscreen) {
+      setTimeout(() => {
+        try {
+          navigator.splashscreen.hide();
+          if (window.StatusBar) {
+            StatusBar.backgroundColorByHexString("#0F3D83");
+            StatusBar.styleLightContent();
+            StatusBar.overlaysWebView(false);
+          }
+        } catch (e) {
+          console.warn("⚠️ Error al ocultar Splash:", e);
+        }
+      }, 500);
+    }
+
+    // ===== NAVIGATION BAR (Android 8+) =====
+    if (window.AndroidFullScreen && AndroidFullScreen.setSystemUiVisibility) {
+      try {
+        AndroidFullScreen.setSystemUiVisibility({
+          statusBarColor: "#0F3D83",
+          navigationBarColor: "#0F3D83",
+          statusBarLight: false,
+          navigationBarLight: false
+        });
+      } catch (e) {
+        console.warn("⚠️ Navigation bar color no soportado:", e);
+      }
+    } else if (window.navigator && window.navigator.plugins) {
+      const navMeta = document.createElement("meta");
+      navMeta.name = "theme-color";
+      navMeta.content = "#0F3D83";
+      document.head.appendChild(navMeta);
+    }
+
+  } catch (e) {
+    alert("❌ Error en deviceready: " + e.message);
+    console.error("Error deviceready:", e);
   }
 });
 

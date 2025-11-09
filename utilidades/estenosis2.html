@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Tratamiento de la estenosis carotídea</title>
+<title>Estenosis carotídea</title>
 <link rel="icon" type="image/png" sizes="192x192" href="../iconos/ictusgps.png">
 <link rel="apple-touch-icon" sizes="180x180" href="../iconos/ictusgps.png">
 <meta name="theme-color" content="#0f3d83">
@@ -19,20 +19,48 @@
 body{margin:0;background:var(--bg);color:var(--ink);font-family:Verdana, Geneva, sans-serif}
 
 /* CABECERA */
-.appbar{position:sticky;top:0;z-index:1000;background:#0f3d83;color:#fff;box-shadow:0 2px 6px rgba(0,0,0,.1)}
-.appbar-inner{max-width:980px;margin:0 auto;padding:6px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px}
-.left-group{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.appbar h1{margin:0;font-size:20px;font-weight:800}
-.pill{display:inline-flex;align-items:center;justify-content:center;min-width:38px;height:28px;padding:4px 10px;border-radius:999px;font-size:13px;font-weight:700;border:1px solid transparent;white-space:nowrap}
-.pill-init{background:#dbeafe;color:#1e3a8a;border-color:#bfdbfe}
-.pill-ok{background:#dcfce7;color:#065f46;border-color:#86efac}
-.pill-warn{background:#fef3c7;color:#92400e;border-color:#fde68a}
-.pill-bad{background:#fee2e2;color:#991b1b;border-color:#fecaca}
-.btn{display:inline-flex;align-items:center;justify-content:center;height:32px;padding:0 14px;border-radius:10px;text-decoration:none;border:1px solid rgba(127,179,255,.35);background:#1c60c3;color:#fff;font-size:.9rem;font-weight:700}
-.btn:hover{background:#0C00FF}
+.appbar{position:sticky;top:0;z-index:1000;background:#0f3d83;color:#fff;box-shadow:0 0px 0px rgba(0,0,0,.1)}
+.appbar-inner{max-width:1080px;margin:0 auto;padding:4px 2px;min-height: 68px;display:flex;align-items:center;justify-content:space-between;gap:0px}
+.left-group{display:flex;align-items:center;gap:10px}
+.appbar h1{margin:0;font-size:1.4rem;font-weight:800;color:#fff}
+
+.btn {
+  display:inline-flex;align-items:center;gap:8px;
+      padding:9px 16px;border-radius:12px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(255,255,255,.06);
+      color:white;text-decoration:none;font-weight:600;font-size:15px;
+      transition:background .25s,border-color .25s;
+  }
+
+    .btn:hover{border-color:rgba(127,179,255,.35);background:#1c60c3;color:white;text-decoration:none;font-weight:600;}
+
+/* Botón icono institucional (igual que en Unidades) */
+.icon-btn{
+  position:relative;
+  display:inline-block;
+  width:40px;height:40px;
+  border:none;outline:0;background:#fff;border-radius:50%;
+  box-shadow:0 0 6px rgba(0,0,0,.08);
+  padding:0;margin-right:8px;
+  vertical-align:middle;
+  cursor:pointer;
+  }
+.icon-btn .icon-unit,
+.icon-btn .icon-arrow{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+  transition:opacity .22s ease;
+  pointer-events:none;
+}
+.icon-btn .icon-unit{opacity:1;}
+.icon-btn .icon-arrow{opacity:0;}
+.icon-btn:hover .icon-unit{opacity:0;}
+.icon-btn:hover .icon-arrow{opacity:1;}
+.icon-btn:active{transform:scale(.96);}
 
 /* BLOQUES */
-.wrap{max-width:980px;margin:16px auto 48px;padding:0 16px}
+.wrap{max-width:1080px;margin:16px auto 48px;padding:0 16px}
 .panel{background:#fff;border:1px solid var(--borde);border-radius:16px;padding:16px;box-shadow:0 2px 10px rgba(15,23,42,.06)}
 .block{border-radius:14px;padding:14px 16px;margin:14px 0;transition:background .3s}
 .block h3{margin:0 0 8px 0;font-size:1.05rem;font-weight:800;display:flex;align-items:center;gap:6px}
@@ -69,7 +97,7 @@ select{width:100%;padding:10px 12px;border:1px solid #cbd5e1;border-radius:10px;
 .ok .val{color:var(--ok)}.warn .val{color:var(--mid)}.bad .val{color:var(--bad)}
 
 /* BOTONES */
-.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:0px}
 .btn-action{flex:1 1 32%;border:none;border-radius:10px;padding:12px;font-size:15px;font-weight:700;cursor:pointer}
 .btn-clear{background:#fff;color:#0b2c5f;border:1px solid #2563eb}
 .btn-clear:hover{background:#eff6ff}
@@ -196,13 +224,18 @@ footer{position:relative;left:50%;transform:translateX(-50%);width:100vw;margin:
 </head>
 
 <body>
-<header class="appbar">
+<header class="appbar" role="region" aria-label="Estenosis carotídea">
   <div class="appbar-inner">
     <div class="left-group">
-      <h1>Tratamiento de la estenosis carotídea</h1>
-      <output id="pill" class="pill pill-init">—</output>
+      <button id="backIcon" class="icon-btn" aria-label="Atrás" title="Atrás">
+        <img class="icon-unit" src="estenosisico.png" alt="Estenosis carotídea" width="40" height="40">
+        <svg class="icon-arrow" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M15 18l-6-6 6-6" fill="none" stroke="#0F3D83" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <h1>Estenosis carotídea</h1>
     </div>
-    <a class="btn" href="../index.html">Inicio</a>
+    <div class="actions"><a class="btn" href="../index.html">Inicio</a></div>
   </div>
 </header>
 
@@ -505,20 +538,13 @@ function tandemInfo(){
   return {txt: trat?'Sí (tratable)':'Sí (no tratable)', mini: trat?'Abordaje endovascular posible':'Descarta beneficio de CEA/CAS'};
 }
 
-function setPill(kind){
-  const pill=$('pill');
-  pill.className='pill '+(kind==='ok'?'pill-ok':kind==='warn'?'pill-warn':kind==='bad'?'pill-bad':'pill-init');
-}
-
 function calcular(){
   const clin = getClinica();
   const grado = getGrado();
 
   if (!clin || !grado){
     $('resultCard').style.display='none';
-    $('pill').className='pill pill-init'; $('pill').textContent='—';
-    return;
-  }
+      }
 
   const contraInterv = bool('contraInterv');
   const expVida5     = bool('expVida5');
@@ -769,17 +795,6 @@ function calcular(){
     const el=$(id); el.classList.remove('ok','warn','bad'); el.classList.add(toneClass);
   });
 
-  const pillText = (()=>{ 
-    if (rec.startsWith('CEA')) return 'CEA recomendada';
-    if (rec.startsWith('CAS o manejo médico')) return 'CAS o manejo médico';
-    if (rec.startsWith('CAS')) return 'CAS recomendada';
-    if (rec.includes('DAPT temporal')) return 'DAPT temporal';
-    if (rec.startsWith('Antiagregación') || rec.startsWith('Tratamiento médico') || rec.startsWith('Manejo médico')) return 'Manejo médico';
-    if (rec.includes('CEA o CAS')) return 'Ambas posibles';
-    return '—';
-  })();
-  $('pill').textContent = pillText;
-  setPill(tone);
 
   // ---- Etiqueta DAPT temporal ----
   let tag = $('tagDAPT');
@@ -823,7 +838,6 @@ function borrar(){
   ['sxReciente','sxAntiguo','asint','glt50','g50a69','g70a99','gOclusion'].forEach(id=>{ const el=$(id); if(el) el.checked=false; });
   ['contraInterv','expVida5','riesgoCEAbajo','placaUlcerada','trombo','placaBlanda','estenosisBilateral','oclContralateral','radRT','reestenosisCEA','altoRiesgoEndo','altoRiesgoQx','cervicalAlta','intraStent','distalPresente','distalTratable','aortaHostil'].forEach(id=>{ const el=$(id); if(el) el.checked=false; });
   $('resultCard').style.display='none';
-  $('pill').className='pill pill-init'; $('pill').textContent='—';
   const tag=$('tagDAPT'); if(tag) tag.style.display='none';
   $('resumenText').textContent = '';
 }
@@ -855,5 +869,21 @@ if (btnCopyEl) btnCopyEl.addEventListener('click',copiar);
   <img src="uibanner.png" alt="Unidad de Ictus Málaga" style="max-width:380px;height:auto;opacity:.96">
 </footer>
 <script src="js/index.js"></script>
+<script>
+  (function(){
+    const btn = document.getElementById('backIcon');
+    if(!btn) return;
+
+    btn.addEventListener('click', function(){
+      // Solo activo en ordenador (mouse o trackpad)
+      const isDesktop = window.matchMedia("(pointer: fine)").matches;
+      if(!isDesktop) return;
+
+      console.log('[IctusGPS] Botón atrás pulsado. Historial:', window.history.length);
+      if (window.history.length > 1) history.back();
+      else window.location.href = '../index.html';
+    });
+  })();
+</script>
 </body>
 </html>
