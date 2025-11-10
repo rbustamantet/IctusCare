@@ -1,4 +1,4 @@
 # IctusGPS
 
-Protocolos clínicos y recursos de la Unidad de Ictus.
+Protocolos clínicos y recursos para la atención al ictus agudo.
 
