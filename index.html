@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IctusGPS – Redirigiendo...</title>
+<link rel="icon" type="image/png" sizes="192x192" href="www/iconos/ictusgps.png">
+<style>
+  :root {
+    --azul:#0f3d83;
+    --texto:#ffffff;
+    --sombra:rgba(0,0,0,0.2);
+  }
+
+  html,body {
+    height:100%;
+    margin:0;
+    background:var(--azul);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    color:var(--texto);
+    font-family:Verdana,Segoe UI,sans-serif;
+    text-align:center;
+  }
+
+  .logo {
+    width:100px;
+    height:100px;
+    border-radius:50%;
+    background:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 0 12px var(--sombra);
+    margin-bottom:1rem;
+  }
+
+  .logo img {
+    width:60%;
+    height:auto;
+  }
+
+  h1 {
+    font-size:1.5rem;
+    font-weight:700;
+    margin:0.5rem 0;
+  }
+
+  p {
+    font-size:1rem;
+    opacity:0.9;
+  }
+
+  @keyframes fadeOut {
+    to {opacity:0; transform:scale(1.05);}
+  }
+
+  body.fade {
+    animation:fadeOut .8s ease forwards;
+  }
+</style>
+<script>
+  // Espera breve para mostrar el logo y luego redirige
+  window.onload = () => {
+    setTimeout(() => {
+      document.body.classList.add('fade');
+      setTimeout(() => window.location.href = "www/index.html", 700);
+    }, 900);
+  };
+</script>
+</head>
+<body>
+  <div class="logo">
+    <img src="www/iconos/ictusgps.png" alt="IctusGPS">
+  </div>
+  <h1>Ictus GPS</h1>
+  <p>Redirigiendo a la aplicación...</p>
+</body>
+</html>
