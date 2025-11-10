@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="manifest" href="../site.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="../iconos/ictusgps.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../iconos/ictusgps.png">
+<link rel="shortcut icon" href="../iconos/ictusgps.png">
+<meta name="theme-color" content="#0f3d83">
+<title>Escala del NIH para el Ictus (NIHSS)</title>
+
+<style>
+:root{
+  --bg:#f8fafc; --ink:#0f172a; --borde:#e5e7eb; --borde2:#dbeafe;
+  --accent:#2563eb; --accent-ink:#1e3a8a; --accent-light:#eaf2ff;
+  --brand:#0f3d83;
+
+  --ok:#166534; --ok-bg:#e9fce7; --ok-ring:#bbf7d0;
+  --mid:#92400e; --mid-bg:#fff7ed; --mid-ring:#fed7aa;
+  --bad:#991b1b; --bad-bg:#fef2f2; --bad-ring:#fecaca;
+}
+
+.appbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: var(--brand);
+  color: #fff;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  backdrop-filter: blur(6px);
+}
+.appbar-inner {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 2px 12px;
+}
+.appbar-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 1px 10px;
+}
+.left-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.actions { margin-left: auto; }
+
+/* Pill junto al título */
+.pill {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 38px; height: 32px; padding: 6px 10px;
+  border-radius: 999px; font-size: 12px; font-weight: 700;
+  border: 1px solid transparent;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  background: #eef2ff; color:#1e293b; border-color:#c7dbff;
+}
+.pill.ok   { background:#dcfce7; color:#065f46; border-color:#86efac; }
+.pill.warn { background:#fef3c7; color:#92400e; border-color:#fde68a; }
+.pill.bad  { background:#fee2e2; color:#991b1b; border-color:#fecaca; }
+
+/* Botón Inicio estándar */
+.btn {
+  display:inline-flex;align-items:center;gap:8px;
+  padding:8px 14px;border-radius:12px;
+  border:1px solid rgba(255,255,255,.14);
+  background:rgba(255,255,255,.06);
+  color:white;text-decoration:none;font-weight:600;font-size:15px;
+  transition:background .25s,border-color .25s;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transform: translateY(-9px) translateX(-15px);
+
+}
+.btn:hover{border-color:rgba(127,179,255,.35);background:#1c60c3;}
+
+/* ===== CUERPO ===== */
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Verdana, Geneva, sans-serif;}
+.wrap{max-width:980px;margin:16px auto 48px;padding:0 16px;}
+.panel{background:#fff;border:1px solid var(--borde);border-radius:16px;padding:16px;box-shadow:0 2px 10px rgba(15,23,42,.06);}
+.note{color:#64748b;font-size:12px;margin:.25rem 0 1rem}
+
+/* ===== BLOQUES COLAPSABLES ===== */
+.coll{
+  border:1px solid var(--borde2);
+  border-radius:12px; overflow:hidden; background:#fff; margin-bottom:10px;
+}
+.coll-head{
+  display:flex; align-items:center; gap:10px;
+  background:var(--accent-light); color:#1e3a8a;
+  padding:10px 12px; cursor:pointer; user-select:none;
+  border-bottom:1px solid #cfe0ff;
+}
+.coll-head .arrow{
+  font-weight:900; width:1.25rem; text-align:center; flex:0 0 auto;
+}
+.coll-head .ttl{ font-weight:900; flex:1 1 auto; }
+.coll-head .help{ 
+  border:none; background:#fff; color:#1e40af;
+  border:1px solid #cfe0ff; border-radius:8px; padding:4px 8px; font-weight:700; font-size:12px; cursor:pointer;
+}
+.coll-body{ padding:12px; display:none; background:#fff; }
+.coll.open .coll-body{ display:block; }
+label{font-weight:900;color:#0b1f44;margin:0 0 6px;display:block;}
+select{
+  width:100%;padding:10px 12px;border:1px solid #cbd5e1;border-radius:10px;background:#fff;font-size:14px;
+}
+select:focus{outline:none;box-shadow:0 0 0 3px #dbeafe;}
+
+/* Abiertos en escritorio, cerrados en móvil */
+@media (min-width: 720px){
+  .coll.default-open .coll-body{ display:block; }
+}
+
+/* ===== RESULTADOS ===== */
+.card{
+  margin-top:12px;background:#fff;border:1px solid var(--borde);
+  border-radius:16px;padding:14px;box-shadow:0 8px 22px rgba(31,86,179,.07)
+}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:2px 0 10px}
+.chip{font-size:13px;border:1px solid var(--borde);background:#eef6ff;color:#1e3a8a;border-radius:999px;padding:6px 10px;font-weight:700}
+
+.kpi{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.box{border:1.5px dashed #c7dbff;border-radius:14px;padding:12px;background:#f8fbff;text-align:center}
+.ttl{font-size:15px;color:#334155;font-weight:800;margin-bottom:2px}
+.val{font-size:26px;font-weight:900;color:#0b2c5f}
+
+.okbox{background:var(--ok-bg);border-color:var(--ok-ring);}
+.warnbox{background:var(--mid-bg);border-color:var(--mid-ring);}
+.badbox{background:var(--bad-bg);border-color:var(--bad-ring);}
+.okbox .val{color:var(--ok);} .warnbox .val{color:var(--mid);} .badbox .val{color:var(--bad);}
+
+/* ===== BOTONES DE ACCIÓN (igual estilo CHADS-VA) ===== */
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;}
+.btn-action{
+  flex:1 1 48%;
+  border:none;border-radius:10px;padding:12px;
+  font-size:15px;font-weight:700;cursor:pointer;transition:background .2s,color .2s,border-color .2s;
+}
+.btn-clear { background:#fff; color:#0b2c5f; border:1px solid #2563eb; }
+.btn-clear:hover { background:#eff6ff; }
+.btn-copy  { background:#fff; color:#0f3d83; border:1px solid #2563eb; }
+.btn-copy:hover { background:#eff6ff; }
+.btn-copy.copiado{background:#0f3d83!important;color:#fff!important;}
+
+/* ===== RESUMEN ===== */
+#resumenText{
+  white-space:pre-wrap;font-size:13px;color:#0f172a;margin-top:12px;
+  border:1px dashed var(--borde);border-radius:10px;padding:10px 12px;
+  background:#f9fafc;line-height:1.45;
+}
+
+/* ===== MODAL DE AYUDA ===== */
+.modal{
+  position:fixed; inset:0; display:none;
+  align-items:center; justify-content:center;
+  background:rgba(15,23,42,.55);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  padding:16px; z-index:9999;
+}
+.modal.open{ display:flex; }
+.modal-card{
+  background:#fff; border-radius:16px; border:1px solid var(--borde);
+  max-width:780px; width:100%; max-height:80vh; overflow:auto;
+  box-shadow:0 12px 30px rgba(0,0,0,.18);
+}
+.modal-head{
+  display:flex; justify-content:space-between; align-items:center;
+  padding:12px 16px; border-bottom:1px solid #e2e8f0;
+}
+.modal-title{ font-weight:800; color:#0f172a; }
+.modal-body{ padding:14px 16px; color:#334155; font-size:14px; line-height:1.5; }
+.modal-close{ background:transparent; border:none; color:#334155; font-weight:700; font-size:20px; cursor:pointer; }
+
+/* ===== PIE ===== */
+footer{position:relative;left:50%;transform:translateX(-50%);
+  width:100vw;margin:2rem 0 0 0;padding:1.5rem 0;
+  border-top:1px solid #e5e7eb;background:#ffffff;
+  text-align:center;box-shadow:0 -2px 6px rgba(0,0,0,0.04);}
+footer img{max-width:380px;height:auto;opacity:.96;}
+/* Botón Volver inferior */
+.back-btn{
+  display:inline-block;
+  margin:1.5rem auto 0;
+  background:#0f3d83;
+  color:#fff;
+  text-decoration:none;
+  font-weight:700;
+  padding:0.7rem 1.4rem;
+  border-radius:10px;
+  box-shadow:0 4px 10px rgba(15,61,131,.25);
+  transition:background .2s, transform .1s, box-shadow .2s;
+}
+.back-btn:hover{
+  background:#1c60c3;
+  transform:translateY(-1px);
+  box-shadow:0 6px 12px rgba(15,61,131,.35);
+}
+</style>
+<style>
+:root {
+  --azul-institucional: #0f3d83;
+}
+
+/* Barra superior segura */
+.safe-top {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: calc(env(safe-area-inset-top, 0px) + 28px);
+  background: var(--azul-institucional);
+  z-index: 1000;
+}
+
+/* Empuja el contenido real por debajo de la barra */
+body {
+  margin: 0;
+  padding-top: calc(env(safe-area-inset-top, 0px) + 28px);
+  background-color: #fff;
+}
+</style>
+
+</head>
+
+<body>
+  <div class="safe-top"></div>
+<header class="appbar" role="region" aria-label="Cabecera NIHSS">
+  <div class="appbar-inner">
+    <div class="appbar-bar">
+      <img src="../iconos/nihss.png" alt="NIHSS" width="40" height="40"
+           style="border-radius:50%;background:white;box-shadow:0 0 6px rgba(0,0,0,.08);margin-right:8px;">
+      <div class="left-group">
+        <h1 style="margin:0;font-size:1.4rem;line-height:1;font-weight:800;letter-spacing:.2px;color:#fff;">
+          NIHSS
+        </h1>
+        <output id="pill" class="pill" aria-live="polite" aria-atomic="true">–</output>
+      </div>
+      <div class="actions"><a class="btn" href="../index.html">Inicio</a></div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="panel">
+    <p class="note">Complete los ítems; la puntuación total y la interpretación se actualizan automáticamente.</p>
+
+    <!-- ===== BLOQUES NIHSS ===== -->
+    <div id="formBlocks">
+      <!-- Generación manual para control fino de etiquetas y ayudas -->
+      <!-- 1a -->
+      <div class="coll default-open" data-id="n1a">
+        <div class="coll-head" tabindex="0">
+          <span class="arrow" aria-hidden="true">▸</span>
+          <span class="ttl"><strong>1a. Nivel de conciencia</strong></span>
+          <button class="help" type="button" data-help="n1a">Ayuda</button>
+        </div>
+        <div class="coll-body">
+          <label for="n1a">Seleccione una opción</label>
+          <select id="n1a">
+            <option value="0">0 - Alerta</option>
+            <option value="1">1 - Somnoliento</option>
+            <option value="2">2 - Estupor</option>
+            <option value="3">3 - Coma</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- 1b -->
+      <div class="coll default-open" data-id="n1b">
+        <div class="coll-head" tabindex="0">
+          <span class="arrow" aria-hidden="true">▸</span>
+          <span class="ttl"><strong>1b. Preguntas LOC</strong></span>
+          <button class="help" type="button" data-help="n1b">Ayuda</button>
+        </div>
+        <div class="coll-body">
+          <label for="n1b">Seleccione una opción</label>
+          <select id="n1b">
+            <option value="0">0 - Ambas respuestas correctas</option>
+            <option value="1">1 - Una respuesta correcta</option>
+            <option value="2">2 - Ninguna respuesta correcta</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- 1c -->
+      <div class="coll default-open" data-id="n1c">
+        <div class="coll-head" tabindex="0">
+          <span class="arrow" aria-hidden="true">▸</span>
+          <span class="ttl"><strong>1c. Comandos LOC</strong></span>
+          <button class="help" type="button" data-help="n1c">Ayuda</button>
+        </div>
+        <div class="coll-body">
+          <label for="n1c">Seleccione una opción</label>
+          <select id="n1c">
+            <option value="0">0 - Cumple ambas órdenes</option>
+            <option value="1">1 - Cumple una orden</option>
+            <option value="2">2 - No cumple órdenes</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- 2 Mirada -->
+      <div class="coll default-open" data-id="n2">
+        <div class="coll-head" tabindex="0">
+          <span class="arrow" aria-hidden="true">▸</span>
+          <span class="ttl"><strong>2. Mirada</strong></span>
+          <button class="help" type="button" data-help="n2">Ayuda</button>
+        </div>
+        <div class="coll-body">
+          <label for="n2">Seleccione una opción</label>
+          <select id="n2">
+            <option value="0">0 - Normal</option>
+            <option value="1">1 - Parálisis parcial de la mirada</option>
+            <option value="2">2 - Parálisis completa o desviación forzada</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- 3 Campos visuales -->
+      <div class="coll default-open" data-id="n3">
+        <div class="coll-head" tabindex="0">
+          <span class="arrow" aria-hidden="true">▸</span>
+          <span class="ttl"><strong>3. Campos visuales</strong></span>
+          <button class="help" type="button" data-help="n3">Ayuda</button>
+        </div>
+        <div class="coll-body">
+          <label for="n3">Seleccione una opción</label>
+          <select id="n3">
+            <option value="0">0 - Normal</option>
+            <option value="1">1 - Defecto parcial o cuadrantanopsia</option>
+            <option value="2">2 - Hemianopsia completa</option>
+            <option value="3">3 - Ceguera, hemianopsia bilateral</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- 4 Parálisis facial -->
+      <div class="coll default-open" data-id="n4">
+        <div class="coll-head" tabindex="0">
+          <span class="arrow" aria-hidden="true">▸</span>
+          <span class="ttl"><strong>4. Parálisis facial</strong></span>
+          <button class="help" type="button" data-help="n4">Ayuda</button>
+        </div>
+        <div class="coll-body">
+          <label for="n4">Seleccione una opción</label>
+          <select id="n4">
+            <option value="0">0 - Normal</option>
+            <option value="1">1 - Paresia leve, asimetría de la sonrisa</option>
+            <option value="2">2 - Paresia parcial</option>
+            <option value="3">3 - Parálisis completa</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- 5a/b Motor brazos -->
+      <div class="coll default-open" data-id="n5a">
+        <div class="coll-head" tabindex="0">
+          <span class="arrow" aria-hidden="true">▸</span>
+          <span class="ttl"><strong>5a. Motor brazo izquierdo</strong></span>
+          <button class="help" type="button" data-help="n5">Ayuda</button>
+        </div>
+        <div class="coll-body">
+          <label for="n5a">Seleccione una opción</label>
+          <select id="n5a">
+            <option value="0">0 - No cae</option>
+            <option value="1">1 - Cae antes de 10 segundos sin tocar plano</option>
+            <option value="2">2 - Algún esfuerzo contra la gravedad</option>
+            <option value="3">3 - Sin esfuerzo contra la gravedad</option>
+            <option value="4">4 - Sin movimiento</option>
+            <option value="0" data-un="1">UN - No evaluable (amputación o articulación fijada)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="coll default-open" data-id="n5b">
+        <div class="coll-head" tabindex="0">
+          <span class="arrow" aria-hidden="true">▸</span>
+          <span class="ttl"><strong>5b. Motor brazo derecho</strong></span>
+          <button class="help" type="button" data-help="n5">Ayuda</button>
+        </div>
+        <div class="coll-body">
+          <label for="n5b">Seleccione una opción</label>
+          <select id="n5b">
+            <option value="0">0 - No cae</option>
+            <option value="1">1 - Cae antes de 10 segundos sin tocar plano</option>
+            <option value="2">2 - Algún esfuerzo contra la gravedad</option>
+            <option value="3">3 - Sin esfuerzo contra la gravedad</option>
+            <option value="4">4 - Sin movimiento</option>
+            <option value="0" data-un="1">UN - No evaluable (amputación o articulación fijada)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- 6a/b Motor piernas -->
+      <div class="coll default-open" data-id="n6a">
+        <div class="coll-head" tabindex="0">
+          <span class="arrow" aria-hidden="true">▸</span>
+          <span class="ttl"><strong>6a. Motor pierna izquierda</strong></span>
+          <button class="help" type="button" data-help="n6">Ayuda</button>
+        </div>
+        <div class="coll-body">
+          <label for="n6a">Seleccione una opción</label>
+          <select id="n6a">
+            <option value="0">0 - No cae</option>
+            <option value="1">1 - Cae antes de 5 segundos sin tocar plano</option>
+            <option value="2">2 - Algún esfuerzo contra la gravedad</option>
+            <option value="3">3 - Sin esfuerzo contra la gravedad</option>
+            <option value="4">4 - Sin movimiento</option>
+            <option value="0" data-un="1">UN - No evaluable (amputación o articulación fijada)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="coll default-open" data-id="n6b">
+        <div class="coll-head" tabindex="0">
+          <span class="arrow" aria-hidden="true">▸</span>
+          <span class="ttl"><strong>6b. Motor pierna derecha</strong></span>
+          <button class="help" type="button" data-help="n6">Ayuda</button>
+        </div>
+        <div class="coll-body">
+          <label for="n6b">Seleccione una opción</label>
+          <select id="n6b">
+            <option value="0">0 - No cae</option>
+            <option value="1">1 - Cae antes de 5 segundos sin tocar plano</option>
+            <option value="2">2 - Algún esfuerzo contra la gravedad</option>
+            <option value="3">3 - Sin esfuerzo contra la gravedad</option>
+            <option value="4">4 - Sin movimiento</option>
+            <option value="0" data-un="1">UN - No evaluable (amputación o articulación fijada)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- 7 Ataxia -->
+      <div class="coll default-open" data-id="n7">
+        <div class="coll-head" tabindex="0">
+          <span class="arrow" aria-hidden="true">▸</span>
+          <span class="ttl"><strong>7. Ataxia</strong></span>
+          <button class="help" type="button" data-help="n7">Ayuda</button>
+        </div>
+        <div class="coll-body">
+          <label for="n7">Seleccione una opción</label>
+          <select id="n7">
+            <option value="0">0 - Ausente, plejia, defecto de comprensión</option>
+            <option value="1">1 - En una extremidad</option>
+            <option value="2">2 - En dos extremidades</option>
+            <option value="0" data-un="1">UN - No evaluable (amputación o articulación fijada)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- 8 Sensibilidad -->
+      <div class="coll default-open" data-id="n8">
+        <div class="coll-head" tabindex="0">
+          <span class="arrow" aria-hidden="true">▸</span>
+          <span class="ttl"><strong>8. Sensibilidad</strong></span>
+          <button class="help" type="button" data-help="n8">Ayuda</button>
+        </div>
+        <div class="coll-body">
+          <label for="n8">Seleccione una opción</label>
+          <select id="n8">
+            <option value="0">0 - Normal</option>
+            <option value="1">1 - Leve o moderada, afasia, estupor</option>
+            <option value="2">2 - Severa, bilateral o anestesia, coma</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- 9 Lenguaje -->
+      <div class="coll default-open" data-id="n9">
+        <div class="coll-head" tabindex="0">
+          <span class="arrow" aria-hidden="true">▸</span>
+          <span class="ttl"><strong>9. Lenguaje</strong></span>
+          <button class="help" type="button" data-help="n9">Ayuda</button>
+        </div>
+        <div class="coll-body">
+          <label for="n9">Seleccione una opción</label>
+          <select id="n9">
+            <option value="0">0 - Normal</option>
+            <option value="1">1 - Afasia leve o moderada</option>
+            <option value="2">2 - Afasia severa (Broca, Wernicke)</option>
+            <option value="3">3 - Mutismo, afasia global, coma</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- 10 Disartria -->
+      <div class="coll default-open" data-id="n10">
+        <div class="coll-head" tabindex="0">
+          <span class="arrow" aria-hidden="true">▸</span>
+          <span class="ttl"><strong>10. Disartria</strong></span>
+          <button class="help" type="button" data-help="n10">Ayuda</button>
+        </div>
+        <div class="coll-body">
+          <label for="n10">Seleccione una opción</label>
+          <select id="n10">
+            <option value="0">0 - Normal</option>
+            <option value="1">1 - Leve o moderada</option>
+            <option value="2">2 - Severa, ininteligible, mutismo</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- 11 Negligencia -->
+      <div class="coll default-open" data-id="n11">
+        <div class="coll-head" tabindex="0">
+          <span class="arrow" aria-hidden="true">▸</span>
+          <span class="ttl"><strong>11. Extinción o negligencia</strong></span>
+          <button class="help" type="button" data-help="n11">Ayuda</button>
+        </div>
+        <div class="coll-body">
+          <label for="n11">Seleccione una opción</label>
+          <select id="n11">
+            <option value="0">0 - Ausente</option>
+            <option value="1">1 - Solo una modalidad: visual, táctil, espacial, corporal</option>
+            <option value="2">2 - Severa, más de una modalidad</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+<!-- COMENTARIOS -->
+<div class="card" id="comentariosCard" style="margin-top:18px;">
+  <label for="comentarios" style="font-weight:900;color:#0b1f44;display:block;margin-bottom:6px;">
+    Comentarios
+  </label>
+  <textarea id="comentarios" placeholder="Añada observaciones o detalles clínicos..."
+    style="width:95%;min-height:80px;resize:vertical;font-size:14px;font-family:Verdana, sans-serif;
+           border:1px solid var(--borde);border-radius:10px;padding:10px 12px;line-height:1.45;
+           background:#f9fafc;color:#0f172a;"></textarea>
+</div>
+
+
+    <!-- ACCIONES -->
+    <div class="actions">
+      <button id="btnClear" class="btn-action btn-clear" type="button">Borrar</button>
+      <button id="btnCopy" class="btn-action btn-copy" type="button">Copiar resumen</button>
+    </div>
+
+    <!-- RESULTADOS -->
+    <div id="resultCard" class="card">
+      <div class="kpi">
+        <div class="box" id="scoreBox"><div class="ttl">NIHSS total</div><div class="val" id="scoreVal">0</div></div>
+        <div class="box" id="defBox"><div class="ttl">Déficit</div><div class="val" id="sevVal">sin déficit</div></div>
+      </div>
+      <div class="chips" id="chips"></div>
+      <p class="note">Rangos orientativos: 0 = sin déficit • 1–4 leve • 5–15 moderado • 16–20 moderado-grave • ≥21 grave.</p>
+      <div id="resumenText" aria-label="Resumen para copiar"></div>
+    </div>
+  </section>
+<div style="text-align:center;">
+<a href="javascript:history.back()" class="back-btn">Volver</a>
+</div>
+</main>
+
+<!-- MODAL DE AYUDA -->
+<div class="modal" id="modal" role="dialog" aria-modal="true">
+  <div class="modal-card">
+    <div class="modal-head">
+      <div class="modal-title" id="modal-title">Ayuda</div>
+      <button class="modal-close" id="modal-close" aria-label="Cerrar">×</button>
+    </div>
+    <div class="modal-body" id="modal-body">—</div>
+  </div>
+</div>
+
+<script>
+/* ===== Utiles ===== */
+const MDASH = String.fromCharCode(8212);
+const campos = ['n1a','n1b','n1c','n2','n3','n4','n5a','n5b','n6a','n6b','n7','n8','n9','n10','n11'];
+
+function gradoNIHSS(total){
+  if(total===0) return 'sin déficit';
+  if(total<=4)  return 'leve';
+  if(total<=15) return 'moderado';
+  if(total<=20) return 'moderado-grave';
+  return 'grave';
+}
+function tone(total){
+  if(total<=4) return {pill:'ok', box:'okbox'};
+  if(total<=20) return {pill:'warn', box:'warnbox'};
+  return {pill:'bad', box:'badbox'};
+}
+function val(id){ return Number(document.getElementById(id).value||0); }
+
+/* ===== Colapsables ===== */
+function toggleColl(el){
+  el.classList.toggle('open');
+  const arrow = el.querySelector('.arrow');
+  if(arrow) arrow.textContent = el.classList.contains('open') ? '▾' : '▸';
+}
+document.querySelectorAll('.coll').forEach(c=>{
+  const head = c.querySelector('.coll-head');
+  const mq = window.matchMedia('(min-width: 720px)');
+  // Cerrados en móvil, abiertos en escritorio (default-open)
+  if(mq.matches && c.classList.contains('default-open')) {
+    c.classList.add('open');
+    const a=c.querySelector('.arrow'); if(a) a.textContent='▾';
+  }
+  head.addEventListener('click', ()=>toggleColl(c));
+  head.addEventListener('keydown', (e)=>{ if(e.key==='Enter' || e.key===' ') { e.preventDefault(); toggleColl(c);} });
+});
+
+/* ===== Cálculo ===== */
+function actualizar(){
+  let total = 0;
+  campos.forEach(id => total += val(id));
+  const sev = gradoNIHSS(total);
+  const t   = tone(total);
+
+  // KPIs
+  document.getElementById('scoreVal').textContent = total;
+  document.getElementById('sevVal').textContent   = sev;
+  ['scoreBox','defBox'].forEach(id=>{
+    const box = document.getElementById(id);
+    box.classList.remove('okbox','warnbox','badbox');
+    box.classList.add(t.box);
+  });
+
+  // Pill en cabecera
+  const pill = document.getElementById('pill');
+  pill.className = 'pill ' + t.pill;
+  pill.textContent = `${total} - ${sev}`;
+
+  // Chips
+  const chips = document.getElementById('chips');
+  chips.innerHTML = '';
+  chips.insertAdjacentHTML('beforeend', `<span class="chip">Escala 0–42</span>`);
+  chips.insertAdjacentHTML('beforeend', `<span class="chip">Rango: ${sev}</span>`);
+
+  // Resumen
+  document.getElementById('resumenText').textContent = buildResumen(total, sev);
+}
+
+function labelTextFor(id){
+  const c = document.querySelector(`.coll[data-id="${id}"] .ttl`);
+  return c ? c.textContent.trim() : id;
+}
+function optionTextFor(id){
+  const el = document.getElementById(id);
+  const opt = el.options[el.selectedIndex];
+  return opt ? opt.text : '';
+}
+function buildResumen(total, sev){
+  const lineas = campos.map(id => `- ${labelTextFor(id)}: ${optionTextFor(id)}`);
+  lineas.push('');
+  lineas.push(`NIHSS total: ${total} (${sev})`);
+
+  // Añadir comentarios si existen
+  const comentarios = document.getElementById('comentarios')?.value.trim();
+  if (comentarios) {
+    lineas.push('');
+    lineas.push('Comentarios:');
+    lineas.push(comentarios);
+  }
+
+  return `Exploración neurológica (NIHSS)\n` + lineas.join('\n');
+}
+
+
+/* ===== Acciones ===== */
+document.querySelectorAll('select').forEach(s=>{
+  s.addEventListener('change', actualizar);
+  s.addEventListener('input', actualizar);
+// Actualizar resumen al escribir comentarios
+document.getElementById('comentarios').addEventListener('input', actualizar);
+
+});
+document.getElementById('btnClear').addEventListener('click', ()=>{
+  document.querySelectorAll('select').forEach(s=> s.selectedIndex = 0);
+  actualizar();
+});
+
+document.getElementById('btnCopy').addEventListener('click', ()=>{
+  const t = document.getElementById('resumenText').textContent.trim();
+  if(!t) return;
+  navigator.clipboard.writeText(t).then(()=>{
+    const b = document.getElementById('btnCopy');
+    b.classList.add('copiado'); b.textContent='Copiado';
+    setTimeout(()=>{ b.classList.remove('copiado'); b.textContent='Copiar resumen'; }, 2500);
+  });
+});
+
+/* ===== Modal de ayuda ===== */
+const helpTexts = {
+  n1a:`<p>El investigador debe elegir una respuesta si hay obstáculos (intubación, barrera idiomática, vendajes). El valor 3 se asigna solo si no hay movimientos distintos a posturas reflejas ante dolor.</p>`,
+  n1b:`<p>Preguntar mes y edad. Deben ser correctas. Afásicos/estuporosos: puntuar 2. Si no puede hablar por causas no afásicas (intubación, disartria severa...), puntuar 1.</p>`,
+  n1c:`<p>Dar dos órdenes sencillas (p. ej., abrir/cerrar ojos; apretar/soltar). Se acepta intento inequívoco. Si no responde, mostrar la acción. Solo se valora el primer intento.</p>`,
+  n2:`<p>Explorar mirada horizontal (voluntaria o reflejos oculocefálicos). Desviación superable: 1. Parálisis aislada III/IV/VI: 1. Desviación forzada o parálisis completa: 2.</p>`,
+  n3:`<p>Confrontación de campos visuales. Asimetría definida/cuadrantanopsia: 1; hemianopsia: 2; ceguera/hemianopsia bilateral: 3. La extinción se usa también para el ítem 11.</p>`,
+  n4:`<p>Pedir mostrar dientes/elevar cejas/cerrar ojos. Si no comprende, valorar ante dolor. Retirar barreras que oculten la cara en lo posible.</p>`,
+  n5:`<p>Brazos a 90º sentado o 45º supino; registra caída antes de 10 s. Afásicos: alentar con tono y mímica. Amputación/fusión: “UN”.</p>`,
+  n6:`<p>Pierna a 30º en decúbito; registra caída antes de 5 s. Afásicos: alentar sin estímulo nocivo. Amputación/fusión: “UN”.</p>`,
+  n7:`<p>Busca lesión cerebelosa unilateral (dedo-nariz, talón-espinilla). Registrar ataxia desproporcionada a la debilidad. Amputación/fusión: “UN”.</p>`,
+  n8:`<p>Valorar respuesta a pinchazo. Solo pérdida atribuible al ictus. Pérdida severa/total bilateral o coma: 2.</p>`,
+  n9:`<p>Valorar comprensión y expresión (descripción de lámina, repetición/lectura). Intubados: escribir. Coma: 3.</p>`,
+  n10:`<p>Claridad del habla; no confundir con afasia. Si barrera física (intubación): incomprobable, no puntuar como disartria.</p>`,
+  n11:`<p>Identificar negligencia visual/táctil/espacial. Si solo una modalidad: 1; si más de una: 2. No es “UN”.</p>`
+};
+const modal = document.getElementById('modal');
+const modalTitle = document.getElementById('modal-title');
+const modalBody = document.getElementById('modal-body');
+const modalClose = document.getElementById('modal-close');
+
+document.querySelectorAll('.help').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    const key = btn.getAttribute('data-help');
+    const ttl = btn.closest('.coll').querySelector('.ttl')?.textContent?.trim() || 'Ayuda';
+    modalTitle.textContent = ttl;
+    modalBody.innerHTML = helpTexts[key] || 'Sin ayuda disponible.';
+    modal.classList.add('open');
+  });
+});
+modalClose.addEventListener('click', ()=> modal.classList.remove('open'));
+modal.addEventListener('click', (e)=>{ if(e.target===modal){ modal.classList.remove('open'); }});
+
+/* Init */
+document.addEventListener('DOMContentLoaded', actualizar);
+</script>
+
+<footer>
+  <img src="uibanner.png" alt="Unidad de Ictus Málaga">
+</footer>
+<script src="js/index.js"></script>
+</body>
+</html>

@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="manifest" href="../site.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="../iconos/ictusgps.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../iconos/ictusgps.png">
+<link rel="shortcut icon" href="../iconos/ictusgps.png">
+<meta name="theme-color" content="#0f3d83">
+<title>Ictus hemorrágico — Unidad de Ictus</title>
+<style>
+:root{
+  --bg:#f9fafc;
+  --ink:#0e1a33;
+  --accent:#164a8a;
+  --accent-light:#d7e3f8;
+  --accent-dark:#0f3d83;
+  --border:#e5e9f2;
+  --alert:#b30000;
+  --alert-bg:#fef3f2;
+  --alert-border:#f5c2c0;
+}
+
+html,body{
+  margin:0; padding:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:Verdana, Geneva, Tahoma, sans-serif;
+  line-height:1.6;
+  -webkit-text-size-adjust:100%;
+}
+
+header{
+  background:var(--accent-dark);
+  color:#fff;
+  text-align:center;
+  padding:1rem;
+  font-weight:800;
+  font-size:1.2rem;
+  box-shadow:0 2px 6px rgba(0,0,0,0.08);
+  position:sticky;top:0;z-index:10;
+}
+
+main{
+  max-width:850px;
+  margin:0 auto;
+  padding:1rem 1.25rem 2.5rem;
+  background:#fff;
+  border-radius:12px;
+  box-shadow:0 2px 10px rgba(0,0,0,0.04);
+}
+
+p{margin:0.75rem 0;text-align:justify;}
+a{color:var(--accent-dark);text-decoration:none;}
+a:hover{text-decoration:underline;color:var(--accent);}
+strong,b{color:var(--accent-dark);}
+h3{color:var(--accent-dark);margin-top:1.2rem;font-size:1.05rem;}
+ul{margin:0.6rem 0 0.6rem 1.2rem;}
+li{margin:0.3rem 0;}
+hr{border:none;border-top:1px solid var(--border);margin:1.4rem 0;}
+.highlight-red{color:var(--alert);font-weight:700;}
+
+figure{text-align:center;margin:1rem auto;}
+figure img{
+  max-width:100%;
+  height:auto;
+  border:1px solid var(--border);
+  border-radius:8px;
+  box-shadow:0 2px 6px rgba(0,0,0,0.05);
+}
+figcaption{
+  font-size:0.9rem;
+  color:var(--ink);
+  margin-top:0.3rem;
+}
+
+.related{
+  margin-top:1.6rem;
+  background:var(--accent-light);
+  padding:1rem;
+  border-radius:8px;
+}
+.related h3{margin:0 0 .5rem 0;color:var(--accent-dark);font-size:1rem;}
+.related ol{margin:0;padding-left:1.2rem;}
+.related li{margin:0.25rem 0;}
+
+.alerta-clinica{
+  text-align:center;
+  color:#b30000;       /* rojo clínico */
+  font-weight:800;
+  margin:1.5rem 0;
+  font-size:1.05rem;
+}
+
+.back-btn{
+  display:inline-block;
+  margin-top:1.5rem;
+  background:var(--accent-dark);
+  color:#fff;
+  text-decoration:none;
+  font-weight:700;
+  padding:0.6rem 1.2rem;
+  border-radius:8px;
+  transition:background .2s, transform .1s;
+  text-align:center;
+}
+.back-btn:hover{
+  background:#1c60c3;
+  color:#fff;
+  transform:translateY(-1px);
+}
+
+@media(max-width:768px){
+  header{font-size:1.05rem;}
+  main{padding:0.9rem 1rem;}
+  body{font-size:0.96rem;}
+}
+.alert{
+  text-align:center;
+  background:var(--alert-bg);
+  border:1px solid var(--alert-border);
+  border-radius:6px;
+  padding:0.8rem;
+  color:#800000;
+  font-weight:700;
+  margin-top:1rem;
+}
+</style>
+<style>
+:root{
+  --bg:#f9fafc;
+  --ink:#0e1a33;
+  --accent:#164a8a;
+  --accent-light:#d7e3f8;
+  --accent-dark:#0f3d83;
+  --border:#e5e9f2;
+  --alert:#b30000;
+  --alert-bg:#fef3f2;
+  --alert-border:#f5c2c0;
+}
+
+
+  .wrap{max-width:850px; margin:0 auto; padding:24px}
+
+html,body{
+  margin:0; padding:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:Verdana, Geneva, Tahoma, sans-serif;
+  line-height:1.6;
+  -webkit-text-size-adjust:100%;
+}
+
+header{
+  background:var(--accent-dark);
+  color:#fff;
+  text-align:LEFT;
+  padding:1rem;
+  font-weight:800;
+  font-size:1.2rem;
+  box-shadow:0 2px 6px rgba(0,0,0,0.08);
+  position:sticky;top:0;z-index:10;
+}
+
+
+main{
+  max-width:850px;
+  margin:0 auto;
+  padding:1rem 1.25rem 2.5rem;
+  background:#fff;
+  border-radius:12px;
+  box-shadow:0 2px 10px rgba(0,0,0,0.04);
+}
+
+p{margin:0.75rem 0;text-align:justify;}
+a{color:var(--accent-dark);text-decoration:none;}
+a:hover{text-decoration:underline;color:var(--accent);}
+strong,b{color:var(--accent-dark);}
+h3{color:var(--accent-dark);margin-top:1.2rem;font-size:1.05rem;}
+ul{margin:0.6rem 0 0.6rem 1.2rem;}
+li{margin:0.3rem 0;}
+hr{border:none;border-top:1px solid var(--border);margin:1.4rem 0;}
+.highlight-red{color:var(--alert);font-weight:700;}
+
+.related{
+  margin-top:1.6rem;
+  background:var(--accent-light);
+  padding:1rem;
+  border-radius:8px;
+}
+.related h3{margin:0 0 .5rem 0;color:var(--accent-dark);font-size:1rem;}
+.related ol{margin:0;padding-left:1.2rem;}
+.related li{margin:0.25rem 0;}
+
+.alert{
+  text-align:center;
+  background:var(--alert-bg);
+  border:1px solid var(--alert-border);
+  border-radius:6px;
+  padding:0.8rem;
+  color:#800000;
+  font-weight:700;
+  margin-top:1rem;
+}
+.bar{display:flex; align-items:center; gap:12px; padding:1px 18px}
+ 
+  .title{font-weight:700; letter-spacing:.2px; font-size:1.2rem;}
+  .subtitle{font-size:.9rem; color:var(--muted)}
+  .headcol{display:flex; flex-direction:column}
+
+  .grid{
+    display:grid;
+    grid-template-columns: repeat(1, minmax(0,1fr));
+    gap:16px;
+    margin-top:22px;
+  }
+  @media (min-width:520px){ .grid{ grid-template-columns: repeat(2, minmax(0,1fr)); } }
+  @media (min-width:900px){ .grid{ grid-template-columns: repeat(3, minmax(0,1fr)); } }
+
+   
+  .actions{margin-left:auto}
+  .btn{
+    display:inline-flex; align-items:center; gap:2px;
+    padding:4px 8px; border-radius:12px; text-decoration:none;
+    border:1px solid rgba(255,255,255,.14);
+    background: rgba(255,255,255,.06); color:white;
+  }
+  .btn:hover{ border-color: rgba(127,179,255,.35); background: #1c60c3; color:white;}
+.back-btn{
+  display:inline-block;
+  margin-top:1.5rem;
+  background:var(--accent-dark);
+  color:#fff;
+  text-decoration:none;
+  font-weight:700;
+  padding:0.6rem 1.2rem;
+  border-radius:8px;
+  transition:background .2s, transform .1s;
+  text-align:center;
+}
+.back-btn:hover{
+  background:#1c60c3;
+  color:#fff;
+  transform:translateY(-1px);
+}
+
+@media(max-width:768px){
+  header{font-size:1.05rem;}
+  main{padding:0.9rem 1rem;}
+  body{font-size:0.96rem;}
+}
+</style>
+</head>
+
+<body>
+<header>
+    <div class="bar wrap">
+      
+      <div class="headcol">
+        <div class="title">ICTUS HEMORRÁGICO</div>
+        </div>
+      <div class="actions">
+        <a class="btn" href="../index.html">Inicio</a>
+      </div>
+    </div>
+  </header>
+
+<main>
+
+<p>El manejo médico de la hemorragia intracerebral (HIC) tiene como objetivo principal evitar el aumento del tamaño del hematoma, principal predictor de mal pronóstico. Para ello, se aplican medidas generales y un control estricto de la tensión arterial y la coagulación.</p>
+
+<hr>
+
+<h3>Manejo general y cuidado de soporte</h3>
+<ul>
+  <li><b>Posición de la cabeza:</b> mantener la cabeza a <b>30º</b> y en línea media para optimizar el retorno venoso cerebral y reducir la presión intracraneal (PIC).</li>
+  <li><b>Fluidoterapia:</b> asegurar que el paciente se encuentra en <b>euvolemia</b> para mantener la presión de perfusión cerebral.</li>
+  <li><b>Cuidados básicos:</b> aplicar todas las <a href="11_ictus_isquemico.html">medidas de soporte general</a>, incluyendo el manejo de la <a href="33_fiebre.html">fiebre</a>, la <a href="32_glucemia.html">glucemia</a> y el dolor.</li>
+</ul>
+
+<hr>
+
+<h3>Control de la tensión arterial</h3>
+<p>El <a href="31_presion_arterial.html">control estricto de la TA</a> es la medida <b>más efectiva</b> para limitar el crecimiento del hematoma.</p>
+<ul>
+  <li><b>Objetivo de TA:</b> reducir rápidamente la TA sistólica a <b>140 mmHg</b>. 
+  <span class="highlight-red">El tratamiento debe iniciarse a la mayor brevedad, ya desde el área de Urgencias.</span></li>
+</ul>
+
+<hr>
+
+<h3>Reversión de la anticoagulación</h3>
+<p class="highlight-red">El tratamiento debe ser inmediato en todo paciente con hemorragia cerebral espontánea que esté bajo terapia anticoagulante.</p>
+
+<figure>
+  <img src="img/111_transformacion_hemorragica_anticoagulantes.png" alt="Esquema de reversión de anticoagulación">
+</figure>
+
+<h3>Uso de Idarucizumab y Andexanet alfa</h3>
+<ul>
+  <li><b>Idarucizumab:</b> reversor específico del <b>dabigatrán</b>. Dosis única de <b>5 g</b> (dos viales de 2.5 g) por vía IV lenta (5–10 minutos por vial).</li>
+  <li><b>Andexanet alfa:</b> reversor de <b>rivaroxabán, apixabán y edoxabán</b>.
+    <ul>
+      <li><b>Régimen de dosis baja:</b> bolo de 400 mg seguido de infusión de 480 mg en 2 h (si dosis baja y >8 h desde la última toma).</li>
+      <li><b>Régimen de dosis alta:</b> bolo de 800 mg seguido de infusión de 960 mg en 2 h (si dosis alta o &lt;8 h desde la última toma).</li>
+    </ul>
+  </li>
+</ul>
+
+<figure>
+  <img src="img/14_andexanet_dosis.png" alt="Esquema de dosis de Andexanet alfa">
+</figure>
+
+<hr>
+
+<h3>Nota importante en la reversión de anticoagulación</h3>
+<ul>
+  <li><b>En la hemorragia cerebral espontánea:</b> la reversión de la anticoagulación está 
+  <span class="highlight-red">indicada de forma inmediata y sistemática</span>, dado que el sangrado es el evento principal y su expansión se asocia a mal pronóstico.</li>
+  <li><b>En la transformación hemorrágica de un ictus isquémico:</b> la reversión debe individualizarse y solo plantearse si hay 
+  <span class="highlight-red">deterioro clínico atribuible al sangrado</span> o expansión documentada.</li>
+</ul>
+
+<p style="border-left:4px solid var(--alert);background:#f7f8fa;padding:0.8em 1em;margin:1em 0;border-radius:6px;">
+  <b style="color:var(--alert);">Reintroducción de la anticoagulación tras HIC:</b>
+  En pacientes con indicación estricta de anticoagulación (como 
+  <b>fibrilación auricular de alto riesgo, trombo mural o prótesis valvular mecánica</b>) 
+  la reversión completa debe acompañarse de un plan documentado de reintroducción precoz 
+  <b>una vez confirmada la estabilidad clínica y radiológica</b>.
+  Esto implica <b>ausencia de expansión del hematoma</b>, 
+  <b>sin deterioro neurológico</b> y 
+  <b>control tensional mantenido</b>.
+  Habitualmente puede considerarse a partir de los <b>7–14 días</b>, 
+  según el riesgo embólico individual y las características del sangrado.
+</p>
+
+<hr>
+
+<h3><a href="34_tromboembolismo.html">Prevención del tromboembolismo venoso</a></h3>
+<ul>
+  <li><b>Medidas físicas:</b> usar compresión neumática intermitente hasta el inicio de HBPM.</li>
+  <li><b>Medidas farmacológicas:</b> iniciar HBPM <b>a partir de 24–48 h</b> solo tras TC de control que confirme estabilidad del hematoma.</li>
+</ul>
+
+<hr>
+
+<h3 class="highlight-red">Signos de alerta</h3>
+<p>La aparición de los siguientes signos requiere una <span class="highlight-red">evaluación neurológica urgente</span> y una <span class="highlight-red">TC de control inmediata</span>:</p>
+<ul>
+  <li>Deterioro del nivel de conciencia.</li>
+  <li>Nuevo déficit neurológico o empeoramiento del existente.</li>
+  <li>Signos de herniación cerebral (dilatación pupilar, anisocoria).</li>
+</ul>
+
+<hr>
+
+<p class="alert">Según resultado de neuroimagen y situación clínica, avisar a Neurocirugía/UCI.</p>
+
+<a href="index.html" class="back-btn">Volver al índice</a>
+
+<hr>
+
+<div class="related">
+  <h3>Relacionados</h3>
+  <ol>
+    <li>Atención al paciente
+      <ol>
+        <li><a href="1_atencion_paciente.html">Cuidados generales</a></li>
+        <li><a href="11_ictus_isquemico.html">Ictus isquémico</a></li>
+        <ol>
+          <li><a href="111_transformacion_hemorragica.html">Ictus isquémico con transformación hemorrágica</a></li>
+          <li><a href="112_isquemico_en_progresion.html">Ictus isquémico en progresión</a></li>
+        </ol>
+        <li><a href="12_fibrinolisis_endovascular.html">Ictus isquémico que recibe fibrinólisis y/o tratamiento endovascular</a></li>
+        <ol>
+          <li><a href="121_complicaciones_fibrinolisis.html">Complicaciones de la fibrinólisis y terapia endovascular</a></li>
+        </ol>
+        <li><a href="13_isquemico_extenso.html">Ictus isquémico extenso</a></li>
+        <li><span style="background-color:#0f3d83;color:#fff;padding:2px 6px;border-radius:4px;">Ictus hemorrágico</span></li>
+        <li><a href="45_hsa.html">Hemorragia subaracnoidea</a></li>
+        <li><a href="16_angioplastia_carotidea.html">Angioplastia carotídea</a></li>
+        <ol>
+          <li><a href="161_pre_angioplastia.html">Antes de la angioplastia</a></li>
+          <li><a href="162_post_angioplastia.html">Tras la angioplastia</a></li>
+          <li><a href="163_complicaciones_angioplastia.html">Complicaciones de la angioplastia carotídea</a></li>
+        </ol>
+      </ol>
+    </li>
+  </ol>
+</div>
+
+</main>
+<footer style="
+    position:relative;
+    left:50%;
+    transform:translateX(-50%);
+    width:100vw;
+    margin:2rem 0 0 0;
+    padding:1.5rem 0;
+    border-top:1px solid #e5e7eb;
+    background:#ffffff;
+    text-align:center;
+    box-shadow:0 -2px 6px rgba(0,0,0,0.04);
+">
+      <img src="uibanner.png"
+         alt="Unidad de Ictus Málaga" style="max-width:380px;height:auto;opacity:.96;">
+  </a>
+
+</footer>
+<script src="js/index.js"></script>
+
+</body>
+</html>

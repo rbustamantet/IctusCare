@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="manifest" href="../site.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="../iconos/ictusgps.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../iconos/ictusgps.png">
+<link rel="shortcut icon" href="../iconos/ictusgps.png">
+<meta name="theme-color" content="#0f3d83">
+<title>Escala de Rankin modificada (mRS)</title>
+
+<style>
+:root{
+  --bg:#f8fafc; --ink:#0f172a; --borde:#e5e7eb;
+  --ok:#166534; --ok-bg:#e9fce7; --ok-ring:#bbf7d0;
+  --mid:#92400e; --mid-bg:#fff7ed; --mid-ring:#fed7aa;
+  --bad:#991b1b; --bad-bg:#fef2f2; --bad-ring:#fecaca;
+}
+
+/* ===== CABECERA (azul institucional) ===== */
+.appbar{
+  position:sticky; top:0; z-index:1000;
+  background:#0f3d83; color:#fff;
+  box-shadow:0 2px 6px rgba(0,0,0,0.1);
+}
+.appbar-inner{
+  max-width:980px; margin:0 auto; padding:4px 16px;
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+}
+.left-group{display:flex; align-items:center; gap:10px; flex-wrap:wrap;}
+.appbar h1{margin:0; font-size:22px; font-weight:800; color:#fff;}
+.pill{
+  display:inline-flex; align-items:center; justify-content:center;
+  min-width:38px; height:32px; padding:6px 10px;
+  border-radius:999px; font-size:13px; font-weight:700;
+  border:1px solid transparent; background:#dbeafe; color:#1e3a8a;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.pill.tone-green{background:#dcfce7; color:#065f46; border-color:#86efac;}
+.pill.tone-amber{background:#fef3c7; color:#92400e; border-color:#fde68a;}
+.pill.tone-red{background:#fee2e2; color:#991b1b; border-color:#fecaca;}
+.btn{
+  display:inline-flex; align-items:center; justify-content:center;
+  height:32px; padding:0 14px; border-radius:10px; text-decoration:none;
+  border:1px solid rgba(127,179,255,.35);
+  background:#1c60c3; color:#fff; font-size:.9rem; font-weight:700;
+  transition:background .2s, border-color .2s;
+}
+.btn:hover{ background:#0C00FF; }
+
+/* ===== CUERPO ===== */
+body{margin:0; background:var(--bg); color:var(--ink); font-family:Verdana, Geneva, sans-serif;}
+.wrap{max-width:980px; margin:16px auto 48px; padding:0 16px;}
+.panel{background:#fff; border:1px solid var(--borde); border-radius:16px; padding:16px; box-shadow:0 2px 10px rgba(15,23,42,.06);}
+
+.note{color:#64748b; font-size:12px;}
+
+/* Opciones mRS */
+.options{display:grid; gap:10px; margin-top:8px;}
+.option{
+  display:flex; gap:12px; align-items:flex-start;
+  border:1px solid #dbeafe; background:#fff; border-radius:12px; padding:12px;
+  transition:box-shadow .15s, border-color .15s, background .15s; cursor:pointer;
+}
+.option:hover{box-shadow:0 4px 14px rgba(37,99,235,.08)}
+.badge{
+  min-width:36px; min-height:36px; border-radius:10px;
+  background:#eef6ff; border:1px solid #dbeafe; color:#1e40af;
+  font-weight:700; display:flex; align-items:center; justify-content:center;
+}
+.opt-title{font-weight:700; margin:0 0 4px;}
+.opt-desc{margin:0; color:#334155; font-size:14px; line-height:1.45;}
+.opt-hints{margin:6px 0 0; color:#475569; font-size:12px;}
+.opt-hints li{margin:2px 0;}
+
+/* Radios accesibles invisibles */
+.radio{
+  position:absolute !important; width:1px; height:1px; padding:0; margin:-1px;
+  overflow:hidden; clip:rect(0,0,0,0); clip-path: inset(50%); white-space:nowrap; border:0;
+}
+.radio:checked + label.option{
+  border-color:#60a5fa; background:#f8fbff;
+  box-shadow:0 0 0 3px rgba(37,99,235,.15) inset;
+}
+.radio:focus-visible + label.option{ outline:3px solid #93c5fd; outline-offset:2px; }
+
+/* ===== RESULTADOS ===== */
+.kpi{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:12px;}
+.box{border:1.5px dashed #c7dbff; border-radius:14px; padding:14px; background:#f8fbff; text-align:center;}
+.ttl{font-size:14px; color:#334155; font-weight:800; margin-bottom:2px;}
+.val{font-size:24px; font-weight:900; color:#0b2c5f;}
+.ok{background:var(--ok-bg); border-color:var(--ok-ring);} 
+.warn{background:var(--mid-bg); border-color:var(--mid-ring);} 
+.bad{background:var(--bad-bg); border-color:var(--bad-ring);} 
+.ok .val{color:var(--ok);} .warn .val{color:var(--mid);} .bad .val{color:var(--bad);}
+
+/* ===== BOTONES ===== */
+.actions{display:flex; gap:10px; flex-wrap:wrap; margin-top:18px;}
+.btn-action{
+  flex:1 1 48%;
+  border:none; border-radius:10px; padding:12px;
+  font-size:15px; font-weight:700; cursor:pointer;
+  background:#fff; color:#0f3d83; border:1px solid #2563eb;
+  transition:background .2s;
+}
+.btn-action:hover{ background:#eff6ff; }
+.btn-copy.copiado{ background:#0f3d83!important; color:#fff!important; }
+
+/* ===== RESUMEN ===== */
+#resumenText{
+  white-space:pre-wrap; font-size:13px; color:#0f172a; margin-top:12px;
+  border:1px dashed var(--borde); border-radius:10px; padding:10px 12px;
+  background:#f8fafc; line-height:1.45;
+}
+
+/* ===== PIE ===== */
+footer{
+  position:relative; left:50%; transform:translateX(-50%);
+  width:100vw; margin:2rem 0 0 0; padding:1.5rem 0;
+  border-top:1px solid #e5e7eb; background:#ffffff;
+  text-align:center; box-shadow:0 -2px 6px rgba(0,0,0,0.04);
+}
+/* Botón Volver inferior */
+.back-btn{
+  display:inline-block;
+  margin:1.5rem auto 0;
+  background:#0f3d83;
+  color:#fff;
+  text-decoration:none;
+  font-weight:700;
+  padding:0.7rem 1.4rem;
+  border-radius:10px;
+  box-shadow:0 4px 10px rgba(15,61,131,.25);
+  transition:background .2s, transform .1s, box-shadow .2s;
+}
+.back-btn:hover{
+  background:#1c60c3;
+  transform:translateY(-1px);
+  box-shadow:0 6px 12px rgba(15,61,131,.35);
+}
+
+</style>
+<style>
+:root {
+  --azul-institucional: #0f3d83;
+}
+
+/* Barra superior segura */
+.safe-top {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: calc(env(safe-area-inset-top, 0px) + 28px);
+  background: var(--azul-institucional);
+  z-index: 1000;
+}
+
+/* Empuja el contenido real por debajo de la barra */
+body {
+  margin: 0;
+  padding-top: calc(env(safe-area-inset-top, 0px) + 28px);
+  background-color: #fff;
+}
+</style>
+
+</head>
+<body>
+  <div class="safe-top"></div>
+<!-- CABECERA -->
+<header class="appbar" role="region" aria-label="Cabecera mRS">
+  <div class="appbar-inner">
+    <div class="left-group">
+      <h1>Escala de Rankin modificada</h1>
+      <output id="pill" class="pill" aria-live="polite" aria-atomic="true">—</output>
+    </div>
+    <a class="btn" href="../index.html">Inicio</a>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="panel">
+    <p class="note">Seleccione el grado que describa el estado <em>habitual</em> del paciente. Priorice la capacidad real en la vida diaria.</p>
+
+    <fieldset aria-describedby="ayuda" style="border:0; padding:0; margin:0">
+
+      <div class="options" role="radiogroup" aria-label="Escala de Rankin modificada">
+        <!-- 0 -->
+        <input class="radio" type="radio" id="mrs0" name="mrs" value="0">
+        <label class="option" for="mrs0">
+          <div class="badge">0</div>
+          <div>
+            <p class="opt-title">Sin síntomas</p>
+            <p class="opt-desc">Sin signos o síntomas residuales; vida previa sin limitaciones atribuibles al evento.</p>
+            <ul class="opt-hints"><li>Reincorporación completa a trabajo/actividades previas.</li></ul>
+          </div>
+        </label>
+
+        <!-- 1 -->
+        <input class="radio" type="radio" id="mrs1" name="mrs" value="1">
+        <label class="option" for="mrs1">
+          <div class="badge">1</div>
+          <div>
+            <p class="opt-title">Síntomas sin discapacidad significativa</p>
+            <p class="opt-desc">Síntomas leves pero puede realizar <strong>todas</strong> sus tareas habituales sin ayuda.</p>
+            <ul class="opt-hints"><li>Difiere de 2: aquí no hay limitación funcional relevante.</li></ul>
+          </div>
+        </label>
+
+        <!-- 2 -->
+        <input class="radio" type="radio" id="mrs2" name="mrs" value="2">
+        <label class="option" for="mrs2">
+          <div class="badge">2</div>
+          <div>
+            <p class="opt-title">Discapacidad leve</p>
+            <p class="opt-desc">No puede realizar <strong>todas</strong> las actividades previas, pero es independiente para autocuidado.</p>
+            <ul class="opt-hints">
+              <li>Independiente en aseo, vestido, alimentación y continencia.</li>
+              <li>Difiere de 3: no precisa ayuda física en AVD básicas.</li>
+            </ul>
+          </div>
+        </label>
+
+        <!-- 3 -->
+        <input class="radio" type="radio" id="mrs3" name="mrs" value="3">
+        <label class="option" for="mrs3">
+          <div class="badge">3</div>
+          <div>
+            <p class="opt-title">Discapacidad moderada</p>
+            <p class="opt-desc">Requiere <strong>alguna ayuda</strong> pero <strong>camina sin ayuda</strong> (bastón/andador permitido).</p>
+            <ul class="opt-hints">
+              <li>Puede necesitar ayuda en tareas domésticas o parte de AVD.</li>
+              <li>Difiere de 4: en 3 camina sin asistencia humana.</li>
+            </ul>
+          </div>
+        </label>
+
+        <!-- 4 -->
+        <input class="radio" type="radio" id="mrs4" name="mrs" value="4">
+        <label class="option" for="mrs4">
+          <div class="badge">4</div>
+          <div>
+            <p class="opt-title">Discapacidad moderada–severa</p>
+            <p class="opt-desc"><strong>No camina sin ayuda</strong> y <strong>no atiende</strong> sus necesidades corporales sin asistencia.</p>
+            <ul class="opt-hints"><li>Requiere ayuda para deambulación y AVD básicas.</li></ul>
+          </div>
+        </label>
+
+        <!-- 5 -->
+        <input class="radio" type="radio" id="mrs5" name="mrs" value="5">
+        <label class="option" for="mrs5">
+          <div class="badge">5</div>
+          <div>
+            <p class="opt-title">Discapacidad severa</p>
+            <p class="opt-desc"><strong>Encamado</strong>, <strong>incontinente</strong> y requiere <strong>cuidados continuos</strong>.</p>
+            <ul class="opt-hints"><li>Totalmente dependiente para todas las AVD.</li></ul>
+          </div>
+        </label>
+
+        <!-- 6 -->
+        <input class="radio" type="radio" id="mrs6" name="mrs" value="6">
+        <label class="option" for="mrs6">
+          <div class="badge">6</div>
+          <div>
+            <p class="opt-title">Fallecido</p>
+            <p class="opt-desc">Muerte.</p>
+          </div>
+        </label>
+      </div>
+    </fieldset>
+
+    <!-- RESULTADOS -->
+    <div class="panel" id="resultCard" style="margin-top:16px;">
+      <div class="kpi">
+        <div class="box"><div class="ttl">Rankin modificado</div><div class="val" id="scoreVal">—</div></div>
+        <div class="box" id="riskBox"><div class="ttl">Interpretación</div><div class="val" id="riskVal">—</div></div>
+      </div>
+
+      <div class="actions">
+        <button id="btnClear" class="btn-action">Borrar</button>
+        <button id="btnCopy"  class="btn-action btn-copy">Copiar resumen</button>
+      </div>
+
+      <div id="resumenText"></div>
+
+      <p class="note" style="margin-top:12px">
+        Referencia: van Swieten JC, Koudstaal PJ, Visser MC, Schouten HJ, van Gijn J. 
+        Interobserver agreement for the assessment of handicap in stroke patients. <em>Stroke</em>. 1988;19:604–607.
+      </p>
+    </div>
+  </section>
+<div style="text-align:center;">
+  <a href="index.html" class="back-btn">Volver</a>
+</div>
+</main>
+
+<script>
+const SEP = ' \u2014 ';
+
+// Tonos para pill y kpi
+function toneForMRS(v){
+  v = Number(v);
+  if (v <= 1) return {kpi:'ok', pill:'tone-green', label:'sin discapacidad significativa'};
+  if (v <= 3) return {kpi:'warn', pill:'tone-amber', label:'discapacidad leve–moderada'};
+  if (v <= 5) return {kpi:'bad', pill:'tone-red', label:'discapacidad moderada–severa'};
+  return {kpi:'bad', pill:'tone-red', label:'fallecido'};
+}
+
+// Texto interpretativo corto
+function shortTitle(val){
+  switch(String(val)){
+    case '0': return 'Sin síntomas';
+    case '1': return 'Síntomas sin discapacidad significativa';
+    case '2': return 'Discapacidad leve';
+    case '3': return 'Discapacidad moderada';
+    case '4': return 'Discapacidad moderada–severa';
+    case '5': return 'Discapacidad severa';
+    case '6': return 'Fallecido';
+    default:  return '—';
+  }
+}
+
+// Actualiza pill cabecera
+function updateHeaderPill(val){
+  const pill = document.getElementById('pill');
+  pill.className = 'pill'; // limpia
+  if(val == null){
+    pill.textContent = 'mRS';
+    return;
+  }
+  const tone = toneForMRS(val);
+  pill.classList.add(tone.pill);
+  pill.textContent = '' + val + SEP + shortTitle(val);
+}
+
+// Construye resumen copiable
+function buildResumen(val){
+  const titulo = 'Escala de Rankin modificada (mRS)';
+  const linea  = 'mRS: ' + val + ' ' + SEP + ' ' + shortTitle(val);
+  let interpretacion = '';
+  const v = Number(val);
+  if (v <= 1) interpretacion = 'Independiente o sin limitación funcional relevante.';
+  else if (v === 2) interpretacion = 'Independiente para autocuidado, pero no realiza todas las actividades previas.';
+  else if (v === 3) interpretacion = 'Requiere alguna ayuda; camina sin asistencia humana.';
+  else if (v === 4) interpretacion = 'No camina sin ayuda y no atiende necesidades corporales sin asistencia.';
+  else if (v === 5) interpretacion = 'Encamado/incontinente; cuidados continuos.';
+  else interpretacion = 'Fallecido.';
+
+  return `${titulo}\n${linea}\nInterpretación: ${interpretacion}`;
+}
+
+// Aplica resultado a la tarjeta
+function renderResultado(val){
+  const sEl = document.getElementById('scoreVal');
+  const rEl = document.getElementById('riskVal');
+  const riskBox = document.getElementById('riskBox');
+  const resCard = document.getElementById('resultCard');
+
+  if(val == null){
+    sEl.textContent = '—';
+    rEl.textContent = '—';
+    updateHeaderPill(null);
+    document.getElementById('resumenText').textContent = '';
+    return;
+  }
+
+  const tone = toneForMRS(val);
+  sEl.textContent = String(val);
+  rEl.textContent = shortTitle(val);
+
+  // Colorear la caja de interpretación
+  riskBox.classList.remove('ok','warn','bad');
+  riskBox.classList.add(tone.kpi);
+
+  // Píldora
+  updateHeaderPill(val);
+
+  // Resumen
+  document.getElementById('resumenText').textContent = buildResumen(val);
+  resCard.scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+
+// Lee selección actual
+function getSelectedValue(){
+  const sel = document.querySelector('input[name="mrs"]:checked');
+  return sel ? sel.value : null;
+}
+
+// Handlers
+function onChange(){
+  const v = getSelectedValue();
+  renderResultado(v);
+}
+function borrar(){
+  const radios = document.querySelectorAll('input[name="mrs"]');
+  radios.forEach(r => r.checked = false);
+  renderResultado(null);
+}
+function copiar(){
+  const t = document.getElementById('resumenText').textContent.trim();
+  if(!t) return;
+  navigator.clipboard.writeText(t).then(()=>{
+    const b = document.getElementById('btnCopy');
+    b.classList.add('copiado'); b.textContent = 'Copiado';
+    setTimeout(()=>{ b.classList.remove('copiado'); b.textContent = 'Copiar resumen'; }, 2000);
+  });
+}
+
+// Listeners
+function attach(){
+  const radios = document.querySelectorAll('input[name="mrs"]');
+  radios.forEach(r=>{
+    r.addEventListener('change', onChange);
+    r.addEventListener('click', onChange);
+  });
+  document.getElementById('btnClear').addEventListener('click', borrar);
+  document.getElementById('btnCopy').addEventListener('click', copiar);
+  renderResultado(null);
+}
+
+document.readyState === 'loading'
+  ? document.addEventListener('DOMContentLoaded', attach)
+  : attach();
+</script>
+
+<footer>
+  <img src="uibanner.png" alt="Unidad de Ictus Málaga" style="max-width:380px;height:auto;opacity:.96;">
+</footer>
+<script src="js/index.js"></script>
+</body>
+</html>

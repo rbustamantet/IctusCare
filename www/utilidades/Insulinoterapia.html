@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="manifest" href="../site.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="../iconos/ictusgps.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../iconos/ictusgps.png">
+<link rel="shortcut icon" href="../iconos/ictusgps.png">
+<meta name="theme-color" content="#0f3d83">
+<title>Insulinoterapia</title>
+<style>
+  :root{
+    --bg:#f8fafc; --ink:#0f172a; --card:#ffffff;
+    --ring:#c7dbff; --borde:#dbeafe; --borde2:#e2e8f0;
+    --accent:#2563eb; --accent-ink:#1e3a8a; --accent-light:#dbeafe;
+    --warn:#946200; --err:#b91c1c;
+
+    --fs-top:18px; --fs-chip:10px; --fs-kpi-ttl:18px; --fs-kpi-val:22px;
+    --fs-proto-title:12px; --fs-proto-text:12px;
+  }
+  *{box-sizing:border-box}
+html,body{
+  margin:0;padding:0;background:var(--bg);color:var(--ink);
+  font-family:Verdana, Geneva, Tahoma, sans-serif;;
+}
+main, body > section, .wrap {
+  max-width: 1080px;      /* limita el ancho máximo */
+  margin: 0 auto;          /* centra horizontalmente */
+  padding: 0 16px;         /* deja 16 px de margen interno a izquierda y derecha */
+  box-sizing: border-box;  /* asegura que el padding no sume al ancho total */
+}
+/* asegura que los controles hereden la fuente */
+*,button,input,select,textarea{font-family:inherit}
+
+  /* Appbar */
+ .appbar{position:sticky;top:0;z-index:1000;background:#0f3d83;color:#fff;box-shadow:0 0px 0px rgba(0,0,0,.1)}
+.appbar-inner{max-width:1080px;margin:0 auto;padding:4px 2px;min-height: 72px;display:flex;align-items:center;justify-content:space-between;gap:0px}
+.left-group{display:flex;align-items:center;gap:10px}
+.appbar h1{margin:0;font-size:1.4rem;font-weight:800;color:#fff}
+
+.btnini {
+  display:inline-flex;align-items:center;gap:8px;
+      padding:9px 16px;border-radius:12px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(100,255,255,.06);
+      color:white;text-decoration:none;font-weight:600;font-size:15px;
+      transition:background .25s,border-color .25s;
+  }
+
+    .btnini:hover{border-color:rgba(127,179,255,.35);background:#1c60c3;color:white;text-decoration:none;font-weight:600;}
+
+/* Botón icono institucional (igual que en Unidades) */
+.icon-btn{
+  position:relative;
+  display:inline-block;
+  width:40px;height:40px;
+  border:none;outline:0;background:#fff;border-radius:50%;
+  box-shadow:0 0 6px rgba(0,0,0,.08);
+  padding:0;margin-right:8px;
+  vertical-align:middle;
+  cursor:pointer;
+  }
+.icon-btn .icon-unit,
+.icon-btn .icon-arrow{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+  transition:opacity .22s ease;
+  pointer-events:none;
+}
+.icon-btn .icon-unit{opacity:1;}
+.icon-btn .icon-arrow{opacity:0;}
+.icon-btn:hover .icon-unit{opacity:0;}
+.icon-btn:hover .icon-arrow{opacity:1;}
+.icon-btn:active{transform:scale(.96);}
+
+  .pill {
+  display: inline-flex;
+  align-items: center;          /* centra verticalmente el contenido */
+  justify-content: center;      /* centra horizontalmente */
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: #0f3d83;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.9rem;
+  line-height: 1;               /* 🔹 fuerza altura exacta de línea */
+  vertical-align: middle;       /* 🔹 alinea la píldora con el texto circundante */
+  position: relative;           /* 🔹 habilita pequeños ajustes */
+  top: 1px;                     /* 🔹 corrige el ligero “salto” hacia arriba */
+}
+
+  @media (min-width:640px){ .pill{max-width:420px} }
+
+  /* Layout principal */
+  .wrap{max-width:1080;margin:16px auto 28px;padding:0 16px}
+  .sub{color:#4b5b7a;margin:0 0 16px}
+  .panel{background:#f3f7ff;border:1px solid var(--borde);border-radius:16px;padding:14px;box-shadow:0 8px 22px rgba(31,86,179,.06)}
+
+  /* Tabs tipo de paciente */
+  .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+  .tab{padding:8px 12px;border-radius:999px;border:2px solid var(--borde);background:#fff;font-weight:700;cursor:pointer}
+  .tab[aria-selected="true"]{background:var(--accent-light);border-color:#bfdbfe;color:#1e3a8a}
+
+  /* Campos */
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media (max-width:720px){ .row{grid-template-columns:1fr} }
+  label.top{display:block;font-weight:900;color:#0b1f44;font-size:var(--fs-top);margin:0 0 6px}
+  input[type="number"]{width:100%;padding:10px 12px;border-radius:12px;border:2px solid #cfd8ea;background:#fff;font-size:14px;height:44px}
+  .radios{display:flex;gap:10px;flex-wrap:wrap}
+  .chip-radio{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;border:2px solid var(--borde);background:#fff;font-weight:700;cursor:pointer}
+  .chip-radio input{accent-color:#2563eb}
+
+  /* Resultados */
+  .chips{display:flex;gap:8px;flex-wrap:wrap;margin:4px 0 10px}
+  .chip{font-size:var(--fs-chip);border:1px solid var(--borde);background:#eef6ff;color:#1e3a8a;border-radius:999px;padding:6px 10px;font-weight:700}
+
+  .card{margin-top:12px;background:#fff;border:1px solid var(--borde);border-radius:16px;padding:14px;box-shadow:0 8px 22px rgba(31,86,179,.07);position:relative}
+
+  /* KPI */
+  .kpi{display:grid;grid-template-columns:1fr;gap:10px}
+  .hidden{display:none !important}
+  .hide{display:none !important}
+  .box{border:1.5px dashed var(--borde);border-radius:14px;padding:12px;background:#f8fbff;text-align:center}
+  .ttl{font-size:var(--fs-kpi-ttl);color:#334155;font-weight:400;margin-bottom:2px}
+  .val{font-size:var(--fs-kpi-val);font-weight:900;color:#0b2c5f}
+  .mini{font-size:10px;color:#64748b}
+  .meals{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px}
+
+  /* Protocolo */
+  .protocol{display:grid;grid-template-columns:64px 1fr;gap:12px;align-items:flex-start;border-top:1px solid var(--borde2);margin-top:14px;padding-top:14px}
+  .badge{width:64px;height:64px}
+  .proto-title{font-size:var(--fs-proto-title);font-weight:900;color:#0b2c5f;margin:0 0 4px}
+  .proto-list{margin:6px 0 0 18px;padding:0;font-size:var(--fs-proto-text);line-height:1.4}
+  .proto-list b{color:#0b2c5f}
+
+  /* Pauta de corrección */
+  .corr{margin-top:10px; grid-column:1 / -1;}
+  .corr-title{font-weight:900;color:#0b2c5f;font-size:12px;margin:8px 0 6px}
+  .corr table{width:100%;border-collapse:collapse;font-size:12px}
+  .corr th,.corr td{padding:8px;border:1px solid var(--borde2);text-align:center}
+  .corr th{background:#eef6ff;color:#1e3a8a}
+  .corr .subhd{display:block;font-size:10px;font-weight:600;opacity:.8;margin-top:2px}
+  .corr td:first-child{font-weight:700;text-align:center}
+  .corr .neg{color:#b91c1c}
+  .corr .pos{color:#0b2c5f}
+
+  .nota{font-size:12px;color:#576a92;margin-top:10px}
+
+  /* Botones Copiar/Imprimir */
+  .btnbar{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+  .btn{border:2px solid var(--borde);background:#fff;color:#0b2c5f;border-radius:999px;padding:10px 14px;font-weight:800;cursor:pointer}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+  .btn:disabled{opacity:.5;cursor:not-allowed}
+
+  /* No cortar palabras */
+  .box, .box *, .protocol, .protocol *{word-break:normal !important;overflow-wrap:normal !important;hyphens:none !important}
+/* Fuerza Verdana en todo el módulo, por encima del tema de Blogger */
+#insulinaApp,
+#insulinaApp * {
+  font-family: Verdana, Geneva, Tahoma, sans-serif !important;
+}
+
+/* Asegura que los controles hereden correctamente */
+#insulinaApp button,
+#insulinaApp input,
+#insulinaApp select,
+#insulinaApp textarea {
+  font-family: inherit !important;
+}
+
+/* (Opcional) imprimir con Verdana también */
+@media print {
+  #insulinaApp, #insulinaApp * { font-family: Verdana, Geneva, Tahoma, sans-serif !important; }
+}
+
+/* =======================================================
+   DISCLAIMER FINAL — fondo rojo tenue
+======================================================= */
+.disclaimer-red{
+  background:#fef2f2;             /* rojo muy claro */
+  border:1px solid #fecaca;       /* borde rosado suave */
+  border-radius:12px;
+  padding:14px 16px;
+  margin:28px auto 0;
+  max-width:960px;
+  box-shadow:0 2px 8px rgba(185,28,28,0.05);
+}
+.disclaimer-red p{
+  margin:0;
+  color:#7f1d1d;                  /* texto rojo oscuro */
+  font-size:14px;
+  line-height:1.5;
+  text-align:left;
+}
+.disclaimer-red b{
+  color:#991b1b;
+}
+/* Botón Volver inferior */
+.back-btn{
+  display:inline-block;
+  margin:1.5rem auto 0;
+  background:#0f3d83;
+  color:#fff;
+  text-decoration:none;
+  font-weight:700;
+  padding:0.7rem 1.4rem;
+  border-radius:10px;
+  box-shadow:0 4px 10px rgba(15,61,131,.25);
+  transition:background .2s, transform .1s, box-shadow .2s;
+}
+.back-btn:hover{
+  background:#1c60c3;
+  transform:translateY(-1px);
+  box-shadow:0 6px 12px rgba(15,61,131,.35);
+}
+  </style>
+</head>
+<body>
+<header class="appbar" role="region" aria-label="Insulinoterapia">
+  <div class="appbar-inner">
+    <div class="left-group">
+      <button id="backIcon" class="icon-btn" aria-label="Atrás" title="Atrás">
+        <img class="icon-unit" src="insulinoterapiaico.png" alt="Insulinoterapia" width="40" height="40">
+        <svg class="icon-arrow" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M15 18l-6-6 6-6" fill="none" stroke="#0F3D83" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <h1>Insulinoterapia</h1>
+    </div>
+    <div class="actions"><a class="btnini" href="../index.html">Inicio</a></div>
+  </div>
+</header>
+<main class="wrap">
+
+  
+   <p style="font-size:0.9rem;">
+  <strong>Cómo usar:</strong> seleccione el tipo de paciente, introduzca los datos clínicos y pulse el modo correspondiente. 
+  Calcula automáticamente las dosis basales, bolus y pauta de corrección según el protocolo activo, generando 
+  <strong>recomendaciones individualizadas</strong> y opción de copia del informe.
+</p>
+<div class="wrap">
+  <section class="panel" id="panel">
+    <div class="tabs" role="tablist" aria-label="Tipo de paciente">
+      <button class="tab" id="tab-ado"    role="tab" aria-selected="true"  aria-controls="pane-ado">ADO</button>
+      <button class="tab" id="tab-ins"    role="tab" aria-selected="false" aria-controls="pane-ins">Insulina</button>
+      <button class="tab" id="tab-insado" role="tab" aria-selected="false" aria-controls="pane-insado">Insulina + ADO</button>
+      <button class="tab" id="tab-sindm"  role="tab" aria-selected="false" aria-controls="pane-sindm">Sin DM conocida (Glu>150)</button>
+      <output id="pill" class="pill" aria-live="polite" aria-atomic="true">Prot -</output>
+    </div>
+
+    <div class="row">
+      <div id="colPeso" hidden>
+        <label class="top" for="peso">Peso (kg)</label>
+        <input id="peso" type="number" min="1" step="1" placeholder="Ej.: 72">
+      </div>
+      <div id="colDTI" hidden>
+        <label class="top" for="dti">DTI domiciliaria (UI/día)</label>
+        <input id="dti" type="number" min="1" step="1" placeholder="Ej.: 56">
+      </div>
+    </div>
+
+    <div id="bloqueGluc" hidden style="margin-top:10px">
+      <label class="top">Glucemia al ingreso</label>
+      <div class="radios">
+  <label class="chip-radio">
+    <input type="radio" name="g" value="desconocida" checked>
+    Desconocida / &lt;150
+  </label>
+  <label class="chip-radio">
+    <input type="radio" name="g" value="entre150_200">
+    150–200
+  </label>
+  <label class="chip-radio">
+    <input type="radio" name="g" value="mayor_200">
+    &gt;200
+  </label>
+</div>
+    </div>
+
+    <div style="margin-top:10px">
+      <label class="top">Estado</label>
+      <div class="radios">
+        <label class="chip-radio"><input type="radio" name="estado" value="come">Come</label>
+        <label class="chip-radio"><input type="radio" name="estado" value="nocome">No come</label>
+      </div>
+    </div>
+
+    <!-- Resultados -->
+    <div id="card" class="card" style="display:none">
+      <div id="chips" class="chips"></div>
+
+      <div class="kpi" id="kpis">
+        <div class="box"><div class="ttl">Dosis Basal</div><div class="val"><span id="basal">—</span> UI</div></div>
+        <div class="box hide" id="boxBolus">
+          <div class="ttl">Bolus total</div><div class="val"><span id="bolus">—</span> UI</div>
+        </div>
+        <div class="box hide" id="boxDTD">
+          <div class="ttl">DTD</div><div class="val"><span id="dtd">—</span> UI</div>
+        </div>
+      </div>
+
+      <div class="meals" id="meals">
+        <div class="box"><div class="ttl">Desayuno</div><div class="val"><span id="des">—</span> UI</div><div class="mini">(30%)</div></div>
+        <div class="box"><div class="ttl">Comida</div>  <div class="val"><span id="com">—</span> UI</div><div class="mini">(40%)</div></div>
+        <div class="box"><div class="ttl">Cena</div>    <div class="val"><span id="cen">—</span> UI</div><div class="mini">(30%)</div></div>
+      </div>
+
+      <!-- Protocolo -->
+      <div class="protocol" id="proto" style="display:none">
+        <div id="badge" class="badge" aria-hidden="true"></div>
+        <div>
+          <p class="proto-title">Protocolo de corrección: <b id="protoName">—</b></p>
+          <ul class="proto-list" id="protoList"></ul>
+        </div>
+        <div id="corrBox" class="corr"></div>
+      </div>
+
+      <!-- Botones Copiar / Imprimir -->
+      <div class="btnbar">
+        <button type="button" id="btnCopy" class="btn" disabled>Copiar informe</button>
+        <button type="button" id="btnPrint" class="btn primary" disabled>Imprimir</button>
+        <span class="mini" id="btnHint">Se habilitan al generar resultados.</span>
+      </div>
+    </div>
+  </section>
+
+
+</div>
+</main>
+
+<script>
+  (function(){const a=document.querySelector('.appbar');const s=()=>a.classList.toggle('scrolled',window.scrollY>8);document.addEventListener('scroll',s,{passive:true});s();})();
+  const $ = sel => document.querySelector(sel);
+
+  /* Cápsula superior: solo protocolo */
+  const pill = $('#pill');
+  function setPill(letra){ pill.textContent = letra ? `Prot ${letra}` : 'Prot -'; }
+
+  /* Tabs */
+  const tabs = { ado:$('#tab-ado'), ins:$('#tab-ins'), insado:$('#tab-insado'), sindm:$('#tab-sindm') };
+  let modo = 'ado';
+  function selectMode(m){
+    modo = m;
+    Object.entries(tabs).forEach(([k,el])=>el.setAttribute('aria-selected', k===m ? 'true' : 'false'));
+    const pesoVisible = (m==='ado' || m==='sindm');
+    $('#colPeso').hidden = !pesoVisible;
+    $('#bloqueGluc').hidden = !pesoVisible;
+    $('#colDTI').hidden  = (m==='ado' || m==='sindm');
+    if(m==='sindm'){ const r=document.querySelector('input[name="g"][value="entre150_200"]'); if(r) r.checked=true; }
+    clearAndCalc();
+  }
+  Object.entries(tabs).forEach(([k,el])=>el.addEventListener('click', ()=>selectMode(k)));
+
+  /* Reglas y utilidades */
+  function rangoPeso(p){ if(p<=59) return {letra:'A',texto:'≤ 59 kg'}; if(p<=90) return {letra:'B',texto:'60–90 kg'}; return {letra:'C',texto:'≥ 91 kg'}; }
+  function factorGluc(g){ if(g==='entre150_200') return {k:0.4, texto:'150–200 mg/dL'}; if(g==='mayor_200') return {k:0.5, texto:'>200 mg/dL'}; return {k:0.3, texto:'desconocida/<150 mg/dL'}; }
+  function advertPeso(p){ if(p>=100&&p<150) return {lvl:'warn',msg:`Peso alto: ${p} kg. Verifique.`}; if(p>=150&&p<200) return {lvl:'err',msg:`Peso ${p} kg. Por seguridad no se muestran resultados.`}; if(p>=200) return {lvl:'err',msg:'Peso fuera de rango.'}; return null; }
+  function protocoloSegunDTI(dti){ if(dti<=39) return 'A'; if(dti<=80) return 'B'; return 'C'; }
+  function advertDTI(dti){ if(dti>=100&&dti<150) return {lvl:'warn',msg:`DTI elevada: ${dti} UI/día. Verifique.`}; if(dti>=150&&dti<300) return {lvl:'err',msg:'DTI muy elevada: sin resultados por seguridad.'}; if(dti>=300) return {lvl:'err',msg:'DTI fuera de rango.'}; return null; }
+  function elegirProtocoloInsADO(dti, come){
+    const unis = Math.floor((dti/2)*1.2), dtd = unis*2; const err=m=>({error:m});
+    if(come){
+      if(dti<=39 && dtd<=39) return {proto:'A'};
+      if(dti<=39 && dtd>=40 && dtd<=80) return {proto:'B'};
+      if(dti>=40 && dti<=80 && dtd<=80) return {proto:'B'};
+      if(dti>=40 && dti<=80 && dtd>=81) return {proto:'C'};
+      if(dti>=81 && dti<100 && dtd>=81) return {proto:'C'};
+      if(dti>=100 && dti<150 && dtd>=81) return {proto:'C',aviso:'DTI elevada; confirme el dato.'};
+      if(dti>=150 && dti<300) return err('DTI muy elevada: sin resultados por seguridad.');
+      if(dti>=300) return err('DTI fuera de rango.');
+    }else{
+      if(dti<=39 && dtd<=39) return {proto:'A'};
+      if(dti<=39 && dtd>=40 && dtd<=80) return {proto:'B'};
+      if(dti>=40 && dti<=80 && dtd<=80) return {proto:'B'};
+      if(dti>=40 && dti<=80 && dtd>=81) return {proto:'C'};
+      if(dti>=81 && dti<100 && dtd>=81) return {proto:'C'};
+      if(dti>=100 && dti<150) return {proto:'C',aviso:'DTI elevada; confirme el dato.'};
+      if(dti>=150 && dti<300) return err('DTI muy elevada: sin resultados por seguridad.');
+      if(dti>=300) return err('DTI fuera de rango.');
+    }
+    return err('No se pudo determinar el protocolo.');
+  }
+
+  /* Pauta de corrección */
+  const RANGOS = ['<80 mg/dL','80–129','130–149','150–199','200–249','250–299','300–349','>349'];
+  const CORR = { A:[-1,0,0,1,2,3,4,5], B:[-1,0,1,1,3,5,7,8], C:[-2,0,1,2,4,7,10,12] };
+  function corrTableHTML(letra, come){
+    const vals = CORR[letra] || [];
+    const subt = come ? 'Desayuno / Almuerzo / Cena' : 'Cada 8 horas';
+    const rows = RANGOS.map((r,i)=>{
+      const v = vals[i] ?? '';
+      const txt = (v===0)?'0':(v>0?`+${v}`:`${v}`);
+      const cls = v<0?'neg':(v>0?'pos':'');
+      return `<tr><td>${r}</td><td class="${cls}">${txt}</td></tr>`;
+    }).join('');
+    return `
+      <div class="corr">
+        <div class="corr-title">Corrección (insulina rápida) — Pauta ${letra}</div>
+        <table aria-label="Pauta de corrección ${letra}">
+          <thead>
+            <tr>
+              <th>Glucemia capilar</th>
+              <th>Unidades a añadir<span class="subhd">${subt}</span></th>
+            </tr>
+          </thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>`;
+  }
+
+  function svgBadge(letter){
+    return `
+      <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Protocolo ${letter}">
+        <defs><radialGradient id="g" cx="50%" cy="50%" r="60%"><stop offset="0%" stop-color="#ffffff"></stop><stop offset="100%" stop-color="#dbeafe"></stop></radialGradient></defs>
+        <circle cx="60" cy="60" r="56" fill="url(#g)" stroke="#1e3a8a" stroke-width="6"></circle>
+        <text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle"
+              font-family="Verdana, Arial, sans-serif" font-weight="700" font-size="48" fill="#0b2c5f">${letter}</text>
+      </svg>`;
+  }
+
+  /* Estado del informe */
+  let __lastReport = null;
+  const btnCopy = $('#btnCopy'), btnPrint = $('#btnPrint'), btnHint=$('#btnHint');
+
+  function stripHTML(s){ const d=document.createElement('div'); d.innerHTML=s; return d.textContent || ''; }
+
+  function clearAndCalc(){
+    $('#chips').innerHTML=''; $('#proto').style.display='none';
+    $('#corrBox').innerHTML=''; $('#badge').innerHTML=''; $('#card').style.display='none'; setPill();
+    __lastReport=null; btnCopy.disabled=true; btnPrint.disabled=true;
+
+    const come = (document.querySelector('input[name="estado"]:checked')?.value === 'come');
+    let chips = [], basal=0, bolus=0, dtd=0, letra='-', bullets=[], aviso=null;
+    let peso=null, dtiVal=null, glucTxt=null;
+
+    if(modo==='ado' || modo==='sindm'){
+      const p = Number($('#peso').value || 0);
+      if(!p || !document.querySelector('input[name="estado"]:checked')) return;
+      const adv = advertPeso(p); if(adv && adv.lvl==='err'){ pintarError(adv.msg); return; }
+      const f = factorGluc(document.querySelector('input[name="g"]:checked')?.value || 'desconocida');
+      const rango = rangoPeso(p); letra = rango.letra;
+
+      dtd = Math.floor(p * f.k);
+      basal = Math.floor(dtd/2);
+      bolus = come ? Math.floor(dtd/2) : 0;
+
+      chips = [`Tipo: ${modo==='ado'?'ADO':'Sin DM (G>150)'}`, `Glucemia: ${f.texto}`, `Estado: ${come?'Come':'No come'}`, `Peso: ${p} kg`, `Protocolo: ${letra} (${rango.texto})`];
+      bullets = [
+        letra==='A'?'Criterio: peso ≤ 59 kg.':(letra==='B'?'Criterio: peso 60–90 kg.':'Criterio: peso ≥ 91 kg.'),
+        `Factor de cálculo: ${(f.k*100).toFixed(0)}% del peso como DTD.`,
+        come? 'Distribución DTD: 50% basal + 50% bolus.':'Paciente no come: solo basal y corrección (sin bolus).',
+        come? 'Distribución del bolus: 30% desayuno, 40% comida, 30% cena.':''
+      ].filter(Boolean);
+      if(adv && adv.lvl==='warn'){ aviso = adv.msg; }
+      peso=p; glucTxt=f.texto;
+
+    }else if(modo==='ins'){
+      const dti = Number($('#dti').value || 0);
+      if(!dti || !document.querySelector('input[name="estado"]:checked')) return;
+      const adv = advertDTI(dti); if(adv && adv.lvl==='err'){ pintarError(adv.msg); return; }
+      letra = protocoloSegunDTI(dti);
+
+      dtd = Math.floor(dti);
+      basal = Math.floor(dti/2);
+      bolus = come ? Math.floor(dti/2) : 0;
+
+      chips = [`Tipo: Insulina`, `Estado: ${come?'Come':'No come'}`, `DTI: ${dti} UI/día`];
+      bullets = [
+        letra==='A'?'Criterio: DTI ≤ 39 UI/día.':(letra==='B'?'Criterio: DTI 40–80 UI/día.':'Criterio: DTI ≥ 81 UI/día.'),
+        'Factor de cálculo: DTI domiciliaria como DTD.',
+        come? 'Distribución DTD: 50% basal + 50% bolus.':'Paciente no come: solo basal y corrección (sin bolus).',
+        come? 'Distribución del bolus: 30% desayuno, 40% comida, 30% cena.':''
+      ].filter(Boolean);
+      if(adv && adv.lvl==='warn'){ aviso = adv.msg; }
+      dtiVal=dti;
+
+    }else if(modo==='insado'){
+      const dti = Number($('#dti').value || 0);
+      if(!dti || !document.querySelector('input[name="estado"]:checked')) return;
+      const adv = advertDTI(dti); if(adv && adv.lvl==='err'){ pintarError(adv.msg); return; }
+      const sel = elegirProtocoloInsADO(dti, come); if(sel.error){ pintarError(sel.error); return; }
+      letra = sel.proto;
+
+      const unis = Math.floor((dti/2)*1.2);
+      basal = unis;
+      bolus = come ? unis : 0;
+      dtd   = unis*2;
+
+      chips = [`Tipo: Insulina + ADO`, `Estado: ${come?'Come':'No come'}`, `DTI: ${dti} UI/día`, `Protocolo: ${letra}`];
+      bullets = [
+        `Criterio de elección: ${letra==='A'?'DTI ≤ 39 o DTD ≤ 39':(letra==='B'?'DTI 40–80 o DTD ≤ 80':'DTI ≥ 81 o DTD ≥ 81')}.`,
+        'Factor de cálculo: DTD ajustada = 1,2 × DTI domiciliaria.',
+        come? 'Distribución DTD: 50% basal + 50% bolus.':'Paciente no come: solo basal y corrección (sin bolus).',
+        come? 'Distribución del bolus: 30% desayuno, 40% comida, 30% cena.':''
+      ].filter(Boolean);
+      if(sel.aviso){ aviso = 'DTI elevada; confirme el dato.'; }
+      if(adv && adv.lvl==='warn'){ aviso = adv.msg; }
+      dtiVal=dti;
+    }
+
+    const des = come? Math.floor(bolus*0.30):0;
+    const com = come? Math.floor(bolus*0.40):0;
+    const cen = come? Math.floor(bolus*0.30):0;
+
+    $('#basal').textContent = basal;
+    $('#bolus').textContent = bolus;
+    $('#dtd').textContent   = dtd;
+    $('#des').textContent   = des;
+    $('#com').textContent   = com;
+    $('#cen').textContent   = cen;
+
+    $('#meals').style.display = come ? '' : 'none';
+    $('#chips').innerHTML = chips.map(t=>`<span class="chip">${t}</span>`).join('');
+    if(aviso){ $('#chips').insertAdjacentHTML('beforeend', `<span class="chip" style="background:#fff7ed;border-color:#fed7aa;color:#7c2d12">Aviso: ${aviso}</span>`); }
+
+    $('#protoName').textContent = letra;
+    $('#badge').innerHTML = svgBadge(letra);
+    $('#protoList').innerHTML = bullets.map(x=>`<li>${x}</li>`).join('');
+    $('#corrBox').innerHTML = corrTableHTML(letra, come);
+    $('#proto').style.display = 'grid';
+
+    $('#card').style.display='block';
+    setPill(letra);
+
+    /* Guardar informe y habilitar botones */
+    __lastReport = {
+      ts: new Date().toISOString(),
+      modo, come, peso, dti:dtiVal, glucTxt,
+      letra, basal, bolus, dtd, des, com, cen,
+      bullets: bullets.map(stripHTML)
+    };
+    btnCopy.disabled=false; btnPrint.disabled=false; btnHint.textContent='Puedes copiar o imprimir el informe.';
+  }
+
+  function pintarError(msg){
+    $('#chips').innerHTML = `<span class="chip" style="background:#fef2f2;border-color:#fecaca;color:#b91c1c">Error: ${msg}</span>`;
+    $('#card').style.display='block';
+    __lastReport=null; btnCopy.disabled=true; btnPrint.disabled=true; btnHint.textContent='Se habilitan al generar resultados.';
+  }
+
+  ['input','change'].forEach(ev=>{
+    $('#peso').addEventListener(ev, clearAndCalc);
+    $('#dti').addEventListener(ev, clearAndCalc);
+    document.querySelectorAll('input[name="estado"]').forEach(r=>r.addEventListener(ev, clearAndCalc));
+    document.querySelectorAll('input[name="g"]').forEach(r=>r.addEventListener(ev, clearAndCalc));
+  });
+  document.addEventListener('DOMContentLoaded', ()=>{ selectMode('ado'); clearAndCalc(); });
+
+  /* ===== Informe: copiar (texto plano) ===== */
+  async function copyReport(){
+    if(!__lastReport) return;
+    const r=__lastReport;
+    const fecha=new Date(r.ts).toLocaleString('es-ES');
+
+    const datos=[];
+    datos.push(`• Tipo de paciente: ${r.modo==='ado'?'ADO':(r.modo==='ins'?'Insulina':(r.modo==='insado'?'Insulina + ADO':'Sin DM (G>150)'))}`);
+    datos.push(`• Estado: ${r.come?'Come':'No come'}`);
+    if(r.peso!=null) datos.push(`• Peso: ${r.peso} kg`);
+    if(r.dti!=null) datos.push(`• DTI: ${r.dti} UI/día`);
+    if(r.glucTxt)   datos.push(`• Glucemia al ingreso: ${r.glucTxt}`);
+    datos.push(`• Protocolo de corrección: ${r.letra}`);
+
+    const dosis=[
+      `• Basal: ${r.basal} UI`,
+      r.come?`• Desayuno: ${r.des} UI`:'',
+      r.come?`• Comida: ${r.com} UI`:'',
+      r.come?`• Cena: ${r.cen} UI`:'',
+      `• DTD: ${r.dtd} UI${r.come?`  |  Bolus total: ${r.bolus} UI`:''}`
+    ].filter(Boolean);
+
+    const recs = (r.bullets && r.bullets.length) ? ['Recomendaciones:', ...r.bullets.map(x=>`• ${x}`)] : [];
+
+    const txt =
+`Informe — Dosificación de Insulina
+Generado: ${fecha}
+
+DATOS
+${datos.join('\n')}
+
+DOSIS
+${dosis.join('\n')}
+${recs.length?('\n'+recs.join('\n')):''}
+`;
+
+    try{
+      await navigator.clipboard.writeText(txt);
+      const prev = btnCopy.textContent;
+      btnCopy.textContent = 'Copiado ✓';
+      setTimeout(()=>{btnCopy.textContent=prev;},1600);
+    }catch(e){
+      alert('No se pudo copiar al portapapeles.');
+    }
+  }
+
+  /* ===== Informe: imprimir (HTML limpio UTF-8) ===== */
+  function printReport(){
+    if(!__lastReport) return;
+    const r=__lastReport;
+    const fecha=new Date(r.ts).toLocaleString('es-ES');
+
+    const filasCorr = (CORR[r.letra]||[]).map((v,i)=>{
+      const txt=(v===0?'0':(v>0?`+${v}`:`${v}`));
+      return `<tr><td>${RANGOS[i]}</td><td>${txt}</td></tr>`;
+    }).join('');
+
+    const tipoTxt = r.modo==='ado'?'ADO':(r.modo==='ins'?'Insulina':(r.modo==='insado'?'Insulina + ADO':'Sin DM (G>150)'));
+
+    const html = `<!doctype html>
+<html><head><meta charset="utf-8">
+<title>Informe — Dosificación de Insulina</title>
+<style>
+  body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial,sans-serif;margin:24px;color:#111}
+  h1{font-size:1.2rem;margin:0 0 6px}
+  h2{font-size:1.05rem;margin:18px 0 6px}
+  h3{font-size:1rem;margin:14px 0 4px}
+  .card{padding:12px 14px;border:1px solid #e3eef9;border-radius:10px;background:#f8fbff;margin-top:8px}
+  .muted{color:#666}
+  .grid{display:flex;gap:16px;flex-wrap:wrap}
+  table{border-collapse:collapse}
+  td,th{padding:6px 10px;border:1px solid #e5e7eb}
+  th{background:#eef6ff}
+  ul{margin:6px 0 0 18px}
+  @media print {.no-print{display:none}}
+</style></head>
+<body>
+  <h1>Informe — Dosificación de Insulina</h1>
+  <div class="muted">Generado: ${fecha}</div>
+
+  <div class="card">
+    <h2>Datos</h2>
+    <table>
+      <tr><td><b>Tipo de paciente</b></td><td>${tipoTxt}</td></tr>
+      <tr><td><b>Estado</b></td><td>${r.come?'Come':'No come'}</td></tr>
+      ${r.peso!=null?`<tr><td><b>Peso</b></td><td>${r.peso} kg</td></tr>`:''}
+      ${r.dti!=null?`<tr><td><b>DTI</b></td><td>${r.dti} UI/día</td></tr>`:''}
+      ${r.glucTxt?`<tr><td><b>Glucemia al ingreso</b></td><td>${r.glucTxt}</td></tr>`:''}
+      <tr><td><b>Protocolo</b></td><td>${r.letra}</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>Dosis</h2>
+    <table>
+      <tr><td><b>Basal</b></td><td>${r.basal} UI</td></tr>
+      ${r.come?`<tr><td><b>Desayuno</b></td><td>${r.des} UI</td></tr>`:''}
+      ${r.come?`<tr><td><b>Comida</b></td><td>${r.com} UI</td></tr>`:''}
+      ${r.come?`<tr><td><b>Cena</b></td><td>${r.cen} UI</td></tr>`:''}
+      <tr><td><b>DTD</b></td><td>${r.dtd} UI${r.come?`  |  Bolus total: ${r.bolus} UI`:''}</td></tr>
+    </table>
+  </div>
+
+  ${(r.bullets&&r.bullets.length)?`
+  <div class="card">
+    <h2>Recomendaciones</h2>
+    <ul>${r.bullets.map(x=>`<li>${x}</li>`).join('')}</ul>
+  </div>`:''}
+
+  <div class="card">
+    <h2>Pauta de corrección — ${r.letra}</h2>
+    <table>
+      <thead><tr><th>Glucemia capilar</th><th>Unidades a añadir</th></tr></thead>
+      <tbody>${filasCorr}</tbody>
+    </table>
+  </div>
+
+  <button class="no-print" onclick="window.print()">Imprimir</button>
+  <script>window.addEventListener('load',()=>{setTimeout(()=>{window.print();},150);});<\/script>
+</body></html>`;
+
+    const w = window.open('', '_blank');
+    if(!w){ alert('Permite las ventanas emergentes para imprimir.'); return; }
+    w.document.open(); w.document.write(html); w.document.close();
+  }
+
+  btnCopy.addEventListener('click', copyReport);
+  btnPrint.addEventListener('click', printReport);
+// Activa la sombra al hacer scroll
+(function(){
+  const t=document.querySelector('.topbar');
+  const s=()=>t.classList.toggle('scrolled',window.scrollY>8);
+  document.addEventListener('scroll',s,{passive:true});
+  s();
+})();
+
+</script>
+<!-- Disclaimer final con fondo rojo tenue -->
+<div class="disclaimer-red">
+  <p>
+    Esta herramienta tiene carácter orientativo y no sustituye el juicio clínico del profesional sanitario.
+    Las recomendaciones y dosis calculadas deben interpretarse en el contexto individual de cada paciente 
+    y conforme a los protocolos locales de insulinoterapia.
+  </p>
+</div>
+<div style="text-align:center;">
+  <a href="index.html" class="back-btn">Volver</a>
+</div>
+<footer style="
+    position:relative;
+    left:50%;
+    transform:translateX(-50%);
+    width:100vw;
+    margin:2rem 0 0 0;
+    padding:1.5rem 0;
+    border-top:1px solid #e5e7eb;
+    background:#ffffff;
+    text-align:center;
+    box-shadow:0 -2px 6px rgba(0,0,0,0.04);
+">
+      <img src="uibanner.png"
+         alt="Unidad de Ictus Málaga" style="max-width:380px;height:auto;opacity:.96;">
+  </a>
+
+</footer>  
+<script src="js/index.js"></script>
+<script>
+  (function(){
+    const btn = document.getElementById('backIcon');
+    if(!btn) return;
+
+    btn.addEventListener('click', function(){
+      // Solo activo en ordenador (mouse o trackpad)
+      const isDesktop = window.matchMedia("(pointer: fine)").matches;
+      if(!isDesktop) return;
+
+      console.log('[IctusGPS] Botón atrás pulsado. Historial:', window.history.length);
+      if (window.history.length > 1) history.back();
+      else window.location.href = '../index.html';
+    });
+  })();
+</script>
+</body></div>
+</html>

@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="manifest" href="../site.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="../iconos/ictusgps.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../iconos/ictusgps.png">
+<link rel="shortcut icon" href="../iconos/ictusgps.png">
+<meta name="theme-color" content="#0f3d83">
+
+<title>Información — Unidad de Ictus</title>
+
+<style>
+/* =========================================================
+   VARIABLES Y BASE
+========================================================= */
+:root{
+  --bg:#f9fafc;
+  --ink:#0e1a33;
+  --muted:#64748b;
+  --accent-dark:#0f3d83;
+  --accent:#164a8a;
+  --accent-light:#d7e3f8;
+  --border:#e5e9f2;
+  --ring:#93c5fd;
+  --shadow:0 2px 10px rgba(0,0,0,0.04);
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+
+body{
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  line-height:1.6;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust:100%;
+  overscroll-behavior-y:none;
+}
+.wrap{max-width:1080px; margin:0 auto; padding:24px}
+
+/* =========================================================
+   CABECERA
+========================================================= */
+.appbar{position:sticky;top:0;z-index:1000;background:#0f3d83;color:#fff;box-shadow:0 0px 0px rgba(0,0,0,.1)}
+.appbar-inner{max-width:1080px;margin:0 auto;padding:4px 30px;display:flex;align-items:center;justify-content:space-between;gap:0px}
+.appbar-inner { min-height: 64px; }
+.left-group{display:flex;align-items:center;gap:10px}
+.appbar h1{margin:0;font-size:1.4rem;font-weight:800;color:#fff}.actions{margin-left:auto}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:8px 14px;border-radius:12px;
+  border:1px solid rgba(255,255,255,.14);
+  background:rgba(255,255,255,.06);
+  color:white;text-decoration:none;font-weight:600;
+  transition:background .25s,border-color .25s;
+}
+.btn:hover{border-color:rgba(127,179,255,.35);background:#1c60c3;color:white;text-decoration:none;font-weight:600;
+}
+
+/* =========================================================
+   CUERPO PRINCIPAL
+========================================================= */
+main{
+  max-width:1080px;
+  margin:0 auto;
+  padding:1.5rem 1.25rem 2.5rem;
+  background:#fff;
+  border-radius:12px;
+  box-shadow:var(--shadow);
+}
+main p{
+  margin-bottom:1rem;
+  text-align:justify;
+}
+
+/* =========================================================
+   TARJETAS DE INFORMACIÓN
+========================================================= */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:20px;
+  margin-top:1.5rem;
+}
+.card{
+  background:#f8fafc;
+  border:1px solid var(--border);
+  border-radius:12px;
+  box-shadow:0 2px 6px rgba(0,0,0,0.03);
+  padding:1.2rem 1rem;
+  transition:all .25s ease;
+  text-align:center;
+}
+.card:hover{
+  background:#eef3ff;
+  border-color:var(--ring);
+  transform:translateY(-3px);
+  box-shadow:0 4px 10px rgba(37,99,235,.15);
+}
+.card h3{
+  color:var(--accent-dark);
+  font-size:1rem;
+  margin:0.5rem 0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+}
+.card h3 svg{
+  width:18px;
+  height:18px;
+  stroke:var(--accent-dark);
+}
+.card p{
+  color:var(--muted);
+  font-size:0.9rem;
+  margin:0.5rem 0 1rem;
+}
+.card a{
+  display:inline-block;
+  background:linear-gradient(to bottom,#2563eb,#1e40af);
+  color:#fff;
+  text-decoration:none;
+  font-weight:700;
+  padding:0.5rem 1rem;
+  border-radius:8px;
+  transition:all .25s ease;
+}
+.card a:hover{
+  background:linear-gradient(to bottom,#1e40af,#1e3a8a);
+  box-shadow:0 4px 8px rgba(37,99,235,.25);
+  transform:translateY(-2px);
+}
+
+/* =========================================================
+   PIE DE PÁGINA
+========================================================= */
+footer{
+  position:relative;
+  left:50%;
+  transform:translateX(-50%);
+  width:100vw;
+  margin:2rem 0 0;
+  padding:1.5rem 0;
+  border-top:1px solid #e5e7eb;
+  background:#ffffff;
+  text-align:center;
+  box-shadow:0 -2px 6px rgba(0,0,0,0.04);
+}
+footer img{
+  max-width:380px;
+  height:auto;
+  opacity:.96;
+}
+
+/* =========================================================
+   ADAPTABILIDAD
+========================================================= */
+@media(max-width:768px){
+  header{font-size:1.05rem;}
+  main{padding:1rem;}
+  .card h3{font-size:1rem;}
+}
+</style>
+<style>
+:root {
+  --azul-institucional: #0f3d83;
+}
+
+/* Barra superior segura */
+.safe-top {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: calc(env(safe-area-inset-top, 0px) + 52px);
+  background: var(--azul-institucional);
+  z-index: 1001;
+}
+
+/* Empuja el contenido real por debajo de la barra */
+body {
+  margin: 0;
+  padding-top: calc(env(safe-area-inset-top, 0px) + 52px);
+  background-color: #fff;
+}
+/* Icono con hover a flecha (robusto) */
+.icon-btn {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  border: none;
+  outline: 0;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 6px rgba(0,0,0,.08);
+  padding: 0;
+  margin-right: 8px;
+  vertical-align: middle;
+  cursor: pointer;
+  flex-shrink: 0;        /* ✅ evita que se achique */
+  aspect-ratio: 1 / 1;   /* ✅ asegura proporción circular */
+}
+
+.icon-btn .icon-unit,
+.icon-btn .icon-arrow{
+  position:absolute; inset:0;
+  width:100%; height:100%;
+  transition:opacity .22s ease;
+  pointer-events:none; /* el clic llega siempre al botón */
+}
+.icon-btn .icon-unit{ opacity:1; }
+.icon-btn .icon-arrow{ opacity:0; }
+
+/* En hover cambia a flecha (también funciona si hay otros estilos previos) */
+.icon-btn:hover .icon-unit{ opacity:0; }
+.icon-btn:hover .icon-arrow{ opacity:1; }
+
+/* micro feedback al clic */
+.icon-btn:active{ transform:scale(.96); }
+</style>
+
+</head>
+
+<body>
+  <div class="safe-top"></div>
+
+<header class="appbar" role="region" aria-label="Información">
+  <div class="appbar-inner">
+    <div class="left-group">
+      <button id="backIcon" class="icon-btn" aria-label="Atrás" title="Atrás">
+        <img class="icon-unit" src="../iconos/informacionico.png" alt="Icono Información" width="40" height="40">
+        <svg class="icon-arrow" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M15 18l-6-6 6-6" fill="none" stroke="#0F3D83" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <h1>INFORMACIÓN</h1>
+    </div>
+    <div class="actions"><a class="btn" href="../index.html">Inicio</a></div>
+  </div>
+</header>
+
+
+<main>
+  <p>En esta sección encontrarás materiales informativos y audiovisuales sobre el ictus. Se irán añadiendo nuevas píldoras y recursos.</p>
+  
+  <div class="grid">
+
+    <div class="card">
+      <h3>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z" />
+        </svg>
+        Impacto del Ictus
+      </h3>
+      <p>Vídeo divulgativo sobre la magnitud del ictus y su atención urgente y cuidados en Unidades de Ictus.</p>
+      <a href="impacto.html">Ver vídeo</a>
+    </div>
+
+    <div class="card">
+      <h3>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z" />
+        </svg>
+        Proyecto Flecha
+      </h3>
+      <p>Iniciativa de la Enfermería del Hospital Regional de mejora de los cuidados de los pacientes con ictus.</p>
+      <a href="flecha.html">Ver vídeo</a>
+    </div>
+
+    <div class="card">
+      <h3>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
+        </svg>
+        Nodos de trombectomía
+      </h3>
+      <p>Organización del tratamiento mediante trombectomía en el ictus agudo en el Servicio Andaluz de Salud.</p>
+      <a href="nodos.html">Abrir</a>
+    </div>
+
+    <div class="card">
+      <h3>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z" />
+        </svg>
+        Día del Ictus 2025
+      </h3>
+      <p>Día del Ictus en el Hospital Regional de Málaga (2025).</p>
+      <a href="diadelictus.html">Ver vídeo</a>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  <img src="uibanner.png" alt="Unidad de Ictus Málaga">
+</footer>
+
+<script src="js/index.js"></script>
+<script>
+  (function(){
+    const btn = document.getElementById('backIcon');
+    if(!btn){ return; }
+    btn.addEventListener('click', function(){
+      // Feedback en consola para verificar que el clic llega
+      console.log('[IctusGPS] Atrás clicado. Historial:', window.history.length);
+      if (window.history.length > 1) { history.back(); }
+      else { window.location.href = '../index.html'; }
+    });
+  })();
+</script>
+
+</body>
+</html>

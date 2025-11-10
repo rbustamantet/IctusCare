@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="manifest" href="../site.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="../iconos/ictusgps.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../iconos/ictusgps.png">
+<link rel="shortcut icon" href="../iconos/ictusgps.png">
+<meta name="theme-color" content="#0f3d83">
+
+<title>Escalas clínicas · Unidad de Ictus</title>
+<meta name="color-scheme" content="light dark">
+
+<style>
+/* =========================================================
+   VARIABLES Y BASE
+========================================================= */
+:root{
+  --bg:#f9fafc;
+  --ink:#e6ecf5;
+  --muted:#b6c3d6;
+  --card:#0f274d;
+  --card-hover:#11305f;
+  --accent:#7fb3ff;
+  --accent-light:#d7e3f8;
+  --accent-dark:#0f3d83;
+  --border:#e5e9f2;
+  --ring:#93c5fd;
+  --shadow:0 8px 18px rgba(0,0,0,.35);
+  --radius:18px;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+
+body{
+  font-family: Verdana, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  line-height:1.6;
+}
+
+.wrap{max-width:1080px; margin:0 auto; padding:24px}
+
+/* =========================================================
+   CABECERA
+========================================================= */
+header{
+  position:sticky;
+  top:0;
+  z-index:1000;
+  backdrop-filter:blur(6px);
+  background:var(--accent-dark);
+  border-bottom:1px solid rgba(255,255,255,.08);
+  box-shadow:0 2px 6px rgba(0,0,0,0.08);
+  color:#fff;
+}
+.bar{
+  display:flex;
+  align-items:center;
+  gap:13px;
+  padding:4px 30px;
+  min-height: 64px;
+
+}
+.left-group{display:flex;align-items:center;gap:10px}
+
+.title{font-size:1.4rem;font-weight:700;letter-spacing:.2px;color:#fff;}
+.headcol{display:flex;flex-direction:column}
+.actions{margin-left:auto}
+/* Botón Inicio */
+.btn {
+  display:inline-flex;align-items:center;gap:8px;
+      padding:8px 14px;border-radius:12px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(255,255,255,.06);
+      color:white;text-decoration:none;font-weight:600;font-size:15px;
+      transition:background .25s,border-color .25s;
+
+
+}
+
+.btn:hover{border-color:rgba(127,179,255,.35);background:#1c60c3}
+
+/* =========================================================
+   CUERPO PRINCIPAL
+========================================================= */
+main{
+  max-width:1080px;
+  margin:0 auto;
+  padding:1rem 1.25rem 2.5rem;
+  background:#fff;
+  border-radius:12px;
+  box-shadow:0 2px 10px rgba(0,0,0,0.04);
+}
+.grid{
+  display:grid;
+  grid-template-columns: repeat(1, minmax(0,1fr));
+  gap:16px;
+  margin-top:22px;
+}
+@media (min-width:520px){ .grid{ grid-template-columns: repeat(2, minmax(0,1fr)); } }
+@media (min-width:900px){ .grid{ grid-template-columns: repeat(3, minmax(0,1fr)); } }
+
+/* =========================================================
+   TARJETAS DE ESCALAS
+========================================================= */
+.card {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:18px 20px;
+  border-radius:var(--radius);
+  background:linear-gradient(180deg, var(--card), rgba(15,39,77,.96));
+  color:var(--ink);
+  text-decoration:none;
+  box-shadow:var(--shadow);
+  border:1px solid rgba(255,255,255,.06);
+  transition:transform .25s ease, background .25s ease, border-color .25s ease, box-shadow .25s ease;
+}
+.card:hover {
+  background:var(--card-hover);
+  transform:translateY(-2px);
+  border-color:rgba(127,179,255,.35);
+  box-shadow:0 0 14px rgba(127,179,255,0.35);
+}
+.card-content {
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.card-content img {
+  width:40px;
+  height:40px;
+  flex-shrink:0;
+  border-radius:50%;
+  background:white;
+  box-shadow:0 0 6px rgba(0,0,0,0.08);
+  transition:transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
+}
+.card:hover .card-content img {
+  transform:scale(1.08);
+  filter:brightness(1.15);
+  box-shadow:0 0 10px rgba(127,179,255,0.45);
+}
+.card span.title{
+  font-size:1rem;
+  font-weight:700;
+}
+.arrow{
+  font-size:1.4rem;
+  color:var(--accent);
+  opacity:.8;
+  transition:transform .25s ease;
+}
+.card:hover .arrow{ transform:translateX(4px); }
+
+/* =========================================================
+   PIE DE PÁGINA
+========================================================= */
+footer{
+  position:relative;
+  left:50%;
+  transform:translateX(-50%);
+  width:100vw;
+  margin:2rem 0 0 0;
+  padding:1.5rem 0;
+  border-top:1px solid #e5e7eb;
+  background:#ffffff;
+  text-align:center;
+  box-shadow:0 -2px 6px rgba(0,0,0,0.04);
+}
+footer img{
+  max-width:380px;
+  height:auto;
+  opacity:.96;
+}
+@media(max-width:768px){
+  header{font-size:1.05rem;}
+  main{padding:0.9rem 1rem;}
+  body{font-size:0.96rem;}
+}
+</style>
+<style>
+:root {
+  --azul-institucional: #0f3d83;
+}
+
+/* Barra superior segura */
+.safe-top {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: calc(env(safe-area-inset-top, 0px) + 52px);
+  background: var(--azul-institucional);
+  z-index: 1001;
+}
+
+/* Empuja el contenido real por debajo de la barra */
+body {
+  margin: 0;
+  padding-top: calc(env(safe-area-inset-top, 0px) + 52px);
+  background-color: #fff;
+}
+/* Icono con hover a flecha (robusto) */
+.icon-btn{
+  position:relative;
+  display:inline-block;
+  width:40px;height:40px;
+  border:none;outline:0;background:#fff;border-radius:50%;
+  box-shadow:0 0 6px rgba(0,0,0,.08);
+  padding:0; margin-right:8px;
+  vertical-align:middle;
+  cursor:pointer;
+}
+.icon-btn .icon-unit,
+.icon-btn .icon-arrow{
+  position:absolute; inset:0;
+  width:100%; height:100%;
+  transition:opacity .22s ease;
+  pointer-events:none; /* el clic llega siempre al botón */
+}
+.icon-btn .icon-unit{ opacity:1; }
+.icon-btn .icon-arrow{ opacity:0; }
+
+/* En hover cambia a flecha (también funciona si hay otros estilos previos) */
+.icon-btn:hover .icon-unit{ opacity:0; }
+.icon-btn:hover .icon-arrow{ opacity:1; }
+
+/* micro feedback al clic */
+.icon-btn:active{ transform:scale(.96); }
+
+
+</style>
+
+</head>
+
+<body>
+  <div class="safe-top"></div>
+<header>
+  <div class="bar wrap">
+    <div class="headcol">    <div class="left-group">
+
+      <button id="backIcon" class="icon-btn" aria-label="Atrás" title="Atrás">
+        <img class="icon-unit" src="../iconos/escalasico.png" alt="Escalas" width="40" height="40">
+        <svg class="icon-arrow" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M15 18l-6-6 6-6" fill="none" stroke="#0F3D83" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button><div class="title">ESCALAS</div>
+    </div>    </div>
+
+    <div class="actions">
+      <a class="btn" href="../index.html">Inicio</a>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="grid" role="list">
+
+    <a class="card" href="Rankin.html" role="listitem">
+      <div class="card-content">
+        <img src="../iconos/rankin.png" alt="Rankin">
+        <span class="title">Rankin</span>
+      </div><span aria-hidden="true" class="arrow">›</span>
+    </a>
+
+    <a class="card" href="Barthel.html" role="listitem">
+      <div class="card-content">
+        <img src="../iconos/barthel.png" alt="Barthel">
+        <span class="title">Barthel</span>
+      </div><span aria-hidden="true" class="arrow">›</span>
+    </a>
+
+    <a class="card" href="ASPECTS.html" role="listitem">
+      <div class="card-content">
+        <img src="../iconos/aspects.png" alt="ASPECTS">
+        <span class="title">ASPECTS</span>
+      </div><span aria-hidden="true" class="arrow">›</span>
+    </a>
+
+    <a class="card" href="NIHSS.html" role="listitem">
+      <div class="card-content">
+        <img src="../iconos/nihss.png" alt="NIHSS">
+        <span class="title">NIHSS</span>
+      </div><span aria-hidden="true" class="arrow">›</span>
+    </a>
+
+    <a class="card" href="ABCD2.html" role="listitem">
+      <div class="card-content">
+        <img src="../iconos/abcd2.png" alt="ABCD2">
+        <span class="title">ABCD<sup>2</sup></span>
+      </div><span aria-hidden="true" class="arrow">›</span>
+    </a>
+
+    <a class="card" href="Canadiense.html" role="listitem">
+      <div class="card-content">
+        <img src="../iconos/canadiense.png" alt="Canadiense">
+        <span class="title">Canadiense</span>
+      </div><span aria-hidden="true" class="arrow">›</span>
+    </a>
+
+    <a class="card" href="Glasgow.html" role="listitem">
+      <div class="card-content">
+        <img src="../iconos/glasgow.png" alt="Glasgow">
+        <span class="title">Glasgow</span>
+      </div><span aria-hidden="true" class="arrow">›</span>
+    </a>
+
+    <a class="card" href="ICH.html" role="listitem">
+      <div class="card-content">
+        <img src="../iconos/ich.png" alt="ICH Score">
+        <span class="title">ICH Score</span>
+      </div><span aria-hidden="true" class="arrow">›</span>
+    </a>
+
+    <a class="card" href="HuntyHess.html" role="listitem">
+      <div class="card-content">
+        <img src="../iconos/huntyhess.png" alt="Hunt y Hess">
+        <span class="title">Hunt y Hess</span>
+      </div><span aria-hidden="true" class="arrow">›</span>
+    </a>
+
+    <a class="card" href="Fisher.html" role="listitem">
+      <div class="card-content">
+        <img src="../iconos/fisher.png" alt="Fisher">
+        <span class="title">Fisher</span>
+      </div><span aria-hidden="true" class="arrow">›</span>
+    </a>
+
+    <a class="card" href="CHA2DS2VA.html" role="listitem">
+      <div class="card-content">
+        <img src="../iconos/chadsva.png" alt="CHA2DS2-VA">
+        <span class="title">CHA<sub>2</sub>DS<sub>2</sub>-VA</span>
+      </div><span aria-hidden="true" class="arrow">›</span>
+    </a>
+
+    <a class="card" href="HAS-BLED.html" role="listitem">
+      <div class="card-content">
+        <img src="../iconos/hasbled.png" alt="HAS-BLED">
+        <span class="title">HAS-BLED</span>
+      </div><span aria-hidden="true" class="arrow">›</span>
+    </a>
+
+    <a class="card" href="RoPE.html" role="listitem">
+      <div class="card-content">
+        <img src="../iconos/rope.png" alt="RoPE">
+        <span class="title">RoPE</span>
+      </div><span aria-hidden="true" class="arrow">›</span>
+    </a>
+
+    <a class="card" href="TOAST.html" role="listitem">
+      <div class="card-content">
+        <img src="../iconos/toast.png" alt="TOAST">
+        <span class="title">TOAST</span>
+      </div><span aria-hidden="true" class="arrow">›</span>
+    </a>
+
+  </div>
+</main>
+
+<footer>
+  <img src="uibanner.png" alt="Unidad de Ictus Málaga">
+</footer>
+
+<script src="js/index.js"></script>
+<script>
+  (function(){
+    const btn = document.getElementById('backIcon');
+    if(!btn) return;
+
+    btn.addEventListener('click', function(){
+      // Solo activo en ordenador (mouse o trackpad)
+      const isDesktop = window.matchMedia("(pointer: fine)").matches;
+      if(!isDesktop) return;
+
+      console.log('[IctusGPS] Botón atrás pulsado. Historial:', window.history.length);
+      if (window.history.length > 1) history.back();
+      else window.location.href = '../index.html';
+    });
+  })();
+</script>
+
+</body>
+</html>

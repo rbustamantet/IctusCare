@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f3d83">
+
+<title>Nuestra Unidad de Ictus</title>
+
+<!-- ICONOS Y MANIFIESTO -->
+<link rel="manifest" href="../site.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="../iconos/ictusgps.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../iconos/ictusgps.png">
+<link rel="shortcut icon" href="../iconos/ictusgps.png">
+
+<style>
+:root{
+  --bg:#f9fafc;
+  --ink:#0e1a33;
+  --accent-dark:#0f3d83;
+  --accent-light:#2563eb;
+  --border:#e5e9f2;
+}
+
+/* ===== BASE ===== */
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{
+  height:100%;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:Verdana, Geneva, Tahoma, sans-serif;
+  line-height:1.65;
+  -webkit-text-size-adjust:100%;
+}
+
+/* ===== CABECERA UNIFICADA ===== */
+.appbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: var(--accent-dark);
+  color: #fff;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  backdrop-filter: blur(6px);
+}
+.appbar-inner {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 4px 30px;
+.appbar-inner { min-height: 64px; }
+.appbar h1{margin:0;font-size:1.4rem;font-weight:800;color:#fff}
+
+}
+.appbar-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 4px 0;
+}
+.left-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.actions { margin-left: auto; }
+.btn {
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 14px;
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,.14);
+  background:rgba(255,255,255,.06);
+  color:#fff;
+  text-decoration:none;
+  font-weight:600;
+  font-size:15px;
+  transition:background .25s,border-color .25s;
+}
+.btn:hover{
+  border-color:rgba(127,179,255,.35);
+  background:#1c60c3;
+}
+
+/* ===== CONTENIDO ===== */
+main{
+  max-width:1080px;
+  margin:0 auto;
+  padding:2rem 1.5rem 3rem;
+  background:#fff;
+  border-radius:12px;
+  box-shadow:0 2px 10px rgba(0,0,0,0.04);
+}
+p{
+  text-align:justify;
+  font-size:16px;
+  margin-bottom:1rem;
+}
+img{
+  max-width:100%;
+  height:auto;
+  border-radius:12px;
+  transition:all 0.4s ease;
+}
+img:hover{
+  transform:scale(1.05);
+  box-shadow:0 8px 20px rgba(37,99,235,0.25);
+}
+
+/* ===== BOTONES ===== */
+.btn-link{
+  display:inline-block;
+  margin:2rem auto 0;
+  padding:12px 22px;
+  background:linear-gradient(to bottom,#2563eb,#1e40af);
+  color:#fff;
+  font-weight:700;
+  text-decoration:none;
+  border-radius:10px;
+  box-shadow:0 4px 10px rgba(37,99,235,.25);
+  transition:all .2s ease;
+}
+.btn-link:hover{
+  background:linear-gradient(to bottom,#1e40af,#1e3a8a);
+  box-shadow:0 6px 14px rgba(37,99,235,.35);
+  transform:translateY(-2px);
+}
+
+/* ===== PIE ===== */
+footer{
+  position:relative;
+  left:50%;
+  transform:translateX(-50%);
+  width:100vw;
+  margin-top:2rem;
+  padding:1.5rem 0;
+  border-top:1px solid #e5e7eb;
+  background:#ffffff;
+  text-align:center;
+  box-shadow:0 -2px 6px rgba(0,0,0,0.04);
+}
+footer img{
+  max-width:380px;
+  height:auto;
+  opacity:.96;
+}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:768px){
+  main{padding:1.25rem}
+  body{font-size:0.96rem;}
+}
+
+/* ===== ICONO CON EFECTO FLECHA ===== */
+.icon-btn {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  border: none;
+  outline: 0;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 6px rgba(0,0,0,.08);
+  padding: 0;
+  margin-right: 8px;
+  vertical-align: middle;
+  cursor: pointer;
+  flex-shrink: 0;        /* ✅ evita que se achique */
+  aspect-ratio: 1 / 1;   /* ✅ asegura proporción circular */
+}
+
+.icon-btn .icon-unit,
+.icon-btn .icon-arrow{
+  position:absolute; inset:0;
+  width:100%; height:100%;
+  transition:opacity .22s ease;
+  pointer-events:none;
+}
+.icon-btn .icon-unit{opacity:1;}
+.icon-btn .icon-arrow{opacity:0;}
+.icon-btn:hover .icon-unit{opacity:0;}
+.icon-btn:hover .icon-arrow{opacity:1;}
+.icon-btn:active{transform:scale(.96);}
+</style><style>
+:root {
+  --azul-institucional: #0f3d83;
+}
+
+/* Barra superior segura */
+.safe-top {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: calc(env(safe-area-inset-top, 0px) + 52px);
+  background: var(--azul-institucional);
+  z-index: 1001;
+}
+
+/* Empuja el contenido real por debajo de la barra */
+body {
+  margin: 0;
+  padding-top: calc(env(safe-area-inset-top, 0px) + 52px);
+  background-color: #fff;
+}
+</style>
+
+</head>
+
+<body>
+  <div class="safe-top"></div>
+<header class="appbar" role="region" aria-label="Cabecera de la Unidad de Ictus">
+  <div class="appbar-inner">
+    <div class="appbar-bar">
+      <button id="backIcon" class="icon-btn" aria-label="Atrás" title="Atrás">
+        <img class="icon-unit" src="../iconos/unidadesico.png" alt="Icono Unidades">
+        <svg class="icon-arrow" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M15 18l-6-6 6-6" fill="none" stroke="#0F3D83"
+                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+
+      <div class="left-group">
+        <h1 style="margin:0;font-size:1.4rem;line-height:1;font-weight:800;color:#fff;">
+NUESTRA UNIDAD DE ICTUS
+        </h1>
+      </div>
+      <div class="actions"><a class="btn" href="../index.html">Inicio</a></div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <p>
+    Situada al fondo de la sala de hospitalización, en la cuarta planta del pabellón B del Hospital Regional Universitario de Málaga, dentro del Servicio de Neurología. 
+    Cuenta con 7 camas y un puesto con sillón, vigilados desde la Mesa de Control de Enfermería mediante visión directa y monitorización continua por vídeo. 
+    Está dotada con tecnología avanzada para la monitorización de constantes vitales, sistemas de telemetría y registro EEG por paciente. 
+    Además, dispone de ecógrafo-doppler para el estudio vascular de troncos supraaórticos y del polígono de Willis.
+  </p>
+
+  <p>
+    La asistencia está a cargo de neurólogos dedicados a la patología neurovascular, junto con un equipo de enfermería especializado —dos enfermeras y una auxiliar por turno— 
+    que garantizan una atención integral. Contamos también con la colaboración del Servicio de Medicina Física y Rehabilitación, 
+    cuyos médicos y fisioterapeutas realizan la valoración y recuperación funcional precoz. 
+    Además, participan activamente el Servicio de Endocrinología y Nutrición, la Unidad de Disfagia (de carácter multidisciplinar) y otras especialidades implicadas en el manejo de nuestros pacientes.
+  </p>
+
+  <p>
+    La Unidad de Ictus del Hospital Regional Universitario de Málaga fue la primera en constituirse en Andalucía, en 2005, 
+    como dispositivo específico para el tratamiento del ictus agudo. En 2018 se renovó con mayor capacidad asistencial y tecnología avanzada, 
+    consolidándose como un referente en la atención integral al ictus en la comunidad.
+  </p>
+
+  <div style="text-align:center;margin-top:1.5rem;">
+    <img src="nosotros.png" alt="Nuestra Unidad de Ictus" width="400" height="303">
+  </div>
+
+  <div style="text-align:center;">
+    <a href="unidad_ictus.html" class="btn-link">¿Qué es una Unidad de Ictus?</a>
+  </div>
+</main>
+
+<footer>
+  <img src="uibanner.png" alt="Unidad de Ictus Málaga">
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', ()=>{
+  const btn = document.getElementById('backIcon');
+  if (btn) {
+    btn.addEventListener('click', ()=>{
+      console.log('[IctusGPS] Atrás clicado. Historial:', window.history.length);
+      if (window.history.length > 1) history.back();
+      else window.location.href = '../index.html';
+    });
+  }
+});
+</script>
+</body>
+</html>

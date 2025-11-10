@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="manifest" href="../site.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="../iconos/ictusgps.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../iconos/ictusgps.png">
+<link rel="shortcut icon" href="../iconos/ictusgps.png">
+<meta name="theme-color" content="#0f3d83">
+<title>Hunt y Hess — Hemorragia Subaracnoidea</title>
+<style>
+:root{
+  --bg:#f8fafc;--ink:#0f172a;--muted:#64748b;
+  --accent:#0f3d83;--accent-light:#dbeafe;
+  --ok:#15803d;--mid:#b45309;--bad:#b91c1c;
+  --borde:#e5e7eb;
+}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
+          font-family:Verdana, Geneva, Tahoma, sans-serif;font-size:15px;}
+*{box-sizing:border-box}
+
+/* CABECERA AZUL */
+.appbar{
+  position:sticky;top:0;z-index:1000;
+  background:var(--accent);color:#fff;
+  box-shadow:0 2px 6px rgba(0,0,0,.1);
+}
+.appbar-inner{
+  max-width:980px;margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 16px;gap:10px;
+}
+.left-group{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.appbar h1{margin:0;font-size:22px;font-weight:800;color:#fff}
+.pill-top{
+  display:inline-block;padding:6px 10px;border-radius:999px;
+  background:var(--accent-light);color:#1e3a8a;border:1px solid #bfdbfe;
+  font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.pill-top.tone-green{background:#dcfce7;color:#065f46;border-color:#86efac}
+.pill-top.tone-amber{background:#fef3c7;color:#92400e;border-color:#fde68a}
+.pill-top.tone-red{background:#fee2e2;color:#991b1b;border-color:#fecaca}
+.btn-inicio{
+  display:inline-flex;align-items:center;justify-content:center;
+  height:32px;padding:0 14px;border-radius:10px;
+  background:#1c60c3;color:white;font-size:0.9rem;font-weight:700;
+  text-decoration:none;border:1px solid rgba(127,179,255,.35);
+  transition:background .2s;
+}
+.btn-inicio:hover{background:#0C00FF}
+
+/* CONTENIDO */
+.wrap{max-width:880px;margin:16px auto 48px;padding:0 16px}
+.card{background:#fff;border:1px solid var(--borde);border-radius:16px;
+      box-shadow:0 2px 10px rgba(15,23,42,.06);padding:18px;margin-bottom:16px}
+label{font-size:14px;font-weight:700;display:block;margin-bottom:6px;color:var(--ink)}
+select{width:100%;border:1px solid var(--borde);border-radius:10px;
+       padding:12px;font-size:15px;background:#fff;cursor:pointer;}
+select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(37,99,235,.15)}
+.check{display:flex;align-items:center;gap:8px;font-size:13px;margin-top:10px;color:var(--ink)}
+.note{color:var(--muted);font-size:12px;margin-top:12px}
+.result{display:none}
+.result.show{display:block}
+
+/* BADGE */
+.badge{width:72px;height:72px}
+.protocol{display:grid;grid-template-columns:72px 1fr;gap:14px;align-items:center;
+          border-top:1px solid var(--borde);margin-top:16px;padding-top:16px}
+.desc{margin:0;font-size:14px}
+.ref{margin-top:10px;font-size:11px;color:var(--muted)}
+
+/* BOTONES */
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.btn{
+  flex:1 1 150px;
+  border:1px solid #2563eb;
+  border-radius:10px;
+  padding:12px;
+  font-size:15px;
+  font-weight:700;
+  cursor:pointer;
+  background:#fff;
+  color:#1e3a8a;
+  transition:background .2s,transform .1s,box-shadow .2s;
+}
+.btn:hover{background:#eff6ff;box-shadow:0 3px 8px rgba(37,99,235,.15)}
+.btn.copiado{background:#0f3d83;color:#fff;border-color:#0f3d83}
+
+#resumenText{white-space:pre-wrap;font-size:13px;color:#0f172a;margin-top:8px;
+             border:1px dashed var(--borde);border-radius:10px;padding:10px;background:#f8fafc}
+
+/* PIE */
+footer.smallprint{text-align:center;margin-top:2rem;padding:1rem 0;
+  border-top:1px solid #e5e7eb;background:#fff;font-size:12px;color:var(--muted)}
+footer img{max-width:320px;height:auto;opacity:.95}
+/* Botón Volver inferior */
+.back-btn{
+  display:inline-block;
+  margin:1.5rem auto 0;
+  background:#0f3d83;
+  color:#fff;
+  text-decoration:none;
+  font-weight:700;
+  padding:0.7rem 1.4rem;
+  border-radius:10px;
+  box-shadow:0 4px 10px rgba(15,61,131,.25);
+  transition:background .2s, transform .1s, box-shadow .2s;
+}
+.back-btn:hover{
+  background:#1c60c3;
+  transform:translateY(-1px);
+  box-shadow:0 6px 12px rgba(15,61,131,.35);
+}
+
+</style>
+<style>
+:root {
+  --azul-institucional: #0f3d83;
+}
+
+/* Barra superior segura */
+.safe-top {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: calc(env(safe-area-inset-top, 0px) + 28px);
+  background: var(--azul-institucional);
+  z-index: 1000;
+}
+
+/* Empuja el contenido real por debajo de la barra */
+body {
+  margin: 0;
+  padding-top: calc(env(safe-area-inset-top, 0px) + 28px);
+  background-color: #fff;
+}
+</style>
+
+</head>
+<body>
+  <div class="safe-top"></div>
+<header class="appbar">
+  <div class="appbar-inner">
+    <div class="left-group">
+      <h1>Hunt y Hess</h1>
+      <output id="pillTop" class="pill-top">—</output>
+    </div>
+    <a class="btn-inicio" href="../index.html">Inicio</a>
+  </div>
+</header>
+
+<main class="wrap">
+  <p class="note">Clasificación clínica inicial de la gravedad en hemorragia subaracnoidea aneurismática.</p>
+
+  <div class="card">
+    <label for="grado">Grado clínico</label>
+    <select id="grado">
+      <option value="" selected>— Seleccione —</option>
+      <option value="0">0 — Aneurisma no roto</option>
+      <option value="I">I — Asintomático o cefalea leve</option>
+      <option value="Ia">Ia — Déficit focal sin signos meníngeos</option>
+      <option value="II">II — Cefalea/moderada rigidez o paresia de PC</option>
+      <option value="III">III — Somnolencia/confusión o focalidad leve</option>
+      <option value="IV">IV — Estupor o déficit moderado/severo</option>
+      <option value="V">V — Coma profundo o fallo vital</option>
+    </select>
+    <label class="check">
+      <input type="checkbox" id="plusOne">
+      +1 si hay enfermedad sistémica severa o vasoespasmo grave
+    </label>
+
+    <div class="actions">
+      <button id="btnClear" class="btn" type="button">Borrar</button>
+      <button id="btnCopy" class="btn" type="button">Copiar resumen</button>
+    </div>
+  </div>
+
+  <div id="resultCard" class="card result">
+    <div class="protocol" style="border-top:0;padding-top:0;">
+      <div id="badge" class="badge"></div>
+      <div>
+        <p id="gradeDesc" class="desc"></p>
+        <p id="mortalityTxt" style="margin-top:4px;font-size:13px;font-weight:600;"></p>
+        <p class="ref"><b>Referencia:</b> Hunt WE, Hess RM. <em>J Neurosurg</em>. 1968; 28:14–20.</p>
+      </div>
+    </div>
+    <div id="resumenText"></div>
+    <p class="note"><b>Nota:</b> orienta la gravedad inicial de la HSA; no sustituye al juicio clínico ni a otras escalas pronósticas.</p>
+  </div>
+<div style="text-align:center;">
+  <a href="index.html" class="back-btn">Volver</a>
+</div>
+</main>
+
+<script>
+const order=['0','I','Ia','II','III','IV','V'];
+const fullTxt={
+  '0':'Aneurisma no roto.',
+  'I':'Asintomático o cefalea y rigidez leves.',
+  'Ia':'Déficit neurológico focal sin signos meníngeos.',
+  'II':'Cefalea o rigidez moderada/severa o paresia de un par craneal.',
+  'III':'Somnolencia/confusión o déficit leve.',
+  'IV':'Estupor o déficit moderado/severo.',
+  'V':'Coma profundo o fallo de centros vitales.'
+};
+const shortTxt={
+  '0':'Aneurisma no roto','I':'Leve','Ia':'Déficit focal','II':'Moderada',
+  'III':'Confusión','IV':'Estupor','V':'Coma'
+};
+const mortality={
+  '0':{txt:'— (no roto)',tone:'tone-green'},
+  'I':{txt:'< 5 %',tone:'tone-green'},
+  'Ia':{txt:'≈ 5 %',tone:'tone-green'},
+  'II':{txt:'5–10 %',tone:'tone-green'},
+  'III':{txt:'15–20 %',tone:'tone-amber'},
+  'IV':{txt:'40–50 %',tone:'tone-red'},
+  'V':{txt:'> 70 %',tone:'tone-red'}
+};
+function el(id){return document.getElementById(id);}
+function svgBadge(t,tone){
+  const color=tone==='tone-red'?'#b91c1c':tone==='tone-amber'?'#b45309':'#15803d';
+  return `<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+    <defs><radialGradient id="g" cx="50%" cy="50%" r="60%">
+      <stop offset="0%" stop-color="#fff"/><stop offset="100%" stop-color="${color}22"/>
+    </radialGradient></defs>
+    <circle cx="60" cy="60" r="56" fill="url(#g)" stroke="${color}" stroke-width="6"/>
+    <text x="50%" y="56%" text-anchor="middle" font-family="Verdana" font-size="40" font-weight="700" fill="${color}">${t}</text>
+  </svg>`;
+}
+function updatePill(g,tone){
+  const pill=el('pillTop');
+  pill.classList.remove('tone-green','tone-amber','tone-red');
+  if(!g){pill.textContent='—';return;}
+  pill.classList.add(tone);
+  pill.textContent=g;
+}
+function calcular(){
+  const v=el('grado').value;const plus=el('plusOne').checked;
+  if(!v){el('resultCard').classList.remove('show');updatePill();return;}
+  let idx=order.indexOf(v);if(idx<0)idx=0;if(plus&&idx<order.length-1)idx++;
+  const final=order[idx];const mort=mortality[final];
+  el('gradeDesc').textContent=fullTxt[final];
+  el('mortalityTxt').innerHTML='Mortalidad estimada: <b>'+mort.txt+'</b>';
+  el('badge').innerHTML=svgBadge(final,mort.tone);
+  el('resultCard').classList.add('show');
+  updatePill(final,mort.tone);
+  el('resumenText').textContent=
+    `Escala Hunt-Hess: grado ${final} — ${shortTxt[final]}.\n${fullTxt[final]}\nMortalidad estimada: ${mort.txt}.`;
+}
+function borrar(){
+  el('grado').value='';el('plusOne').checked=false;
+  el('resultCard').classList.remove('show');updatePill();
+}
+function copiar(){
+  const txt=el('resumenText').textContent.trim();
+  if(!txt)return;
+  navigator.clipboard.writeText(txt).then(()=>{
+    const b=el('btnCopy');
+    b.classList.add('copiado');b.textContent='Copiado';
+    setTimeout(()=>{b.classList.remove('copiado');b.textContent='Copiar resumen';},3000);
+  });
+}
+document.addEventListener('DOMContentLoaded',()=>{
+  el('grado').addEventListener('change',calcular);
+  el('plusOne').addEventListener('change',calcular);
+  el('btnClear').addEventListener('click',borrar);
+  el('btnCopy').addEventListener('click',copiar);
+  updatePill();
+});
+</script>
+
+<footer class="smallprint">
+  <img src="uibanner.png" alt="Unidad de Ictus Málaga">
+</footer>
+<script src="js/index.js"></script>
+</body>
+</html>

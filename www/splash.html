@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ictus GPS – Inicio</title>
+
+<!-- 🔹 ICONOS Y MANIFIESTO PWA -->
+<link rel="manifest" href="site.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="iconos/ictusgps.png">
+<link rel="apple-touch-icon" sizes="180x180" href="iconos/ictusgps.png">
+<link rel="shortcut icon" href="iconos/ictusgps.png">
+<meta name="theme-color" content="#0f3d83">
+
+<style>
+  :root {
+    --azul1:#0f3d83;
+    --azul2:#2563eb;
+  }
+
+  html, body {
+    margin:0;
+    padding:0;
+    width:100%;
+    height:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    background:#0f3d83;
+    background-size:200% 200%;
+    font-family: Verdana, sans-serif;
+  }
+
+  .contenedor {
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    color:white;
+    width:100%;
+    height:100%;
+  }
+
+  .logo {
+    max-width:80vmin;
+    max-height:70vh;
+    height:auto;
+    width:auto;
+    z-index:2;
+    position:relative;
+    animation:focusFade 5s ease-in-out forwards;  }
+
+  h1 {
+    margin-top:1.2rem;
+    font-size:clamp(1rem, 2vw, 1.3rem);
+    letter-spacing:1px;
+    font-weight:normal;
+    text-shadow:0 1px 3px rgba(0,0,0,0.3);
+  }
+
+  /* 🔹 Animaciones */
+  @keyframes fondo {
+    0%{background-position:0% 50%;}
+    100%{background-position:100% 50%;}
+  }
+
+  @keyframes entradaZoom {
+    from {opacity:0; transform:scale(0.9);}
+    to {opacity:1; transform:scale(1);}
+  }
+
+  @keyframes tiltFadeOut {
+  from {opacity:1; transform:rotate(0deg);}
+  to   {opacity:0; transform:rotate(90deg) scale(0.3);}
+}
+
+  @keyframes focusFade {
+  0%   {opacity:0; filter:blur(12px);}
+  5%   {opacity:0; filter:blur(9px);}
+  15%  {opacity:1; filter:blur(6px);}
+  20%  {opacity:1; filter:blur(3);}
+  25%  {opacity:1; filter:blur(0);}     /* mantiene el enfoque unos 3 s */
+  100% {opacity:1; filter:blur(0px);}   
+}
+
+
+  @keyframes fadeBody {
+    from {opacity:1;}
+    to {opacity:0; background:black;}
+  }
+</style>
+
+<script>
+  const DURACION_SPLASH = 10000; // duración antes de salida (ms)
+
+  document.addEventListener("DOMContentLoaded", () => {
+    setTimeout(() => {
+      const logo = document.querySelector(".logo");
+      const texto = document.querySelector("h1");
+
+      if (texto) texto.style.opacity = "0";
+
+      // animación de salida del logo
+      logo.style.animation = "tiltFadeOut 1.7s ease-in forwards";
+
+      setTimeout(() => {
+        setTimeout(() => {
+          window.location.href = "splash2.html"; // 👉 siguiente pantalla
+        }, 800);
+      }, 1000);
+    }, DURACION_SPLASH);
+  });
+</script>
+</head>
+<body>
+  <div class="contenedor">
+    <img src="img/neuroappssplash.png" alt="NeuroApps" class="logo">
+  </div>
+</body>
+</html>

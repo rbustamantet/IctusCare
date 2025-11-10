@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0f3d83">
+  <title>ASPECTS – Signos precoces de isquemia en TC (ACM)</title>
+
+  <!-- Iconos / PWA -->
+  <link rel="manifest" href="../site.webmanifest">
+  <link rel="icon" type="image/png" sizes="192x192" href="../iconos/ictusgps.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../iconos/ictusgps.png">
+  <link rel="shortcut icon" href="../iconos/ictusgps.png">
+
+  <style>
+    :root{
+      --bg:#f8fafc; --ink:#0f172a; --muted:#64748b;
+      --accent-dark:#0f3d83; --accent-light:#2563eb; --ring:#93c5fd; --border:#e5e7eb;
+      /* tonos previos del documento */
+      --ok:#166534; --ok-bg:#e9fce7; --ok-bd:#bbf7d0;
+      --mid:#92400e; --mid-bg:#fff7ed; --mid-bd:#fed7aa;
+      --bad:#991b1b; --bad-bg:#fef2f2; --bad-bd:#fecaca;
+      --chip-bg:#eef6ff; --chip-ink:#1e3a8a;
+    }
+
+    *{box-sizing:border-box}
+    html,body{
+      margin:0;padding:0;background:var(--bg);color:var(--ink);
+      font-family: Verdana, Geneva, Tahoma, sans-serif
+    }
+
+    .wrap{max-width:1080px; margin:0 auto; padding:24px}
+
+    /* =========================================================
+       CABECERA estándar
+    ========================================================= */
+    header{
+       position:sticky;
+      top:0;
+      z-index:20;
+      backdrop-filter:blur(6px);
+      background:var(--accent-dark);
+      border-bottom:1px solid rgba(255,255,255,.08);
+      box-shadow:0 2px 6px rgba(0,0,0,0.08);
+      color:#fff;
+    }
+.header-inner {
+  max-width:1080px;
+  margin:0 auto;
+  padding:5px 0px;
+align-items: center;
+}
+
+    .bar{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:5px 18px;
+    }
+
+    .headcol{display:flex;flex-direction:column;align-items: center}
+    .title{font-size:1.4rem;font-weight:800;letter-spacing:.2px;color:#fff;display:flex;align-items:center;gap:10px}
+    .actions{margin-left:auto}
+    .btn{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:8px 14px;border-radius:12px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(255,255,255,.06);
+      color:white;text-decoration:none;font-weight:600;font-size:15px;
+      transition:background .25s,border-color .25s;
+    }
+    .btn:hover{border-color:rgba(127,179,255,.35);background:#1c60c3;color:white;text-decoration:none;font-weight:600;}
+
+    /* Píldora dinámica de puntuación */
+    .pill{
+      display:inline-flex; align-items:center; justify-content:center;
+      min-width:38px; height:32px; padding:6px 10px;
+      border-radius:999px; font-size:12px; font-weight:700;
+      border:1px solid transparent; white-space:nowrap;
+    }
+    .pill-ok{background:#dcfce7; color:#065f46; border-color:#86efac;}
+    .pill-warn{background:#fef3c7; color:#92400e; border-color:#fde68a;}
+    .pill-bad{background:#fee2e2; color:#991b1b; border-color:#fecaca;}
+
+    /* ======= Estilos propios de la página ======= */
+    .panel{background:#fff;border:1px solid #dbeafe;border-radius:16px;box-shadow:0 4px 16px rgba(0,0,0,.06);padding:16px}
+    h2{margin:0 0 8px;color:#0b1f44}
+    .sub{color:var(--muted);margin:2px 0 12px;font-size: 0.9rem}
+
+    .imgbox{background:#eef6ff;border:1px solid #dbeafe;border-radius:14px;padding:10px;margin:10px 0 16px}
+    .imgbox img{width:100%;height:auto;display:block;border-radius:10px;border:1px solid #dbeafe}
+    .imgbox figcaption{margin-top:8px;font-size:12px;color:#233a66}
+
+    .grid{display:grid;gap:10px;grid-template-columns:repeat(2,1fr)}
+    label.chk{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:10px}
+    input[type="checkbox"]{transform:scale(1.15)}
+
+    .chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+    .chip{font-size:12px;border:1px solid #dbeafe;background:var(--chip-bg);color:var(--chip-ink);border-radius:999px;padding:6px 10px;font-weight:700}
+
+    .kpi{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .box{border:1.5px dashed #c7dbff;border-radius:14px;padding:14px;background:#f8fbff;text-align:center}
+    .box h4{margin:0 0 4px;font-size:14px;color:#334155}
+    .big{font-size:26px;font-weight:900;color:#0b2c5f}
+
+    .tone-green{background:var(--ok-bg); border-color:var(--ok-bd); color:var(--ok)}
+    .tone-amber{background:var(--mid-bg); border-color:var(--mid-bd); color:var(--mid)}
+    .tone-red{background:var(--bad-bg); border-color:var(--bad-bd); color:var(--bad)}
+    .tone-green .big,.tone-amber .big,.tone-red .big{color:inherit}
+
+    .actions-inline{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+    .btn-secondary{
+      flex:1 1 48%; border:1px solid #0f3d83; border-radius:10px; padding:12px;
+      font-size:15px; font-weight:700; background:#fff; color:#0f3d83; cursor:pointer;
+      transition:all .25s ease;
+    }
+    .btn-secondary:hover{background:#e6ecff}
+    .btn-secondary.copiado{background:#0f3d83 !important; color:#fff !important; border-color:#0f3d83 !important;}
+
+    /* Botón Volver inferior */
+    .back-btn{
+      display:inline-block; margin:1.5rem auto 0; background:#0f3d83; color:#fff; text-decoration:none; font-weight:700;
+      padding:.7rem 1.4rem; border-radius:10px; box-shadow:0 4px 10px rgba(15,61,131,.25);
+      transition:background .2s, transform .1s, box-shadow .2s;
+    }
+    .back-btn:hover{background:#1c60c3; transform:translateY(-1px); box-shadow:0 6px 12px rgba(15,61,131,.35);}
+
+    /* Footer */
+    footer{
+      position:relative; left:50%; transform:translateX(-50%);
+      width:100vw; margin:2rem 0 0 0; padding:1.5rem 0;
+      border-top:1px solid #e5e7eb; background:#ffffff; text-align:center;
+      box-shadow:0 -2px 6px rgba(0,0,0,0.04);
+    }
+  </style>
+<style>
+:root {
+  --azul-institucional: #0f3d83;
+}
+
+/* Barra superior segura */
+.safe-top {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: calc(env(safe-area-inset-top, 0px) + 28px);
+  background: var(--azul-institucional);
+  z-index: 1000;
+}
+
+/* Empuja el contenido real por debajo de la barra */
+body {
+  margin: 0;
+  padding-top: calc(env(safe-area-inset-top, 0px) + 28px);
+  background-color: #fff;
+}
+</style>
+
+</head>
+<body>
+  <div class="safe-top"></div>
+<header role="region" aria-label="Cabecera Escala ASPECTS">
+  <div class="header-inner"><div class="bar"><img src="../iconos/aspects.png" alt="ABCD²" width="40" height="40"
+     style="border-radius:50%;background:white;box-shadow:0 0 6px rgba(0,0,0,.08);margin-right:8px;"><div class="headcol"><div class="title">ASPECTS<output id="pill" class="pill" aria-live="polite" aria-atomic="true">10</output></div></div><div class="actions"><a class="btn" href="../index.html">Inicio</a></div></div></div>
+</header>
+
+<main class="wrap">
+    <p class="sub">Marque las regiones con signos isquémicos tempranos, el resultado se actualiza automáticamente. ASPECTS = 10 − (regiones marcadas).</p>
+  <section class="panel">
+
+    <figure class="imgbox">
+      <img src="aspects.png" alt="Esquema de regiones ASPECTS (I, C, L, CI y M1–M6)">
+      <figcaption>Esquema de referencia de regiones ASPECTS: ínsula (I), caudado (C), lentiforme (L), cápsula interna (CI) y cortes corticales M1–M6.</figcaption>
+    </figure>
+
+    <div class="grid" id="checks">
+      <label class="chk"><input class="r" type="checkbox"> I – Ínsula</label>
+      <label class="chk"><input class="r" type="checkbox"> C – Caudado</label>
+      <label class="chk"><input class="r" type="checkbox"> L – Lentiforme</label>
+      <label class="chk"><input class="r" type="checkbox"> CI – Cápsula interna</label>
+      <label class="chk"><input class="r" type="checkbox"> M1 – Corteza insular anterior</label>
+      <label class="chk"><input class="r" type="checkbox"> M2 – Corteza ACM anterior</label>
+      <label class="chk"><input class="r" type="checkbox"> M3 – Corteza ACM posterior</label>
+      <label class="chk"><input class="r" type="checkbox"> M4 – Corteza ACM alta anterior</label>
+      <label class="chk"><input class="r" type="checkbox"> M5 – Corteza ACM alta lateral</label>
+      <label class="chk"><input class="r" type="checkbox"> M6 – Corteza ACM alta posterior</label>
+    </div>
+
+    <div class="chips" id="chips"></div>
+
+    <div class="kpi">
+      <div class="box">
+        <h4>ASPECTS</h4>
+        <div class="big" id="scoreVal">10</div>
+      </div>
+      <div class="box tone-green" id="catBox">
+        <h4>Categoría</h4>
+        <div class="big" id="catVal">Favorable (≥7)</div>
+      </div>
+    </div>
+
+    <div class="actions-inline">
+      <button id="btnBorrar" type="button" class="btn-secondary">Borrar</button>
+      <button id="btnCopiar" type="button" class="btn-secondary">Copiar resumen</button>
+    </div>
+  </section>
+
+  <div style="text-align:center;">
+<a href="javascript:history.back()" class="back-btn">Volver</a>
+  </div>
+</main>
+
+<script>
+  // Símbolos para evitar recodificación
+  const GE = String.fromCharCode(0x2265); // ≥
+  const LE = String.fromCharCode(0x2264); // ≤
+  const ND = String.fromCharCode(0x2013); // –
+
+  // Píldora de cabecera
+  function actualizarPill(score){
+    const pill = document.getElementById('pill');
+    pill.className = 'pill';
+    if(score >= 7) pill.classList.add('pill-ok');
+    else if(score >= 5) pill.classList.add('pill-warn');
+    else pill.classList.add('pill-bad');
+    pill.textContent = score;
+  }
+
+  function actualizar(){
+    const marcadas = document.querySelectorAll('.r:checked').length;
+    const score = 10 - marcadas;
+
+    // KPI principal
+    document.getElementById('scoreVal').textContent = String(score);
+
+    // Categoría y color
+    const catBox = document.getElementById('catBox');
+    const catVal = document.getElementById('catVal');
+    catBox.classList.remove('tone-green','tone-amber','tone-red');
+
+    if(score >= 7){
+      catBox.classList.add('tone-green');
+      catVal.textContent = `Favorable (${GE}7)`;
+    }else if(score >= 5){
+      catBox.classList.add('tone-amber');
+      catVal.textContent = `Intermedio (5${ND}6)`;
+    }else{
+      catBox.classList.add('tone-red');
+      catVal.textContent = `Extenso (${LE}4)`;
+    }
+
+    // Chips
+    const chips = document.getElementById('chips');
+    chips.innerHTML = '';
+    chips.insertAdjacentHTML('beforeend', `<span class="chip">Marcadas: ${marcadas}</span>`);
+    chips.insertAdjacentHTML('beforeend', `<span class="chip">Sin marcar: ${10 - marcadas}</span>`);
+
+    // Píldora
+    actualizarPill(score);
+  }
+
+  // ======= Función BORRAR =======
+  function borrarASPECTS() {
+    document.querySelectorAll('.r').forEach(ch => ch.checked = false);
+    actualizar();
+  }
+
+  // ======= Función COPIAR RESUMEN =======
+  function copiarASPECTS() {
+    const score = parseInt(document.getElementById('scoreVal').textContent) || 0;
+    const cat = document.getElementById('catVal').textContent.trim();
+    let texto = `ASPECTS: ${score} — ${cat}. `;
+
+    if (score >= 7) {
+      texto += 'Patrón favorable: pequeño infarto o cambios isquémicos mínimos, con bajo riesgo de transformación hemorrágica y buena respuesta potencial a tratamientos de reperfusión.';
+    } else if (score >= 5) {
+      texto += 'Patrón intermedio: infarto moderado, la extensión puede condicionar la indicación de trombectomía o trombólisis según criterios clínicos e imagenológicos.';
+    } else {
+      texto += 'Patrón extenso: afectación amplia del territorio ACM, mal pronóstico funcional y alto riesgo de complicaciones hemorrágicas.';
+    }
+
+    navigator.clipboard.writeText(texto).then(() => {
+      const btn = document.getElementById('btnCopiar');
+      btn.classList.add('copiado');
+      btn.textContent = 'Copiado';
+      setTimeout(() => {
+        btn.classList.remove('copiado');
+        btn.textContent = 'Copiar resumen';
+      }, 3000);
+    }).catch(err => console.error('Error al copiar:', err));
+  }
+
+  // Eventos
+  document.addEventListener('DOMContentLoaded', actualizar);
+  document.querySelectorAll('.r').forEach(ch => ch.addEventListener('change', actualizar));
+  document.getElementById('btnBorrar').addEventListener('click', borrarASPECTS);
+  document.getElementById('btnCopiar').addEventListener('click', copiarASPECTS);
+</script>
+
+<footer>
+  <img src="uibanner.png" alt="Unidad de Ictus Málaga" style="max-width:380px;height:auto;opacity:.96;">
+</footer>
+
+<script src="js/index.js"></script>
+</body>
+</html>

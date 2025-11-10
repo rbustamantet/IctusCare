@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="manifest" href="../site.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="../iconos/ictusgps.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../iconos/ictusgps.png">
+<link rel="shortcut icon" href="../iconos/ictusgps.png">
+<meta name="theme-color" content="#0f3d83">
+<title>ICH Score — Hemorragia Intracerebral</title>
+<style>
+:root{
+  --bg:#f8fafc;--ink:#0f172a;--muted:#64748b;
+  --accent:#0f3d83;--accent-light:#dbeafe;
+  --ok:#15803d;--mid:#b45309;--bad:#b91c1c;
+  --borde:#e5e7eb;
+}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
+          font-family:Verdana, Geneva, Tahoma, sans-serif;font-size:15px;}
+*{box-sizing:border-box}
+
+/* CABECERA AZUL */
+.appbar{position:sticky;top:0;z-index:1000;background:var(--accent);color:#fff;
+        box-shadow:0 2px 6px rgba(0,0,0,.1);}
+.appbar-inner{max-width:980px;margin:0 auto;display:flex;align-items:center;
+              justify-content:space-between;padding:10px 16px;gap:10px;}
+.left-group{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.appbar h1{margin:0;font-size:22px;font-weight:800;color:#fff}
+.pill-top{display:inline-block;padding:6px 10px;border-radius:999px;
+          background:var(--accent-light);color:#1e3a8a;border:1px solid #bfdbfe;
+          font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.pill-top.low{background:#dcfce7;color:#065f46;border-color:#86efac}
+.pill-top.mod{background:#fef3c7;color:#92400e;border-color:#fde68a}
+.pill-top.high{background:#fee2e2;color:#991b1b;border-color:#fecaca}
+.pill-top.extreme{background:#fecaca;color:#7f1d1d;border-color:#fca5a5}
+.btn-inicio{display:inline-flex;align-items:center;justify-content:center;
+            height:32px;padding:0 14px;border-radius:10px;background:#1c60c3;
+            color:white;font-size:0.9rem;font-weight:700;text-decoration:none;
+            border:1px solid rgba(127,179,255,.35);transition:background .2s;}
+.btn-inicio:hover{background:#0C00FF}
+
+/* CONTENIDO */
+.wrap{max-width:880px;margin:16px auto 48px;padding:0 16px}
+.card{background:#fff;border:1px solid var(--borde);border-radius:16px;
+      box-shadow:0 2px 10px rgba(15,23,42,.06);padding:18px;margin-bottom:16px}
+label{font-size:14px;font-weight:700;display:block;margin-bottom:6px;color:var(--ink)}
+select{width:100%;border:1px solid var(--borde);border-radius:10px;
+       padding:12px;font-size:15px;background:#fff;cursor:pointer;}
+select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(37,99,235,.15)}
+.note{color:var(--muted);font-size:12px;margin-top:10px}
+.kpi{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:4px}
+.kpi .box{border:1px dashed var(--borde);border-radius:12px;padding:12px;text-align:center}
+.kpi .ttl{font-size:13px;color:var(--muted)}
+.kpi .val{font-size:24px;font-weight:700;color:var(--accent)}
+.kpi .box.low{background:#ecfdf5;border-color:#bbf7d0}
+.kpi .box.mod{background:#fefce8;border-color:#fde68a}
+.kpi .box.high{background:#fff1f2;border-color:#fecaca}
+.kpi .box.extreme{background:#fee2e2;border-color:#fecaca}
+
+/* BOTONES */
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.btn{flex:1 1 150px;border:1px solid #2563eb;border-radius:10px;padding:12px;
+     font-size:15px;font-weight:700;cursor:pointer;background:#fff;color:#1e3a8a;
+     transition:background .2s,transform .1s,box-shadow .2s;}
+.btn:hover{background:#eff6ff;box-shadow:0 3px 8px rgba(37,99,235,.15)}
+.btn.copiado{background:#0f3d83;color:#fff;border-color:#0f3d83}
+
+/* RESUMEN */
+#resumenText{white-space:pre-wrap;font-size:13px;color:#0f172a;margin-top:8px;
+             border:1px dashed var(--borde);border-radius:10px;padding:10px;background:#f8fafc}
+
+/* PIE */
+footer.smallprint{text-align:center;margin-top:2rem;padding:1rem 0;
+  border-top:1px solid #e5e7eb;background:#fff;font-size:12px;color:var(--muted)}
+footer img{max-width:320px;height:auto;opacity:.95}
+/* Botón Volver inferior */
+.back-btn{
+  display:inline-block;
+  margin:1.5rem auto 0;
+  background:#0f3d83;
+  color:#fff;
+  text-decoration:none;
+  font-weight:700;
+  padding:0.7rem 1.4rem;
+  border-radius:10px;
+  box-shadow:0 4px 10px rgba(15,61,131,.25);
+  transition:background .2s, transform .1s, box-shadow .2s;
+}
+.back-btn:hover{
+  background:#1c60c3;
+  transform:translateY(-1px);
+  box-shadow:0 6px 12px rgba(15,61,131,.35);
+}
+
+</style>
+<style>
+:root {
+  --azul-institucional: #0f3d83;
+}
+
+/* Barra superior segura */
+.safe-top {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: calc(env(safe-area-inset-top, 0px) + 28px);
+  background: var(--azul-institucional);
+  z-index: 1000;
+}
+
+/* Empuja el contenido real por debajo de la barra */
+body {
+  margin: 0;
+  padding-top: calc(env(safe-area-inset-top, 0px) + 28px);
+  background-color: #fff;
+}
+</style>
+
+</head>
+<body>
+  <div class="safe-top"></div>
+
+<header class="appbar">
+  <div class="appbar-inner">
+    <div class="left-group">
+      <h1>ICH Score</h1>
+      <output id="pillTop" class="pill-top">—</output>
+    </div>
+    <a class="btn-inicio" href="../index.html">Inicio</a>
+  </div>
+</header>
+
+<main class="wrap">
+  <p class="note">Escala pronóstica de Hemorragia Intracerebral (Hemphill 2001). Evaluar junto a juicio clínico y neuroimagen.</p>
+
+  <div class="card">
+    <form id="calcForm" autocomplete="off">
+      <label for="gcs">Escala de Glasgow</label>
+      <select id="gcs">
+        <option value="-1">Seleccione…</option>
+        <option value="2">3–4 puntos (2)</option>
+        <option value="1">5–12 puntos (1)</option>
+        <option value="0">13–15 puntos (0)</option>
+      </select>
+
+      <label for="vol">Volumen del hematoma (ml)</label>
+      <select id="vol">
+        <option value="-1">Seleccione…</option>
+        <option value="1">≥ 30 ml (1)</option>
+        <option value="0">&lt; 30 ml (0)</option>
+      </select>
+
+      <label for="ivh">Extensión intraventricular</label>
+      <select id="ivh">
+        <option value="-1">Seleccione…</option>
+        <option value="1">Sí (1)</option>
+        <option value="0">No (0)</option>
+      </select>
+
+      <label for="infra">Origen infratentorial</label>
+      <select id="infra">
+        <option value="-1">Seleccione…</option>
+        <option value="1">Sí (1)</option>
+        <option value="0">No (0)</option>
+      </select>
+
+      <label for="edad">Edad</label>
+      <select id="edad">
+        <option value="-1">Seleccione…</option>
+        <option value="1">≥ 80 años (1)</option>
+        <option value="0">&lt; 80 años (0)</option>
+      </select>
+
+      <div class="actions">
+        <button id="btnReset" type="button" class="btn">Borrar</button>
+        <button id="btnCopy" type="button" class="btn">Copiar resumen</button>
+      </div>
+
+      <p class="note">Componentes: GCS, volumen ≥ 30 ml, extensión IVH, localización infratentorial, edad ≥ 80 años. Rango 0–6.</p>
+    </form>
+  </div>
+
+  <div id="resultCard" class="card" style="display:none">
+    <div class="kpi">
+      <div class="box"><div class="ttl">Puntuación ICH</div><div class="val" id="scoreVal">—</div></div>
+      <div class="box"><div class="ttl">Mortalidad 30 días</div><div class="val" id="mortVal">—</div></div>
+    </div>
+
+    <div id="resumenText"></div>
+    <p class="note"><b>Referencia:</b> Hemphill JC et al. <em>Stroke</em> 2001; 32: 891–897 (Mortalidad: 0→0%, 1→13%, 2→26%, 3→72%, 4→97%, 5–6→100%).</p>
+  </div>
+<div style="text-align:center;">
+  <a href="index.html" class="back-btn">Volver</a>
+</div>
+</main>
+
+<script>
+const mortMap={0:'0%',1:'13%',2:'26%',3:'72%',4:'97%',5:'100%',6:'100%'};
+function riskClassForPct(p){if(p<=25)return'low';if(p<=50)return'mod';if(p<=80)return'high';return'extreme';}
+function riskLabelForPct(p){if(p<=25)return'bajo';if(p<=50)return'moderado';if(p<=80)return'alto';return'extremo';}
+function el(id){return document.getElementById(id);}
+function leer(id){const v=parseInt(el(id).value,10);return isNaN(v)?-1:v;}
+
+function updatePill(score){
+  const pill=el('pillTop');
+  pill.className='pill-top';
+  if(typeof score!=='number'){pill.textContent='—';return;}
+  const m=mortMap[score]||'—';
+  const pct=parseInt(m.replace('%',''),10);
+  if(isFinite(pct)){
+    const cls=riskClassForPct(pct);
+    const lbl=riskLabelForPct(pct);
+    pill.classList.add(cls);
+    pill.textContent=`${score} — ${m} (${lbl})`;
+  }else pill.textContent=`ICH ${score}`;
+}
+
+function calcular(){
+  const gcs=leer('gcs'),vol=leer('vol'),ivh=leer('ivh'),infra=leer('infra'),edad=leer('edad');
+  if([gcs,vol,ivh,infra,edad].some(v=>v<0)){el('resultCard').style.display='none';updatePill();return;}
+  const score=gcs+vol+ivh+infra+edad;
+  const mortalidad=mortMap[score]||'—';
+  const pct=parseInt(mortalidad.replace('%',''),10);
+  const cls=isFinite(pct)?riskClassForPct(pct):'';
+  document.querySelectorAll('.kpi .box').forEach(b=>b.className='box '+cls);
+  el('scoreVal').textContent=score;
+  el('mortVal').textContent=mortalidad;
+  el('resultCard').style.display='block';
+  updatePill(score);
+  const lbl=riskLabelForPct(pct);
+  el('resumenText').textContent=
+    `ICH Score ${score}\nMortalidad a 30 días: ${mortalidad} (${lbl}).`;
+}
+
+function resetForm(){
+  el('calcForm').reset();el('resultCard').style.display='none';updatePill();
+}
+
+function copiar(){
+  const txt=el('resumenText').textContent.trim();
+  if(!txt)return;
+  navigator.clipboard.writeText(txt).then(()=>{
+    const b=el('btnCopy');
+    b.classList.add('copiado');b.textContent='Copiado';
+    setTimeout(()=>{b.classList.remove('copiado');b.textContent='Copiar resumen';},3000);
+  });
+}
+
+['gcs','vol','ivh','infra','edad'].forEach(id=>{
+  el(id).addEventListener('change',calcular);
+  el(id).addEventListener('input',calcular);
+});
+el('btnReset').addEventListener('click',resetForm);
+el('btnCopy').addEventListener('click',copiar);
+document.addEventListener('DOMContentLoaded',()=>updatePill());
+</script>
+
+<footer class="smallprint">
+  <img src="uibanner.png" alt="Unidad de Ictus Málaga">
+</footer>
+<script src="js/index.js"></script>
+</body>
+</html>

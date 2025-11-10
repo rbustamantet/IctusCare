@@ -1,0 +1,53 @@
+/* ==========================================================
+   ESTILOS BASE NEUTROS – IctusGPS
+   Compatibilidad estructural sin modificar apariencia
+   ========================================================== */
+:root {
+  --safe-area-inset-top: env(safe-area-inset-top);
+  --safe-area-inset-right: env(safe-area-inset-right);
+  --safe-area-inset-bottom: env(safe-area-inset-bottom);
+  --safe-area-inset-left: env(safe-area-inset-left);
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+
+  /* Márgenes seguros para notch, barras de estado o navegación */
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+
+  /* Tipografía base homogénea */
+  font-family: Verdana, system-ui, sans-serif;
+  -webkit-text-size-adjust: 100%;
+  -webkit-touch-callout: none;
+
+  /* Asegura que la altura ocupe toda la pantalla útil */
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+/* Evita solapamientos en vistas embebidas o con scroll */
+body {
+  display: block;
+  overflow-x: hidden;
+}
+
+/* Neutraliza posibles efectos globales heredados de plantillas Cordova */
+* {
+  -webkit-tap-highlight-color: transparent;
+  box-sizing: inherit;
+}
+
+/* Asegura que los elementos fijos (por ejemplo, barras) respeten notch */
+header, footer, nav {
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Opcional: comportamiento suave de scroll */
+html {
+  scroll-behavior: smooth;
+}

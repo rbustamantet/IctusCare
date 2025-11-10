@@ -1,0 +1,14 @@
+{
+  "appId": "com.ictusgps.app",
+  "appName": "Ictus GPS",
+  "webDir": "www",
+  "plugins": {
+    "SplashScreen": {
+      "launchAutoHide": true,
+      "launchShowDuration": 2500,
+      "androidScaleType": "CENTER_INSIDE",
+      "backgroundColor": "#0f3d83",
+      "showSpinner": false
+    }
+  }
+}

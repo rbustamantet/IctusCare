@@ -1,4 +1,114 @@
-CNAME
-LICENSE
-README.md
-sync_log.txt
+# =========================================================
+# IctusGPSapp - Configuración .gitignore
+# =========================================================
+
+# === Sistema ===
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# === Dependencias y módulos ===
+node_modules/
+plugins/
+platforms/
+.gradle/
+.idea/
+.vscode/
+.npm/
+.env
+.env.local
+.env.production
+
+# === Archivos de compilación / build ===
+www/build/
+build/
+dist/
+out/
+tmp/
+temp/
+.cache/
+.cordova/
+capacitor.config.json.backup
+
+# === Android / Capacitor ===
+android/.gradle/
+android/.idea/
+android/build/
+android/app/build/
+android/local.properties
+android/capacitor-cordova-android-plugins/
+android/capacitor-cordova-ios-plugins/
+android/key.properties
+android/app/release/
+android/app/debug/
+*.keystore
+*.jks
+
+# === iOS / Xcode ===
+ios/
+Pods/
+*.xcworkspace
+*.xcuserstate
+DerivedData/
+xcuserdata/
+*.pbxuser
+*.mode1v3
+*.mode2v3
+
+# === Logs y temporales ===
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.log
+
+# === Archivos del sistema operativo ===
+ehthumbs.db
+Icon?
+$RECYCLE.BIN/
+
+# === Archivos personales o de configuración ===
+*.bak
+*.tmp
+*.swp
+*.swo
+*.orig
+*.old
+~*
+
+# === Archivos del editor ===
+*.sublime-*
+*.code-workspace
+*.iml
+*.class
+
+# === Copias de seguridad ===
+_backup/
+_backup_temp/
+*.bak
+*.old
+*.zip
+
+# === Salidas automáticas (PDF, docs, etc.) ===
+/exported_docs/
+/pdfs/
+/slides/
+*.pdf
+*.pptx
+*.docx
+
+# === Carpetas locales específicas ===
+# (si usas OneDrive, no subir versiones sincronizadas)
+OneDrive*/
+
+# === Excepciones: incluir estos directorios ===
+!/www/
+!/iconos/
+!/site.webmanifest
+!/config.xml
+!/package.json
+!/README.md
+!/LICENSE
+
+# =========================================================
+# Fin del archivo
+# =========================================================

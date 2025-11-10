@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="manifest" href="../site.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="../iconos/ictusgps.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../iconos/ictusgps.png">
+<link rel="shortcut icon" href="../iconos/ictusgps.png">
+<meta name="theme-color" content="#0f3d83">
+
+<title>Sección en construcción · Ictus GPS</title>
+<meta name="color-scheme" content="light">
+<style>
+  :root{
+    --ink:#0f172a;
+    --muted:#475569;
+    --bg:#f4f7fb;
+    --card:#ffffff;
+    --brand:#1e3a8a;
+    --brand-soft:#dbeafe;
+    --ring:#93c5fd;
+    --shadow:0 8px 20px rgba(2,8,23,.08);
+    --radius:22px;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+  margin:0;
+  font-family:Verdana, Geneva, Tahoma, sans-serif;
+  color:var(--ink);
+  background:linear-gradient(180deg,#eef5ff 0%,#f8fafc 100%);
+  min-height:100vh;              /* ocupa toda la altura de pantalla */
+  display:flex;
+  justify-content:center;        /* centra horizontalmente */
+  padding:24px;
+}
+
+@media (max-height:760px){
+  body{
+    align-items:flex-start;      /* evita que se recorte la cabecera */
+    padding-top:16px;
+  }
+}
+
+  .wrap{
+    width:min(920px,100%);
+    background:var(--card); border:1px solid var(--brand-soft);
+    border-radius:var(--radius); box-shadow:var(--shadow);
+    overflow:hidden;
+  }
+  header{
+    display:flex; align-items:center; gap:16px;
+    padding:18px 22px;
+    background:var(--brand-soft);
+    border-bottom:1px solid #cfe0ff;
+  }
+  header img{width:54px; height:54px; object-fit:contain; border-radius:50%}
+  header h1{font-size:26px; margin:0; color:var(--brand); letter-spacing:.2px}
+
+  main{padding:28px; display:grid; gap:22px}
+  .card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;       /* 🔹 centra verticalmente dentro del grid */
+  justify-items: center;     /* 🔹 centra horizontalmente cada celda */
+  gap: 24px;
+  background: var(--bg);
+  border: 1px solid #e5edff;
+  border-radius: 16px;
+  padding: 22px;
+}
+
+
+
+ /* Columna izquierda: texto */
+.card .content{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
+
+/* Columna derecha: imagen ilustrativa */
+.card .illustration{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  position:relative;
+  background: #1e3a8a;
+
+}
+
+/* Columna izquierda: texto */
+.card .content{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
+
+/* Columna derecha: imagen ilustrativa */
+.card .illustration {
+  position: relative;
+  width: 345px;
+  height: 460px;
+  aspect-ratio: 4 / 3; /* mantiene proporción */
+  overflow: hidden;
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgba(0,0,0,.15);
+}
+
+/* ambas imágenes apiladas una sobre otra */
+.card .illustration img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+  opacity: 0;
+  animation: blurSwap 12s ease-in-out infinite;
+}
+
+/* la primera inicia visible */
+.card .illustration img:first-child {
+  animation-delay: 0s;
+}
+
+/* la segunda aparece a mitad de ciclo */
+.card .illustration img:last-child {
+  animation-delay: 6s;
+}
+
+@keyframes blurSwap {
+  0%,45%  { opacity:1; filter:blur(0px); }
+  50%,95% { opacity:0; filter:blur(8px); }
+  100%    { opacity:1; filter:blur(0px); }
+}
+
+
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    background:#fff; border:1px solid var(--ring); color:var(--brand);
+    padding:8px 12px; border-radius:999px;
+    font-weight:bold; font-size:.9rem
+  }
+  .title{font-size:clamp(22px,3.4vw,28px); margin:2px 0 0}
+  .subtitle{color:var(--muted); line-height:1.5; margin:0}
+  .progress{
+    height:10px; background:#e8f1ff; border-radius:999px; overflow:hidden; position:relative
+  }
+  .bar{
+    position:absolute; inset:0 auto 0 0; width:40%;
+    background:linear-gradient(90deg,#60a5fa,#2563eb);
+    border-radius:inherit;
+    box-shadow:0 0 0 1px rgba(255,255,255,.3) inset;
+    animation:pulse 6s ease-in-out infinite
+  }
+  @keyframes pulse{
+    0%{width:0%} 50%{width:70%} 100%{width:100%}
+  }
+
+  .actions{display:flex; flex-wrap:wrap; gap:12px; margin-top:6px}
+  .btn{
+    appearance:none;
+    border:1px solid var(--brand);
+    color:#fff;
+    background:linear-gradient(180deg,#2a4db2,#1e3a8a);
+    padding:12px 16px;
+    border-radius:14px;
+    font-weight:bold;
+    cursor:pointer;
+    text-decoration:none;
+    display:inline-flex; align-items:center; gap:10px;
+    box-shadow:0 4px 10px rgba(2,8,23,.12);
+    transition:transform .08s ease, filter .15s ease;
+  }
+  .btn:hover{filter:brightness(1.03)} .btn:active{transform:translateY(1px)}
+  .btn.ghost{background:#fff; color:var(--brand); border-color:var(--ring)}
+
+  footer{
+    padding:14px 22px;
+    border-top:1px solid #e6eefc;
+    color:#334155;
+    font-size:.85rem;
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px;
+  }
+  .dot{display:inline-block; width:7px; height:7px; border-radius:50%; background:#22c55e; margin-right:6px}
+
+/* 📱 Adaptación móvil: una sola columna con imagen visible completa */
+@media (max-width:700px){
+  .card{
+    grid-template-columns:1fr;
+    align-items:flex-start;       /* evita el centrado que recorta */
+  }
+  .card .illustration{
+    display:flex;
+    order:2;                      /* imagen debajo del texto */
+    margin-top:20px;
+    justify-content:center;
+  }
+  .card .illustration img{
+    width:100%;
+    height:auto;
+    max-height:none;
+    object-fit:contain;           /* muestra la imagen completa sin recorte */
+    border-radius:12px;
+  }
+}
+</style>
+</head>
+
+<body>
+  <div class="wrap" role="region" aria-label="Aviso de sección en construcción">
+    <header>
+      <img src="../iconos/ictusgps-512.png" alt="Unidad de Ictus · HRUM" onerror="this.style.display='none'">
+      <h1>Ictus GPS</h1>
+    </header>
+
+    <main>
+      <div class="card">
+        <div class="illustration">
+  <img src="../iconos/neuroapps.png" alt="NeuroApps – vista 1">
+  <img src="../iconos/neuroapps2.png" alt="NeuroApps – vista 2">
+</div>
+<div class="content">
+          <span class="badge">🛠️ Sección en construcción</span>
+          <h2 class="title">Estamos preparando esta sección</h2>
+          <p class="subtitle">
+            Este contenido aún no está disponible. Estamos ultimando el material para garantizar rigor científico,
+            utilidad docente y una experiencia de uso coherente con el resto de la app.
+          </p>
+          <div class="progress"><div class="bar"></div></div>
+
+          <div class="actions">
+            <a class="btn" href="../index.html">Inicio</a>
+            <a class="btn ghost" href="index.html">Volver a Utilidades</a>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <div><span class="dot"></span>Versión 1.0 · Ictus GPS</div>
+      <div>© Rafael Bustamante Toledo</div>
+    </footer>
+  </div>
+</body>
+</html>

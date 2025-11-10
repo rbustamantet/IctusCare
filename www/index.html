@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="theme-color" content="#0f3d83">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, viewport-fit=cover, user-scalable=yes">
+
+<meta name="description" content="Protocolos clínicos y recursos en la atención al paciente con ictus">
+<meta name="author" content="Rafael Bustamante Toledo">
+<meta name="email" content="correo@rafaelbustamante.com">
+
+<title>Ictus GPS</title>
+
+<script>
+  // Mostrar splash solo si es el arranque inicial de la app
+  const isAppLaunch = !sessionStorage.getItem('appLaunched');
+  sessionStorage.setItem('appLaunched', 'true');
+
+  if (isAppLaunch) {
+    window.location.href = 'splash.html';
+  } 
+  </script>
+
+
+  <!-- 🔹 ICONOS Y MANIFIESTO PWA -->
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="icon" type="image/png" sizes="192x192" href="iconos/ictusgps.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="iconos/ictusgps.png">
+  <link rel="shortcut icon" href="iconos/ictusgps.png">
+  <meta name="theme-color" content="#0f3d83">
+
+<style>
+  :root{
+    --bg:#0f3d83;
+    --ink:#e6ecf5;
+    --muted:#c7d5ec;
+    --card:#174c9c;
+    --card-hover:#1a56ad;
+    --shadow:0 10px 24px rgba(0,0,0,.35);
+    --radius:20px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    background-color: var(--bg);
+    color: var(--ink);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:flex-start;
+    min-height:100vh;
+    text-align:center;
+    overflow-x:hidden;
+  }
+
+  /* Animaciones */
+  @keyframes fadeUp {
+    0% {opacity:0; transform: translateY(25px);}
+    100% {opacity:1; transform: translateY(0);}
+  }
+  @keyframes fadeDown {
+    0% {opacity:0; transform: translateY(-25px);}
+    100% {opacity:1; transform: translateY(0);}
+  }
+
+  header{
+    width:100%;
+    padding:32px 0 12px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    animation: fadeDown 1s ease-out;
+  }
+  header img{
+    margin:28px;
+    max-width:480px;
+    width:90%;
+    height:auto;
+    border-radius:24px;
+    box-shadow: 0 8px 20px rgba(0,0,0,.25), 0 3px 6px rgba(0,0,0,.1);
+backdrop-filter: blur(12px) saturate(1.2);
+background: rgba(255,255,255,.08);
+background: linear-gradient(120deg, rgba(255,255,255,0) 0%, rgba(255,255,255,.25) 50%, rgba(255,255,255,0) 100%);
+background-size: 200% 100%;
+animation: shine 3s linear infinite;
+@keyframes shine {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
+}
+  }
+
+  h1{
+    font-size:1.8rem;
+    font-weight:700;
+    margin:14px 0 8px;
+    letter-spacing:.4px;
+    animation: fadeUp 1s ease-out .2s both;
+  }
+  p.subtitle{
+    color:var(--muted);
+    font-size:0.95rem;
+    margin-bottom:28px;
+    animation: fadeUp 1s ease-out .4s both;
+  }
+
+  /* CONTENEDOR DEL MENÚ DE ICONOS */
+  .menu {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;   /* centra las filas incompletas */
+  align-items: center;
+  gap: 28px;
+  width: 90%;
+  max-width: 700px;
+  margin: 0 auto 40px;
+  animation: fadeUp 1s ease-out .6s both;
+}
+
+
+  .icon-btn{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    text-decoration:none;
+    color:var(--ink);
+    transition:transform .15s ease, box-shadow .15s ease, background .2s ease;
+  }
+
+  .icon-circle{
+    width:100px;
+    height:100px;
+    border-radius:50%;
+    background:linear-gradient(160deg,var(--card),#0e3a7e);
+    box-shadow: var(--shadow);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-bottom:10px;
+    border:1px solid rgba(255,255,255,.12);
+    opacity:0;
+    transform: translateY(20px);
+    animation: fadeUp .8s ease-out forwards;
+  }
+
+  /* Retraso escalonado para cada icono */
+  .icon-btn:nth-child(1) .icon-circle{ animation-delay:.6s; }
+  .icon-btn:nth-child(2) .icon-circle{ animation-delay:.8s; }
+  .icon-btn:nth-child(3) .icon-circle{ animation-delay:1s; }
+  .icon-btn:nth-child(4) .icon-circle{ animation-delay:1.2s; }
+  .icon-btn:nth-child(5) .icon-circle{ animation-delay:1.4s; }
+
+  .icon-btn:hover .icon-circle img {
+  filter: drop-shadow(0 0 10px rgba(127,179,255,0.5));
+}
+
+
+  .icon-circle svg, .icon-circle img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;  /* Rellena completamente el círculo */
+  display: block;
+  filter: drop-shadow(0 0 6px rgba(255,255,255,0.2)); /* halo sutil */
+}
+
+  .label{
+    font-size:0.9rem;
+    font-weight:600;
+    letter-spacing:.3px;
+  }
+
+  footer{
+    color:var(--muted);
+    font-size:.8rem;
+    margin-top:auto;
+    padding:20px 0 10px;
+    animation: fadeUp 1s ease-out 1.5s both;
+  }
+
+footer {
+  color: var(--muted);
+  font-size: .8rem;
+  margin-top: auto;
+  padding: 20px 0 14px;
+  animation: fadeUp 1s ease-out 1.5s both;
+  position: relative;
+}
+
+/* ===== Botón flotante de salida (rojo translúcido elegante) ===== */
+.exit-btn {
+  position: fixed;
+  bottom: 18px;
+  right: 18px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 80, 80, 0.25); /* rojo claro muy translúcido */
+  color: rgba(255,255,255,0.85);
+  border: 1px solid rgba(255,255,255,0.25);
+  font-size: 1.4rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  cursor: pointer;
+  z-index: 99;
+  backdrop-filter: blur(4px);
+  transition: all 0.25s ease;
+  line-height: 28px; /* para un botón de 46px */
+}
+
+</style>
+</head>
+<body>
+
+  <header>
+    <img src="img/inicio.png" alt="IctusGPS">
+  </header>
+    <div><h1></br></h1></div>
+
+  <main class="menu">
+
+    <a class="icon-btn" href="unidad/index.html">
+  <div class="icon-circle">
+    <img src="iconos/unidadesico.png" alt="Nuestra Unidad">
+  </div>
+<span class="label">Nuestra&nbsp;Unidad</span>
+</a>
+
+
+    <a class="icon-btn" href="protocolos/index.html">
+  <div class="icon-circle">
+    <img src="iconos/protocolosico.png" alt="Protocolos">
+  </div>
+  <span class="label">Protocolos</span>
+</a>
+
+    <a class="icon-btn" href="escalas/index.html">
+  <div class="icon-circle">
+    <img src="iconos/escalasico.png" alt="Escalas">
+  </div>
+  <span class="label">Escalas</span>
+</a>
+
+    <a class="icon-btn" href="utilidades/index.html">
+  <div class="icon-circle">
+    <img src="iconos/utilidadesico.png" alt="Utilidades">
+  </div>
+  <span class="label">Utilidades</span>
+</a>
+
+    <a class="icon-btn" href="informacion/index.html">
+  <div class="icon-circle">
+    <img src="iconos/informacionico.png" alt="Información">
+  </div>
+  <span class="label">Información</span>
+</a>
+
+  </main>
+
+<footer>
+  Unidad de Neurología Vascular · Servicio de Neurología<br>
+  Hospital Regional Universitario de Málaga<br>
+  © Rafael Bustamante Toledo
+</footer>
+<script src="js/index.js"></script>
+<script>
+/* 🔹 Inserta index.css automáticamente en todas las vistas cargadas */
+(function() {
+  const cssPath = 'css/index.css';
+  const head = document.head || document.getElementsByTagName('head')[0];
+  if (![...document.styleSheets].some(s => s.href && s.href.includes(cssPath))) {
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = cssPath;
+    head.appendChild(link);
+  }
+})();
+</script>
+</body>
+</html>
