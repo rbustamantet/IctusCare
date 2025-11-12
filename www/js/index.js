@@ -7,22 +7,49 @@ document.addEventListener("deviceready", function() {
   try {
     console.log("Cordova ready:", cordova.platformId, cordova.version);
 
-    // ===== STATUS BAR =====
-    if (window.StatusBar) {
-      setTimeout(() => {
+    // ===== STATUS BAR (versión robusta Cordova / Capacitor) =====
+(function configurarStatusBar() {
+  const COLOR_INSTITUCIONAL = "#0F3D83";
+
+  if (!window.StatusBar) {
+    console.warn("ℹ️ Plugin StatusBar no detectado (modo navegador o sin plugin).");
+    return;
+  }
+
+  // Ejecución retardada para asegurar contexto nativo listo
+  setTimeout(() => {
+    try {
+      // Evita superposición sobre la vista web
+      StatusBar.overlaysWebView(false);
+
+      // Color institucional y estilo claro
+      StatusBar.backgroundColorByHexString(COLOR_INSTITUCIONAL);
+      StatusBar.styleLightContent();
+
+      // Mostrar si está oculta
+      StatusBar.show();
+
+      // 🔹 Si existe plugin de navegación (Android), sincroniza el color también
+      if (window.AndroidFullScreen && AndroidFullScreen.setSystemUiVisibility) {
         try {
-          StatusBar.overlaysWebView(false);
-          StatusBar.backgroundColorByHexString("#0F3D83");
-          StatusBar.styleLightContent();
-          StatusBar.show();
-          console.log("✅ Barra de estado azul aplicada correctamente");
+          AndroidFullScreen.setSystemUiVisibility({
+            statusBarColor: COLOR_INSTITUCIONAL,
+            navigationBarColor: COLOR_INSTITUCIONAL,
+            statusBarLight: false,
+            navigationBarLight: false
+          });
         } catch (e) {
-          console.warn("⚠️ Error al aplicar StatusBar:", e);
+          console.warn("⚠️ No se pudo aplicar color a Navigation Bar:", e);
         }
-      }, 800);
-    } else {
-      console.warn("⚠️ Plugin StatusBar no detectado");
+      }
+
+      console.log("✅ Barra de estado configurada correctamente:", COLOR_INSTITUCIONAL);
+    } catch (err) {
+      console.error("❌ Error al aplicar configuración de StatusBar:", err);
     }
+  }, 600);
+})();
+
 
     // ===== SPLASH =====
     if (navigator.splashscreen) {

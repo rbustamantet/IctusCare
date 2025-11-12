@@ -2,81 +2,165 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f3d83">
+<title>Escala de Barthel</title>
+
+<!-- ICONOS Y MANIFIESTO -->
 <link rel="manifest" href="../site.webmanifest">
 <link rel="icon" type="image/png" sizes="192x192" href="../iconos/ictusgps.png">
 <link rel="apple-touch-icon" sizes="180x180" href="../iconos/ictusgps.png">
 <link rel="shortcut icon" href="../iconos/ictusgps.png">
-<meta name="theme-color" content="#0f3d83">
-<title>Escala de Barthel</title>
 
 <style>
 :root{
-  --bg:#f8fafc; --ink:#0f172a;
-  --azul:#0f3d83; --gris:#6b7280; --borde:#e5e7eb;
-  --ok:#0a7f3f; --error:#b91c1c;
-  --accent:#2563eb; --accent-light:#dbeafe;
+  --bg:#f9fafc;
+  --ink:#0e1a33;
+  --accent-dark:#0f3d83;
+  --accent-light:#2563eb;
+  --border:#e5e9f2;
+  --muted:#64748b;
+  --ok:#166534; --ok-bg:#e9fce7; --ok-ring:#bbf7d0;
+  --mid:#92400e; --mid-bg:#fff7ed; --mid-ring:#fed7aa;
+  --bad:#991b1b; --bad-bg:#fef2f2; --bad-ring:#fecaca;
+  --azul-institucional:#0f3d83;
 }
 
-/* ===== CABECERA ESTILO ICTUS GPS ===== */
-.appbar {
-  position: sticky; top: 0; z-index: 1000;
-  background: #0f3d83;
+/* =========================================================
+   SAFE-TOP
+========================================================= */
+.safe-top {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: calc(env(safe-area-inset-top, 0px) + 52px);
+  background: var(--azul-institucional);
+  z-index: 1001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: env(safe-area-inset-top, 0px);
+}
+.safe-content {
+  width: 100%;
+  max-width: 1080px;
+  padding: 6px 16px 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.safe-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.safe-mini {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  padding: 4px;
+  box-shadow: 0 0 4px rgba(0,0,0,0.1);
+}
+.safe-logo {
+  height: 44px;
+  width: auto;
+}
+.safe-actions {
+  display: flex;
+  gap: 10px;
+}
+.safe-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 50%;
+  transition: background .25s, border-color .25s, transform .1s;
+}
+.safe-btn:hover {
+  background: var(--azul-institucional);
+  border: 1px solid white;
+}
+.safe-btn:active { transform: scale(0.95); }
+.safe-icon {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+/* =========================================================
+   CABECERA INFERIOR (STICKY)
+========================================================= */
+header{
+  position: sticky;
+  top: calc(env(safe-area-inset-top, 0px) + 52px);
+  z-index: 1002;
+  backdrop-filter: blur(6px);
+  background: var(--accent-dark);
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
   color: #fff;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
-.appbar-inner {
-  max-width: 980px; margin: 0 auto;
-  padding: 4px 16px;
-  display: flex; align-items: center; justify-content: space-between;
-  gap: 12px;
+.bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  height: 52px;
+  padding: 0 16px;
 }
-.left-group {
-  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
-}
-.appbar h1 {
-  margin: 0; font-size: 22px; font-weight: 800; color: #fff;
+.title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #fff;
 }
 .pill {
-  display: inline-flex; align-items: center; justify-content: center;
-  min-width: 38px; height: 32px; padding: 6px 10px;
-  border-radius: 999px; font-size: 12px; font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 38px;
+  height: 28px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
   border: 1px solid transparent;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .pill-ok   {background:#dcfce7; color:#065f46; border-color:#86efac;}
 .pill-warn {background:#fef3c7; color:#92400e; border-color:#fde68a;}
 .pill-bad  {background:#fee2e2; color:#991b1b; border-color:#fecaca;}
-.btn {
-  display: inline-flex; align-items: center; justify-content: center;
-  height: 32px; padding: 0 14px; border-radius: 10px;
-  text-decoration: none; border: 1px solid rgba(127,179,255,.35);
-  background: #1c60c3; color: white;
-  font-size: 0.9rem; font-weight: 700;
-  transition: background 0.2s, border-color 0.2s;
- overflow: hidden;
-  text-overflow: ellipsis;
-  transform: translateY(-8px);}
-.btn:hover { background: #0C00FF; }
 
-/* ===== CUERPO ===== */
-body{margin:0;background:var(--bg);color:var(--ink);font-family:Verdana, Geneva, sans-serif;}
+*{box-sizing:border-box}
+html,body{
+  margin:0;
+  padding:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:Verdana, Geneva, sans-serif;
+}
+
+/* =========================================================
+   CONTENIDO PRINCIPAL
+========================================================= */
+
 .container{max-width:980px;margin:16px auto 48px;padding:0 16px;}
-.card{background:#fff;border:1px solid var(--borde);border-radius:16px;padding:18px;box-shadow:0 2px 10px rgba(15,23,42,.06);}
-label{font-size:15px;font-weight:700;display:block;margin-bottom:6px;color:var(--azul);}
-select{width:100%;border:1px solid var(--borde);border-radius:10px;padding:12px;font-size:15px;background:#fff;outline:none;}
-select:focus{border-color:var(--azul);box-shadow:0 0 0 3px rgba(11,44,95,.12);}
+
+
+.card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:18px;box-shadow:0 2px 10px rgba(15,23,42,.06);}
+label{font-size:15px;font-weight:700;display:block;margin-bottom:6px;color:var(--accent-dark);}
+select{width:100%;border:1px solid var(--border);border-radius:10px;padding:12px;font-size:15px;background:#fff;}
 .item{margin-bottom:14px;}
 .result{display:none;}
 .result.show{display:block;}
 .kpi{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:4px;}
-.box{border:1px dashed var(--borde);border-radius:12px;padding:12px;text-align:center;}
-.ttl{font-size:13px;color:var(--gris);}
-.val{font-size:22px;font-weight:700;color:var(--azul);}
+.box{border:1px dashed var(--border);border-radius:12px;padding:12px;text-align:center;}
+.ttl{font-size:13px;color:var(--muted);}
+.val{font-size:22px;font-weight:700;color:var(--accent-dark);}
 .classBox{margin-top:12px;border-radius:12px;padding:12px 14px;font-weight:700;text-align:center;}
-.err{display:none;border-radius:12px;padding:12px 14px;margin-top:10px;background:#fef2f2;color:var(--error);border:1px solid #fecaca;}
-
-/* ===== BOTONES ===== */
+.err{display:none;border-radius:12px;padding:12px 14px;margin-top:10px;background:#fef2f2;color:var(--bad);border:1px solid var(--bad-ring);}
 .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;}
 .btn-secondary{
   flex:1 1 48%;border:1px solid #0f3d83;border-radius:10px;padding:12px;
@@ -85,24 +169,18 @@ select:focus{border-color:var(--azul);box-shadow:0 0 0 3px rgba(11,44,95,.12);}
 }
 .btn-secondary:hover{background:#e6ecff;}
 .btn-secondary.copiado{background:#0f3d83!important;color:#fff!important;border-color:#0f3d83!important;}
-.hint{font-size:12px;color:var(--gris);margin-top:4px;}
-
-/* ===== PIE ===== */
-footer{position:relative;left:50%;transform:translateX(-50%);width:100vw;
-  margin:2rem 0 0 0;padding:1.5rem 0;border-top:1px solid #e5e7eb;
-  background:#ffffff;text-align:center;box-shadow:0 -2px 6px rgba(0,0,0,0.04);}
+.hint{font-size:12px;color:var(--muted);margin-top:4px;}
 #resumenText {
   white-space: pre-wrap;
   font-size: 13px;
   color: #0f172a;
   margin-top: 10px;
-  border: 1px dashed var(--borde);
+  border: 1px dashed var(--border);
   border-radius: 10px;
   padding: 10px 12px;
   background: #f8fafc;
   line-height: 1.45;
 }
-/* Botón Volver inferior */
 .back-btn{
   display:inline-block;
   margin:1.5rem auto 0;
@@ -120,82 +198,92 @@ footer{position:relative;left:50%;transform:translateX(-50%);width:100vw;
   transform:translateY(-1px);
   box-shadow:0 6px 12px rgba(15,61,131,.35);
 }
+.intro {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 14px 16px 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.45;
+  text-align: justify;
+  margin-top: calc(env(safe-area-inset-top, 0px) + 54px);
+}
+.intro strong {
+  color: var(--accent-dark);
+}
 
-
+/* =========================================================
+   FOOTER
+========================================================= */
+footer{
+  width:100%;
+  margin:2rem 0 0;
+  padding:1.5rem 0;
+  border-top:1px solid #e5e7eb;
+  background:#ffffff;
+  text-align:center;
+  box-shadow:0 -2px 6px rgba(0,0,0,0.04);
+}
 </style>
-<style>
-:root {
-  --azul-institucional: #0f3d83;
-}
-
-/* Barra superior segura */
-.safe-top {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: calc(env(safe-area-inset-top, 0px) + 28px);
-  background: var(--azul-institucional);
-  z-index: 1000;
-}
-
-/* Empuja el contenido real por debajo de la barra */
-body {
-  margin: 0;
-  padding-top: calc(env(safe-area-inset-top, 0px) + 28px);
-  background-color: #fff;
-}
-</style>
-
 </head>
+
 <body>
-  <div class="safe-top"></div>
-<header class="appbar" role="region" aria-label="Cabecera Barthel">
-  <div class="appbar-inner">
-    <div class="left-group">
-      <h1>Escala de Barthel</h1>
-      <output id="pill" class="pill" aria-live="polite" aria-atomic="true">—</output>
+<!-- SAFE-TOP -->
+<div class="safe-top">
+  <div class="safe-content">
+    <div class="safe-left">
+      <img src="../iconos/escalasico.png" alt="Icono Escalas" class="safe-mini">
+      <img src="../img/topbar.png" alt="IctusGPS" class="safe-logo">
     </div>
-    <div class="actions">
-      <a class="btn" href="../index.html">Inicio</a>
+    <div class="safe-actions">
+      <a href="javascript:history.back()" class="safe-btn" title="Volver atrás">
+        <img src="../iconos/atrastransparente.png" alt="Atrás" class="safe-icon">
+      </a>
+      <a href="../index.html" class="safe-btn" title="Volver al inicio">
+        <img src="../iconos/hometransparente.png" alt="Inicio" class="safe-icon">
+      </a>
     </div>
   </div>
+</div>
+
+<header>
+  <div class="bar">
+    <div class="title">Escala de Barthel</div>
+    <output id="pill" class="pill">—</output>
+  </div>
 </header>
+<section class="intro">
+  <p>
+    Evalúa la <strong>independencia funcional</strong> en las actividades básicas de la vida diaria (ABVD),
+    puntuando la capacidad del paciente para realizar diez tareas cotidianas como comer, asearse, vestirse o deambular.
+    La puntuación total oscila entre <strong>0 y 100</strong>, donde valores más altos indican mayor autonomía.
+    Complete los campos seleccionando el nivel de independencia en cada ítem.
+  </p>
+</section>
 
 <main class="container">
   <div class="card">
-    <form id="calcForm">
-      <!-- Campos principales -->
-      <div id="campos"></div>
-    </form>
+    <form id="calcForm"><div id="campos"></div></form>
   </div>
 
   <div id="resultCard" class="card result">
     <div id="errBox" class="err" role="alert"></div>
-
     <div class="kpi">
-      <div class="box">
-        <div class="ttl">Puntuación total (0–100)</div>
-        <div class="val" id="totalVal">—</div>
-      </div>
-      <div class="box">
-        <div class="ttl">Ítems completados</div>
-        <div class="val"><span id="filledVal">0</span> / 10</div>
-      </div>
+      <div class="box"><div class="ttl">Puntuación total (0–100)</div><div class="val" id="totalVal">—</div></div>
+      <div class="box"><div class="ttl">Ítems completados</div><div class="val"><span id="filledVal">0</span> / 10</div></div>
     </div>
-
     <div id="classBox" class="classBox" aria-live="polite">—</div>
-
     <div class="actions">
       <button id="btnBorrar" type="button" class="btn-secondary">Borrar</button>
       <button id="btnCopiar" type="button" class="btn-secondary">Copiar resumen</button>
     </div>
-<div id="resumenText" aria-label="Resumen generado para copiar"></div>
-<p class="hint">El resumen incluye puntuación, clasificación e ítems seleccionados.</p>
+    <div id="resumenText" aria-label="Resumen generado para copiar"></div>
+    <p class="hint">El resumen incluye puntuación, clasificación e ítems seleccionados.</p>
   </div>
-<div style="text-align:center;">
-  <a href="index.html" class="back-btn">Volver</a>
-</div>
+
+  <div style="text-align:center;">
+    <a href="javascript:history.back()" class="back-btn">Volver</a>
+  </div>
 </main>
 
 <script>
@@ -212,9 +300,7 @@ const items = [
   ["heces","Control de heces",["Continente",10],["Accidente ocasional",5],["Incontinente",0]],
   ["orina","Control de orina",["Continente",10],["Accidente ocasional",5],["Incontinente",0]]
 ];
-
-// Insertar selects dinámicamente
-const camposDiv = document.getElementById("campos");
+const camposDiv=document.getElementById("campos");
 items.forEach(([id,label,...opts])=>{
   const div=document.createElement("div");
   div.className="item";
@@ -222,7 +308,6 @@ items.forEach(([id,label,...opts])=>{
   camposDiv.appendChild(div);
 });
 
-// ====== LÓGICA ======
 function clasificarBarthel(T){
   if(T<=20) return 'Dependencia total';
   if(T<=60) return 'Dependencia severa';
@@ -230,93 +315,71 @@ function clasificarBarthel(T){
   if(T<=99) return 'Dependencia leve';
   return 'Independiente';
 }
-
 function clasePill(clase){
   if(/Independiente|leve/i.test(clase)) return 'pill-ok';
   if(/moderada|severa/i.test(clase)) return 'pill-warn';
   return 'pill-bad';
 }
-
 function calcular(){
-  const ids = items.map(i=>i[0]);
-  let total=0, filled=0;
+  const ids=items.map(i=>i[0]);
+  let total=0,filled=0;
   ids.forEach(id=>{
     const el=document.getElementById(id);
     const v=Number(el.value||0);
-    if(el.selectedIndex>=0){ total+=v; filled++; }
+    if(el.selectedIndex>=0){total+=v;filled++;}
   });
-
   const resultCard=document.getElementById('resultCard');
-  const errBox=document.getElementById('errBox');
   const totalVal=document.getElementById('totalVal');
   const filledVal=document.getElementById('filledVal');
   const classBox=document.getElementById('classBox');
   resultCard.classList.add('show');
-  errBox.style.display='none';
-
   const clase=clasificarBarthel(total);
   totalVal.textContent=total;
   filledVal.textContent=filled;
   classBox.textContent=clase;
-  classBox.style.background= filled<10?'#fff':(
+  classBox.style.background=filled<10?'#fff':(
     /Independiente|leve/i.test(clase)?'#dcfce7':
     /moderada|severa/i.test(clase)?'#fef3c7':'#fee2e2');
-  classBox.style.color= filled<10?'#000':(
+  classBox.style.color=filled<10?'#000':(
     /Independiente|leve/i.test(clase)?'#065f46':
     /moderada|severa/i.test(clase)?'#92400e':'#991b1b');
   const pill=document.getElementById('pill');
   pill.className='pill '+clasePill(clase);
   pill.textContent=filled<10?'—':total;
 }
-
 function borrar(){
   items.forEach(([id])=>document.getElementById(id).selectedIndex=0);
   calcular();
 }
-
 function copiar(){
-  const total = document.getElementById('totalVal').textContent;
-  const clase = document.getElementById('classBox').textContent;
-  const resumenDiv = document.getElementById('resumenText');
-  if (total === '—' || !total.trim()) return;
-
-  // Encabezado del resumen
-  let texto = `Escala de Barthel: ${total} puntos (${clase}).\n\n`;
-  texto += `Detalle por ítems:\n`;
-
-  // Ítems con descripción y valor
-  items.forEach(([id, nombre, ...opciones]) => {
-    const sel = document.getElementById(id);
-    if (!sel) return;
-    const opt = sel.options[sel.selectedIndex];
-    const valor = opt ? opt.value : '';
-    const desc = opt ? opt.textContent : '';
-    texto += `- ${nombre}: ${desc} (${valor})\n`;
+  const total=document.getElementById('totalVal').textContent;
+  const clase=document.getElementById('classBox').textContent;
+  const resumenDiv=document.getElementById('resumenText');
+  if(total==='—'||!total.trim())return;
+  let texto=`Escala de Barthel: ${total} puntos (${clase}).\n\nDetalle por ítems:\n`;
+  items.forEach(([id,nombre,...opciones])=>{
+    const sel=document.getElementById(id);
+    const opt=sel.options[sel.selectedIndex];
+    const valor=opt?opt.value:''; const desc=opt?opt.textContent:'';
+    texto+=`- ${nombre}: ${desc} (${valor})\n`;
   });
-
-  // Interpretación general
-  texto += `\nInterpretación: `;
-  if (/Independiente/i.test(clase)) texto += 'Independencia funcional casi completa.';
-  else if (/leve/i.test(clase)) texto += 'Leve dependencia para algunas ABVD.';
-  else if (/moderada/i.test(clase)) texto += 'Dependencia moderada, precisa ayuda parcial frecuente.';
-  else if (/severa/i.test(clase)) texto += 'Dependencia severa, ayuda continua en la mayoría de las actividades.';
-  else texto += 'Dependencia total para las actividades básicas.';
-
-  // Mostrar resumen en pantalla
-  resumenDiv.textContent = texto;
-
-  // Copiar al portapapeles
-  navigator.clipboard.writeText(texto).then(() => {
-    const btn = document.getElementById('btnCopiar');
+  texto+=`\nInterpretación: `;
+  if(/Independiente/i.test(clase)) texto+='Independencia funcional casi completa.';
+  else if(/leve/i.test(clase)) texto+='Leve dependencia para algunas ABVD.';
+  else if(/moderada/i.test(clase)) texto+='Dependencia moderada, precisa ayuda parcial frecuente.';
+  else if(/severa/i.test(clase)) texto+='Dependencia severa, ayuda continua en la mayoría de las actividades.';
+  else texto+='Dependencia total para las actividades básicas.';
+  resumenDiv.textContent=texto;
+  navigator.clipboard.writeText(texto).then(()=>{
+    const btn=document.getElementById('btnCopiar');
     btn.classList.add('copiado');
-    btn.textContent = 'Copiado';
-    setTimeout(() => {
+    btn.textContent='Copiado';
+    setTimeout(()=>{
       btn.classList.remove('copiado');
-      btn.textContent = 'Copiar resumen';
-    }, 3000);
+      btn.textContent='Copiar resumen';
+    },3000);
   });
 }
-
 items.forEach(([id])=>{
   const el=document.getElementById(id);
   el.addEventListener('change',calcular);

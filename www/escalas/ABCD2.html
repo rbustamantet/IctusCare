@@ -18,45 +18,116 @@
   --bad:#991b1b; --bad-bg:#fef2f2; --bad-ring:#fecaca;
   --accent:#1e3a8a; --accent-soft:#e6f0ff;
 }
-/* ==== CABECERA AJUSTADA Y FUNCIONAL ==== */
-.appbar {
-position: sticky;
+:root{
+  --bg:#f9fafc;
+  --ink:#0e1a33;
+  --accent-dark:#0f3d83;
+  --accent-light:#2563eb;
+  --border:#e5e9f2;
+  --muted:#64748b;
+}
+/* =========================================================
+   SAFE-TOP
+========================================================= */
+:root { --azul-institucional: #0f3d83; }
+
+.safe-top {
+  position: fixed;
   top: 0;
-  z-index: 1000;
-  background: #0f3d83; /* azul institucional */
-  color: #fff;
-  border-bottom:1px solid rgba(255,255,255,.08);
-  box-shadow:0 2px 6px rgba(0,0,0,0.08);
-  backdrop-filter:blur(6px);
+  left: 0;
+  width: 100%;
+  height: calc(env(safe-area-inset-top, 0px) + 52px);
+  background: var(--azul-institucional);
+  z-index: 1001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: env(safe-area-inset-top, 0px);
 }
 
-
-.appbar.scrolled{box-shadow:0 8px 24px rgba(0,0,0,.08); border-color:#e2e8f0}
-
-.appbar-inner {
-  max-width:1080px;
-  margin:0 auto;
-  padding:4px 18px; /* igual que la .bar de ASPECTS */
+.safe-content {
+  width: 100%;
+  max-width: 1080px;
+  padding: 6px 16px 8px;
   display: flex;
-  align-items: center;     /* eje vertical perfecto */
   justify-content: space-between;
-  gap: 12px;
+  align-items: center;
 }
 
-.left-group {
+.safe-left {
   display: flex;
-  align-items: center;     /* título + pill centrados entre sí */
+  align-items: center;
   gap: 10px;
-  flex-wrap: wrap;
+}
+.safe-mini {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  padding: 4px;
+  box-shadow: 0 0 4px rgba(0,0,0,0.1);
+}
+.safe-logo {
+  height: 44px;
+  width: auto;
 }
 
-.appbar h1 {
-  margin: 0;
-  font-size: 1.4rem;
-  line-height: 1;          /* evita empuje por el ² */
-  color: white;
-  font-weight: 800;
+.safe-actions {
+  display: flex;
+  gap: 10px;
+}
+.safe-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: rgba(255,255,255,0.15);
+  border: 0 solid white;
+  border-radius: 50%;
+  transition: background .25s, border-color .25s, transform .1s;
+}
+.safe-btn:hover {
+  background: var(--azul-institucional);
+  border: 1px solid white;
+}
+.safe-btn:active { transform: scale(0.95); }
+.safe-icon {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+/* =========================================================
+   CABECERA
+========================================================= */
+/* ==== Cabecera inferior fija al hacer scroll ==== */
+header {
+  position: sticky;
+  top: calc(env(safe-area-inset-top, 0px) + 52px);
+  z-index: 1002;
+  backdrop-filter: blur(6px);
+  background: var(--accent-dark);
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  color: #fff;
+}
+
+.bar {
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap: 10px;  /* separa título y pill */
+  height:52px;          /* altura fija coherente con otras cabeceras */
+  padding:4px 16px;       /* solo lateral */
+}
+
+.title{
+  font-size:1.4rem;
+  font-weight:700;
   letter-spacing:.2px;
+  color:#fff;
+  text-align:center;
+  text-transform:none; /* 🔹 estilo oración */
 }
 
 /* === Pill visible y alineada === */
@@ -65,8 +136,8 @@ position: sticky;
   align-items: center;
   justify-content: center;
   min-width: 38px;
-  height: 32px;
-  padding: 6px 10px;
+  height: 28px;
+  padding: 4px 8px;
   border-radius: 999px;
   font-size: 12px;
   font-weight: 700;
@@ -81,21 +152,6 @@ position: sticky;
 .pill-warn {background:#fef3c7; color:#92400e; border-color:#fde68a;}   /* ámbar */
 .pill-bad  {background:#fee2e2; color:#991b1b; border-color:#fecaca;}   /* rojo */
 
-/* Botón Inicio */
-.btn {
-  display:inline-flex;align-items:center;gap:8px;
-      padding:8px 14px;border-radius:12px;
-      border:1px solid rgba(255,255,255,.14);
-      background:rgba(255,255,255,.06);
-      color:white;text-decoration:none;font-weight:600;font-size:15px;
-      transition:background .25s,border-color .25s;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  transform: translateY(-8px);
-
-}
-
-    .btn:hover{border-color:rgba(127,179,255,.35);background:#1c60c3;color:white;text-decoration:none;font-weight:600;}
 
 
 *{box-sizing:border-box}
@@ -167,45 +223,55 @@ select:focus{outline:none;box-shadow:0 0 0 4px var(--accent-soft)}
   transform:translateY(-1px);
   box-shadow:0 6px 12px rgba(15,61,131,.35);
 }
-.appbar-inner {
-  justify-content: flex-start;
-}
+
 
 .actions {
   margin-left: auto;
 }
-
-</style>
-<style>
-:root {
-  --azul-institucional: #0f3d83;
+@media(max-width:768px){
+  header{font-size:1.05rem;}
+  main{padding:0.9rem 1rem;}
+  body{font-size:0.96rem;}
 }
-
-/* Barra superior segura */
-.safe-top {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: calc(env(safe-area-inset-top, 0px) + 28px);
-  background: var(--azul-institucional);
-  z-index: 1000;
-}
-
-/* Empuja el contenido real por debajo de la barra */
+/* Empuja el contenido real por debajo de la barra superior */
 body {
-  margin: 0;
-  padding-top: calc(env(safe-area-inset-top, 0px) + 28px);
-  background-color: #fff;
+  padding-top: 0;
 }
+header {
+  margin-top: calc(env(safe-area-inset-top, 0px) + 52px);
+}
+
 </style>
+
 
 </head>
 <body>
-  <div class="safe-top"></div>
-<header class="appbar" role="region" aria-label="Cabecera Escala ABCD²">
-  <div class="appbar-inner"><img src="../iconos/abcd2.png" alt="ABCD²" width="40" height="40" style="border-radius:50%;background:white;box-shadow:0 0 6px rgba(0,0,0,.08);margin-right:8px;"><div class="left-group"><h1>ABCD²</h1><output id="pill" class="pill" aria-live="polite" aria-atomic="true" aria-label="Puntuación ABCD²">—</output></div><div class="actions"><a class="btn" href="../index.html">Inicio</a></div></div>
+ <!-- Barra superior segura -->
+<div class="safe-top">
+  <div class="safe-content">
+    <div class="safe-left">
+      <img src="../iconos/escalasico.png" alt="Icono Escalas" class="safe-mini">
+      <img src="../img/topbar.png" alt="IctusGPS" class="safe-logo">
+    </div>
+
+    <div class="safe-actions">
+      <a href="javascript:history.back()" class="safe-btn" title="Volver atrás">
+        <img src="../iconos/atrastransparente.png" alt="Atrás" class="safe-icon">
+      </a>
+      <a href="../index.html" class="safe-btn" title="Volver al inicio">
+        <img src="../iconos/hometransparente.png" alt="Inicio" class="safe-icon">
+      </a>
+    </div>
+  </div>
+</div>
+<header>
+  <div class="bar">
+    <div class="title">ABCD²  </div><output id="pill" class="pill" aria-live="polite" aria-atomic="true" aria-label="Puntuación ABCD²">—</output>
+  </div>
 </header>
+
+
+
 
 <main class="wrap">
   <p class="sub">Riesgo de ictus tras un AIT. Complete los campos; el resultado y el riesgo se actualizan automáticamente.</p>

@@ -12,298 +12,360 @@
 
 <style>
 :root{
-  --bg:#f8fafc; --ink:#0f172a; --borde:#e5e7eb;
-  --ok:#166534; --ok-bg:#e9fce7; --ok-ring:#bbf7d0;
-  --mid:#92400e; --mid-bg:#fff7ed; --mid-ring:#fed7aa;
-  --bad:#991b1b; --bad-bg:#fef2f2; --bad-ring:#fecaca;
+  --bg:#f9fafc;--ink:#0e1a33;--accent:#0f3d83;
+  --border:#e5e9f2;--muted:#64748b;
+  --ok-bg:#dcfce7;--ok-txt:#065f46;--ok-bd:#86efac;
+  --mid-bg:#fef3c7;--mid-txt:#92400e;--mid-bd:#fde68a;
+  --bad-bg:#fee2e2;--bad-txt:#991b1b;--bad-bd:#fecaca;
 }
 
-/* ===== CABECERA ===== */
-.appbar {
-  position: sticky; top: 0; z-index: 1000;
-  background: #0f3d83; color: #fff;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+/* SAFE TOP */
+.safe-top{
+  position:fixed;top:0;left:0;width:100%;
+  height:calc(env(safe-area-inset-top,0px)+52px);
+  background:var(--accent);z-index:1001;
+  display:flex;align-items:center;justify-content:center;
+  padding-top:env(safe-area-inset-top,0px);
 }
-.appbar-inner {
-  max-width: 980px; margin: 0 auto;
-  padding: 4px 16px;
-  display: flex; align-items: center; justify-content: space-between;
-  gap: 12px;
-}
-.left-group {
-  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
-}
-.appbar h1 {
-  margin: 0; font-size: 22px; font-weight: 800; color: #fff;
-}
-.pill {
-  display: inline-flex; align-items: center; justify-content: center;
-  min-width: 38px; height: 32px; padding: 6px 10px;
-  border-radius: 999px; font-size: 13px; font-weight: 700;
-  border: 1px solid transparent;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-}
-.pill-ok   {background:#dcfce7; color:#065f46; border-color:#86efac;}
-.pill-warn {background:#fef3c7; color:#92400e; border-color:#fde68a;}
-.pill-bad  {background:#fee2e2; color:#991b1b; border-color:#fecaca;}
-.btn {
-  display:inline-flex;align-items:center;justify-content:center;
-  height:32px;padding:0 14px;border-radius:10px;
-  text-decoration:none;border:1px solid rgba(127,179,255,.35);
-  background:#1c60c3;color:white;font-size:0.9rem;font-weight:700;
-  transition:background .2s,border-color .2s;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  transform: translateY(-8px);
-}
-.btn:hover{background:#0C00FF;}
+.safe-content{width:100%;max-width:1080px;padding:6px 16px 8px;
+  display:flex;justify-content:space-between;align-items:center;}
+.safe-left{display:flex;align-items:center;gap:10px;}
+.safe-mini{width:44px;height:44px;object-fit:contain;padding:4px;}
+.safe-logo{height:44px;width:auto;}
+.safe-actions{display:flex;gap:10px;}
+.safe-btn{display:inline-flex;align-items:center;justify-content:center;
+  width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.15);
+  border:none;transition:background .25s,transform .1s;}
+.safe-btn:hover{background:var(--azul-institucional);border: 1px solid white;}
+.safe-btn:active{transform:scale(.95);}
+.safe-icon{width:30px;height:30px;object-fit:contain;}
 
-/* ===== CUERPO ===== */
-body{margin:0;background:var(--bg);color:var(--ink);font-family:Verdana, Geneva, sans-serif;}
-.wrap{max-width:980px;margin:16px auto 48px;padding:0 16px;}
-.panel{background:#fff;border:1px solid var(--borde);border-radius:16px;padding:16px;box-shadow:0 2px 10px rgba(15,23,42,.06);}
-label{font-weight:900;color:#0b1f44;margin-top:8px;display:block;}
-select{width:100%;padding:10px 12px;border:1px solid #cbd5e1;border-radius:10px;background:#fff;font-size:14px;}
-select:focus{outline:none;box-shadow:0 0 0 3px #dbeafe;}
-.note{color:#64748b;font-size:12px;margin-top:8px;}
-.grid{display:grid;gap:10px;}
-@media(min-width:720px){.grid{grid-template-columns:1fr 1fr;}}
-
-/* ===== RESULTADOS ===== */
-.kpi{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px;}
-.box{border:1.5px dashed #c7dbff;border-radius:14px;padding:14px;background:#f8fbff;text-align:center;}
-.ttl{font-size:14px;color:#334155;font-weight:800;margin-bottom:2px;}
-.val{font-size:24px;font-weight:900;color:#0b2c5f;}
-.mini{font-size:12px;color:#64748b;margin-top:4px;}
-.ok{background:var(--ok-bg);border-color:var(--ok-ring);} 
-.warn{background:var(--mid-bg);border-color:var(--mid-ring);} 
-.bad{background:var(--bad-bg);border-color:var(--bad-ring);} 
-.ok .val{color:var(--ok);} .warn .val{color:var(--mid);} .bad .val{color:var(--bad);}
-
-/* ===== BOTONES ===== */
-.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;}
-.btn-action{
-  flex:1 1 48%;
-  border:none;border-radius:10px;padding:12px;
-  font-size:15px;font-weight:700;cursor:pointer;
-  transition:background .2s;
+/* CABECERA */
+header{position:sticky;
+  z-index:1002;background:var(--accent);color:#fff;
+  box-shadow:0 2px 6px rgba(0,0,0,.08);top: calc(env(safe-area-inset-top, 0px) + 52px);
 }
-.btn-clear {background:#fff; color:#0b2c5f; border:1px solid #2563eb;}
-.btn-clear:hover {background:#eff6ff;}
-.btn-copy {background:#fff; color:#0f3d83; border:1px solid #2563eb; }
-.btn-copy:hover {background:#eff6ff;}
+.bar{display:flex;justify-content:center;align-items:center;gap:10px;
+  height:52px;padding:0 16px;}
+.bar h1{font-size:1.4rem;font-weight:700;margin:0;}
+.pill{display:inline-flex;align-items:center;justify-content:center;
+  min-width:38px;height:18px;padding:4px 8px;border-radius:999px;
+  font-size:12px;font-weight:700;border:1px solid transparent;}
+.pill-ok{background:var(--ok-bg);color:var(--ok-txt);border-color:var(--ok-bd);}
+.pill-warn{background:var(--mid-bg);color:var(--mid-txt);border-color:var(--mid-bd);}
+.pill-bad{background:var(--bad-bg);color:var(--bad-txt);border-color:var(--bad-bd);}
+.pill-neutral{background:#e2e8f0;color:#1e293b;border-color:#cbd5e1;}
 
-.btn-copy.copiado{background:#0f3d83!important;color:#fff!important;}
+/* INTRO */
+.intro{margin-top:calc(env(safe-area-inset-top,0px)+54px);max-width:980px;
+  margin-inline:auto;padding:14px 16px 0;color:var(--muted);
+  font-size:.95rem;line-height:1.45;text-align:justify;}
+.intro strong{color:var(--accent);}
 
-/* ===== RESUMEN ===== */
-#resumenText{
-  white-space:pre-wrap;font-size:13px;color:#0f172a;margin-top:12px;
-  border:1px dashed var(--borde);border-radius:10px;padding:10px 12px;
-  background:#f8fafc;line-height:1.45;
+/* CUERPO */
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Verdana,Geneva,sans-serif;
+  padding-top:calc(env(safe-area-inset-top, 0px) + 52px);}
+.container{max-width:980px;margin:14px auto 40px;padding:0 16px;}
+.card{background:#fff;border:1px solid var(--border);border-radius:16px;
+  padding:18px;box-shadow:0 2px 10px rgba(15,23,42,.06);margin-top:12px;}
+label{font-weight:700;color:var(--accent);}
+select{width:100%;padding:12px;border-radius:10px;border:1px solid var(--border);
+  background:#fff;font-size:15px;}
+select:focus{outline:none;color:var(--accent);border:1px solid;}
+.note{color:var(--muted);font-size:13px;margin-bottom:10px;}
+
+/* RESULTADOS */
+.result-ok{background:var(--ok-bg);border-color:var(--ok-bd);}
+.result-warn{background:var(--mid-bg);border-color:var(--mid-bd);}
+.result-bad{background:var(--bad-bg);border-color:var(--bad-bd);}
+.result.show{display:block;}
+.score-label{font-size:15px;font-weight:700;text-align:center;}
+/* === Tonalidad global de la tarjeta de resultado === */
+#resultCard{
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:16px;
+  transition:background .2s, border-color .2s, color .2s;
 }
 
-/* ===== PIE ===== */
-footer{position:relative;left:50%;transform:translateX(-50%);
-  width:100vw;margin:2rem 0 0 0;padding:1.5rem 0;
-  border-top:1px solid #e5e7eb;background:#ffffff;
-  text-align:center;box-shadow:0 -2px 6px rgba(0,0,0,0.04);}
-/* Botón Volver inferior */
-.back-btn{
-  display:inline-block;
-  margin:1.5rem auto 0;
-  background:#0f3d83;
-  color:#fff;
-  text-decoration:none;
-  font-weight:700;
-  padding:0.7rem 1.4rem;
-  border-radius:10px;
-  box-shadow:0 4px 10px rgba(15,61,131,.25);
-  transition:background .2s, transform .1s, box-shadow .2s;
+/* Fondo + bordes coherentes con los tonos */
+#resultCard.ok   { background: var(--ok-bg);  border-color: var(--ok-bd); }
+#resultCard.warn { background: var(--mid-bg); border-color: var(--mid-bd); }
+#resultCard.bad  { background: var(--bad-bg); border-color: var(--bad-bd); }
+
+/* Texto dentro de la tarjeta en cada tono */
+#resultCard.ok   .ttl, #resultCard.ok   .val { color: var(--ok-txt);  }
+#resultCard.warn .ttl, #resultCard.warn .val { color: var(--mid-txt); }
+#resultCard.bad  .ttl, #resultCard.bad  .val { color: var(--bad-txt); }
+
+/* Píldora “neutra” al iniciar (guion) */
+.pill-neutral{
+  background:#e2e8f0; color:#1e293b; border-color:#cbd5e1;
 }
-.back-btn:hover{
-  background:#1c60c3;
-  transform:translateY(-1px);
-  box-shadow:0 6px 12px rgba(15,61,131,.35);
-}
+
+/* BOTONES */
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;}
+.btn-secondary{flex:1 1 48%;border:1px solid var(--accent);border-radius:10px;
+  padding:12px;font-size:15px;font-weight:700;background:#fff;color:var(--accent);
+  cursor:pointer;transition:all .25s ease;}
+.btn-secondary:hover{background:#e6ecff;}
+.btn-secondary.copiado{background:#0f3d83!important;color:#fff!important;}
+.back-btn{display:inline-block;margin:1.5rem auto 0;background:#0f3d83;color:#fff;
+  text-decoration:none;font-weight:700;padding:.7rem 1.4rem;border-radius:10px;
+  box-shadow:0 4px 10px rgba(15,61,131,.25);transition:background .2s,transform .1s;}
+.back-btn:hover{background:#1c60c3;transform:translateY(-1px);}
+footer{text-align:center;padding:1.5rem 0;margin-top:2rem;
+  border-top:1px solid #e5e7eb;background:#fff;}
+#resumenText{white-space:pre-wrap;font-size:13px;color:#0f172a;margin-top:10px;
+  border:1px dashed var(--border);border-radius:10px;padding:10px 12px;
+  background:#f8fafc;line-height:1.45;}
 </style>
-<style>
-:root {
-  --azul-institucional: #0f3d83;
-}
-
-/* Barra superior segura */
-.safe-top {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: calc(env(safe-area-inset-top, 0px) + 28px);
-  background: var(--azul-institucional);
-  z-index: 1000;
-}
-
-/* Empuja el contenido real por debajo de la barra */
-body {
-  margin: 0;
-  padding-top: calc(env(safe-area-inset-top, 0px) + 28px);
-  background-color: #fff;
-}
-</style>
-
 </head>
+
 <body>
-  <div class="safe-top"></div>
-<header class="appbar" role="region" aria-label="Cabecera CHA2DS2-VA">
-  <div class="appbar-inner">
-    <div class="left-group">
-      <h1>CHA₂DS₂-VA</h1>
-      <output id="pill" class="pill" aria-live="polite" aria-atomic="true">-</output>
+<div class="safe-top">
+  <div class="safe-content">
+    <div class="safe-left">
+      <img src="../iconos/escalasico.png" alt="Icono Escalas" class="safe-mini">
+      <img src="../img/topbar.png" alt="IctusGPS" class="safe-logo">
     </div>
-    <div class="actions">
-      <a class="btn" href="../index.html">Inicio</a>
+    <div class="safe-actions">
+      <a href="javascript:history.back()" class="safe-btn"><img src="../iconos/atrastransparente.png" class="safe-icon" alt="Atrás"></a>
+      <a href="../index.html" class="safe-btn"><img src="../iconos/hometransparente.png" class="safe-icon" alt="Inicio"></a>
     </div>
+  </div>
+</div>
+
+<header>
+  <div class="bar">
+    <h1>CHA₂DS₂-VA</h1>
+    <output id="pill" class="pill pill-neutral">—</output>
   </div>
 </header>
 
-<main class="wrap">
-  <section class="panel">
-    <p class="note">Versión sin componente sexo. Calcula el riesgo de ictus en fibrilación auricular según CHA₂DS₂-VA.</p>
+<section class="intro">
+  <p>
+    Calcula el <strong>riesgo de ictus en fibrilación auricular</strong> según la escala CHA₂DS₂-VA, que valora edad, hipertensión, diabetes, insuficiencia cardiaca, enfermedad vascular e ictus/AIT previo. 
+    La puntuación total (0–8) estima el <strong>riesgo anual de ictus isquémico</strong> y orienta la indicación de anticoagulación según las guías ESC 2024.
+  </p>
+</section>
 
-    <div class="grid">
-      <div><label for="age">Edad</label>
-        <select id="age">
-          <option value="0">&lt;65 años (0)</option>
-          <option value="1">65–74 años (1)</option>
-          <option value="2">≥75 años (2)</option>
-        </select></div>
-      <div><label for="htn">Hipertensión</label>
-        <select id="htn"><option value="0">No (0)</option><option value="1">Sí (1)</option></select></div>
-      <div><label for="dm">Diabetes mellitus</label>
-        <select id="dm"><option value="0">No (0)</option><option value="1">Sí (1)</option></select></div>
-      <div><label for="hf">Insuficiencia cardiaca</label>
-        <select id="hf"><option value="0">No (0)</option><option value="1">Sí (1)</option></select></div>
-      <div><label for="vasc">Enfermedad vascular</label>
-        <select id="vasc"><option value="0">No (0)</option><option value="1">Sí (1)</option></select></div>
-      <div><label for="stroke">Ictus/AIT/embolia arterial previa</label>
-        <select id="stroke"><option value="0">No (0)</option><option value="2">Sí (2)</option></select></div>
-    </div>
-
-    <div class="card" id="resultCard" style="margin-top:16px;">
-      <div class="kpi">
-        <div class="box"><div class="ttl">CHA₂DS₂-VA</div><div class="val" id="scoreVal">-</div></div>
-        <div class="box" id="riskBox"><div class="ttl">Riesgo</div><div class="val" id="riskVal">-</div></div>
+<main class="container">
+  <div class="card">
+    <form id="form">
+      <div class="note">Selecciona los factores de riesgo presentes:</div>
+      <div class="grid">
+        <div><label for="age">Edad</label>
+          <select id="age">
+            <option value="0">&lt;65 años (0)</option>
+            <option value="1">65–74 años (1)</option>
+            <option value="2">≥75 años (2)</option>
+          </select></div>
+        <div><label for="htn">Hipertensión</label>
+          <select id="htn"><option value="0">No (0)</option><option value="1">Sí (1)</option></select></div>
+        <div><label for="dm">Diabetes mellitus</label>
+          <select id="dm"><option value="0">No (0)</option><option value="1">Sí (1)</option></select></div>
+        <div><label for="hf">Insuficiencia cardiaca</label>
+          <select id="hf"><option value="0">No (0)</option><option value="1">Sí (1)</option></select></div>
+        <div><label for="vasc">Enfermedad vascular</label>
+          <select id="vasc"><option value="0">No (0)</option><option value="1">Sí (1)</option></select></div>
+        <div><label for="stroke">Ictus/AIT/embolia arterial previa</label>
+          <select id="stroke"><option value="0">No (0)</option><option value="2">Sí (2)</option></select></div>
       </div>
 
-      <div class="kpi">
-        <div class="box" id="rateBox"><div class="ttl">Riesgo anual</div><div class="val" id="rateVal">-</div></div>
-        <div class="box" id="recBox"><div class="ttl">Recomendación</div><div class="val" id="recVal">-</div></div>
-      </div>
+      <div id="resultCard" class="card result" style="margin-top:16px;display:none;">
+        <div class="score">
+<div class="ttl" style="font-size: 1.5rem; text-align: center; text-shadow: 2px 2px 6px rgba(0,0,0,0.25);"><b>Puntuación: <class="val" id="scoreVal">—</div>
+          <div class="score-label" id="scoreLabel"></b></div>
+        </div> <div id="resumenText"></div>
 
-      <div class="actions">
-        <button id="btnClear" class="btn-action btn-clear">Borrar</button>
-        <button id="btnCopy" class="btn-action btn-copy">Copiar resumen</button>
+        <div class="actions">
+          <button id="btnClear" type="button" class="btn-secondary">Borrar</button>
+          <button id="btnCopy" type="button" class="btn-secondary">Copiar resumen</button>
+        </div>
       </div>
-      <div id="resumenText"></div>
-    </div>
-  </section>
-<div style="text-align:center;">
-  <a href="index.html" class="back-btn">Volver</a>
-</div>
+    </form>
+  </div>
+
+  <div style="text-align:center;">
+    <a href="javascript:history.back()" class="back-btn">Volver</a>
+  </div>
 </main>
 
 <script>
-const RATE={0:0.5,1:1.5,2:2.9,3:5.1,4:7.3,5:11.2,6:15.5,7:14.7,8:19.5};
-function toneFor(s){return s===0?'ok':s===1?'warn':'bad';}
-function labelFor(s){return s===0?'Bajo':s===1?'Intermedio':'Alto';}
-function recFor(s){return s===0?'No recomendar anticoagulación':s===1?'Considerar individualmente':'Recomendar anticoagulación si no hay contraindicaciones';}
-function fmtPct(x){return x.toString().replace('.',',')+' %';}
-function val(id){return Number(document.getElementById(id).value||0);}
+// ====== Riesgo anual aproximado por puntuación CHA2DS2-VA (ESC 2024) ======
+const RATE = {
+  0: 0.5,
+  1: 1.5,
+  2: 2.9,
+  3: 5.1,
+  4: 7.3,
+  5: 11.2,
+  6: 15.5,
+  7: 14.7,
+  8: 19.5
+};
 
-function calc(){
-  const s=val('age')+val('htn')+val('dm')+val('hf')+val('vasc')+val('stroke');
-  const cat=labelFor(s), tone=toneFor(s), rate=RATE[s]??'—';
-  document.getElementById('scoreVal').textContent=s;
-  document.getElementById('riskVal').textContent=cat;
-  document.getElementById('rateVal').textContent=(rate==='—')?'—':fmtPct(rate);
-  document.getElementById('recVal').textContent=recFor(s);
+// Utilidades básicas
+function el(id){ return document.getElementById(id); }
+function val(id){ return Number(el(id).value || 0); }
+function fmtPct(x){ return String(x).replace('.', ',') + ' %'; }
 
-  ['riskBox','rateBox','recBox'].forEach(id=>{
-    const el=document.getElementById(id);
-    el.classList.remove('ok','warn','bad');
-    el.classList.add(tone);
-  });
-
-  const pill=document.getElementById('pill');
-  pill.className='pill pill-'+tone;
-  pill.textContent=`${s} - ${cat}`;
-  mostrarResumen(s,cat,rate);
+// Clasificación por puntuación
+function labelFor(score){
+  if (score === 0) return 'Bajo';
+  if (score === 1) return 'Intermedio';
+  return 'Alto';
 }
 
+function recFor(score){
+  if (score === 0) return 'No recomendar anticoagulación';
+  if (score === 1) return 'Considerar anticoagulación según perfil y preferencia';
+  return 'Recomendar anticoagulación si no hay contraindicaciones';
+}
+
+function toneFor(score){
+  if (score === 0) return 'ok';
+  if (score === 1) return 'warn';
+  return 'bad';
+}
+
+// Píldora de la cabecera
+function setPillFromScore(score){
+  var pill = el('pill');
+  if (!pill) return;
+
+  // Estado inicial/neutro
+  if (isNaN(score)){
+    pill.className = 'pill pill-neutral';
+    pill.textContent = '—';
+    return;
+  }
+
+  var tone = toneFor(score);
+  pill.className = 'pill ' + (tone === 'ok'
+    ? 'pill-ok'
+    : tone === 'warn'
+      ? 'pill-warn'
+      : 'pill-bad');
+
+  pill.textContent = score + ' · ' + labelFor(score);
+}
+
+// Cálculo principal
+function calc(){
+  var s = val('age') + val('htn') + val('dm') + val('hf') + val('vasc') + val('stroke');
+  var cat  = labelFor(s);
+  var tone = toneFor(s);
+  var rate = RATE.hasOwnProperty(s) ? RATE[s] : '—';
+
+  // Mostrar tarjeta de resultado
+  var card = el('resultCard');
+  card.style.display = 'block';
+  card.classList.remove('ok','warn','bad');
+  card.classList.add(tone);
+
+  // Valores numéricos
+  el('scoreVal').textContent   = s;
+  el('scoreLabel').textContent = cat;
+
+  // Actualizar píldora
+  setPillFromScore(s);
+
+  // Actualizar texto de resumen
+  mostrarResumen(s, cat, rate);
+}
+
+// Construcción del resumen textual
 function mostrarResumen(s, cat, rate){
-  const res = document.getElementById('resumenText');
-  const pct = (rate==='—') ? '-' : fmtPct(rate);
-  
-  // Interpretación textual
-  let interp = '';
-  if (rate === '—') interp = 'sin datos estimados disponibles';
-  else if (s === 0) interp = `riesgo anual de ictus muy bajo (~${pct})`;
-  else if (s === 1) interp = `riesgo anual de ictus bajo (~${pct})`;
-  else if (s === 2) interp = `riesgo anual de ictus moderado (~${pct})`;
-  else if (s >= 3 && s <= 4) interp = `riesgo anual de ictus alto (~${pct})`;
-  else interp = `riesgo anual de ictus muy alto (~${pct})`;
+  var res = el('resumenText');
+  var pct = (rate === '—') ? '—' : fmtPct(rate);
+  var texto = '';
 
-  // Construcción del texto principal
-  let texto = `CHA₂DS₂-VA: ${s} (${cat})\n`;
-  texto += `Corresponde a un ${interp} según las guías ESC 2024\n`;
-  texto += `Recomendación: ${recFor(s)}\n\nDetalle de variables:\n`;
+  texto += 'CHA2DS2-VA: ' + s + ' (' + cat + ')\n';
+  texto += 'Riesgo anual aproximado: ' + pct + '\n';
+  texto += 'Recomendación: ' + recFor(s) + '\n\n';
+  texto += 'Detalle de variables seleccionadas:\n';
 
-  const campos = ['age','htn','dm','hf','vasc','stroke'];
-  const nombres = [
-    'Edad','Hipertensión','Diabetes mellitus',
-    'Insuficiencia cardiaca crónica','Enfermedad vascular',
+  var campos  = ['age','htn','dm','hf','vasc','stroke'];
+  var nombres = [
+    'Edad',
+    'Hipertensión',
+    'Diabetes mellitus',
+    'Insuficiencia cardiaca',
+    'Enfermedad vascular',
     'Ictus/AIT/embolia arterial previa'
   ];
-  
-  campos.forEach((id,i)=>{
-    const sel=document.getElementById(id);
-    const opt=sel.options[sel.selectedIndex];
-    texto += `- ${nombres[i]}: ${opt.textContent}\n`;
-  });
 
-  // Conclusión breve según riesgo
-  texto += `\nInterpretación clínica: `;
-  if (s === 0) texto += `paciente con riesgo mínimo de ictus; no se recomienda anticoagulación`;
-  else if (s === 1) texto += `riesgo bajo, considerar anticoagulación individualmente`;
-  else texto += `riesgo elevado de ictus; se recomienda anticoagulación salvo contraindicación`;
+  for (var i = 0; i < campos.length; i++){
+    var sel = el(campos[i]);
+    if (!sel) continue;
+    var opt = sel.options[sel.selectedIndex];
+    texto += '- ' + nombres[i] + ': ' + opt.textContent + '\n';
+  }
+
+  texto += '\nInterpretación clínica: ';
+  if (s === 0){
+    texto += 'paciente con riesgo muy bajo de ictus; no se recomienda anticoagulación.';
+  } else if (s === 1){
+    texto += 'riesgo intermedio; considerar anticoagulación de forma individualizada.';
+  } else {
+    texto += 'riesgo alto de ictus; se recomienda anticoagulación salvo contraindicación.';
+  }
 
   res.textContent = texto;
 }
 
+// Botón Borrar
 function borrar(){
-  ['age','htn','dm','hf','vasc','stroke'].forEach(id=>document.getElementById(id).selectedIndex=0);
-  calc();
+  document.getElementById('form').reset();
+
+  var card = el('resultCard');
+  card.style.display = 'none';
+  card.classList.remove('ok','warn','bad');
+
+  el('scoreVal').textContent   = '—';
+  el('scoreLabel').textContent = '';
+  el('resumenText').textContent = '';
+
+  setPillFromScore(NaN);
 }
 
+// Botón Copiar resumen
 function copiar(){
-  const t=document.getElementById('resumenText').textContent.trim();
-  if(!t)return;
-  navigator.clipboard.writeText(t).then(()=>{
-    const b=document.getElementById('btnCopy');
-    b.classList.add('copiado');
-    b.textContent='Copiado';
-    setTimeout(()=>{b.classList.remove('copiado');b.textContent='Copiar resumen';},3000);
+  var texto = el('resumenText').textContent.trim();
+  if (!texto) return;
+
+  navigator.clipboard.writeText(texto).then(function(){
+    var btn = el('btnCopy');
+    btn.classList.add('copiado');
+    btn.textContent = 'Copiado';
+    setTimeout(function(){
+      btn.classList.remove('copiado');
+      btn.textContent = 'Copiar resumen';
+    }, 3000);
   });
 }
 
-document.querySelectorAll('select').forEach(s=>s.addEventListener('change',calc));
-document.getElementById('btnClear').addEventListener('click',borrar);
-document.getElementById('btnCopy').addEventListener('click',copiar);
-document.addEventListener('DOMContentLoaded',calc);
+// Inicialización
+document.addEventListener('DOMContentLoaded', function(){
+  setPillFromScore(NaN); // estado inicial
+
+  // Recalcular al cambiar cualquier select del formulario
+  var selects = document.querySelectorAll('#form select');
+  for (var i = 0; i < selects.length; i++){
+    selects[i].addEventListener('change', calc);
+  }
+
+  el('btnClear').addEventListener('click', borrar);
+  el('btnCopy').addEventListener('click', copiar);
+});
 </script>
+
+
 
 <footer>
   <img src="uibanner.png" alt="Unidad de Ictus Málaga" style="max-width:380px;height:auto;opacity:.96;">
 </footer>
-<script src="js/index.js"></script>
 </body>
 </html>

@@ -3,81 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Fases del tratamiento antihipertensivo — Unidad de Ictus</title>
 <link rel="manifest" href="../site.webmanifest">
 <link rel="icon" type="image/png" sizes="192x192" href="../iconos/ictusgps.png">
 <link rel="apple-touch-icon" sizes="180x180" href="../iconos/ictusgps.png">
 <link rel="shortcut icon" href="../iconos/ictusgps.png">
 <meta name="theme-color" content="#0f3d83">
+<title>Fases del tratamiento antihipertensivo — Unidad de Ictus</title>
+
 <style>
-:root{
-  --bg:#f9fafc;
-  --ink:#0e1a33;
-  --accent:#164a8a;
-  --accent-light:#d7e3f8;
-  --accent-dark:#0f3d83;
-  --border:#e5e9f2;
-  --alert:#b30000;
-}
-
-html,body{
-  margin:0; padding:0;
-  background:var(--bg);
-  color:var(--ink);
-  font-family:Verdana, Geneva, Tahoma, sans-serif;
-  line-height:1.6;
-  -webkit-text-size-adjust:100%;
-}
-
-header{
-  background:var(--accent-dark);
-  color:#fff;
-  text-align:center;
-  padding:1rem;
-  font-weight:800;
-  font-size:1.2rem;
-  box-shadow:0 2px 6px rgba(0,0,0,0.08);
-  position:sticky;top:0;z-index:10;
-}
-
-main{
-  max-width:850px;
-  margin:0 auto;
-  padding:1rem 1.25rem 2.5rem;
-  background:#fff;
-  border-radius:12px;
-  box-shadow:0 2px 10px rgba(0,0,0,0.04);
-}
-
-p{text-align:justify;margin:0.75rem 0;}
-a{color:var(--accent-dark);text-decoration:none;}
-a:hover{text-decoration:underline;color:var(--accent);}
-strong,b{color:var(--accent-dark);}
-h3{color:var(--accent-dark);margin-top:1.2rem;font-size:1.05rem;}
-ul{margin:0.6rem 0 0.6rem 1.2rem;}
-li{margin:0.3rem 0;}
-hr{border:none;border-top:1px solid var(--border);margin:1.4rem 0;}
-.highlight-red{color:var(--alert);font-weight:700;}
-figure{text-align:center;margin:1.2rem auto;}
-figure img{max-width:100%;height:auto;border-radius:8px;box-shadow:0 2px 6px rgba(0,0,0,0.06);}
-.related{margin-top:1.6rem;background:var(--accent-light);padding:1rem;border-radius:8px;}
-.related h3{margin:0 0 .5rem 0;color:var(--accent-dark);font-size:1rem;}
-.related ol{margin:0;padding-left:1.2rem;}
-.related li{margin:0.25rem 0;}
-.back-btn{
-  display:inline-block;margin-top:1.5rem;
-  background:var(--accent-dark);color:#fff;text-decoration:none;
-  font-weight:700;padding:0.6rem 1.2rem;border-radius:8px;
-  transition:background .2s, transform .1s;
-}
-.back-btn:hover{background:#1c60c3;color:#fff;transform:translateY(-1px);}
-@media(max-width:768px){
-  header{font-size:1.05rem;}
-  main{padding:0.9rem 1rem;}
-  body{font-size:0.96rem;}
-}
-</style>
-<style>
+/* =========================================================
+   VARIABLES Y BASE
+========================================================= */
 :root{
   --bg:#f9fafc;
   --ink:#0e1a33;
@@ -90,30 +26,121 @@ figure img{max-width:100%;height:auto;border-radius:8px;box-shadow:0 2px 6px rgb
   --alert-border:#f5c2c0;
 }
 
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
 
-  .wrap{max-width:850px; margin:0 auto; padding:24px}
-
-html,body{
-  margin:0; padding:0;
-  background:var(--bg);
-  color:var(--ink);
-  font-family:Verdana, Geneva, Tahoma, sans-serif;
+body{
+  font-family: Verdana, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
   line-height:1.6;
-  -webkit-text-size-adjust:100%;
+  padding-top: calc(env(safe-area-inset-top, 0px) + 52px);
 }
 
+/* =========================================================
+   SAFE-TOP
+========================================================= */
+:root { --azul-institucional: #0f3d83; }
+
+.safe-top {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: calc(env(safe-area-inset-top, 0px) + 52px);
+  background: var(--azul-institucional);
+  z-index: 1001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+.safe-content {
+  width: 100%;
+  max-width: 1080px;
+  padding: 6px 16px 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.safe-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.safe-mini {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  padding: 4px;
+  box-shadow: 0 0 4px rgba(0,0,0,0.1);
+}
+.safe-logo {
+  height: 44px;
+  width: auto;
+}
+
+.safe-actions {
+  display: flex;
+  gap: 10px;
+}
+.safe-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: rgba(255,255,255,0.15);
+  border: 0 solid white;
+  border-radius: 50%;
+  transition: background .25s, border-color .25s, transform .1s;
+}
+.safe-btn:hover {
+  background: var(--azul-institucional);
+  border: 1px solid white;
+}
+.safe-btn:active { transform: scale(0.95); }
+.safe-icon {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+/* =========================================================
+   CABECERA
+========================================================= */
 header{
+  position:sticky;
+  top:0;
+  z-index:20;
+  backdrop-filter:blur(6px);
   background:var(--accent-dark);
-  color:#fff;
-  text-align:LEFT;
-  padding:1rem;
-  font-weight:800;
-  font-size:1.2rem;
+  border-bottom:1px solid rgba(255,255,255,.08);
   box-shadow:0 2px 6px rgba(0,0,0,0.08);
-  position:sticky;top:0;z-index:10;
+  color:#fff;
+}
+.bar{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:8px 18px;
+}
+.title{
+  font-size:1.4rem;
+  font-weight:700;
+  letter-spacing:.2px;
+  color:#fff;
+  text-align:center;
+  text-transform:none;
 }
 
-
+/* =========================================================
+   CUERPO PRINCIPAL
+========================================================= */
 main{
   max-width:850px;
   margin:0 auto;
@@ -127,56 +154,23 @@ p{margin:0.75rem 0;text-align:justify;}
 a{color:var(--accent-dark);text-decoration:none;}
 a:hover{text-decoration:underline;color:var(--accent);}
 strong,b{color:var(--accent-dark);}
-h3{color:var(--accent-dark);margin-top:1.2rem;font-size:1.05rem;}
+h2,h3{color:var(--accent-dark);margin-top:1.2rem;font-size:1.05rem;}
+hr{border:none;border-top:1px solid var(--border);margin:1.4rem 0;}
 ul{margin:0.6rem 0 0.6rem 1.2rem;}
 li{margin:0.3rem 0;}
-hr{border:none;border-top:1px solid var(--border);margin:1.4rem 0;}
-.highlight-red{color:var(--alert);font-weight:700;}
 
-.related{
-  margin-top:1.6rem;
-  background:var(--accent-light);
-  padding:1rem;
+figure{text-align:center;margin:1.2rem auto;}
+figure img{
+  max-width:100%;
+  height:auto;
   border-radius:8px;
+  border:1px solid var(--border);
+  box-shadow:0 2px 6px rgba(0,0,0,0.05);
 }
-.related h3{margin:0 0 .5rem 0;color:var(--accent-dark);font-size:1rem;}
-.related ol{margin:0;padding-left:1.2rem;}
-.related li{margin:0.25rem 0;}
 
-.alert{
-  text-align:center;
-  background:var(--alert-bg);
-  border:1px solid var(--alert-border);
-  border-radius:6px;
-  padding:0.8rem;
-  color:#800000;
-  font-weight:700;
-  margin-top:1rem;
-}
-.bar{display:flex; align-items:center; gap:12px; padding:1px 18px}
- 
-  .title{font-weight:700; letter-spacing:.2px; font-size:1.2rem;}
-  .subtitle{font-size:.9rem; color:var(--muted)}
-  .headcol{display:flex; flex-direction:column}
-
-  .grid{
-    display:grid;
-    grid-template-columns: repeat(1, minmax(0,1fr));
-    gap:16px;
-    margin-top:22px;
-  }
-  @media (min-width:520px){ .grid{ grid-template-columns: repeat(2, minmax(0,1fr)); } }
-  @media (min-width:900px){ .grid{ grid-template-columns: repeat(3, minmax(0,1fr)); } }
-
-   
-  .actions{margin-left:auto}
-  .btn{
-    display:inline-flex; align-items:center; gap:2px;
-    padding:4px 8px; border-radius:12px; text-decoration:none;
-    border:1px solid rgba(255,255,255,.14);
-    background: rgba(255,255,255,.06); color:white;
-  }
-  .btn:hover{ border-color: rgba(127,179,255,.35); background: #1c60c3; color:white;}
+/* =========================================================
+   BOTÓN RETORNO
+========================================================= */
 .back-btn{
   display:inline-block;
   margin-top:1.5rem;
@@ -195,6 +189,30 @@ hr{border:none;border-top:1px solid var(--border);margin:1.4rem 0;}
   transform:translateY(-1px);
 }
 
+/* =========================================================
+   PIE
+========================================================= */
+footer{
+  position:relative;
+  left:50%;
+  transform:translateX(-50%);
+  width:100vw;
+  margin:2rem 0 0;
+  padding:1.5rem 0;
+  border-top:1px solid #e5e7eb;
+  background:#ffffff;
+  text-align:center;
+  box-shadow:0 -2px 6px rgba(0,0,0,0.04);
+}
+footer img{
+  max-width:380px;
+  height:auto;
+  opacity:.96;
+}
+
+/* =========================================================
+   ADAPTABILIDAD
+========================================================= */
 @media(max-width:768px){
   header{font-size:1.05rem;}
   main{padding:0.9rem 1rem;}
@@ -204,17 +222,32 @@ hr{border:none;border-top:1px solid var(--border);margin:1.4rem 0;}
 </head>
 
 <body>
-<header>
-    <div class="bar wrap">
-      
-      <div class="headcol">
-        <div class="title">FASES DEL TRATAMIENTO ANTIHIPERTENSIVO</div>
-        </div>
-      <div class="actions">
-        <a class="btn" href="../index.html">Inicio</a>
-      </div>
+
+<!-- Barra superior institucional -->
+<div class="safe-top">
+  <div class="safe-content">
+    <div class="safe-left">
+      <img src="../iconos/protocolosico.png" alt="Icono Protocolos" class="safe-mini">
+      <img src="../img/topbar.png" alt="IctusGPS" class="safe-logo">
     </div>
-  </header>
+
+    <div class="safe-actions">
+      <a href="javascript:history.back()" class="safe-btn" title="Volver atrás">
+        <img src="../iconos/atrastransparente.png" alt="Atrás" class="safe-icon">
+      </a>
+      <a href="../index.html" class="safe-btn" title="Volver al inicio">
+        <img src="../iconos/hometransparente.png" alt="Inicio" class="safe-icon">
+      </a>
+    </div>
+  </div>
+</div>
+
+<header>
+  <div class="bar wrap">
+    <div class="title">Fases del tratamiento antihipertensivo</div>
+  </div>
+</header>
+
 <main>
 
 <h3>Manejo de la tensión arterial en la fase aguda del ictus: enfoque dinámico</h3>
@@ -230,18 +263,9 @@ hr{border:none;border-top:1px solid var(--border);margin:1.4rem 0;}
 <h3>Ictus isquémico</h3>
 
 <ul>
-  <li><b>Sin terapia de reperfusión (trombólisis/trombectomía):</b>
-    <ul>
-      <li><b>Permitir la hipertensión:</b> no tratar la TA salvo si supera <b>220/120 mmHg</b>, para mantener la perfusión en la zona de penumbra.</li>
-      <li><b>Si se trata:</b> reducción gradual de aprox. <b>15% en las primeras 24 h.</b></li>
-    </ul>
-  </li>
-  <li><b>Con terapia de reperfusión:</b>
-    <ul>
-      <li><b>Antes de la reperfusión:</b> reducir TA por debajo de <b>185/110 mmHg</b> para iniciar el tratamiento.</li>
-      <li><b>Durante y después:</b> mantener TA &lt; <b>180/105 mmHg</b> las primeras 24 h para minimizar riesgo de hemorragia.</li>
-    </ul>
-  </li>
+  <li><b>Sin terapia de reperfusión:</b> no tratar la TA salvo si supera <b>220/120 mmHg</b>, permitiendo la hipertensión para mantener la perfusión.</li>
+  <li><b>Si se trata:</b> reducción gradual de aproximadamente <b>15 % en las primeras 24 h.</b></li>
+  <li><b>Con terapia de reperfusión:</b> reducir la TA por debajo de <b>185/110 mmHg</b> antes de iniciar el tratamiento y mantenerla &lt; <b>180/105 mmHg</b> durante las primeras 24 h.</li>
 </ul>
 
 <hr>
@@ -249,33 +273,20 @@ hr{border:none;border-top:1px solid var(--border);margin:1.4rem 0;}
 <h3>Ictus hemorrágico</h3>
 
 <ul>
-  <li><b>Fase hiperaguda (primeras 6–24 h):</b>
-    <ul>
-      <li><b>Reducción agresiva y controlada:</b> objetivo TA sistólica ≈ <b>140 mmHg.</b></li>
-      <li><b>Justificación:</b> el control estricto reduce la expansión del hematoma, principal factor de mal pronóstico.</li>
-    </ul>
-  </li>
-  <li><b>Fase aguda tardía (&gt;24 h):</b>
-    <ul>
-      <li><b>Relajación del objetivo:</b> tras disminuir el riesgo de expansión, se permite un control más flexible.</li>
-      <li><b>Control convencional:</b> TA &lt; <b>160/90 mmHg.</b></li>
-      <li><b>Transición:</b> pasar de medicación IV a tratamiento oral.</li>
-    </ul>
-  </li>
+  <li><b>Fase hiperaguda (primeras 6–24 h):</b> objetivo TA sistólica ≈ <b>140 mmHg.</b> El control estricto reduce la expansión del hematoma.</li>
+  <li><b>Fase aguda tardía (&gt;24 h):</b> TA &lt; <b>160/90 mmHg</b>; transición de medicación IV a oral.</li>
 </ul>
 
 <hr>
 
 <h3>Transformación hemorrágica de un ictus isquémico</h3>
 
-<p>En este escenario, el manejo de la TA se vuelve condicional y dinámico, adaptándose al nivel de riesgo que la hemorragia representa para la vida del paciente.</p>
-
 <ul>
-  <li><b>Antes de la transformación:</b> se toleran cifras altas (hipertensión permisiva) para mantener la perfusión cerebral.</li>
-  <li><b>Tras la transformación:</b> depende del tipo y magnitud del sangrado:
+  <li><b>Antes de la transformación:</b> hipertensión permisiva para mantener la perfusión cerebral.</li>
+  <li><b>Tras la transformación:</b> 
     <ul>
-      <li><b>Sangrado asintomático (HI1–HI2–PH1):</b> mantener la perfusión, siguiendo el protocolo de ictus isquémico.</li>
-      <li><b>Sangrado sintomático (PH2 o deterioro clínico):</b> el control de la hemorragia es prioritario. Reducir rápidamente la TA sistólica a <b>≈140 mmHg</b>, aplicando el protocolo de hemorragia cerebral.</li>
+      <li><b>HI1–HI2–PH1 (asintomático):</b> seguir protocolo isquémico.</li>
+      <li><b>PH2 o con deterioro clínico:</b> reducir rápidamente la TA sistólica a ≈ <b>140 mmHg</b>, siguiendo protocolo de hemorragia cerebral.</li>
     </ul>
   </li>
 </ul>
@@ -285,51 +296,15 @@ hr{border:none;border-top:1px solid var(--border);margin:1.4rem 0;}
 <h3>Consideraciones finales</h3>
 
 <p>En cualquier escenario, la monitorización de la TA debe ser <b>continua y estricta</b>.  
-Tras las primeras 24–48 h, una vez estabilizado el paciente, el objetivo se centra en el control crónico de la hipertensión para prevenir recurrencias.</p>
+Tras las primeras 24–48 h, una vez estabilizado el paciente, el objetivo pasa al control crónico de la hipertensión para prevenir recurrencias.</p>
 
 <a href="index.html" class="back-btn">Volver al índice</a>
-
-<hr>
-
-<div class="related">
-  <h3>Relacionados</h3>
-  <ol>
-    <li>Manejo de complicaciones sistémicas
-      <ol>
-        <li><a href="31_presion_arterial.html">Presión arterial</a></li>
-        <ol>
-          <li><span style="color:#073763;">Hipertensión arterial</span></li>
-          <ol>
-            <li><a href="farmacos_antihipertensivos.html">Fármacos</a></li>
-            <li><span style="background-color:#0f3d83;color:#fff;padding:2px 6px;border-radius:4px;">Fases del tratamiento</span></li>
-            <li><a href="312_algoritmo_tratamiento.html">Algoritmo de tratamiento antihipertensivo</a></li>
-          </ol>
-          <li><a href="312_hipotension.html">Hipotensión</a></li>
-        </ol>
-      </ol>
-    </li>
-  </ol>
-</div>
-
 </main>
-<footer style="
-    position:relative;
-    left:50%;
-    transform:translateX(-50%);
-    width:100vw;
-    margin:2rem 0 0 0;
-    padding:1.5rem 0;
-    border-top:1px solid #e5e7eb;
-    background:#ffffff;
-    text-align:center;
-    box-shadow:0 -2px 6px rgba(0,0,0,0.04);
-">
-      <img src="uibanner.png"
-         alt="Unidad de Ictus Málaga" style="max-width:380px;height:auto;opacity:.96;">
-  </a>
 
+<footer>
+  <img src="uibanner.png" alt="Unidad de Ictus Málaga">
 </footer>
-<script src="js/index.js"></script>
 
+<script src="js/index.js"></script>
 </body>
 </html>

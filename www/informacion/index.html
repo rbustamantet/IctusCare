@@ -42,23 +42,104 @@ body{
 .wrap{max-width:1080px; margin:0 auto; padding:24px}
 
 /* =========================================================
+   SAFE-TOP
+========================================================= */
+:root { --azul-institucional: #0f3d83; }
+
+.safe-top {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: calc(env(safe-area-inset-top, 0px) + 52px);
+  background: var(--azul-institucional);
+  z-index: 1001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+.safe-content {
+  width: 100%;
+  max-width: 1080px;
+  padding: 6px 16px 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.safe-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.safe-mini {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  padding: 4px;
+  box-shadow: 0 0 4px rgba(0,0,0,0.1);
+}
+.safe-logo {
+  height: 44px;
+  width: auto;
+}
+
+.safe-actions {
+  display: flex;
+  gap: 10px;
+}
+.safe-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: rgba(255,255,255,0.15);
+  border: 0 solid white;
+  border-radius: 50%;
+  transition: background .25s, border-color .25s, transform .1s;
+}
+.safe-btn:hover {
+  background: var(--azul-institucional);
+  border: 1px solid white;
+}
+.safe-btn:active { transform: scale(0.95); }
+.safe-icon {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+/* =========================================================
    CABECERA
 ========================================================= */
-.appbar{position:sticky;top:0;z-index:1000;background:#0f3d83;color:#fff;box-shadow:0 0px 0px rgba(0,0,0,.1)}
-.appbar-inner{max-width:1080px;margin:0 auto;padding:4px 30px;display:flex;align-items:center;justify-content:space-between;gap:0px}
-.appbar-inner { min-height: 64px; }
-.left-group{display:flex;align-items:center;gap:10px}
-.appbar h1{margin:0;font-size:1.4rem;font-weight:800;color:#fff}.actions{margin-left:auto}
-.btn{
-  display:inline-flex;align-items:center;gap:8px;
-  padding:8px 14px;border-radius:12px;
-  border:1px solid rgba(255,255,255,.14);
-  background:rgba(255,255,255,.06);
-  color:white;text-decoration:none;font-weight:600;
-  transition:background .25s,border-color .25s;
+header{
+  position:sticky;
+  top:0;
+  z-index:20;
+  backdrop-filter:blur(6px);
+  background:var(--accent-dark);
+  border-bottom:1px solid rgba(255,255,255,.08);
+  box-shadow:0 2px 6px rgba(0,0,0,0.08);
+  color:#fff;
 }
-.btn:hover{border-color:rgba(127,179,255,.35);background:#1c60c3;color:white;text-decoration:none;font-weight:600;
+.bar{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:8px 18px;
 }
+.title{
+  font-size:1.4rem;
+  font-weight:700;
+  letter-spacing:.2px;
+  color:#fff;
+  text-align:center;
+  text-transform:none; /* 🔹 estilo oración */
+}
+
 
 /* =========================================================
    CUERPO PRINCIPAL
@@ -161,86 +242,42 @@ footer img{
 ========================================================= */
 @media(max-width:768px){
   header{font-size:1.05rem;}
-  main{padding:1rem;}
-  .card h3{font-size:1rem;}
+  main{padding:0.9rem 1rem;}
+  body{font-size:0.96rem;}
 }
-</style>
-<style>
-:root {
-  --azul-institucional: #0f3d83;
-}
-
-/* Barra superior segura */
-.safe-top {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: calc(env(safe-area-inset-top, 0px) + 52px);
-  background: var(--azul-institucional);
-  z-index: 1001;
-}
-
-/* Empuja el contenido real por debajo de la barra */
+/* Empuja el contenido real por debajo de la barra superior */
 body {
   margin: 0;
   padding-top: calc(env(safe-area-inset-top, 0px) + 52px);
   background-color: #fff;
 }
-/* Icono con hover a flecha (robusto) */
-.icon-btn {
-  position: relative;
-  display: inline-block;
-  width: 40px;
-  height: 40px;
-  border: none;
-  outline: 0;
-  background: #fff;
-  border-radius: 50%;
-  box-shadow: 0 0 6px rgba(0,0,0,.08);
-  padding: 0;
-  margin-right: 8px;
-  vertical-align: middle;
-  cursor: pointer;
-  flex-shrink: 0;        /* ✅ evita que se achique */
-  aspect-ratio: 1 / 1;   /* ✅ asegura proporción circular */
-}
-
-.icon-btn .icon-unit,
-.icon-btn .icon-arrow{
-  position:absolute; inset:0;
-  width:100%; height:100%;
-  transition:opacity .22s ease;
-  pointer-events:none; /* el clic llega siempre al botón */
-}
-.icon-btn .icon-unit{ opacity:1; }
-.icon-btn .icon-arrow{ opacity:0; }
-
-/* En hover cambia a flecha (también funciona si hay otros estilos previos) */
-.icon-btn:hover .icon-unit{ opacity:0; }
-.icon-btn:hover .icon-arrow{ opacity:1; }
-
-/* micro feedback al clic */
-.icon-btn:active{ transform:scale(.96); }
 </style>
 
 </head>
 
 <body>
-  <div class="safe-top"></div>
-
-<header class="appbar" role="region" aria-label="Información">
-  <div class="appbar-inner">
-    <div class="left-group">
-      <button id="backIcon" class="icon-btn" aria-label="Atrás" title="Atrás">
-        <img class="icon-unit" src="../iconos/informacionico.png" alt="Icono Información" width="40" height="40">
-        <svg class="icon-arrow" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M15 18l-6-6 6-6" fill="none" stroke="#0F3D83" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </button>
-      <h1>INFORMACIÓN</h1>
+ <!-- Barra superior segura -->
+<div class="safe-top">
+  <div class="safe-content">
+    <div class="safe-left">
+      <img src="../iconos/informacionico.png" alt="Icono Información" class="safe-mini">
+      <img src="../img/topbar.png" alt="IctusGPS" class="safe-logo">
     </div>
-    <div class="actions"><a class="btn" href="../index.html">Inicio</a></div>
+
+    <div class="safe-actions">
+      <a href="javascript:history.back()" class="safe-btn" title="Volver atrás">
+        <img src="../iconos/atrastransparente.png" alt="Atrás" class="safe-icon">
+      </a>
+      <a href="../index.html" class="safe-btn" title="Volver al inicio">
+        <img src="../iconos/hometransparente.png" alt="Inicio" class="safe-icon">
+      </a>
+    </div>
+  </div>
+</div>
+
+<header>
+  <div class="bar wrap">
+    <div class="title">Información</div>
   </div>
 </header>
 

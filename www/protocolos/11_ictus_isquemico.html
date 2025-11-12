@@ -9,7 +9,11 @@
 <link rel="shortcut icon" href="../iconos/ictusgps.png">
 <meta name="theme-color" content="#0f3d83">
 <title>Ictus isquémico — Unidad de Ictus</title>
+
 <style>
+/* =========================================================
+   VARIABLES Y BASE
+========================================================= */
 :root{
   --bg:#f9fafc;
   --ink:#0e1a33;
@@ -17,28 +21,125 @@
   --accent-light:#d7e3f8;
   --accent-dark:#0f3d83;
   --border:#e5e9f2;
+  --alert:#b30000;
+  --alert-bg:#fef3f2;
+  --alert-border:#f5c2c0;
 }
 
-html,body{
-  margin:0; padding:0;
-  background:var(--bg);
-  color:var(--ink);
-  font-family:Verdana, Geneva, Tahoma, sans-serif;
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+
+body{
+  font-family: Verdana, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
   line-height:1.6;
-  -webkit-text-size-adjust:100%;
 }
 
+/* =========================================================
+   SAFE-TOP
+========================================================= */
+:root { --azul-institucional: #0f3d83; }
+
+.safe-top {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: calc(env(safe-area-inset-top, 0px) + 52px);
+  background: var(--azul-institucional);
+  z-index: 1001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+.safe-content {
+  width: 100%;
+  max-width: 1080px;
+  padding: 6px 16px 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.safe-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.safe-mini {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  padding: 4px;
+  box-shadow: 0 0 4px rgba(0,0,0,0.1);
+}
+.safe-logo {
+  height: 44px;
+  width: auto;
+}
+
+.safe-actions {
+  display: flex;
+  gap: 10px;
+}
+.safe-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: rgba(255,255,255,0.15);
+  border: 0 solid white;
+  border-radius: 50%;
+  transition: background .25s, border-color .25s, transform .1s;
+}
+.safe-btn:hover {
+  background: var(--azul-institucional);
+  border: 1px solid white;
+}
+.safe-btn:active { transform: scale(0.95); }
+.safe-icon {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+/* =========================================================
+   CABECERA
+========================================================= */
 header{
+  position:sticky;
+  top:0;
+  z-index:20;
+  backdrop-filter:blur(6px);
   background:var(--accent-dark);
+  border-bottom:1px solid rgba(255,255,255,.08);
+  box-shadow:0 2px 6px rgba(0,0,0,0.08);
+  color:#fff;
+}
+.bar{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:8px 18px;
+}
+.title{
+  font-size:1.4rem;
+  font-weight:700;
+  letter-spacing:.2px;
   color:#fff;
   text-align:center;
-  padding:1rem;
-  font-weight:800;
-  font-size:1.2rem;
-  box-shadow:0 2px 6px rgba(0,0,0,0.08);
-  position:sticky;top:0;z-index:10;
+  text-transform:none; /* 🔹 estilo oración */
 }
 
+/* =========================================================
+   CUERPO PRINCIPAL
+========================================================= */
 main{
   max-width:850px;
   margin:0 auto;
@@ -53,11 +154,9 @@ a{color:var(--accent-dark);text-decoration:none;}
 a:hover{text-decoration:underline;color:var(--accent);}
 strong,b{color:var(--accent-dark);}
 h2,h3{color:var(--accent-dark);margin-top:1.2rem;font-size:1.05rem;}
-
+hr{border:none;border-top:1px solid var(--border);margin:1.4rem 0;}
 ul{margin:0.6rem 0 0.6rem 1.2rem;}
 li{margin:0.3rem 0;}
-
-hr{border:none;border-top:1px solid var(--border);margin:1.5rem 0;}
 
 figure{text-align:center;margin:1rem auto;}
 figure img{
@@ -74,100 +173,6 @@ figcaption{
 }
 
 .related{
-  margin-top:1.5rem;
-  background:var(--accent-light);
-  padding:1rem;
-  border-radius:8px;
-}
-.related h3{
-  margin:0 0 .5rem 0;
-  color:var(--accent-dark);
-  font-size:1rem;
-}
-.related ol{margin:0;padding-left:1.2rem;}
-.related li{margin:0.25rem 0;}
-
-.back-btn{
-  display:inline-block;
-  margin-top:1.5rem;
-  background:var(--accent-dark);
-  color:#fff;
-  text-decoration:none;
-  font-weight:700;
-  padding:0.6rem 1.2rem;
-  border-radius:8px;
-  transition:background .2s, transform .1s;
-  text-align:center;
-}
-.back-btn:hover{
-  background:#1c60c3;
-  color:#fff;
-  transform:translateY(-1px);
-}
-
-@media(max-width:768px){
-  header{font-size:1.05rem;}
-  main{padding:0.9rem 1rem;}
-  body{font-size:0.96rem;}
-}
-</style>
-<style>
-:root{
-  --bg:#f9fafc;
-  --ink:#0e1a33;
-  --accent:#164a8a;
-  --accent-light:#d7e3f8;
-  --accent-dark:#0f3d83;
-  --border:#e5e9f2;
-  --alert:#b30000;
-  --alert-bg:#fef3f2;
-  --alert-border:#f5c2c0;
-}
-
-
-  .wrap{max-width:850px; margin:0 auto; padding:24px}
-
-html,body{
-  margin:0; padding:0;
-  background:var(--bg);
-  color:var(--ink);
-  font-family:Verdana, Geneva, Tahoma, sans-serif;
-  line-height:1.6;
-  -webkit-text-size-adjust:100%;
-}
-
-header{
-  background:var(--accent-dark);
-  color:#fff;
-  text-align:LEFT;
-  padding:1rem;
-  font-weight:800;
-  font-size:1.2rem;
-  box-shadow:0 2px 6px rgba(0,0,0,0.08);
-  position:sticky;top:0;z-index:10;
-}
-
-
-main{
-  max-width:850px;
-  margin:0 auto;
-  padding:1rem 1.25rem 2.5rem;
-  background:#fff;
-  border-radius:12px;
-  box-shadow:0 2px 10px rgba(0,0,0,0.04);
-}
-
-p{margin:0.75rem 0;text-align:justify;}
-a{color:var(--accent-dark);text-decoration:none;}
-a:hover{text-decoration:underline;color:var(--accent);}
-strong,b{color:var(--accent-dark);}
-h3{color:var(--accent-dark);margin-top:1.2rem;font-size:1.05rem;}
-ul{margin:0.6rem 0 0.6rem 1.2rem;}
-li{margin:0.3rem 0;}
-hr{border:none;border-top:1px solid var(--border);margin:1.4rem 0;}
-.highlight-red{color:var(--alert);font-weight:700;}
-
-.related{
   margin-top:1.6rem;
   background:var(--accent-light);
   padding:1rem;
@@ -177,40 +182,6 @@ hr{border:none;border-top:1px solid var(--border);margin:1.4rem 0;}
 .related ol{margin:0;padding-left:1.2rem;}
 .related li{margin:0.25rem 0;}
 
-.alert{
-  text-align:center;
-  background:var(--alert-bg);
-  border:1px solid var(--alert-border);
-  border-radius:6px;
-  padding:0.8rem;
-  color:#800000;
-  font-weight:700;
-  margin-top:1rem;
-}
-.bar{display:flex; align-items:center; gap:12px; padding:1px 18px}
- 
-  .title{font-weight:700; letter-spacing:.2px; font-size:1.2rem;}
-  .subtitle{font-size:.9rem; color:var(--muted)}
-  .headcol{display:flex; flex-direction:column}
-
-  .grid{
-    display:grid;
-    grid-template-columns: repeat(1, minmax(0,1fr));
-    gap:16px;
-    margin-top:22px;
-  }
-  @media (min-width:520px){ .grid{ grid-template-columns: repeat(2, minmax(0,1fr)); } }
-  @media (min-width:900px){ .grid{ grid-template-columns: repeat(3, minmax(0,1fr)); } }
-
-   
-  .actions{margin-left:auto}
-  .btn{
-    display:inline-flex; align-items:center; gap:2px;
-    padding:4px 8px; border-radius:12px; text-decoration:none;
-    border:1px solid rgba(255,255,255,.14);
-    background: rgba(255,255,255,.06); color:white;
-  }
-  .btn:hover{ border-color: rgba(127,179,255,.35); background: #1c60c3; color:white;}
 .back-btn{
   display:inline-block;
   margin-top:1.5rem;
@@ -229,34 +200,78 @@ hr{border:none;border-top:1px solid var(--border);margin:1.4rem 0;}
   transform:translateY(-1px);
 }
 
+/* =========================================================
+   PIE
+========================================================= */
+footer{
+  position:relative;
+  left:50%;
+  transform:translateX(-50%);
+  width:100vw;
+  margin:2rem 0 0;
+  padding:1.5rem 0;
+  border-top:1px solid #e5e7eb;
+  background:#ffffff;
+  text-align:center;
+  box-shadow:0 -2px 6px rgba(0,0,0,0.04);
+}
+footer img{
+  max-width:380px;
+  height:auto;
+  opacity:.96;
+}
+
+/* =========================================================
+   ADAPTABILIDAD
+========================================================= */
 @media(max-width:768px){
   header{font-size:1.05rem;}
   main{padding:0.9rem 1rem;}
   body{font-size:0.96rem;}
 }
+/* Empuja el contenido real por debajo de la barra superior */
+body {
+  margin: 0;
+  padding-top: calc(env(safe-area-inset-top, 0px) + 52px);
+  background-color: #fff;
+}
+
 </style>
 </head>
 
 <body>
-<header>
-    <div class="bar wrap">
-      
-      <div class="headcol">
-        <div class="title">ICTUS ISQUÉMICO</div>
-        </div>
-      <div class="actions">
-        <a class="btn" href="../index.html">Inicio</a>
-      </div>
+
+<!-- Barra superior segura -->
+<div class="safe-top">
+  <div class="safe-content">
+    <div class="safe-left">
+      <img src="../iconos/protocolosico.png" alt="Icono Protocolos" class="safe-mini">
+      <img src="../img/topbar.png" alt="IctusGPS" class="safe-logo">
     </div>
-  </header>
+
+    <div class="safe-actions">
+      <a href="javascript:history.back()" class="safe-btn" title="Volver atrás">
+        <img src="../iconos/atrastransparente.png" alt="Atrás" class="safe-icon">
+      </a>
+      <a href="../index.html" class="safe-btn" title="Volver al inicio">
+        <img src="../iconos/hometransparente.png" alt="Inicio" class="safe-icon">
+      </a>
+    </div>
+  </div>
+</div>
+
+<header>
+  <div class="bar wrap">
+    <div class="title">Ictus isquémico</div>
+  </div>
+</header>
 
 <main>
-
 <p>Estas medidas son el estándar de cuidado que se aplica a todo paciente con ictus isquémico al ingresar en la Unidad de Ictus.</p>
 
 <hr>
 
-<h3>Posición y Acceso</h3>
+<h3>Posición y acceso</h3>
 <ul>
   <li><b>Reposo absoluto:</b> Mantener reposo absoluto en cama durante las primeras 24 horas, salvo indicación médica explícita que priorice la movilización inmediata.</li>
   <li><b>Posición:</b> Colocar la cabecera de la cama a <b>30º</b> (excepto si hay sospecha de isquemia hemodinámica, en cuyo caso se colocará a 0º).</li>
@@ -265,7 +280,7 @@ hr{border:none;border-top:1px solid var(--border);margin:1.4rem 0;}
 
 <hr>
 
-<h3>Monitorización Integral</h3>
+<h3>Monitorización integral</h3>
 <p>La monitorización del estado neurológico y de las constantes debe ser continua durante las 72 horas siguientes al ictus.</p>
 
 <figure>
@@ -274,7 +289,7 @@ hr{border:none;border-top:1px solid var(--border);margin:1.4rem 0;}
 
 <hr>
 
-<h3>Vigilancia de la Presión Arterial</h3>
+<h3>Vigilancia de la presión arterial</h3>
 <ul>
   <li><b>Pauta estándar:</b> Medición no invasiva cada hora durante las primeras 24 horas, y luego cada 2–4 horas.</li>
   <li><b>Vigilancia estrecha (post-tratamiento):</b> En pacientes tratados con fibrinólisis y/o tratamiento endovascular, se requiere vigilancia más estrecha (<b>cada 15, 30 y 60 minutos</b>), aplicando el protocolo de presión arterial.</li>
@@ -283,7 +298,7 @@ hr{border:none;border-top:1px solid var(--border);margin:1.4rem 0;}
 
 <hr>
 
-<h3 style="color:#990000;">Medidas de Seguridad Críticas</h3>
+<h3 style="color:#990000;">Medidas de seguridad críticas</h3>
 <ul>
   <li><b>Fluidoterapia:</b> Administrar <b>1500 ml de suero salino (0.9%)</b> en 24 h, salvo orden médica diferente. <strong style="color:#990000;">No se administrarán soluciones glucosadas.</strong></li>
   <li><b>Disfagia/Vía oral:</b> <strong style="color:#990000;">No iniciar tolerancia oral sin realizar un test de cribado de disfagia</strong>, incluso si el paciente comió previamente en Urgencias. Considerar nutrición enteral precoz.</li>
@@ -300,56 +315,12 @@ hr{border:none;border-top:1px solid var(--border);margin:1.4rem 0;}
 </ul>
 
 <a href="index.html" class="back-btn">Volver al índice</a>
-
-<hr>
-
-<div class="related">
-  <h3>Relacionados</h3>
-  <ol>
-    <li>Atención al paciente
-      <ol>
-        <li><a href="1_atencion_paciente.html">Cuidados generales</a></li>
-        <li><span style="background-color:#0f3d83;color:#fff;padding:2px 6px;border-radius:4px;">Ictus isquémico</span></li>
-        <ol>
-          <li><a href="111_transformacion_hemorragica.html">Ictus isquémico con transformación hemorrágica</a></li>
-          <li><a href="112_isquemico_en_progresion.html">Ictus isquémico en progresión</a></li>
-        </ol>
-        <li><a href="12_fibrinolisis_endovascular.html">Ictus isquémico que recibe fibrinólisis y/o tratamiento endovascular</a></li>
-        <ol>
-          <li><a href="121_complicaciones_fibrinolisis.html">Complicaciones de la fibrinólisis y terapia endovascular</a></li>
-        </ol>
-        <li><a href="13_isquemico_extenso.html">Ictus isquémico extenso</a></li>
-        <li><a href="14_ictus_hemorragico.html">Ictus hemorrágico</a></li>
-        <li><a href="45_hsa.html">Hemorragia subaracnoidea</a></li>
-        <li><a href="16_angioplastia_carotidea.html">Angioplastia carotídea</a></li>
-        <ol>
-          <li><a href="161_pre_angioplastia.html">Antes de la angioplastia</a></li>
-          <li><a href="162_post_angioplastia.html">Tras la angioplastia</a></li>
-          <li><a href="163_complicaciones_angioplastia.html">Complicaciones de la angioplastia carotídea</a></li>
-        </ol>
-      </ol>
-    </li>
-  </ol>
-</div>
 </main>
-<footer style="
-    position:relative;
-    left:50%;
-    transform:translateX(-50%);
-    width:100vw;
-    margin:2rem 0 0 0;
-    padding:1.5rem 0;
-    border-top:1px solid #e5e7eb;
-    background:#ffffff;
-    text-align:center;
-    box-shadow:0 -2px 6px rgba(0,0,0,0.04);
-">
-      <img src="uibanner.png"
-         alt="Unidad de Ictus Málaga" style="max-width:380px;height:auto;opacity:.96;">
-  </a>
 
+<footer>
+  <img src="uibanner.png" alt="Unidad de Ictus Málaga">
 </footer>
-<script src="js/index.js"></script>
 
+<script src="js/index.js"></script>
 </body>
 </html>
