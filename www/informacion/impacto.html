@@ -9,7 +9,7 @@
 <link rel="shortcut icon" href="../iconos/ictusgps.png">
 <meta name="theme-color" content="#0f3d83">
 
-<title>Día del Ictus 2025</title>
+<title>Impacto del Ictus 2025</title>
 <style>
 :root{
   --bg:#f9fafc;
@@ -63,11 +63,12 @@ html,body{
   gap: 10px;
 }
 .safe-mini {
+  /* ... otras propiedades ... */
+  box-sizing: border-box; /* AÑADIR ESTO */
   width: 44px;
   height: 44px;
   object-fit: contain;
   padding: 4px;
-  box-shadow: 0 0 4px rgba(0,0,0,0.1);
 }
 .safe-logo {
   height: 44px;
@@ -84,13 +85,12 @@ html,body{
   justify-content: center;
   width: 40px;
   height: 40px;
-  background: rgba(255,255,255,0.15);
-  border: 0 solid white;
+  border: 1px solid white;
   border-radius: 50%;
   transition: background .25s, border-color .25s, transform .1s;
 }
 .safe-btn:hover {
-  background: var(--azul-institucional);
+  background: #01c5fe;
   border: 1px solid white;
 }
 .safe-btn:active { transform: scale(0.95); }
@@ -112,6 +112,7 @@ header{
   border-bottom:1px solid rgba(255,255,255,.08);
   box-shadow:0 2px 6px rgba(0,0,0,0.08);
   color:#fff;
+  width: 100vw; /* <-- Añadir o asegurar este valor */
 }
 .bar{
   display:flex;
@@ -208,6 +209,7 @@ body {
   background-color: #fff;
 }
 </style>
+
 
 </head>
 

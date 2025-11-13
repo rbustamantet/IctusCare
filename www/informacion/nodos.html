@@ -19,9 +19,13 @@
   --border:#e5e9f2;
   --muted:#64748b;
 }
+
 html,body{
-  margin:0; padding:0; background:var(--bg); color:var(--ink);
-  font-family:Verdana, Geneva, Tahoma, sans-serif; line-height:1.6;
+  margin:0;padding:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:Verdana, Geneva, Tahoma, sans-serif;
+  line-height:1.6;
 }
 .wrap{max-width:1080px; margin:0 auto; padding:0px}
 
@@ -59,11 +63,12 @@ html,body{
   gap: 10px;
 }
 .safe-mini {
+  /* ... otras propiedades ... */
+  box-sizing: border-box; /* AÑADIR ESTO */
   width: 44px;
   height: 44px;
   object-fit: contain;
   padding: 4px;
-  box-shadow: 0 0 4px rgba(0,0,0,0.1);
 }
 .safe-logo {
   height: 44px;
@@ -80,13 +85,12 @@ html,body{
   justify-content: center;
   width: 40px;
   height: 40px;
-  background: rgba(255,255,255,0.15);
-  border: 0 solid white;
+  border: 1px solid white;
   border-radius: 50%;
   transition: background .25s, border-color .25s, transform .1s;
 }
 .safe-btn:hover {
-  background: var(--azul-institucional);
+  background: #01c5fe;
   border: 1px solid white;
 }
 .safe-btn:active { transform: scale(0.95); }
@@ -108,6 +112,7 @@ header{
   border-bottom:1px solid rgba(255,255,255,.08);
   box-shadow:0 2px 6px rgba(0,0,0,0.08);
   color:#fff;
+  width: 100vw; /* <-- Añadir o asegurar este valor */
 }
 .bar{
   display:flex;
@@ -265,6 +270,43 @@ footer {
 body {
   overflow: visible !important;
 }
+
+
+/* Footer */
+footer{
+  position:relative;
+  left:50%;
+  transform:translateX(-50%);
+  width:100vw;
+  margin:2rem 0 0 0;
+  padding:1.5rem 0;
+  border-top:1px solid #e5e7eb;
+  background:#ffffff;
+  text-align:center;
+  box-shadow:0 -2px 6px rgba(0,0,0,0.04);
+}
+footer img{max-width:380px;height:auto;opacity:.96;}
+/* Botón Volver inferior */
+.back-btn{
+  display:inline-block;
+  margin:1.5rem auto 0;
+  background:var(--accent-dark);
+  color:#fff;
+  text-decoration:none;
+  font-weight:700;
+  padding:0.7rem 1.4rem;
+  border-radius:10px;
+  box-shadow:0 4px 10px rgba(15,61,131,.25);
+  transition:background .2s, transform .1s, box-shadow .2s;
+}
+.back-btn:hover{
+  background:#1c60c3;
+  transform:translateY(-1px);
+  box-shadow:0 6px 12px rgba(15,61,131,.35);
+}
+/* =========================================================
+   ADAPTABILIDAD
+========================================================= */
 @media(max-width:768px){
   header{font-size:1.05rem;}
   main{padding:0.9rem 1rem;}
@@ -277,7 +319,6 @@ body {
   background-color: #fff;
 }
 </style>
-
 </head>
 
 <body>
