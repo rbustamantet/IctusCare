@@ -9,6 +9,9 @@
       "androidScaleType": "CENTER_INSIDE",
       "backgroundColor": "#0f3d83",
       "showSpinner": false
+      "splashImmersive": true
+
     }
   }
 }
+

@@ -218,7 +218,6 @@ footer {
   <header>
     <img src="img/inicio.png" alt="IctusGPS">
   </header>
-    <div><h1></br></h1></div>
 
   <main class="menu">
 
@@ -278,6 +277,22 @@ footer {
     head.appendChild(link);
   }
 })();
+
+import { App } from '@capacitor/app';
+
+// Asegúrate de que este código solo se ejecute en el entorno Capacitor/Android
+if (window.Capacitor && window.Capacitor.isNativePlatform()) {
+  App.addListener('backButton', ({ canGoBack }) => {
+    // Si el historial del navegador no puede ir más atrás (es decir, estamos en la página inicial)
+    if (!canGoBack || window.location.pathname.endsWith('/index.html')) {
+      // Cierra la aplicación de Android
+      App.exitApp();
+    } else {
+      // Si hay historial, permite la navegación normal hacia atrás
+      window.history.back();
+    }
+  });
+}
 </script>
 </body>
 </html>

@@ -3,32 +3,38 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f3d83">
+<title>Centros de Trombectomía · SAS</title>
+
 <link rel="manifest" href="../site.webmanifest">
 <link rel="icon" type="image/png" sizes="192x192" href="../iconos/ictusgps.png">
 <link rel="apple-touch-icon" sizes="180x180" href="../iconos/ictusgps.png">
 <link rel="shortcut icon" href="../iconos/ictusgps.png">
-<meta name="theme-color" content="#0f3d83">
 
-<title>Centros de Trombectomía · SAS</title>
 <style>
 :root{
   --bg:#f9fafc;
   --ink:#0e1a33;
+  --accent:#164a8a;
+  --accent-light:#d7e3f8;
   --accent-dark:#0f3d83;
-  --accent-light:#2563eb;
   --border:#e5e9f2;
-  --muted:#64748b;
+  --alert:#b30000;
+  --alert-bg:#fef3f2;
+  --alert-border:#f5c2c0;
 }
 
-html,body{
-  margin:0;padding:0;
-  background:var(--bg);
-  color:var(--ink);
-  font-family:Verdana, Geneva, Tahoma, sans-serif;
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+
+body{
+  font-family: Verdana, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
   line-height:1.6;
 }
-.wrap{max-width:1080px; margin:0 auto; padding:0px}
-
 /* =========================================================
    SAFE-TOP
 ========================================================= */
@@ -63,12 +69,11 @@ html,body{
   gap: 10px;
 }
 .safe-mini {
-  /* ... otras propiedades ... */
-  box-sizing: border-box; /* AÑADIR ESTO */
   width: 44px;
   height: 44px;
   object-fit: contain;
   padding: 4px;
+  box-shadow: 0 0 4px rgba(0,0,0,0.1);
 }
 .safe-logo {
   height: 44px;
@@ -85,6 +90,7 @@ html,body{
   justify-content: center;
   width: 40px;
   height: 40px;
+  background: rgba(255,255,255,0.15);
   border: 1px solid white;
   border-radius: 50%;
   transition: background .25s, border-color .25s, transform .1s;
@@ -100,9 +106,7 @@ html,body{
   object-fit: contain;
 }
 
-/* =========================================================
-   CABECERA
-========================================================= */
+/* Cabecera */
 header{
   position:sticky;
   top:0;
@@ -112,7 +116,6 @@ header{
   border-bottom:1px solid rgba(255,255,255,.08);
   box-shadow:0 2px 6px rgba(0,0,0,0.08);
   color:#fff;
-  width: 100vw; /* <-- Añadir o asegurar este valor */
 }
 .bar{
   display:flex;
@@ -131,8 +134,12 @@ header{
 
 /* Contenido */
 main{
-  max-width:1080px; margin:0 auto; padding:1.25rem 1rem 2rem;
-  background:#fff; border-radius:12px; box-shadow:0 2px 10px rgba(0,0,0,.04);
+  max-width:1080px;
+  margin:0 auto;
+  padding:1rem 1.25rem 2.5rem;
+  background:#fff;
+  border-radius:12px;
+  box-shadow:0 2px 10px rgba(0,0,0,0.04);
 }
 h1{margin:.25rem 0 0.5rem; font-size:1.25rem; color:var(--accent-dark);}
 .lead{color:var(--muted); margin:.25rem 0 1rem; font-size:.98rem;}
@@ -156,25 +163,6 @@ h1{margin:.25rem 0 0.5rem; font-size:1.25rem; color:var(--accent-dark);}
 .note{
   margin-top:1.25rem; padding:.9rem; border:1px dashed #cfe2ff; border-radius:10px;
   background:#f5f8ff; color:#0b2a5a; font-size:.9rem;
-}
-
-/* Botón inferior volver */
-.back-wrap{ text-align:center; margin-top:1.25rem; }
-.back-btn{
-  display:inline-block; background:var(--accent-dark); color:#fff; text-decoration:none;
-  font-weight:700; padding:.65rem 1.2rem; border-radius:10px;
-  box-shadow:0 4px 10px rgba(15,61,131,.22); transition:background .2s, transform .1s, box-shadow .2s;
-}
-.back-btn:hover{ background:#1c60c3; transform:translateY(-1px); box-shadow:0 6px 12px rgba(15,61,131,.32);}
-
-/* Footer */
-footer{
-  position:relative; left:50%; transform:translateX(-50%); width:100vw;
-  margin:1.5rem 0 0; padding:1.25rem 0; border-top:1px solid #e5e7eb;
-  background:#ffffff; text-align:center; box-shadow:0 -2px 6px rgba(0,0,0,0.04);
-}
-footer img{max-width:380px; height:auto; opacity:.96;}
-
 }
 /* === TOOLTIP con animación y resalte del hospital activo === */
 .tooltip {
@@ -207,7 +195,7 @@ footer img{max-width:380px; height:auto; opacity:.96;}
   box-shadow: 0 8px 20px rgba(15,61,131,0.25);
   border-radius: 10px;
   padding: 0.9rem 1rem;
-  width: 300px;
+  width: 320px;
   max-width: 90vw;
   pointer-events: none;
   transition:
@@ -271,42 +259,44 @@ body {
   overflow: visible !important;
 }
 
+.back-btn{
+  display:inline-block;
+  margin-top:1.5rem;
+  background:var(--accent-dark);
+  color:#fff;
+  text-decoration:none;
+  font-weight:700;
+  padding:0.6rem 1.2rem;
+  border-radius:8px;
+  transition:background .2s, transform .1s;
+  text-align:center;
+}
+.back-btn:hover{
+  background:#1c60c3;
+  color:#fff;
+  transform:translateY(-1px);
+}
 
-/* Footer */
+/* Pie */
 footer{
   position:relative;
   left:50%;
   transform:translateX(-50%);
   width:100vw;
-  margin:2rem 0 0 0;
+  margin-top:2rem;
   padding:1.5rem 0;
   border-top:1px solid #e5e7eb;
   background:#ffffff;
   text-align:center;
   box-shadow:0 -2px 6px rgba(0,0,0,0.04);
 }
-footer img{max-width:380px;height:auto;opacity:.96;}
-/* Botón Volver inferior */
-.back-btn{
-  display:inline-block;
-  margin:1.5rem auto 0;
-  background:var(--accent-dark);
-  color:#fff;
-  text-decoration:none;
-  font-weight:700;
-  padding:0.7rem 1.4rem;
-  border-radius:10px;
-  box-shadow:0 4px 10px rgba(15,61,131,.25);
-  transition:background .2s, transform .1s, box-shadow .2s;
+footer img{
+  max-width:380px;
+  height:auto;
+  opacity:.96;
 }
-.back-btn:hover{
-  background:#1c60c3;
-  transform:translateY(-1px);
-  box-shadow:0 6px 12px rgba(15,61,131,.35);
-}
-/* =========================================================
-   ADAPTABILIDAD
-========================================================= */
+
+/* Responsive */
 @media(max-width:768px){
   header{font-size:1.05rem;}
   main{padding:0.9rem 1rem;}
@@ -318,6 +308,7 @@ body {
   padding-top: calc(env(safe-area-inset-top, 0px) + 52px);
   background-color: #fff;
 }
+
 </style>
 </head>
 
@@ -530,40 +521,25 @@ body {
     <strong>Nota:</strong> Red con 6 nodos de trombectomía del SAS, coordinada con el Centro Andaluz de Teleictus (CATI). Última revisión: 28-10-2025.
   </div>
 
-  <div class="back-wrap">
-    <a href="index.html" class="back-btn">Volver</a>
-    <!-- o bien: <a href="javascript:history.back()" class="back-btn">Volver</a> -->
-  </div>
-</main>
-
 
 </main>
 
-<footer><img src="uibanner.png" alt="Unidad de Ictus Málaga"></footer>
+
+</main><footer>
+  <img src="uibanner.png" alt="Unidad de Ictus Málaga">
+</footer>
 
 <script>
-document.querySelectorAll('.tooltip').forEach(el=>{
-  el.addEventListener('click', e=>{
-    e.stopPropagation();
-    const tip = el.querySelector('.tooltiptext');
-    document.querySelectorAll('.tooltiptext').forEach(t=>t!==tip && t.classList.remove('visible'));
-    tip.classList.toggle('visible');
-  });
-});
-document.addEventListener('click', ()=>document.querySelectorAll('.tooltiptext').forEach(t=>t.classList.remove('visible')));
-</script>
-<script src="js/index.js"></script>
-<script>
-  (function(){
-    const btn = document.getElementById('backIcon');
-    if(!btn){ return; }
-    btn.addEventListener('click', function(){
-      // Feedback en consola para verificar que el clic llega
-      console.log('[IctusGPS] Atrás clicado. Historial:', window.history.length);
-      if (window.history.length > 1) { history.back(); }
-      else { window.location.href = '../index.html'; }
+document.addEventListener('DOMContentLoaded', ()=>{
+  const backBtn=document.querySelector('.safe-btn[title="Volver atrás"]');
+  if(backBtn){
+    backBtn.addEventListener('click',e=>{
+      e.preventDefault();
+      if(window.history.length>1) history.back();
+      else window.location.href='../index.html';
     });
-  })();
+  }
+});
 </script>
 </body>
 </html>
