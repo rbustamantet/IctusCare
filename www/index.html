@@ -53,7 +53,16 @@
     text-align:center;
     overflow-x:hidden;
   }
-
+body {
+    display: flex; /* Habilitar flexbox */
+    flex-direction: column; /* Apilar elementos verticalmente */
+    min-height: 100vh; /* Asegurar que el body ocupe al menos el 100% de la altura de la ventana */
+    margin: 0; /* Quitar márgenes por defecto del body */
+}
+.main-content {
+    /* Esto hace que el contenido ocupe todo el espacio sobrante */
+    flex-grow: 1; 
+}
   /* Animaciones */
   @keyframes fadeUp {
     0% {opacity:0; transform: translateY(25px);}
@@ -170,23 +179,24 @@ animation: shine 3s linear infinite;
     letter-spacing:.3px;
   }
 
-  footer{
-    color:var(--muted);
-    font-size:.8rem;
-    margin-top:auto;
-    padding:20px 0 10px;
-    animation: fadeUp 1s ease-out 1.5s both;
-  }
-
+/* Pie */
 footer {
-  color: var(--muted);
-  font-size: .8rem;
-  margin-top: auto;
-  padding: 20px 0 14px;
-  animation: fadeUp 1s ease-out 1.5s both;
-  position: relative;
+    /* Quitamos todas las propiedades de posición que tenías */
+    /* position: relative; left: 50%; transform: translateX(-50%); */
+    
+    /* Mantenemos tus estilos de apariencia */
+    width: 100%; /* Cambiado a 100% en lugar de 100vw para ser más flexible */
+    padding: 1.5rem 0;
+    border-top: 1px solid #e5e7eb;
+    background: #0f3d83;
+    text-align: center;
+    box-shadow: 0 -2px 6px rgba(0,0,0,0.04);
 }
-
+footer img{
+  max-width:200px;
+  height:auto;
+  opacity:.96;
+}
 /* ===== Botón flotante de salida (rojo translúcido elegante) ===== */
 .exit-btn {
   position: fixed;
@@ -218,7 +228,7 @@ footer {
   <header>
     <img src="img/inicio.png" alt="IctusGPS">
   </header>
-
+<div class="main-content">
   <main class="menu">
 
     <a class="icon-btn" href="unidad/index.html">
@@ -258,11 +268,9 @@ footer {
 </a>
 
   </main>
-
+</div>
 <footer>
-  Unidad de Neurología Vascular · Servicio de Neurología<br>
-  Hospital Regional Universitario de Málaga<br>
-  © Rafael Bustamante Toledo
+  <img src="img/pie.svg" alt="Firma">
 </footer>
 <script src="js/index.js"></script>
 <script>

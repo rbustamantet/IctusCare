@@ -3,13 +3,18 @@ package com.ictusgps.app;
 import android.os.Bundle;
 import android.view.Window;
 import androidx.core.view.WindowCompat;
+
 import com.getcapacitor.BridgeActivity;
+import com.capacitorjs.plugins.splashscreen.SplashScreenPlugin;
 
 public class MainActivity extends BridgeActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Registrar el plugin de SplashScreen (CRÍTICO)
+        registerPlugin(SplashScreenPlugin.class);
 
         // Asegura que el contenido NO se meta bajo las barras del sistema
         Window window = getWindow();
@@ -36,3 +41,4 @@ public class MainActivity extends BridgeActivity {
         }
     }
 }
+

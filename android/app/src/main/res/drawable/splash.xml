@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Fondo azul institucional -->
+    <item android:drawable="@drawable/splash_background" />
+
+    <!-- Logo centrado -->
+    <item>
+        <bitmap
+            android:src="@drawable/splash_img"
+            android:gravity="center" />
+    </item>
+
+</layer-list>
