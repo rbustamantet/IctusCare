@@ -4,7 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0f3d83">
-<title>Día del Ictus 2025</title>
+
+<title>Prevención del ictus</title>
 
 <link rel="manifest" href="../site.webmanifest">
 <link rel="icon" type="image/png" sizes="192x192" href="../iconos/ictusgps.png">
@@ -12,6 +13,13 @@
 <link rel="shortcut icon" href="../iconos/ictusgps.png">
 
 <style>
+:root{
+  --bg:#f4f7fb;
+  --ink:#0e1a33;
+  --accent:#0f3d83;
+  --border:#e4e8ef;
+  --card:#ffffff;
+}
 :root{
   --bg:#f9fafc;
   --ink:#0e1a33;
@@ -24,17 +32,13 @@
   --alert-border:#f5c2c0;
 }
 
-*{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%}
-
-body{
-  font-family: Verdana, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", sans-serif;
-  background: var(--bg);
-  color: var(--ink);
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-  line-height:1.6;
+html,body{
+  margin:0; padding:10;
+  font-family:Verdana, sans-serif;
+  background:var(--bg);
+  color:var(--ink);
 }
+
 /* =========================================================
    SAFE-TOP
 ========================================================= */
@@ -132,75 +136,43 @@ header{
   text-transform:none; /* 🔹 estilo oración */
 }
 
-/* Contenido */
+/* CONTENIDO */
 main{
   max-width:1080px;
   margin:0 auto;
-  padding:1.5rem 1.25rem 2.5rem;
+  padding:1rem 1.25rem 2.5rem;
   background:#fff;
   border-radius:12px;
   box-shadow:0 2px 10px rgba(0,0,0,0.04);
 }
 
-h2{color:var(--accent-dark);margin-top:0;}
-p{text-align:justify;margin:1rem 0;color:var(--ink);}
-
-/* Vídeo responsive */
-.video-container{
-  position:relative;
-  width:100%;
-  aspect-ratio:16/9;
-  background:#000;
-  border-radius:12px;
-  overflow:hidden;
-  box-shadow:0 4px 12px rgba(0,0,0,.15);
+/* TARJETAS */
+.card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:16px;
+  margin-bottom:20px;
+  box-shadow:0 3px 10px rgba(0,0,0,.06);
+  display:flex;
+  gap:14px;
+  align-items:flex-start;
 }
-.video-container video{
-  position:absolute;
-  top:0; left:0;
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  border:none;
+.card img{
+  width:80px;
+  height:auto;
+  border-radius:10px;
 }
-.video-container2{
-  position:relative;
-  width:100%;
-  aspect-ratio:16/9;
-  background:#000;
-  border-radius:12px;
-  overflow:hidden;
-  box-shadow:0 4px 12px rgba(0,0,0,.15);
+.card-text h2{
+  margin:0 0 6px;
+  font-size:18px;
+  color:var(--accent);
 }
-.video-container2 video{
-  position:absolute;
-  top:0; left:0;
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  border:none;
+.card-text p{
+  margin:0;
+  line-height:1.5;
+  font-size:15px;
 }
-
-
-
-.back-btn{
-  display:inline-block;
-  margin-top:1.5rem;
-  background:var(--accent-dark);
-  color:#fff;
-  text-decoration:none;
-  font-weight:700;
-  padding:0.6rem 1.2rem;
-  border-radius:8px;
-  transition:background .2s, transform .1s;
-  text-align:center;
-}
-.back-btn:hover{
-  background:#1c60c3;
-  color:#fff;
-  transform:translateY(-1px);
-}
-
 /* Pie */
 footer{
   position:relative;
@@ -237,14 +209,14 @@ body {
 </head>
 
 <body>
- <!-- Barra superior segura -->
+
+<!-- Barra superior -->
 <div class="safe-top">
   <div class="safe-content">
     <div class="safe-left">
-      <img src="../iconos/informacionico.png" alt="Icono Información" class="safe-mini">
+      <img src="../iconos/informacionico.png" alt="Icono Informacion" class="safe-mini">
       <img src="../img/topbar.png" alt="IctusGPS" class="safe-logo">
     </div>
-
     <div class="safe-actions">
       <a href="javascript:history.back()" class="safe-btn" title="Volver atrás">
         <img src="../iconos/atrastransparente.png" alt="Atrás" class="safe-icon">
@@ -257,81 +229,94 @@ body {
 </div>
 <header>
   <div class="bar wrap">
-    <div class="title">Día del Ictus</div>
+    <div class="title" style="margin:0;font-size:1.35rem;line-height:1;font-weight:800;letter-spacing:.2px;color:#fff;">Prevención del ictus</div>
   </div>
 </header>
-
-
 <main>
-  <p>El <b>Día Mundial del Ictus</b> (29 de octubre) busca concienciar sobre el ictus, una emergencia cerebral y principal causa de discapacidad. Su significado es vital: promueve la <b>prevención</b> (controlando factores de riesgo) y el reconocimiento <b>urgente</b> de los síntomas para actuar rápido, ya que <b>"tiempo es cerebro"</b> y mejora el pronóstico. Es una llamada global a la acción para <b>salvar vidas y reducir la discapacidad</b>.</p>
+<div class="page">
 
-  <!-- Primer vídeo -->
-  <h2 style="margin-top:2rem; color:#0f3d83;">El circuito del ictus agudo</h2>
-
-  <div class="video-container">
-    <div style="
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      width:100%;
-      background:#000;
-      border-radius:12px;
-      box-shadow:0 4px 12px rgba(0,0,0,.15);
-      margin-top:1rem;
-      overflow:hidden;
-    ">
-      <video 
-        playsinline 
-        controls 
-        preload="metadata"
-        style="
-          max-height:100%;
-          height:auto;
-          max-width:100%;
-          display:block;
-          object-fit:contain;
-          background:#000;
-          margin:0 auto;
-        ">
-        <source src="videos/diaictus.mp4" type="video/mp4">
-        Tu navegador no puede reproducir este vídeo.
-      </video>
-    </div>
+<!-- 1. Control de tensión arterial -->
+<div class="card">
+  <img src="../img/1.png">
+  <div class="card-text">
+    <h2>Controlar la tensión arterial</h2>
+    <p>La presión alta es uno de los factores que más influyen en el ictus. Revisarla con frecuencia y seguir la medicación indicada reduce claramente el riesgo. Caminar cada día y limitar la sal ayuda mucho.</p>
   </div>
+</div>
 
-  <!-- Segundo vídeo -->
-  <h2 style="margin-top:2rem; color:#0f3d83;">La flecha señala el cuidado</h2>
-  <div class="video-container2">
-    <div style="
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      width:100%;
-      background:#000;
-      border-radius:12px;
-      box-shadow:0 4px 12px rgba(0,0,0,.15);
-      margin-top:1rem;
-      overflow:hidden;
-    ">
-      <video 
-        playsinline 
-        controls 
-        preload="none"
-        style="
-          max-height:100%;
-          height:auto;
-          max-width:100%;
-          display:block;
-          object-fit:contain;
-          background:#000;
-          margin:0 auto;
-        ">
-        <source src="videos/flecha2.mp4" type="video/mp4">
-        Tu navegador no puede reproducir este vídeo.
-      </video>
-    </div>
+<!-- 2. Alimentación (general) -->
+<div class="card">
+  <img src="../img/2.png">
+  <div class="card-text">
+    <h2>Alimentación equilibrada</h2>
+    <p>La dieta mediterránea es la más recomendable: más verduras, frutas, pescado y aceite de oliva; menos sal, fritos y alimentos procesados. No es prohibir: es elegir mejor.</p>
   </div>
+</div>
 
+<!-- 3. Ejercicio -->
+<div class="card">
+  <img src="../img/3.png">
+  <div class="card-text">
+    <h2>Moverse cada día</h2>
+    <p>Caminar entre 30 y 45 minutos diarios es suficiente para la mayoría de personas. Si no es posible, cualquier movimiento ayuda: estiramientos, subir escaleras o paseos cortos.</p>
+  </div>
+</div>
+
+<!-- 4. No fumar -->
+<div class="card">
+  <img src="../img/4.png">
+  <div class="card-text">
+    <h2>No fumar</h2>
+    <p>El tabaco daña las arterias y aumenta mucho el riesgo de ictus. Dejarlo siempre aporta beneficio, sea cual sea la edad.</p>
+  </div>
+</div>
+
+<!-- 5. Alcohol -->
+<div class="card">
+  <img src="../img/5.png">
+  <div class="card-text">
+    <h2>Alcohol con moderación</h2>
+    <p>El exceso eleva la tensión arterial y puede provocar arritmias. Lo más recomendable es limitarlo al máximo.</p>
+  </div>
+</div>
+
+<!-- 6. Peso saludable -->
+<div class="card">
+  <img src="../img/6.png">
+  <div class="card-text">
+    <h2>Mantener un peso saludable</h2>
+    <p>Incluso una pequeña bajada de peso mejora la tensión arterial, el azúcar y el colesterol. Pasos pequeños y constantes suelen ser suficientes.</p>
+  </div>
+</div>
+
+<!-- 7. Control de glucemia -->
+<div class="card">
+  <img src="../img/7.png">
+  <div class="card-text">
+    <h2>Control del azúcar</h2>
+    <p>La diabetes aumenta el riesgo de ictus. Seguir la medicación y las pautas dietéticas ayuda a mantener niveles estables.</p>
+  </div>
+</div>
+
+<!-- 8. NUEVA TARJETA: Control del colesterol LDL -->
+<div class="card">
+  <img src="../img/8.png">
+  <div class="card-text">
+    <h2>Control del colesterol LDL</h2>
+    <p>Reducir el colesterol LDL es fundamental para prevenir ictus. Es importante tomar la medicación cada día para mantenerlo bajo. Alimentos como el aceite de oliva, el pescado azul, las verduras y las frutas ayudan a mejorar el perfil lipídico.</p>
+  </div>
+</div>
+
+<!-- 9. Sueño y estrés -->
+<div class="card">
+  <img src="../img/9.png">
+  <div class="card-text">
+    <h2>Dormir bien y reducir el estrés</h2>
+    <p>Un descanso adecuado protege el cerebro. Mantener horarios fijos, evitar pantallas antes de dormir y actividades relajantes mejora la calidad del sueño.</p>
+  </div>
+</div>
+
+</div>
 </main>
 <footer>
   <img src="uibanner.png" alt="Unidad de Ictus Málaga">
@@ -349,5 +334,6 @@ document.addEventListener('DOMContentLoaded', ()=>{
   }
 });
 </script>
+
 </body>
 </html>
